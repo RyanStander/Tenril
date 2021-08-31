@@ -7,9 +7,8 @@ public class RaycastPathing : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Hello World!");
         TestRandomNumberPrint();
-        Debug.Log("Hello World");
+        TestHelloWorld();
     }
 
     // Update is called once per frame
