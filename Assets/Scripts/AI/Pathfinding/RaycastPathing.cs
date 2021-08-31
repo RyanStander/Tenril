@@ -7,8 +7,8 @@ public class RaycastPathing : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TestRandomNumberPrint();
         TestHelloWorld();
+        TestRandomNumberPrint();
     }
 
     // Update is called once per frame
@@ -21,6 +21,7 @@ public class RaycastPathing : MonoBehaviour
     private void TestRandomNumberPrint()
     {
         Debug.Log("My random number is " + Random.Range(1,11) + "!");
+        Debug.Log("Your random number is " + Random.Range(1, 11) + "!");
     }
 
     private void TestHelloWorld()
