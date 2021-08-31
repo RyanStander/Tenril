@@ -9,6 +9,7 @@ public class RaycastPathing : MonoBehaviour
     {
         Debug.Log("Hello World!");
         TestRandomNumberPrint();
+        Debug.Log("Hello World");
     }
 
     // Update is called once per frame
@@ -21,5 +22,10 @@ public class RaycastPathing : MonoBehaviour
     private void TestRandomNumberPrint()
     {
         Debug.Log("My random number is " + Random.Range(1,11) + "!");
+    }
+
+    private void TestHelloWorld()
+    {
+        Debug.Log("Hello world says hello world");
     }
 }
