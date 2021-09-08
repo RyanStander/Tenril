@@ -1,11 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class StateManager : MonoBehaviour
 {
     //Current state of the object attached
-    private State currentState; 
+    public State currentState;
+    public List<State> attachedStates = new List<State>();
+
+    private void Start()
+    {
+        //Get all attached states
+        attachedStates = GetComponentsInChildren<State>().ToList();
+    }
 
     // Update is called once per frame
     void Update()
