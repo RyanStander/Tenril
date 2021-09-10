@@ -9,7 +9,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     private Vector2 movementInput;
 
-    private bool sprintInput;
+    private bool dodgeInput;
 
     // Start is called before the first frame update
     void Start()
@@ -41,10 +41,10 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleMovement()
     {
-        sprintInput = inputActions.PlayerMovement.Sprint.phase == UnityEngine.InputSystem.InputActionPhase.Started;
+        dodgeInput = inputActions.PlayerMovement.Sprint.phase == UnityEngine.InputSystem.InputActionPhase.Started;
         float forwardMovement = movementInput.y;
         float leftMovement = movementInput.x;
-        if (sprintInput)
+        if (dodgeInput)
         {
             forwardMovement= movementInput.y*2;
             leftMovement= movementInput.x*2;
@@ -56,6 +56,6 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void ResetInputs()
     {
-        sprintInput = false;
+        dodgeInput = false;
     }
 }
