@@ -137,6 +137,8 @@ GameObject:
   - component: {fileID: 117368513}
   - component: {fileID: 117368512}
   - component: {fileID: 117368518}
+  - component: {fileID: 117368519}
+  - component: {fileID: 117368517}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -192,7 +194,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 56ee0bf01b91da34d93c9cbd907a1dad, type: 2}
+  - {fileID: 2100000, guid: a63601b0202a9474c83e5dd4f7820950, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -239,6 +241,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &117368517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117368511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b3497213e0346f4dba7cbcafe83d59b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigidBody: {fileID: 117368512}
 --- !u!114 &117368518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,6 +267,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: {fileID: 2115616806}
+--- !u!114 &117368519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117368511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f3a030b88da3df4fbc70f969045acc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaseRange: 10
+  movementSpeed: 5
+  attackRange: 2.5
 --- !u!1001 &228143048
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -447,6 +477,7 @@ GameObject:
   - component: {fileID: 818762116}
   - component: {fileID: 818762115}
   - component: {fileID: 818762114}
+  - component: {fileID: 818762119}
   - component: {fileID: 818762113}
   m_Layer: 0
   m_Name: Player
@@ -464,10 +495,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 818762112}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 232da28a049242545a8fdd08b0910b49, type: 3}
+  m_Script: {fileID: 11500000, guid: b63f0c392953a254b92f5d41cebf8844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 5
+  rigidBody: {fileID: 818762114}
+  characterAttributes: {fileID: 818762119}
 --- !u!54 &818762114
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -516,7 +548,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a693e62ae55e61846b0148a8afe76068, type: 2}
+  - {fileID: 2100000, guid: 56ee0bf01b91da34d93c9cbd907a1dad, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -560,6 +592,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &818762119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818762112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f3a030b88da3df4fbc70f969045acc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaseRange: 20
+  movementSpeed: 15
+  attackRange: 2
 --- !u!4 &837569309 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400100, guid: 40046bae76ac54bffb59f14f47d9ba1b, type: 3}
@@ -594,6 +641,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbebf2a0079d09744a6f7708d5e0a6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chaseState: {fileID: 1651630097}
+  characterAttributes: {fileID: 117368519}
+  targetObject: {fileID: 818762112}
 --- !u!4 &841903576
 Transform:
   m_ObjectHideFlags: 0
@@ -778,7 +828,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackState: {fileID: 841903575}
-  isInAttackRange: 0
+  idleState: {fileID: 2115616806}
+  characterAttributes: {fileID: 117368519}
+  currentMovement: {fileID: 117368517}
+  targetObject: {fileID: 818762112}
 --- !u!4 &1651630098
 Transform:
   m_ObjectHideFlags: 0
@@ -925,7 +978,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chaseState: {fileID: 1651630097}
-  canSeeTarget: 0
+  characterAttributes: {fileID: 117368519}
+  currentMovement: {fileID: 117368517}
+  targetObject: {fileID: 818762112}
 --- !u!4 &53103662914074829
 Transform:
   m_ObjectHideFlags: 0

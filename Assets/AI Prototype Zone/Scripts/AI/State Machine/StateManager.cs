@@ -7,13 +7,6 @@ public class StateManager : MonoBehaviour
 {
     //Current state of the object attached
     public State currentState;
-    public List<State> attachedStates = new List<State>();
-
-    private void Start()
-    {
-        //Get all attached states
-        attachedStates = GetComponentsInChildren<State>().ToList();
-    }
 
     // Update is called once per frame
     void Update()
@@ -31,7 +24,6 @@ public class StateManager : MonoBehaviour
         {
             SwitchToState(nextState);
         }
-
     }
 
     //Switches to the next intended state
