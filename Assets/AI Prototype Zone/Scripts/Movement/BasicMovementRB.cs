@@ -22,4 +22,6 @@ public class BasicMovementRB : AbstractMovement
         Vector3 direction = (targetPosition - transform.position).normalized;
         rigidBody.MovePosition(transform.position + direction * attributes.movementSpeed * Time.deltaTime);
     }
+
+    public override void StopMovement() { }
 }

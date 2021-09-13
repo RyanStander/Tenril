@@ -46,6 +46,11 @@ public class AttackState : State
         transform.parent.GetComponent<Renderer>().material.color = Color.red;
     }
 
+    public override void StopState()
+    {
+        throw new System.NotImplementedException();
+    }
+
     private bool isInAttackRange()
     {
         //If the target is within attack range

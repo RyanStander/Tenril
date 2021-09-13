@@ -6,7 +6,6 @@ public class IdleState : State
 {
     public ChaseState chaseState;
     public CharacterAttributes characterAttributes; //The characters attributes for relevant functions
-    public AbstractMovement currentMovement; //The current movement type attached
     public GameObject targetObject = null; //The target of the object
 
     public override State RunCurrentState()
@@ -28,6 +27,11 @@ public class IdleState : State
     {
         //Temporary change to the material as a way to visualize changes in state
         transform.parent.GetComponent<Renderer>().material.color = Color.gray;
+    }
+
+    public override void StopState() 
+    {
+        throw new System.NotImplementedException();
     }
 
     private bool isInChaseRange()

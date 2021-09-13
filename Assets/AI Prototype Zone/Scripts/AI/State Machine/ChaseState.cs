@@ -32,6 +32,7 @@ public class ChaseState : State
         //Return attack state if the target is in range
         if (isInAttackRange())
         {
+            StopState();
             return attackState;
         }
         else if(isInChaseRange())
@@ -42,7 +43,8 @@ public class ChaseState : State
         }
         else
         {
-            //Otherwise return to idle state
+            //Otherwise return to idle state and stop movement
+            StopState();
             return idleState;
         }
     }
@@ -54,6 +56,13 @@ public class ChaseState : State
 
         //Temporary change to the material as a way to visualize changes in state
         transform.parent.GetComponent<Renderer>().material.color = Color.yellow;
+    }
+
+    public override void StopState()
+    {
+        //Stop moving
+        //Should be commented out if we want movement to still move to its last known target destination
+        currentMovement.StopMovement();
     }
 
     private bool isInAttackRange()
