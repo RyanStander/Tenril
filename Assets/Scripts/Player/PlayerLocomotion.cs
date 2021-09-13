@@ -4,58 +4,108 @@ using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
 {
-    public Animator anim;
-    private PlayerController inputActions;
+    public PlayerAnimatorManager playerAnimatorManager;
+    private InputHandler inputHandler;
+    private Transform cameraObject;
 
-    private Vector2 movementInput;
+    [SerializeField] private float rotationSpeed = 10;
 
-    private bool dodgeInput;
-
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        if (inputActions==null)
-        {
-            //if no input actions set, create one
-            inputActions = new PlayerController();
-            //check for key inputs
-            inputActions.PlayerMovement.Movement.performed += movementInputActions => movementInput = movementInputActions.ReadValue<Vector2>();
-
-            //inputActions.PlayerMovement.Sprint. += i => sprintInput = true;
-        }
-
-        inputActions.Enable();
+        inputHandler = GetComponent<InputHandler>();
+        playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+        cameraObject = Camera.main.transform;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void HandleLocomotion(float delta)
     {
         HandleMovement();
-
+        HandleRotation(delta);
+        HandleDodge();
     }
-
-    private void LateUpdate()
-    {
-        //ResetInputs();
-    }
-
     private void HandleMovement()
     {
-        dodgeInput = inputActions.PlayerMovement.Sprint.phase == UnityEngine.InputSystem.InputActionPhase.Started;
-        float forwardMovement = movementInput.y;
-        float leftMovement = movementInput.x;
-        if (dodgeInput)
+        //if player is locked on to a target and not sprinting
+        if (inputHandler.lockOnFlag && !inputHandler.sprintFlag)
         {
-            forwardMovement= movementInput.y*2;
-            leftMovement= movementInput.x*2;
+            MovementType(true);
         }
-
-        anim.SetFloat("Forward", forwardMovement, 0.1f, Time.deltaTime);
-        anim.SetFloat("Left", leftMovement, 0.1f, Time.deltaTime);
+        else//if player is sprinting or not locked on
+        {
+            MovementType(false);
+        }
     }
 
-    private void ResetInputs()
+    private void HandleRotation(float delta)
     {
-        dodgeInput = false;
+        if (!playerAnimatorManager.canRotate)
+            return;
+
+        Vector3 targetDirection;
+        //Sets direction in relation towards the camera
+        targetDirection = cameraObject.forward * inputHandler.forward;
+        targetDirection += cameraObject.right * inputHandler.left;
+
+        targetDirection.Normalize();
+        targetDirection.y = 0;
+
+        if (targetDirection == Vector3.zero)
+        {
+            targetDirection = transform.forward;
+        }
+
+        Quaternion tr = Quaternion.LookRotation(targetDirection);
+        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * delta);
+
+        transform.rotation = targetRotation;
+    }
+
+    public void HandleDodge()
+    {
+        if (inputHandler.dodgeInput)
+        {
+            inputHandler.dodgeInput = false;
+
+            //Do not perform another dodge if already happening
+            if (playerAnimatorManager.animator.GetBool("isInteracting"))
+                return;
+
+            //if the player is moving, roll.
+            if (inputHandler.moveAmount > 0.5f)
+                playerAnimatorManager.PlayTargetAnimation("Roll", true);
+            //otherwise perform a backstep
+            else
+                playerAnimatorManager.PlayTargetAnimation("Backstep", true);
+            //set dodge input to false again
+        }
+
+    }
+
+    private void MovementType(bool isStafeMovement)
+    {
+        if (playerAnimatorManager.animator.GetBool("isInteracting"))
+            return;
+
+        //set the values for input
+        float forwardMovement = inputHandler.forward;
+        float leftMovement = inputHandler.left;
+        float movementAmount = inputHandler.moveAmount;
+        //if player is sprinting, double speed
+        if (inputHandler.sprintFlag)
+        {
+            movementAmount = inputHandler.moveAmount * 2;
+        }
+
+        //if player is strafing, use both left and forward
+        if (isStafeMovement)
+        {
+            playerAnimatorManager.animator.SetFloat("Forward", forwardMovement, 0.1f, Time.deltaTime);
+            playerAnimatorManager.animator.SetFloat("Left", leftMovement, 0.1f, Time.deltaTime);
+        }
+        //otherwise use move amount to work with rotations
+        else
+        {
+            playerAnimatorManager.animator.SetFloat("Forward", movementAmount, 0.1f, Time.deltaTime);
+        }   
     }
 }

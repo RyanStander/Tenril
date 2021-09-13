@@ -166,7 +166,7 @@ public class @PlayerController : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""f92da61f-5a95-4955-b3f6-6accfd8c166b"",
                     ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard & Mouse"",
                     ""action"": ""Sprint"",
@@ -177,21 +177,10 @@ public class @PlayerController : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""a0d1edb2-3460-4938-9431-a7934c9c395c"",
                     ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Sprint"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b009a97d-abf2-476c-86a4-aad74d068fac"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": ""Tap"",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard & Mouse"",
-                    ""action"": ""Dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -202,6 +191,17 @@ public class @PlayerController : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
+                    ""action"": ""Dodge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""21813f2e-97f9-4726-9077-48da78357fe6"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
                     ""action"": ""Dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -889,12 +889,24 @@ public class @PlayerController : IInputActionCollection, IDisposable
         {
             ""name"": ""Keyboard & Mouse"",
             ""bindingGroup"": ""Keyboard & Mouse"",
-            ""devices"": []
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
         },
         {
             ""name"": ""Gamepad"",
             ""bindingGroup"": ""Gamepad"",
-            ""devices"": []
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Gamepad>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
         }
     ]
 }");
