@@ -710,7 +710,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 390532954}
-  m_LocalRotation: {x: 0.13932237, y: 0.000000019049695, z: -0.0000000026801883, w: 0.9902471}
+  m_LocalRotation: {x: 0.13932237, y: -0.000000019049695, z: 0.0000000026801883, w: 0.9902471}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -795,7 +795,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 449879400}
-  m_LocalRotation: {x: 0.14751913, y: 0.000000025357483, z: -4.4270382e-11, w: 0.98905927}
+  m_LocalRotation: {x: 0.14751913, y: -0.000000025357483, z: 4.4270382e-11, w: 0.98905927}
   m_LocalPosition: {x: 0, y: 2.4579134, z: -2.7320724}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1263,37 +1263,6 @@ Transform:
   m_Father: {fileID: 1467040386}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1455011006 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7803000388887419329, guid: 333e83dcfecb7f141955a51d535a27e6, type: 3}
-  m_PrefabInstance: {fileID: 5301665601567525175}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1455011011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1455011006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f9d97c891a5fb04ea20b99326493502, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1455011013
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1455011006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22b90ff3c09a61d438265df50a19ba92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  canRotate: 0
 --- !u!1 &1467040384
 GameObject:
   m_ObjectHideFlags: 0
@@ -1860,10 +1829,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6143875477951326098, guid: 333e83dcfecb7f141955a51d535a27e6, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
     - target: {fileID: 7803000388887419329, guid: 333e83dcfecb7f141955a51d535a27e6, type: 3}
       propertyPath: m_Name
       value: Player
