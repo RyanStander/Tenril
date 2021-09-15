@@ -12,11 +12,14 @@ public class InputHandler : MonoBehaviour
     private Vector2 movementInput;
     [HideInInspector] public bool dodgeInput, sprintInput, jumpInput;
 
+    //Combat Inputs
+    [HideInInspector] public bool weakAttackInput, strongAttackInput;
+
     //movement flags
     public bool sprintFlag;
 
     //combat flags
-    public bool lockOnFlag=false;
+    public bool lockOnFlag=false,comboFlag;
 
     private void OnEnable()
     {
@@ -41,6 +44,9 @@ public class InputHandler : MonoBehaviour
 
     private void CheckInputs()
     {
+        //----------------------------------------------------------
+        //                         Locomotion
+        //----------------------------------------------------------
         //Movement
         inputActions.PlayerMovement.Movement.performed += movementInputActions => movementInput = movementInputActions.ReadValue<Vector2>();
         //Sprint
@@ -50,6 +56,12 @@ public class InputHandler : MonoBehaviour
         inputActions.PlayerMovement.Dodge.performed += i => dodgeInput = true;
         //Jump
         inputActions.PlayerMovement.Jump.performed += i => jumpInput = true;
+
+        //----------------------------------------------------------
+        //                         Combat
+        //----------------------------------------------------------
+        //Weak attack
+        inputActions.PlayerCombat.WeakAttack.performed += i => weakAttackInput = true;
     }
 
     #region Movement
@@ -75,5 +87,9 @@ public class InputHandler : MonoBehaviour
             sprintFlag = false;
         }
     }
+    #endregion
+
+    #region Combat
+
     #endregion
 }

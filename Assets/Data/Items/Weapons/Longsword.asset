@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c52fffa827103043b6d9e1ce5417276, type: 3}
+  m_Name: Longsword
+  m_EditorClassIdentifier: 
+  itemIcon: {fileID: 0}
+  itemName: Longsword
+  modelPrefab: {fileID: 4260048596949537076, guid: 6ccd56731e9f99044a639429f790813d, type: 3}
+  hasSecondaryWeapon: 0
+  secondaryWeapon: {fileID: 0}
+  isUnarmed: 0
+  weakAttackDamage: 25
+  strongAttackDamage: 40
+  sneakDamageMultiplier: 4
+  idleAnimation: LongswordIdle
+  weakAttacks:
+  - LongsCombo1
+  - LongsCombo2
+  - LongsCombo3
+  - LongsCombo4
+  strongAttacks: []
+  baseStaminaCost: 10
+  weakAttackCostMultiplier: 1
+  strongAttackCostMultiplier: 2
+  weaponType: 0

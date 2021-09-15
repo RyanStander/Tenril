@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharactStats : MonoBehaviour
+public class CharacterStats : MonoBehaviour
 {
     [Header("Health")]
     [SerializeField] protected int healthLevel = 10;
