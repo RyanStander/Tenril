@@ -8,6 +8,13 @@ public class PlayerLocomotion : MonoBehaviour
     private InputHandler inputHandler;
     private Transform cameraObject;
 
+    [Header("Ground & Air Detection")]
+    [SerializeField] private float fallDuration=0;
+    [SerializeField] private float fallDurationToPerformLand=0.5f;
+    [SerializeField] private LayerMask EnvironmentLayer;
+    [SerializeField] private Vector3 raycastOffset;
+    [SerializeField] private float groundCheckRadius=0.3f;
+
     [SerializeField] private float rotationSpeed = 10;
 
     void Awake()
@@ -22,6 +29,8 @@ public class PlayerLocomotion : MonoBehaviour
         HandleMovement();
         HandleRotation(delta);
         HandleDodge();
+        HandleJump();
+        HandleFalling();
     }
     private void HandleMovement()
     {
@@ -60,7 +69,7 @@ public class PlayerLocomotion : MonoBehaviour
         transform.rotation = targetRotation;
     }
 
-    public void HandleDodge()
+    private void HandleDodge()
     {
         if (inputHandler.dodgeInput)
         {
@@ -79,6 +88,68 @@ public class PlayerLocomotion : MonoBehaviour
             //set dodge input to false again
         }
 
+    }
+
+    private void HandleJump()
+    {
+        if (inputHandler.jumpInput)
+        {
+            //Set jump to false so it can only happen once and doesnt perform when other actions are being performed
+            inputHandler.jumpInput = false;
+
+            //Do not perform another jump if already happening
+            if (playerAnimatorManager.animator.GetBool("isInteracting"))
+                return;
+
+            //perform jump animation
+            playerAnimatorManager.PlayTargetAnimation("Jump", true);
+        }
+    }
+
+    private void HandleFalling()
+    {
+        if (!IsGrounded())
+        {
+            //count time of falling
+            fallDuration += Time.deltaTime;
+
+            //if player is currently doing another action, do not play fall animation,
+            //this might need revision
+            if (playerAnimatorManager.animator.GetBool("isInteracting"))
+                return;
+
+            //play fall animation
+            playerAnimatorManager.PlayTargetAnimation("Falling", true);
+        }
+        else
+        {
+            //if player is falling for a long time, perform a land animation
+            if (fallDuration>fallDurationToPerformLand)
+            {
+                //play land animation
+                playerAnimatorManager.PlayTargetAnimation("Land", true);
+            }
+            else if (fallDuration>0)
+            {
+                //return to empty state
+                playerAnimatorManager.PlayTargetAnimation("Empty", true);
+            }
+            fallDuration = 0;
+        }
+    }
+    private bool IsGrounded()
+    {
+        //Check with a sphere if the player is on the ground, based on outcome, will either be set to being grounded or not
+        if (Physics.CheckSphere(transform.position - raycastOffset, groundCheckRadius, EnvironmentLayer))
+        {
+            playerAnimatorManager.animator.SetBool("isGrounded", true);
+            return true;
+        }
+        else
+        {
+            playerAnimatorManager.animator.SetBool("isGrounded", false);
+            return false;
+        }
     }
 
     private void MovementType(bool isStafeMovement)

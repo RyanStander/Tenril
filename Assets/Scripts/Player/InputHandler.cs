@@ -10,7 +10,7 @@ public class InputHandler : MonoBehaviour
 
     //Movement inputs
     private Vector2 movementInput;
-    [HideInInspector] public bool dodgeInput, sprintInput;
+    [HideInInspector] public bool dodgeInput, sprintInput, jumpInput;
 
     //movement flags
     public bool sprintFlag;
@@ -48,6 +48,8 @@ public class InputHandler : MonoBehaviour
         inputActions.PlayerMovement.Sprint.canceled += i => sprintInput = false;
         //Dodge
         inputActions.PlayerMovement.Dodge.performed += i => dodgeInput = true;
+        //Jump
+        inputActions.PlayerMovement.Jump.performed += i => jumpInput = true;
     }
 
     #region Movement

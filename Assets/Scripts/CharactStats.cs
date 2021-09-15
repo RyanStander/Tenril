@@ -4,15 +4,46 @@ using UnityEngine;
 
 public class CharactStats : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [Header("Health")]
+    [SerializeField] protected int healthLevel = 10;
+    [SerializeField] protected float maxHealth, currentHealth;
+    protected bool isDead = false;
+
+    [Header("Stamina")]
+    [SerializeField] protected int staminaLevel = 10;
+    [SerializeField] protected float maxStamina, currentStamina;
+
+    [Header("Magicka")]
+    [SerializeField] protected int magickaLevel = 10;
+    [SerializeField] protected float maxMagicka, currentMagicka;
+
+    public virtual void SetupStats()
     {
-        
+        maxHealth = SetMaxHealthFromHealthLevel();
+        currentHealth = maxHealth;
+
+        maxStamina = SetMaxStaminaFromStaminaLevel();
+        currentStamina = maxStamina;
+
+        maxMagicka = SetMaxMagickaFromMagickaLevel();
+        currentMagicka = maxMagicka;
     }
 
-    // Update is called once per frame
-    void Update()
+    protected float SetMaxHealthFromHealthLevel()
     {
-        
+        //calculates the players health based on health level
+        return healthLevel * 10;
+    }
+
+    protected float SetMaxStaminaFromStaminaLevel()
+    {
+        //calculates the players stamina based on stamina level
+        return staminaLevel * 10;
+    }
+
+    protected float SetMaxMagickaFromMagickaLevel()
+    {
+        //calculates the players magicka based on magicka level
+        return magickaLevel * 10;
     }
 }
