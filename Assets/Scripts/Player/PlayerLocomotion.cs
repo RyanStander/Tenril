@@ -14,6 +14,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private LayerMask EnvironmentLayer;
     [SerializeField] private Vector3 raycastOffset;
     [SerializeField] private float groundCheckRadius=0.3f;
+    private Vector3 previousVelocity; //Used for when jumping to continue velocity until landing
 
     [SerializeField] private float rotationSpeed = 10;
 
@@ -110,6 +111,9 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (!IsGrounded())
         {
+            //keeps velocity while falling
+            GetComponent<Rigidbody>().AddForce(new Vector3(previousVelocity.x * 25, 0, previousVelocity.z * 25));
+
             //count time of falling
             fallDuration += Time.deltaTime;
 
@@ -133,6 +137,10 @@ public class PlayerLocomotion : MonoBehaviour
             {
                 //return to empty state
                 playerAnimatorManager.PlayTargetAnimation("Empty", true);
+            }
+            else
+            {
+                previousVelocity = GetComponent<Rigidbody>().velocity; 
             }
             fallDuration = 0;
         }
