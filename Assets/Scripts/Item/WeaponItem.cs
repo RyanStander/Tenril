@@ -6,17 +6,18 @@ using UnityEngine;
 public class WeaponItem : Item
 {
     [Tooltip("The model that is created on the weapon")]
-    public GameObject modelPrefab;
+    public GameObject primaryWeaponModelPrefab;
     [Tooltip("State wether there is a second weapon")]
     public bool hasSecondaryWeapon;
     [Tooltip("The secondary weapon, if there is one")]
-    public GameObject secondaryWeapon;
+    public GameObject secondaryWeaponModelPrefab;
     [Tooltip("Used for when no weapon is equipped")] 
     public bool isUnarmed=false;
 
     [Header("Damage")]
-    public int weakAttackDamage = 25;
-    public int strongAttackDamage = 40;
+    public int baseDamage = 25;
+    public float weakAttackDamageMultiplier = 1;
+    public float strongAttackDamageMultiplier = 2;
     public int sneakDamageMultiplier = 4;
 
     [Header("Idle Animations")]

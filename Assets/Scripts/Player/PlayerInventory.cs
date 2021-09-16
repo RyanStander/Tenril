@@ -16,4 +16,20 @@ public class PlayerInventory : CharacterInventory
     public List<Item> Inventory;
     //Inventory Subcategories
     public List<WeaponItem> weaponsInventory;
+
+    public void LoadEquippedWeapons(WeaponSlotManager weaponSlotManager)
+    {
+        //if it has a secondary weapon
+        if (equippedWeapon.hasSecondaryWeapon)
+        {
+            //load only one weapon
+            weaponSlotManager.LoadWeaponOnSlot(equippedWeapon, true);
+        }
+        //if it has no secondary weapon
+        else
+        {
+            //load dual weapons weapon
+            weaponSlotManager.LoadWeaponOnSlot(equippedWeapon, false);
+        }
+    }
 }

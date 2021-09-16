@@ -8,6 +8,8 @@ public class PlayerManager : MonoBehaviour
     private PlayerLocomotion playerLocomotion;
     private PlayerAnimatorManager playerAnimatorManager;
     private PlayerCombatManager playerCombatManager;
+    private PlayerInventory playerInventory;
+    private WeaponSlotManager weaponSlotManager;
 
     public bool canDoCombo;
     void Awake()
@@ -16,6 +18,13 @@ public class PlayerManager : MonoBehaviour
         playerLocomotion = GetComponent<PlayerLocomotion>();
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
         playerCombatManager = GetComponent<PlayerCombatManager>();
+        playerInventory = GetComponent<PlayerInventory>();
+        weaponSlotManager = GetComponent<WeaponSlotManager>();
+    }
+
+    private void Start()
+    {
+        playerInventory.LoadEquippedWeapons(weaponSlotManager);
     }
 
     private void Update()
