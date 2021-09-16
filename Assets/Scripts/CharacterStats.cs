@@ -13,9 +13,13 @@ public class CharacterStats : MonoBehaviour
     [SerializeField] protected int staminaLevel = 10;
     [SerializeField] protected float maxStamina, currentStamina;
 
-    [Header("Magicka")]
-    [SerializeField] protected int magickaLevel = 10;
-    [SerializeField] protected float maxMagicka, currentMagicka;
+    [Header("Biomancy")]
+    [SerializeField] protected int MoonlightLevel = 10;
+    [SerializeField] protected float maxStoredMoonlight, currentStoredMoonlight;
+
+    [Header("Pyromancy")]
+    [SerializeField] protected int SunlightLevel = 10;
+    [SerializeField] protected float maxStoredSunlight, currentStoredSunlight;
 
     public virtual void SetupStats()
     {
@@ -25,8 +29,11 @@ public class CharacterStats : MonoBehaviour
         maxStamina = SetMaxStaminaFromStaminaLevel();
         currentStamina = maxStamina;
 
-        maxMagicka = SetMaxMagickaFromMagickaLevel();
-        currentMagicka = maxMagicka;
+        maxStoredMoonlight = SetMaxStoredMoonlightFromMoonlightLevel();
+        currentStoredMoonlight = maxStoredMoonlight;
+
+        maxStoredSunlight = SetMaxStoredSunlightFromSunlightLevel();
+        currentStoredSunlight = maxStoredSunlight;
     }
 
     #region Health
@@ -54,9 +61,19 @@ public class CharacterStats : MonoBehaviour
         return staminaLevel * 10;
     }
 
-    protected float SetMaxMagickaFromMagickaLevel()
+
+    #region Casting Pools
+    protected float SetMaxStoredMoonlightFromMoonlightLevel()
     {
         //calculates the players magicka based on magicka level
-        return magickaLevel * 10;
+        return MoonlightLevel * 10;
     }
+
+    protected float SetMaxStoredSunlightFromSunlightLevel()
+    {
+        //calculates the players magicka based on magicka level
+        return SunlightLevel * 10;
+    }
+
+    #endregion
 }

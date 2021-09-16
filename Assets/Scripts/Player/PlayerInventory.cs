@@ -34,4 +34,41 @@ public class PlayerInventory : CharacterInventory
             weaponSlotManager.LoadWeaponOnSlot(equippedWeapon, false);
         }
     }
+
+    public void SwapWeapon(WeaponSlotManager weaponSlotManager)
+    {
+        //if currently wielding primary weapon
+        if (isWieldingPrimaryWeapon)
+        {
+            //if it has a secondary weapon
+            if (equippedWeapon.hasSecondaryWeapon)
+            {
+                //load only one weapon
+                weaponSlotManager.LoadWeaponOnSlot(secondaryWeapon, true);
+            }
+            //if it has no secondary weapon
+            else
+            {
+                //load dual weapons weapon
+                weaponSlotManager.LoadWeaponOnSlot(secondaryWeapon, false);
+            }
+        }
+        //if currently wielding secondary weapon
+        else
+        {
+            //if it has a secondary weapon
+            if (equippedWeapon.hasSecondaryWeapon)
+            {
+                //load only one weapon
+                weaponSlotManager.LoadWeaponOnSlot(primaryWeapon, true);
+            }
+            //if it has no secondary weapon
+            else
+            {
+                //load dual weapons weapon
+                weaponSlotManager.LoadWeaponOnSlot(primaryWeapon, false);
+            }
+
+        }
+    }
 }

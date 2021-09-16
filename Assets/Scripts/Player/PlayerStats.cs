@@ -6,6 +6,10 @@ public class PlayerStats : CharacterStats
 {
     private PlayerAnimatorManager playerAnimatorManager;
 
+    [Header("Resource bars")]
+    [SerializeField] private SliderBarDisplayUI healthBar;
+    [SerializeField] private SliderBarDisplayUI staminaBar, sunlightBar, moonlightBar;
+
     private void Awake()
     {
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
@@ -13,6 +17,10 @@ public class PlayerStats : CharacterStats
     private void Start()
     {
         SetupStats();
+        healthBar.SetMaxValue(maxHealth);
+        staminaBar.SetMaxValue(maxStamina);
+        sunlightBar.SetMaxValue(maxStoredSunlight);
+        moonlightBar.SetMaxValue(maxStoredMoonlight);
     }
 
     public override void TakeDamage(float damageAmount, bool playAnimation = true)
@@ -22,6 +30,9 @@ public class PlayerStats : CharacterStats
 
         //change current health
         base.TakeDamage(damageAmount);
+
+        //update health display on the healthbar
+        healthBar.SetCurrentValue(currentHealth);
 
         //play animation that player has taken damage
         if (playAnimation)
@@ -38,5 +49,17 @@ public class PlayerStats : CharacterStats
 
             //Handle player death
         }
+    }
+
+    public override void RegainHealth(float regainAmount)
+    {
+        if (isDead)
+            return;
+
+        //change current health
+        base.RegainHealth(regainAmount);
+
+        //update health display on the healthbar
+        healthBar.SetCurrentValue(currentHealth);
     }
 }
