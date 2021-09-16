@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 0}
   itemName: Longsword
-  modelPrefab: {fileID: 4260048596949537076, guid: 6ccd56731e9f99044a639429f790813d, type: 3}
+  primaryWeaponModelPrefab: {fileID: 4260048596949537076, guid: 6ccd56731e9f99044a639429f790813d, type: 3}
   hasSecondaryWeapon: 0
-  secondaryWeapon: {fileID: 0}
+  secondaryWeaponModelPrefab: {fileID: 0}
   isUnarmed: 0
-  weakAttackDamage: 25
-  strongAttackDamage: 40
+  baseDamage: 25
+  weakAttackDamageMultiplier: 1
+  strongAttackDamageMultiplier: 2
   sneakDamageMultiplier: 4
   idleAnimation: LongswordIdle
   weakAttacks:

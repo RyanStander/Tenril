@@ -14,14 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 0}
   itemName: Dual Daggers
-  modelPrefab: {fileID: 4260048596949537076, guid: 97942b75d3b2ac347b5ec4afb6b0905c, type: 3}
+  primaryWeaponModelPrefab: {fileID: 4260048596949537076, guid: 97942b75d3b2ac347b5ec4afb6b0905c, type: 3}
   hasSecondaryWeapon: 1
-  secondaryWeapon: {fileID: 4260048596949537076, guid: 97942b75d3b2ac347b5ec4afb6b0905c, type: 3}
+  secondaryWeaponModelPrefab: {fileID: 4260048596949537076, guid: 97942b75d3b2ac347b5ec4afb6b0905c, type: 3}
   isUnarmed: 0
-  weakAttackDamage: 15
-  strongAttackDamage: 25
+  baseDamage: 25
+  weakAttackDamageMultiplier: 1
+  strongAttackDamageMultiplier: 2
   sneakDamageMultiplier: 5
-  idleAnimation: DualDaggerIdle
+  idleAnimation: LongswordIdle
   weakAttacks: []
   strongAttacks: []
   baseStaminaCost: 5

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerInventory : CharacterInventory
 {
+    public int Gold=250;
+
     [Header("Equipped Items")]
     [Tooltip("The weapon the player currently has equiped")]
     public WeaponItem equippedWeapon;

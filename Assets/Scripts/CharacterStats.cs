@@ -29,11 +29,24 @@ public class CharacterStats : MonoBehaviour
         currentMagicka = maxMagicka;
     }
 
+    #region Health
     protected float SetMaxHealthFromHealthLevel()
     {
         //calculates the players health based on health level
         return healthLevel * 10;
     }
+
+    public virtual void TakeDamage(float damageAmount, bool playAnimation = true)
+    {
+        currentHealth -= damageAmount;
+    }
+
+    public virtual void RegainHealth(float regainAmount)
+    {
+        currentHealth += regainAmount;
+    }
+
+    #endregion
 
     protected float SetMaxStaminaFromStaminaLevel()
     {
