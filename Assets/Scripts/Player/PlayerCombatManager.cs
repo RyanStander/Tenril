@@ -25,12 +25,14 @@ public class PlayerCombatManager : MonoBehaviour
 
     public void HandleAttacks(float delta)
     {
+        //Player performing weak attack
         if (inputHandler.weakAttackInput)
         {
             inputHandler.weakAttackInput = false;
             HandleWeakAttackAction();
         }
 
+        //Player performing strong attack
         if (inputHandler.strongAttackInput)
         {
             inputHandler.strongAttackInput = false;
@@ -44,25 +46,44 @@ public class PlayerCombatManager : MonoBehaviour
         {
             playerAnimatorManager.animator.SetBool("canDoCombo", false);
 
+            //Checks the progress through combos, if not the end play the next one
             #region Attacks
             for (int i = 0; i < weapon.weakAttacks.Count - 1; i++)
             {
                 if (lastAttack == weapon.weakAttacks[i])
                 {
-                    lastAttack = weapon.weakAttacks[i + 1];
-                    playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.weakAttackDamageMultiplier);
-                    playerAnimatorManager.PlayTargetAnimation(lastAttack, true);
-                    break;
+                    //if player has any stamina
+                    if (playerStats.HasStamina())
+                    {
+                        //put the players stamina regen on cooldown
+                        playerStats.PutStaminaRegenOnCooldown();
+                        //Update the last attack
+                        lastAttack = weapon.weakAttacks[i + 1];
+                        //Sets the damage colliders the weapons damage
+                        playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.weakAttackDamageMultiplier);
+                        //Play the following animation
+                        playerAnimatorManager.PlayTargetAnimation(lastAttack, true);
+                        break;
+                    }
                 }
             }
             for (int i = 0; i < weapon.strongAttacks.Count - 1; i++)
             {
                 if (lastAttack == weapon.strongAttacks[i])
                 {
-                    lastAttack = weapon.strongAttacks[i + 1];
-                    playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.strongAttackDamageMultiplier);
-                    playerAnimatorManager.PlayTargetAnimation(lastAttack, true);
-                    break;
+                    //if player has any stamina
+                    if (playerStats.HasStamina())
+                    {
+                        //put the players stamina regen on cooldown
+                        playerStats.PutStaminaRegenOnCooldown();
+                        //Update the last attack
+                        lastAttack = weapon.strongAttacks[i + 1];
+                        //Sets the damage colliders the weapons damage
+                        playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.strongAttackDamageMultiplier);
+                        //Play the following animation
+                        playerAnimatorManager.PlayTargetAnimation(lastAttack, true);
+                        break;
+                    }
                 }
             }
             #endregion
@@ -71,23 +92,39 @@ public class PlayerCombatManager : MonoBehaviour
 
     private void HandleWeakAttack(WeaponItem weapon)
     {
-        //weaponSlotManager.attackingWeapon = weapon;
-        if (weapon != null)
+        //if player has any stamina
+        if (playerStats.HasStamina())
         {
-            playerAnimatorManager.PlayTargetAnimation(weapon.weakAttacks[0], true);
-            playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.weakAttackDamageMultiplier);
-            lastAttack = weapon.weakAttacks[0];
+            //put the players stamina regen on cooldown
+            playerStats.PutStaminaRegenOnCooldown();
+            if (weapon != null)
+            {
+                //Sets the damage colliders the weapons damage
+                playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.weakAttackDamageMultiplier);
+                //Play animation
+                playerAnimatorManager.PlayTargetAnimation(weapon.weakAttacks[0], true);
+                //Update the last attack
+                lastAttack = weapon.weakAttacks[0];
+            }
         }
     }
 
     private void HandleStrongAttack(WeaponItem weapon)
     {
-        //weaponSlotManager.attackingWeapon = weapon;
-        if (weapon != null)
+        //if player has any stamina
+        if (playerStats.HasStamina())
         {
-            playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.strongAttackDamageMultiplier);
-            playerAnimatorManager.PlayTargetAnimation(weapon.strongAttacks[0], true);
-            lastAttack = weapon.strongAttacks[0];
+            //put the players stamina regen on cooldown
+            playerStats.PutStaminaRegenOnCooldown();
+            if (weapon != null)
+            {
+                //Sets the damage colliders the weapons damage
+                playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.strongAttackDamageMultiplier);
+                //Play animation
+                playerAnimatorManager.PlayTargetAnimation(weapon.strongAttacks[0], true);
+                //Update the last attack
+                lastAttack = weapon.strongAttacks[0];
+            }
         }
     }
 
@@ -99,12 +136,14 @@ public class PlayerCombatManager : MonoBehaviour
 
     private void HandleStrongAttackAction()
     {
+        //if player is able to perform a combo, go to following attack
         if (playerManager.canDoCombo)
         {
             inputHandler.comboFlag = true;
             HandleWeaponCombo(playerInventory.equippedWeapon);
             inputHandler.comboFlag = false;
         }
+        //otherwise perform first attack
         else
         {
             if (playerAnimatorManager.animator.GetBool("isInteracting"))

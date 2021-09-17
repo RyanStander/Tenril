@@ -23,6 +23,7 @@ public class PlayerStats : CharacterStats
         moonlightBar.SetMaxValue(maxStoredMoonlight);
     }
 
+    #region Health
     public override void TakeDamage(float damageAmount, bool playAnimation = true)
     {
         if (isDead)
@@ -62,4 +63,25 @@ public class PlayerStats : CharacterStats
         //update health display on the healthbar
         healthBar.SetCurrentValue(currentHealth);
     }
+    #endregion
+
+    #region Stamina
+
+    public override void DrainStamina(float drain)
+    {
+        base.DrainStamina(drain);
+
+        //update the current stamina on the stamina bar
+        staminaBar.SetCurrentValue(currentStamina);
+    }
+
+    protected override void RegenerateStamina()
+    {
+        base.RegenerateStamina();
+
+        //update the current stamina on the stamina bar
+        staminaBar.SetCurrentValue(currentStamina);
+    }
+
+    #endregion
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerLocomotion : MonoBehaviour
 {
     public PlayerAnimatorManager playerAnimatorManager;
+    private PlayerStats playerStats;
     private InputHandler inputHandler;
     private Transform cameraObject;
 
@@ -16,12 +17,16 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float groundCheckRadius=0.3f;
     private Vector3 previousVelocity; //Used for when jumping to continue velocity until landing
 
+    [Header("Movement")]
     [SerializeField] private float rotationSpeed = 10;
+    [SerializeField] private float sprintStaminaCost = 0.1f;
+    [SerializeField] private float dodgeStaminaCost = 5f;
 
     void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+        playerStats = GetComponent<PlayerStats>();
         cameraObject = Camera.main.transform;
     }
 
@@ -79,6 +84,13 @@ public class PlayerLocomotion : MonoBehaviour
             //Do not perform another dodge if already happening
             if (playerAnimatorManager.animator.GetBool("isInteracting"))
                 return;
+
+            //Do not perform a dodge if no stamina
+            if (!playerStats.HasStamina())
+                return;
+
+            //Drain stamina for dodging
+            playerStats.DrainStaminaWithCooldown(dodgeStaminaCost);
 
             //if the player is moving, roll.
             if (inputHandler.moveAmount > 0.5f)
@@ -172,7 +184,16 @@ public class PlayerLocomotion : MonoBehaviour
         //if player is sprinting, double speed
         if (inputHandler.sprintFlag)
         {
-            movementAmount = inputHandler.moveAmount * 2;
+            //if player does not have enough stamina, do not sprint
+            if (!playerStats.HasStamina())
+                movementAmount = inputHandler.moveAmount;
+            //otherwise sprint
+            else
+            {
+                movementAmount = inputHandler.moveAmount * 2;
+                //Drain players stamina for sprinting
+                playerStats.DrainStaminaWithCooldown(sprintStaminaCost);
+            }
         }
 
         //if player is strafing, use both left and forward

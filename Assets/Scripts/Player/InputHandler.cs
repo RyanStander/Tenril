@@ -13,7 +13,7 @@ public class InputHandler : MonoBehaviour
     [HideInInspector] public bool dodgeInput, sprintInput, jumpInput;
 
     //Combat Inputs
-    [HideInInspector] public bool weakAttackInput, strongAttackInput;
+    [HideInInspector] public bool weakAttackInput, strongAttackInput,drawSheathInput;
 
     //movement flags
     public bool sprintFlag;
@@ -60,6 +60,8 @@ public class InputHandler : MonoBehaviour
         //----------------------------------------------------------
         //                         Combat
         //----------------------------------------------------------
+        //Swap weapon
+        inputActions.PlayerActions.DrawSheath.performed += i => drawSheathInput = true;
         //Weak attack
         inputActions.PlayerCombat.WeakAttack.performed += i => weakAttackInput = true;
         //Strong Attack

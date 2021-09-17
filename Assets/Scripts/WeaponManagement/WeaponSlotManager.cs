@@ -7,8 +7,6 @@ public class WeaponSlotManager : MonoBehaviour
     private PlayerManager playerManager;
     private PlayerInventory playerInventory;
 
-    public WeaponItem attackingWeapon;
-
     private WeaponHolderSlot leftHandSlot, rightHandSlot, rightSideSlot, leftSideSlot, backSlot;
 
     public DamageCollider leftHandDamageCollider, rightHandDamageCollider;
@@ -51,6 +49,8 @@ public class WeaponSlotManager : MonoBehaviour
 
     public void LoadWeaponOnSlot(WeaponItem weaponItem, bool hasSecondaryWeapon)
     {
+        leftHandSlot.UnloadWeaponAndDestroy();
+        rightHandSlot.UnloadWeaponAndDestroy();
         //Check if there is a secondary weapon, such as dual daggers to equip
         if (hasSecondaryWeapon)
         {
@@ -64,9 +64,6 @@ public class WeaponSlotManager : MonoBehaviour
         }
 
         #region Weapon Idle Anim           
-
-        //Destroy the weapon on the back slot
-        backSlot.UnloadWeaponAndDestroy();
 
         //
         if (weaponItem != null)
@@ -148,6 +145,18 @@ public class WeaponSlotManager : MonoBehaviour
     }
 
     #endregion
+
+    public void DrainWeakStaminaAttack()
+    {
+        //Drains stamina based on what attack type the player is using
+        playerManager.GetPlayerStats().DrainStamina(playerInventory.equippedWeapon.baseStaminaCost * playerInventory.equippedWeapon.weakAttackCostMultiplier);
+    }
+
+    public void DrainStrongStaminaAttack()
+    {
+        //Drains stamina based on what attack type the player is using
+        playerManager.GetPlayerStats().DrainStamina(playerInventory.equippedWeapon.baseStaminaCost * playerInventory.equippedWeapon.strongAttackCostMultiplier);
+    }
 }
 
 //Move current left hand weapon to the back

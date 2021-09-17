@@ -9,6 +9,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerAnimatorManager playerAnimatorManager;
     private PlayerCombatManager playerCombatManager;
     private PlayerInventory playerInventory;
+    private PlayerStats playerStats;
     private WeaponSlotManager weaponSlotManager;
 
     public bool canDoCombo;
@@ -19,6 +20,7 @@ public class PlayerManager : MonoBehaviour
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
         playerCombatManager = GetComponent<PlayerCombatManager>();
         playerInventory = GetComponent<PlayerInventory>();
+        playerStats = GetComponent<PlayerStats>();
         weaponSlotManager = GetComponent<WeaponSlotManager>();
     }
 
@@ -36,12 +38,26 @@ public class PlayerManager : MonoBehaviour
     {
         float delta = Time.deltaTime;
         inputHandler.TickInput(delta);
+        
         playerLocomotion.HandleLocomotion(delta);
+        
         playerCombatManager.HandleAttacks(delta);
+        
+        playerInventory.SwapWeapon(weaponSlotManager);
+
+        playerStats.HandleStaminaRegeneration();
     }
 
+    #region Getters & Setters
     public void SetDamageColliderDamage(float damage)
     {
         weaponSlotManager.rightHandDamageCollider.currentWeaponDamage = damage;
     }
+
+    public PlayerStats GetPlayerStats()
+    {
+        return playerStats;
+    }
+
+    #endregion
 }

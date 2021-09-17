@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class PlayerInventory : CharacterInventory
 {
+    private InputHandler inputHandler;
+
     public int Gold=250;
 
     [Header("Equipped Items")]
-    [Tooltip("The weapon the player currently has equiped")]
+    [Tooltip("The weapon the player currently has equipped")]
     public WeaponItem equippedWeapon;
     [Tooltip("Determines the weapon that the player currently has equiped and used for swapping")]
     public bool isWieldingPrimaryWeapon = true;
@@ -18,6 +20,11 @@ public class PlayerInventory : CharacterInventory
     public List<Item> Inventory;
     //Inventory Subcategories
     public List<WeaponItem> weaponsInventory;
+
+    private void Awake()
+    {
+        inputHandler = GetComponent<InputHandler>();
+    }
 
     public void LoadEquippedWeapons(WeaponSlotManager weaponSlotManager)
     {
@@ -37,38 +44,27 @@ public class PlayerInventory : CharacterInventory
 
     public void SwapWeapon(WeaponSlotManager weaponSlotManager)
     {
-        //if currently wielding primary weapon
-        if (isWieldingPrimaryWeapon)
+        if (inputHandler.drawSheathInput)
         {
-            //if it has a secondary weapon
-            if (equippedWeapon.hasSecondaryWeapon)
+            inputHandler.drawSheathInput = false;
+            //if currently wielding primary weapon
+            if (isWieldingPrimaryWeapon)
             {
-                //load only one weapon
-                weaponSlotManager.LoadWeaponOnSlot(secondaryWeapon, true);
-            }
-            //if it has no secondary weapon
-            else
-            {
-                //load dual weapons weapon
-                weaponSlotManager.LoadWeaponOnSlot(secondaryWeapon, false);
-            }
-        }
-        //if currently wielding secondary weapon
-        else
-        {
-            //if it has a secondary weapon
-            if (equippedWeapon.hasSecondaryWeapon)
-            {
-                //load only one weapon
-                weaponSlotManager.LoadWeaponOnSlot(primaryWeapon, true);
-            }
-            //if it has no secondary weapon
-            else
-            {
-                //load dual weapons weapon
-                weaponSlotManager.LoadWeaponOnSlot(primaryWeapon, false);
-            }
+                equippedWeapon = secondaryWeapon;
+                
+                LoadEquippedWeapons(weaponSlotManager);
 
+                isWieldingPrimaryWeapon = false;
+            }
+            //if currently wielding secondary weapon
+            else
+            {
+                equippedWeapon = primaryWeapon;
+
+                LoadEquippedWeapons(weaponSlotManager);
+
+                isWieldingPrimaryWeapon = true;
+            }
         }
     }
 }

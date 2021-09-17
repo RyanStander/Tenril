@@ -12,6 +12,9 @@ public class CharacterStats : MonoBehaviour
     [Header("Stamina")]
     [SerializeField] protected int staminaLevel = 10;
     [SerializeField] protected float maxStamina, currentStamina;
+    [SerializeField] protected float staminaRegenAmount=1,staminaRegenRate = 0.1f, staminaRegenCooldownTime = 2;
+    protected float staminaCDTimeStamp, staminaRegenTimeStamp;
+    protected bool canRegen = true;
 
     [Header("Biomancy")]
     [SerializeField] protected int MoonlightLevel = 10;
@@ -60,12 +63,61 @@ public class CharacterStats : MonoBehaviour
 
     #endregion
 
+    #region Stamina
+
+    public bool HasStamina()
+    {
+        if (currentStamina > 0)
+            return true;
+        else
+            return false;
+    }
+
+    public void HandleStaminaRegeneration()
+    {
+        if (canRegen && currentStamina != maxHealth)
+        {
+            if (currentStamina < maxStamina && staminaRegenTimeStamp <= Time.time)
+            {
+                RegenerateStamina();
+            }
+        }
+
+        if (staminaCDTimeStamp <= Time.time)
+            canRegen = true;
+    }
+
     protected float SetMaxStaminaFromStaminaLevel()
     {
         //calculates the players stamina based on stamina level
         return staminaLevel * 10;
     }
 
+    public virtual void DrainStamina(float drain)
+    {
+        //change current stamina
+        currentStamina = currentStamina - drain;
+    }
+
+    protected virtual void RegenerateStamina()
+    {
+        currentStamina+= staminaRegenAmount;
+        staminaRegenTimeStamp = Time.time + staminaRegenRate;
+    }
+
+    public void PutStaminaRegenOnCooldown()
+    {
+        staminaCDTimeStamp = Time.time + staminaRegenCooldownTime;
+        canRegen = false;
+    }
+
+    public void DrainStaminaWithCooldown(float staminaAmount)
+    {
+        PutStaminaRegenOnCooldown();
+        DrainStamina(staminaAmount);
+    }
+
+    #endregion
 
     #region Casting Pools
     protected float SetMaxStoredMoonlightFromMoonlightLevel()
