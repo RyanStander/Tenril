@@ -132,5 +132,15 @@ public class CharacterStats : MonoBehaviour
         return SunlightLevel * 10;
     }
 
+    public void ConsumeStoredMoonlight(float cost)
+    {
+        currentStoredMoonlight -= cost;
+    }
+
+    public void ConsumeStoredSunlight(float cost)
+    {
+        currentStoredSunlight -= cost;
+    }
+
     #endregion
 }

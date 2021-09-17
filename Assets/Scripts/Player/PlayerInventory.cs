@@ -16,6 +16,9 @@ public class PlayerInventory : CharacterInventory
     [Tooltip("The 2 weapons that a player can swap between")]
     public WeaponItem primaryWeapon, secondaryWeapon;
 
+    [Header("Prepared Spells")]
+    
+
     [Header("Backpack")]
     public List<Item> Inventory;
     //Inventory Subcategories
