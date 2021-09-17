@@ -125,18 +125,26 @@ public class WeaponSlotManager : MonoBehaviour
     {
         //check if there is a secondary weapon
         //open the damage colliders
+        if(leftHandDamageCollider!=null)
             leftHandDamageCollider.EnableDamageCollider();
 
+        if (rightHandDamageCollider != null)
             rightHandDamageCollider.EnableDamageCollider();
+        else
+            Debug.Log("Damage collider not set");
     }
 
     public void CloseDamageCollider()
     {
         //check if there is a secondary weapon
         //close the damage colliders
+        if (leftHandDamageCollider != null)
             leftHandDamageCollider.DisableDamageCollider();
 
+        if (rightHandDamageCollider != null)
             rightHandDamageCollider.DisableDamageCollider();
+        else
+            Debug.Log("Damage collider not set");
     }
 
     #endregion

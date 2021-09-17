@@ -26,29 +26,17 @@ public class DamageCollider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Hit Object");
         //When the collider enters an character with one of these tags
         //make them take damage
-        if (other.CompareTag("Damageable")|| other.CompareTag("Enemy")|| other.CompareTag("Player"))
+        if (other.CompareTag("Damageable") || other.CompareTag("Enemy") || other.CompareTag("Player"))
         {
-            Debug.Log("Hit Object");
-
             CharacterStats characterStats = other.GetComponent<CharacterStats>();
 
-            if (characterStats != null)
-            {
-                characterStats.TakeDamage(currentWeaponDamage,true);
-            }
-        }
+            if (characterStats == null)
+                return;
 
-        /*if (other.CompareTag("Damageable"))
-        {
+            if (characterStats != GetComponentInParent<CharacterStats>())
+                characterStats.TakeDamage(currentWeaponDamage, true);
         }
-        if (other.CompareTag("Enemy"))
-        {
-        }
-        if (other.CompareTag("Player"))
-        {
-        }*/
     }
 }

@@ -21,6 +21,11 @@ public class CharacterStats : MonoBehaviour
     [SerializeField] protected int SunlightLevel = 10;
     [SerializeField] protected float maxStoredSunlight, currentStoredSunlight;
 
+    private void Start()
+    {
+        SetupStats();
+    }
+
     public virtual void SetupStats()
     {
         maxHealth = SetMaxHealthFromHealthLevel();

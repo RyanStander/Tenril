@@ -62,6 +62,8 @@ public class InputHandler : MonoBehaviour
         //----------------------------------------------------------
         //Weak attack
         inputActions.PlayerCombat.WeakAttack.performed += i => weakAttackInput = true;
+        //Strong Attack
+        inputActions.PlayerCombat.StrongAttack.performed += i => strongAttackInput = true;
     }
 
     #region Movement

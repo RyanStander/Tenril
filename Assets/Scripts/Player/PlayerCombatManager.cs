@@ -50,6 +50,7 @@ public class PlayerCombatManager : MonoBehaviour
                 if (lastAttack == weapon.weakAttacks[i])
                 {
                     lastAttack = weapon.weakAttacks[i + 1];
+                    playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.weakAttackDamageMultiplier);
                     playerAnimatorManager.PlayTargetAnimation(lastAttack, true);
                     break;
                 }
@@ -59,6 +60,7 @@ public class PlayerCombatManager : MonoBehaviour
                 if (lastAttack == weapon.strongAttacks[i])
                 {
                     lastAttack = weapon.strongAttacks[i + 1];
+                    playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.strongAttackDamageMultiplier);
                     playerAnimatorManager.PlayTargetAnimation(lastAttack, true);
                     break;
                 }
@@ -73,6 +75,7 @@ public class PlayerCombatManager : MonoBehaviour
         if (weapon != null)
         {
             playerAnimatorManager.PlayTargetAnimation(weapon.weakAttacks[0], true);
+            playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.weakAttackDamageMultiplier);
             lastAttack = weapon.weakAttacks[0];
         }
     }
@@ -82,6 +85,7 @@ public class PlayerCombatManager : MonoBehaviour
         //weaponSlotManager.attackingWeapon = weapon;
         if (weapon != null)
         {
+            playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.strongAttackDamageMultiplier);
             playerAnimatorManager.PlayTargetAnimation(weapon.strongAttacks[0], true);
             lastAttack = weapon.strongAttacks[0];
         }

@@ -39,4 +39,9 @@ public class PlayerManager : MonoBehaviour
         playerLocomotion.HandleLocomotion(delta);
         playerCombatManager.HandleAttacks(delta);
     }
+
+    public void SetDamageColliderDamage(float damage)
+    {
+        weaponSlotManager.rightHandDamageCollider.currentWeaponDamage = damage;
+    }
 }
