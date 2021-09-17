@@ -13,7 +13,7 @@ public class InputHandler : MonoBehaviour
     [HideInInspector] public bool dodgeInput, sprintInput, jumpInput;
 
     //Combat Inputs
-    [HideInInspector] public bool weakAttackInput, strongAttackInput,drawSheathInput;
+    public bool weakAttackInput, strongAttackInput,drawSheathInput, blockInput, parryInput;
 
     //movement flags
     public bool sprintFlag;
@@ -66,6 +66,11 @@ public class InputHandler : MonoBehaviour
         inputActions.PlayerCombat.WeakAttack.performed += i => weakAttackInput = true;
         //Strong Attack
         inputActions.PlayerCombat.StrongAttack.performed += i => strongAttackInput = true;
+        //Block
+        inputActions.PlayerCombat.Block.performed += i => blockInput = true;
+        inputActions.PlayerCombat.Block.canceled += i => blockInput = false;
+        //Parry
+        inputActions.PlayerCombat.Parry.performed += i => parryInput = true;
     }
 
     #region Movement

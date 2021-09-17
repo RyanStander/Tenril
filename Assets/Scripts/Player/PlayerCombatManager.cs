@@ -23,6 +23,7 @@ public class PlayerCombatManager : MonoBehaviour
         playerInventory = GetComponent<PlayerInventory>();
     }
 
+    #region Attacking
     public void HandleAttacks(float delta)
     {
         //Player performing weak attack
@@ -179,6 +180,48 @@ public class PlayerCombatManager : MonoBehaviour
                 return;
 
             HandleWeakAttack(playerInventory.equippedWeapon);
+        }
+    }
+
+    #endregion
+
+    #endregion
+
+    #region Defending
+
+    public void HandleDefending()
+    {
+
+        BlockAction();
+    }
+
+    private void ParryAction()
+    {
+
+    }
+
+    private void BlockAction()
+    {
+        if (inputHandler.blockInput)
+        {
+            //Prevent blocking if is already performing another action
+            if (playerAnimatorManager.animator.GetBool("isInteracting"))
+                return;
+
+            //Prevent blocking if is already blocking
+            if (playerAnimatorManager.animator.GetBool("isBlocking"))
+                return;
+
+            //Set blocking to true
+            playerAnimatorManager.animator.SetBool("isBlocking", true);
+
+            //Begin blocking
+            playerAnimatorManager.animator.Play("BlockStart");
+        }
+        else
+        {
+            //Set blocking to false
+            playerAnimatorManager.animator.SetBool("isBlocking", false);
         }
     }
 

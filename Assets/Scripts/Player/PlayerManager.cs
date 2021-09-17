@@ -42,6 +42,7 @@ public class PlayerManager : MonoBehaviour
         playerLocomotion.HandleLocomotion(delta);
         
         playerCombatManager.HandleAttacks(delta);
+        playerCombatManager.HandleDefending();
         
         playerInventory.SwapWeapon(weaponSlotManager);
 
