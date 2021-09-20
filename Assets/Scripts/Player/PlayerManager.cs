@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manages other player scripts, most updates happen here.
+/// </summary>
+
 public class PlayerManager : MonoBehaviour
 {
     private InputHandler inputHandler;

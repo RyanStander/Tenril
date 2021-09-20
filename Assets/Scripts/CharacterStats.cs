@@ -29,6 +29,7 @@ public class CharacterStats : MonoBehaviour
         SetupStats();
     }
 
+    //Manages values of character's statistics, such as health based on health level.
     public virtual void SetupStats()
     {
         maxHealth = SetMaxHealthFromHealthLevel();
@@ -75,7 +76,9 @@ public class CharacterStats : MonoBehaviour
 
     public void HandleStaminaRegeneration()
     {
-        if (canRegen && currentStamina != maxHealth)
+        //if the character is able to regenerate stamina and it is not at max already, restore stamina
+        //uses cooldowns to manage how fast stamina regenerates
+        if (canRegen && currentStamina != maxStamina)
         {
             if (currentStamina < maxStamina && staminaRegenTimeStamp <= Time.time)
             {

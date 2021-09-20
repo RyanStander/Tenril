@@ -15,9 +15,8 @@ public class PlayerInventory : CharacterInventory
     public bool isWieldingPrimaryWeapon = true;
     [Tooltip("The 2 weapons that a player can swap between")]
     public WeaponItem primaryWeapon, secondaryWeapon;
-
-    [Header("Prepared Spells")]
-    
+    [Tooltip("The spells that the player can currently cast")]
+    public SpellItem[] preparedSpells = new SpellItem[8];
 
     [Header("Backpack")]
     public List<Item> Inventory;

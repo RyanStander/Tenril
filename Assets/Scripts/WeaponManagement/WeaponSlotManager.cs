@@ -12,12 +12,9 @@ public class WeaponSlotManager : MonoBehaviour
     public DamageCollider leftHandDamageCollider, rightHandDamageCollider;
 
     private Animator animator;
-
-    private InputHandler inputHandler;
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        inputHandler = GetComponent<InputHandler>();
         playerManager = GetComponent<PlayerManager>();
         playerInventory = GetComponent<PlayerInventory>();
 
@@ -158,9 +155,3 @@ public class WeaponSlotManager : MonoBehaviour
         playerManager.GetPlayerStats().DrainStamina(playerInventory.equippedWeapon.baseStaminaCost * playerInventory.equippedWeapon.strongAttackCostMultiplier);
     }
 }
-
-//Move current left hand weapon to the back
-/*backSlot.LoadWeaponModel(leftHandSlot.currentWeapon);
-leftHandSlot.UnloadWeaponAndDestroy();
-
-animator.CrossFade(weaponItem.twoHandIdle, 0.2f);*/

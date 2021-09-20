@@ -30,6 +30,7 @@ public class SpellItem : Item
     {
         Debug.Log("Spell cast has succeeded");
 
+        //Check what type of spell it is then casts based on the type
         switch (spellType)
         {
             case SpellType.biomancy:
