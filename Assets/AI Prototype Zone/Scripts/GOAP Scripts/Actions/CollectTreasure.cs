@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class CollectTreasure : GAction
 {
     [Range(1,10)]
-    public int collectionRate = 5;
+    public int collectionRate = 10;
 
     public override bool PrePerform()
     {
@@ -29,6 +29,9 @@ public class CollectTreasure : GAction
             //Declare that backpack is full
             agentBeliefs.ModifyState("ReachedTreasureCapacity", 1);
         }
+
+        //Add belief that they have treasure
+        agentBeliefs.ModifyState("HasTreasure", 1);
 
         return true;
     }

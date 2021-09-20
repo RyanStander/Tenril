@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-
 public class TreasureHunterAgent : GAgent
 {
     //Priority level of task, higher the number the more important
@@ -19,6 +18,10 @@ public class TreasureHunterAgent : GAgent
     //Status text to update
     public TextMeshProUGUI statusText = null;
 
+    //Slider for energy
+    public Slider energyBar = null;
+    public float visualFillSpeed = 1;
+
     // Start is called before the first frame update
     new void Start()
     {
@@ -27,6 +30,9 @@ public class TreasureHunterAgent : GAgent
         //Set starting energy
         currentEnergy = maximumEnergy;
 
+        //Set Maximum for bar
+        if (energyBar != null) { energyBar.maxValue = maximumEnergy; }
+        
         //Create & add goals with priorities, set to false to keep goal after completion
         SubGoal treasureGoal = new SubGoal("CollectedTreasure", 1, false);
         goals.Add(treasureGoal, treasureCollectionPriority);
@@ -34,9 +40,12 @@ public class TreasureHunterAgent : GAgent
         SubGoal deliveryGoal = new SubGoal("DeliveredTreasure", 1, false);
         goals.Add(deliveryGoal, treasureDeliveryPriority);
 
-        ////Create & add goal with priority, false to keep goal
-        //SubGoal restingGoal = new SubGoal("IsRested", 1, false);
-        //goals.Add(restingGoal, stayRestedPriority);
+        //Create & add goal with priority, false to keep goal
+        SubGoal restingGoal = new SubGoal("IsRested", 1, false);
+        goals.Add(restingGoal, stayRestedPriority);
+
+        //Declare agent start beliefs
+        beliefs.ModifyState("WellRested", 1); //Agent begins well rested
     }
 
     public void Update()
@@ -48,14 +57,35 @@ public class TreasureHunterAgent : GAgent
     {
         base.LateUpdate();
         UpdateStatusText();
+        UpdateEnergyBar();
     }
 
+    //Bool to help manage energy resets
+    private bool energyShouldReset = false;
     private void EnergyLogic()
     {
-        //If not resting, reduce energy over time
-        if (!beliefs.states.ContainsKey("IsResting"))
+        //Reduce energy over time
+        currentEnergy -= Time.deltaTime;
+
+        //If agent is well rested and energy should reset, then reset
+        if (beliefs.states.ContainsKey("WellRested") && energyShouldReset)
         {
-            currentEnergy -= Time.deltaTime;
+            //Reset bool
+            energyShouldReset = false;
+
+            //Reset energy to maximum
+            currentEnergy = maximumEnergy;
+        }
+
+        //If energy should reset
+        //Happens when agent believes they are rested and current energy is equal or less than 0
+        if (beliefs.states.ContainsKey("WellRested") && currentEnergy <= 0)
+        {
+            //Reset bool
+            energyShouldReset = true;
+
+            //Remove well rested belief
+            beliefs.states.Remove("WellRested");
         }
 
         //Clamp between 0 and maximum energy
@@ -74,6 +104,16 @@ public class TreasureHunterAgent : GAgent
         {
             //Set text to inactive
             statusText.text = "Inactive";
+        }
+    }
+
+    private void UpdateEnergyBar()
+    {
+        //Null check, fails silently as a status text might not exist for all agents
+        if (energyBar != null)
+        {
+            //Update energy level
+            energyBar.value = currentEnergy;
         }
     }
 }

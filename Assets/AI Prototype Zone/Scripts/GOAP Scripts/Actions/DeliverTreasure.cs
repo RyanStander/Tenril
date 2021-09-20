@@ -23,8 +23,11 @@ public class DeliverTreasure : GAction
         //Clear inventory of treasure
         gAgent.inventory.ClearTreasure();
 
-        //Remove belief that the treasure as hit capacity
+        //Remove belief that the treasure is at capacity
         agentBeliefs.RemoveState("ReachedTreasureCapacity");
+
+        //Remove belief that the treasure hunter has treasure
+        agentBeliefs.RemoveState("HasTreasure");
 
         return true;
     }

@@ -7,6 +7,7 @@ TagManager:
   - RestingPoint
   - DeliveryPoint
   - TreasurePoint
+  - SiftingPoint
   layers:
   - Default
   - TransparentFX
@@ -43,6 +44,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: LowestPriority
+    uniqueID: 795455459
     locked: 0
   - name: LowPriority
     uniqueID: 2779404591

@@ -10,7 +10,7 @@ public class GAgent : MonoBehaviour
     public List<GAction> actions = new List<GAction>(); //List of actions that the agent has access to
     public Dictionary<SubGoal, int> goals = new Dictionary<SubGoal, int>(); //List of subgoals the agent will seek to achieve
     public WorldStates beliefs = new WorldStates(); //Agents internal states
-    public GInventory inventory;
+    [HideInInspector] public GInventory inventory;
     private NavMeshAgent navAgent; //Although unused in this class, this should be used for action classes to fetch
 
     private GPlanner planner; //The planner
