@@ -13,13 +13,13 @@ public class InputHandler : MonoBehaviour
     [HideInInspector] public bool dodgeInput, sprintInput, jumpInput;
 
     //Combat Inputs
-    public bool weakAttackInput, strongAttackInput,drawSheathInput, blockInput, parryInput;
+    public bool weakAttackInput, strongAttackInput,drawSheathInput, blockInput, parryInput, lockOnInput;
 
     //movement flags
     public bool sprintFlag;
 
     //combat flags
-    public bool lockOnFlag=false,comboFlag;
+    public bool comboFlag,lockOnFlag;
 
     private void OnEnable()
     {
@@ -40,6 +40,7 @@ public class InputHandler : MonoBehaviour
         //Movement inputs  
         HandleMovementInput();
         HandleSprintInput();
+        HandleLockOnInput();
     }
 
     private void CheckInputs()
@@ -60,6 +61,8 @@ public class InputHandler : MonoBehaviour
         //----------------------------------------------------------
         //                         Combat
         //----------------------------------------------------------
+        //Lock On
+        inputActions.PlayerCombat.LockOn.performed += i => lockOnInput = true;
         //Swap weapon
         inputActions.PlayerActions.DrawSheath.performed += i => drawSheathInput = true;
         //Weak attack
@@ -99,6 +102,15 @@ public class InputHandler : MonoBehaviour
     #endregion
 
     #region Combat
+
+    private void HandleLockOnInput()
+    {
+        if (lockOnInput)
+        {
+            lockOnInput = false;
+            lockOnFlag = !lockOnFlag;
+        }
+    }
 
     #endregion
 }

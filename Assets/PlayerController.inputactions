@@ -516,6 +516,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Lock On",
+                    "type": "Button",
+                    "id": "fef3721c-68df-48fc-b82d-4a1e90edba9c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -648,6 +656,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Special Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "57f18b97-b726-4ecb-910a-79cc927fea84",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Lock On",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9cd73e8d-c822-485c-9366-cdd8b3ba144f",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Lock On",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -57,22 +57,57 @@ public class PlayerLocomotion : MonoBehaviour
             return;
 
         Vector3 targetDirection;
-        //Sets direction in relation towards the camera
-        targetDirection = cameraObject.forward * inputHandler.forward;
-        targetDirection += cameraObject.right * inputHandler.left;
 
-        targetDirection.Normalize();
-        targetDirection.y = 0;
-
-        if (targetDirection == Vector3.zero)
+        if (inputHandler.lockOnFlag)
         {
-            targetDirection = transform.forward;
+            playerAnimatorManager.animator.SetBool("isLockedOn", true);
+            if (inputHandler.sprintFlag || inputHandler.dodgeInput)
+            {
+                targetDirection = cameraObject.forward * inputHandler.forward;
+                targetDirection += cameraObject.right * inputHandler.left;
+                targetDirection.Normalize();
+                targetDirection.y = 0;
+
+                if (targetDirection == Vector3.zero)
+                {
+                    targetDirection = transform.forward;
+                }
+
+                Quaternion tr = Quaternion.LookRotation(targetDirection);
+                Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+
+                transform.rotation = targetRotation;
+            }
+            else
+            {
+                targetDirection = cameraObject.forward;
+
+                targetDirection.y = 0;
+
+                transform.rotation = Quaternion.LookRotation(targetDirection);
+            }
         }
+        else
+        {
+            playerAnimatorManager.animator.SetBool("isLockedOn", false);
 
-        Quaternion tr = Quaternion.LookRotation(targetDirection);
-        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * delta);
+            //Sets direction in relation towards the camera
+            targetDirection = cameraObject.forward * inputHandler.forward;
+            targetDirection += cameraObject.right * inputHandler.left;
 
-        transform.rotation = targetRotation;
+            targetDirection.Normalize();
+            targetDirection.y = 0;
+
+            if (targetDirection == Vector3.zero)
+            {
+                targetDirection = transform.forward;
+            }
+
+            Quaternion tr = Quaternion.LookRotation(targetDirection);
+            Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * delta);
+
+            transform.rotation = targetRotation;
+        }
     }
 
     private void HandleDodge()
@@ -181,6 +216,7 @@ public class PlayerLocomotion : MonoBehaviour
         float forwardMovement = inputHandler.forward;
         float leftMovement = inputHandler.left;
         float movementAmount = inputHandler.moveAmount;
+
         //if player is sprinting, double speed
         if (inputHandler.sprintFlag)
         {
@@ -200,12 +236,14 @@ public class PlayerLocomotion : MonoBehaviour
         if (isStafeMovement)
         {
             playerAnimatorManager.animator.SetFloat("Forward", forwardMovement, 0.1f, Time.deltaTime);
-            playerAnimatorManager.animator.SetFloat("Left", leftMovement, 0.1f, Time.deltaTime);
+            playerAnimatorManager.animator.SetFloat("Left", -leftMovement, 0.1f, Time.deltaTime);
         }
         //otherwise use move amount to work with rotations
         else
-        {
+        {     
             playerAnimatorManager.animator.SetFloat("Forward", movementAmount, 0.1f, Time.deltaTime);
+            //ensure left is 0 to avoid strange movement out of lock on
+            playerAnimatorManager.animator.SetFloat("Left", 0, 0.1f, Time.deltaTime);
         }   
     }
 }

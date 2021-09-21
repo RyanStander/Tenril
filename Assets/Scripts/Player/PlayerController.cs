@@ -529,6 +529,14 @@ public class @PlayerController : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Lock On"",
+                    ""type"": ""Button"",
+                    ""id"": ""fef3721c-68df-48fc-b82d-4a1e90edba9c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -661,6 +669,28 @@ public class @PlayerController : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Special Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""57f18b97-b726-4ecb-910a-79cc927fea84"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Lock On"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9cd73e8d-c822-485c-9366-cdd8b3ba144f"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Lock On"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -964,6 +994,7 @@ public class @PlayerController : IInputActionCollection, IDisposable
         m_PlayerCombat_Block = m_PlayerCombat.FindAction("Block", throwIfNotFound: true);
         m_PlayerCombat_Parry = m_PlayerCombat.FindAction("Parry", throwIfNotFound: true);
         m_PlayerCombat_SpellcastingMode = m_PlayerCombat.FindAction("Spellcasting Mode", throwIfNotFound: true);
+        m_PlayerCombat_LockOn = m_PlayerCombat.FindAction("Lock On", throwIfNotFound: true);
         // PlayerSpellcasting
         m_PlayerSpellcasting = asset.FindActionMap("PlayerSpellcasting", throwIfNotFound: true);
         m_PlayerSpellcasting_Spell1 = m_PlayerSpellcasting.FindAction("Spell 1", throwIfNotFound: true);
@@ -1175,6 +1206,7 @@ public class @PlayerController : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerCombat_Block;
     private readonly InputAction m_PlayerCombat_Parry;
     private readonly InputAction m_PlayerCombat_SpellcastingMode;
+    private readonly InputAction m_PlayerCombat_LockOn;
     public struct PlayerCombatActions
     {
         private @PlayerController m_Wrapper;
@@ -1185,6 +1217,7 @@ public class @PlayerController : IInputActionCollection, IDisposable
         public InputAction @Block => m_Wrapper.m_PlayerCombat_Block;
         public InputAction @Parry => m_Wrapper.m_PlayerCombat_Parry;
         public InputAction @SpellcastingMode => m_Wrapper.m_PlayerCombat_SpellcastingMode;
+        public InputAction @LockOn => m_Wrapper.m_PlayerCombat_LockOn;
         public InputActionMap Get() { return m_Wrapper.m_PlayerCombat; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1212,6 +1245,9 @@ public class @PlayerController : IInputActionCollection, IDisposable
                 @SpellcastingMode.started -= m_Wrapper.m_PlayerCombatActionsCallbackInterface.OnSpellcastingMode;
                 @SpellcastingMode.performed -= m_Wrapper.m_PlayerCombatActionsCallbackInterface.OnSpellcastingMode;
                 @SpellcastingMode.canceled -= m_Wrapper.m_PlayerCombatActionsCallbackInterface.OnSpellcastingMode;
+                @LockOn.started -= m_Wrapper.m_PlayerCombatActionsCallbackInterface.OnLockOn;
+                @LockOn.performed -= m_Wrapper.m_PlayerCombatActionsCallbackInterface.OnLockOn;
+                @LockOn.canceled -= m_Wrapper.m_PlayerCombatActionsCallbackInterface.OnLockOn;
             }
             m_Wrapper.m_PlayerCombatActionsCallbackInterface = instance;
             if (instance != null)
@@ -1234,6 +1270,9 @@ public class @PlayerController : IInputActionCollection, IDisposable
                 @SpellcastingMode.started += instance.OnSpellcastingMode;
                 @SpellcastingMode.performed += instance.OnSpellcastingMode;
                 @SpellcastingMode.canceled += instance.OnSpellcastingMode;
+                @LockOn.started += instance.OnLockOn;
+                @LockOn.performed += instance.OnLockOn;
+                @LockOn.canceled += instance.OnLockOn;
             }
         }
     }
@@ -1371,6 +1410,7 @@ public class @PlayerController : IInputActionCollection, IDisposable
         void OnBlock(InputAction.CallbackContext context);
         void OnParry(InputAction.CallbackContext context);
         void OnSpellcastingMode(InputAction.CallbackContext context);
+        void OnLockOn(InputAction.CallbackContext context);
     }
     public interface IPlayerSpellcastingActions
     {
