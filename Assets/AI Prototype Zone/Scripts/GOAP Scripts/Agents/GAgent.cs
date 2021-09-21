@@ -63,6 +63,10 @@ public class GAgent : MonoBehaviour
     {
         RunAgentLogic();
         CorrectSpriteOrientation();
+
+        //If the path is partial, it means the path is no longer valid and the AI should re-evaluate their decisions
+        //Debug.Log(navAgent.path.status);
+        //Debug.Log(navAgent.pathStatus);
     }
 
     private void RunAgentLogic()
@@ -70,7 +74,7 @@ public class GAgent : MonoBehaviour
         //If the current action is not currently executing
         if (currentAction != null && currentAction.running)
         {
-            // Check the agent has a goal, a path to the goal, and has reached that goal
+            // Check the agent has a goal, a path to the goal that is valid, and has reached that goal
             if (currentAction.navAgent.hasPath && Vector3.Distance(currentAction.target.transform.position, transform.position) <= goalDistanceSentitivity)//currentAction.agent.remainingDistance <= goalDistanceSentitivity)
             {
                 //If not yet invoked, then attempt to perform it
@@ -97,7 +101,7 @@ public class GAgent : MonoBehaviour
             foreach (KeyValuePair<SubGoal, int> sg in sortedGoals)
             {
                 //Set the action queue to what the planner can return based on the goal
-                actionQueue = planner.plan(actions, sg.Key.sGoals, beliefs);
+                actionQueue = planner.PlanActions(actions, sg.Key.sGoals, beliefs);
 
                 //If the queue is not null then a plan exists
                 if (actionQueue != null)
@@ -148,6 +152,7 @@ public class GAgent : MonoBehaviour
                     //Set the destination for the navigation agent to move to
                     currentAction.navAgent.SetDestination(currentAction.target.transform.position);
                 }
+
             }
             else
             {

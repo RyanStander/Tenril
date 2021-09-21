@@ -6,7 +6,7 @@ public class RestAtPoint : GAction
 {
     public override bool PrePerform()
     {
-        //If no target or at capacity, then fail to begin action
+        //If no target or incomplete path, fail
         if (target == null)
         {
             return false;

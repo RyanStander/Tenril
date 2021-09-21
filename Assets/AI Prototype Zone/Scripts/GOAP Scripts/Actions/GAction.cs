@@ -105,4 +105,17 @@ public abstract class GAction : MonoBehaviour
         //For now just return the first item
         return targets[0];
     }
+
+    //Get if the path is possible
+    public bool HasCompletePath()
+    {
+        if(navAgent.pathStatus == NavMeshPathStatus.PathComplete)
+        {
+            return true;
+        } 
+        else
+        {
+            return false;
+        }
+    }
 }

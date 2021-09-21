@@ -4,7 +4,7 @@ using UnityEngine;
 public class GPlanner
 {
     //Construct a plan of actions
-    public Queue<GAction> plan(List<GAction> actions, Dictionary<string, int> goal, WorldStates beliefStates)
+    public Queue<GAction> PlanActions(List<GAction> actions, Dictionary<string, int> goal, WorldStates beliefStates)
     {
         //Create a list for the usable actions
         List<GAction> usableActions = new List<GAction>();
@@ -93,7 +93,7 @@ public class GPlanner
     //Build the node graph of the actions
     private bool BuildGraph(Node parent, List<Node> branches, List<GAction> usableActions, Dictionary<string, int> goal) {
 
-        bool foundPath = false; //Bool to track wether or not a valid action path has been found
+        bool foundActionPath = false; //Bool to track wether or not a valid action path has been found
 
         //Iterate over each action that can currently be executed
         foreach (GAction action in usableActions)
@@ -121,7 +121,7 @@ public class GPlanner
                 if (GoalAchieved(goal, currentState))
                 {
                     branches.Add(node);
-                    foundPath = true;
+                    foundActionPath = true;
                 }
                 //If no path was found, move onto the next node
                 else
@@ -137,13 +137,13 @@ public class GPlanner
                     //Set the path as found if one is discovered
                     if (found)
                     {
-                        foundPath = true;
+                        foundActionPath = true;
                     }
                 }
             }
         }
         //Return that the path was found
-        return foundPath;
+        return foundActionPath;
     }
 
     private List<GAction> ActionSubset(List<GAction> actions, GAction actionToRemove)
