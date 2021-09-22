@@ -84,4 +84,24 @@ public class PlayerStats : CharacterStats
     }
 
     #endregion
+
+    #region Spellcasting
+
+    public override void ConsumeStoredMoonlight(float cost)
+    {
+        base.ConsumeStoredMoonlight(cost);
+
+        //update the current moonlight on the moonlight bar
+        moonlightBar.SetCurrentValue(currentStoredMoonlight);
+    }
+
+    public override void ConsumeStoredSunlight(float cost)
+    {
+        base.ConsumeStoredSunlight(cost);
+
+        //update the current sunlight on the sunlight bar
+        sunlightBar.SetCurrentValue(currentStoredSunlight);
+    }
+
+    #endregion
 }

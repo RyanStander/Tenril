@@ -21,12 +21,12 @@ public class SpellItem : Item
     [Tooltip("Description of what the spell do")][TextArea]
     public string spellDescription;
 
-    public virtual void AttemptToCastSpell(PlayerAnimatorManager animatorManager, PlayerStats playerStats)
+    public virtual void AttemptToCastSpell(AnimatorManager animatorManager, CharacterStats characterStats)
     {
         Debug.Log("Attempting spell cast!");
     }
 
-    public virtual void SuccessfullyCastSpell(PlayerAnimatorManager animatorManager, PlayerStats playerStats)
+    public virtual void SuccessfullyCastSpell(AnimatorManager animatorManager, CharacterStats characterStats)
     {
         Debug.Log("Spell cast has succeeded");
 
@@ -34,10 +34,10 @@ public class SpellItem : Item
         switch (spellType)
         {
             case SpellType.biomancy:
-                playerStats.ConsumeStoredMoonlight(spellCost);
+                characterStats.ConsumeStoredMoonlight(spellCost);
                 break;
             case SpellType.pyromancy:
-                playerStats.ConsumeStoredMoonlight(spellCost);
+                characterStats.ConsumeStoredSunlight(spellCost);
                 break;
         }
     }

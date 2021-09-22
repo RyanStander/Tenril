@@ -11,8 +11,6 @@ public class PlayerCombatManager : MonoBehaviour
     private PlayerStats playerStats;
 
     public string lastAttack;
-
-    //private WeaponSlotManager weaponSlotManager
     private void Awake()
     {
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();

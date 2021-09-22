@@ -12,6 +12,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerLocomotion playerLocomotion;
     private PlayerAnimatorManager playerAnimatorManager;
     private PlayerCombatManager playerCombatManager;
+    private PlayerSpellcastingManager playerSpellcastingManager;
     private PlayerInventory playerInventory;
     private PlayerStats playerStats;
     private WeaponSlotManager weaponSlotManager;
@@ -23,6 +24,7 @@ public class PlayerManager : MonoBehaviour
         playerLocomotion = GetComponent<PlayerLocomotion>();
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
         playerCombatManager = GetComponent<PlayerCombatManager>();
+        playerSpellcastingManager = GetComponent<PlayerSpellcastingManager>();
         playerInventory = GetComponent<PlayerInventory>();
         playerStats = GetComponent<PlayerStats>();
         weaponSlotManager = GetComponent<WeaponSlotManager>();
@@ -44,11 +46,19 @@ public class PlayerManager : MonoBehaviour
         inputHandler.TickInput(delta);
         
         playerLocomotion.HandleLocomotion(delta);
-        
-        playerCombatManager.HandleAttacks(delta);
-        playerCombatManager.HandleDefending();
-        
-        playerInventory.SwapWeapon(weaponSlotManager);
+
+        //Player is unable to perform certain actions whilst in spellcasting mode
+        if (inputHandler.spellcastingModeInput)
+        {
+            playerSpellcastingManager.HandleSpellcasting();
+        }
+        else
+        {
+            playerLocomotion.HandleDodgeAndJumping();
+            playerCombatManager.HandleAttacks(delta);
+            playerCombatManager.HandleDefending();
+            playerInventory.SwapWeapon(weaponSlotManager);
+        }     
 
         playerStats.HandleStaminaRegeneration();
     }

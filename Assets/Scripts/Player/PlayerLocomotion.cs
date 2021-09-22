@@ -34,9 +34,14 @@ public class PlayerLocomotion : MonoBehaviour
     {
         HandleMovement();
         HandleRotation(delta);
+
+        HandleFalling();
+    }
+
+    public void HandleDodgeAndJumping()
+    {
         HandleDodge();
         HandleJump();
-        HandleFalling();
     }
     private void HandleMovement()
     {

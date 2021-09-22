@@ -8,9 +8,9 @@ public class HealingSpell : SpellItem
     [Tooltip("The amount of health restored")]
     public int healAmount;
 
-    public override void AttemptToCastSpell(PlayerAnimatorManager animatorManager, PlayerStats playerStats)
+    public override void AttemptToCastSpell(AnimatorManager animatorManager, CharacterStats characterStats)
     {
-        base.AttemptToCastSpell(animatorManager, playerStats);
+        base.AttemptToCastSpell(animatorManager, characterStats);
 
         //Start the casting spell effects
         if (spellWindUpFX != null)
@@ -22,9 +22,9 @@ public class HealingSpell : SpellItem
         animatorManager.PlayTargetAnimation(spellAnimation, true);
     }
 
-    public override void SuccessfullyCastSpell(PlayerAnimatorManager animatorManager, PlayerStats playerStats)
+    public override void SuccessfullyCastSpell(AnimatorManager animatorManager, CharacterStats characterStats)
     {
-        base.SuccessfullyCastSpell(animatorManager, playerStats);
+        base.SuccessfullyCastSpell(animatorManager, characterStats);
         
         //Create the successful cast spell effect
         if (spellCastFX != null)
@@ -33,6 +33,6 @@ public class HealingSpell : SpellItem
         }
 
         //Let player regain health
-        playerStats.RegainHealth(healAmount);
+        characterStats.RegainHealth(healAmount);
     }
 }

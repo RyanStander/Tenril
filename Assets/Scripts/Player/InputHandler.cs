@@ -15,6 +15,10 @@ public class InputHandler : MonoBehaviour
     //Combat Inputs
     public bool weakAttackInput, strongAttackInput,drawSheathInput, blockInput, parryInput, lockOnInput;
 
+    //Spellcasting Inputs
+    public bool spellcastingModeInput;
+    public bool[] castSpell = new bool[8];
+
     //movement flags
     public bool sprintFlag;
 
@@ -74,6 +78,31 @@ public class InputHandler : MonoBehaviour
         inputActions.PlayerCombat.Block.canceled += i => blockInput = false;
         //Parry
         inputActions.PlayerCombat.Parry.performed += i => parryInput = true;
+
+        //----------------------------------------------------------
+        //                         Spellcasting
+        //----------------------------------------------------------
+        #region Spellcasts
+        //Enable Spellcasting
+        inputActions.PlayerCombat.SpellcastingMode.performed += i => spellcastingModeInput = true;
+        inputActions.PlayerCombat.SpellcastingMode.canceled += i => spellcastingModeInput = false;
+        //1
+        inputActions.PlayerSpellcasting.Spell1.performed += i => castSpell[0]=true;
+        //2
+        inputActions.PlayerSpellcasting.Spell2.performed += i => castSpell[1] = true;
+        //3
+        inputActions.PlayerSpellcasting.Spell3.performed += i => castSpell[2] = true;
+        //4
+        inputActions.PlayerSpellcasting.Spell4.performed += i => castSpell[3] = true;
+        //5
+        inputActions.PlayerSpellcasting.Spell5.performed += i => castSpell[4] = true;
+        //6
+        inputActions.PlayerSpellcasting.Spell6.performed += i => castSpell[5] = true;
+        //7
+        inputActions.PlayerSpellcasting.Spell7.performed += i => castSpell[6] = true;
+        //8
+        inputActions.PlayerSpellcasting.Spell8.performed += i => castSpell[7] = true;
+        #endregion
     }
 
     #region Movement

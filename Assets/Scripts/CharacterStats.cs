@@ -135,12 +135,12 @@ public class CharacterStats : MonoBehaviour
         return SunlightLevel * 10;
     }
 
-    public void ConsumeStoredMoonlight(float cost)
+    public virtual void ConsumeStoredMoonlight(float cost)
     {
         currentStoredMoonlight -= cost;
     }
 
-    public void ConsumeStoredSunlight(float cost)
+    public virtual void ConsumeStoredSunlight(float cost)
     {
         currentStoredSunlight -= cost;
     }
