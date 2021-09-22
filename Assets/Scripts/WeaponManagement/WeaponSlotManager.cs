@@ -99,7 +99,7 @@ public class WeaponSlotManager : MonoBehaviour
         //get the value of the damage collider
         leftHandDamageCollider = leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
         //set the damage of the collider equal to that of the left weapon
-        leftHandDamageCollider.currentWeaponDamage = playerInventory.equippedWeapon.baseDamage;
+        leftHandDamageCollider.currentDamage = playerInventory.equippedWeapon.baseDamage;
     }
 
     private void LoadRightWeaponDamageCollider()
@@ -112,7 +112,7 @@ public class WeaponSlotManager : MonoBehaviour
         //get the value of the damage collider
         rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
         //set the damage of the collider equal to that of the right weapon
-        rightHandDamageCollider.currentWeaponDamage = playerInventory.equippedWeapon.baseDamage;
+        rightHandDamageCollider.currentDamage = playerInventory.equippedWeapon.baseDamage;
     }
 
     public void OpenDamageCollider()

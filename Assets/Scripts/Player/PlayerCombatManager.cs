@@ -22,19 +22,17 @@ public class PlayerCombatManager : MonoBehaviour
     }
 
     #region Attacking
-    public void HandleAttacks(float delta)
+    public void HandleAttacks()
     {
         //Player performing weak attack
         if (inputHandler.weakAttackInput)
         {
-            inputHandler.weakAttackInput = false;
             HandleWeakAttackAction();
         }
 
         //Player performing strong attack
         if (inputHandler.strongAttackInput)
         {
-            inputHandler.strongAttackInput = false;
             HandleStrongAttackAction();
         }
     }

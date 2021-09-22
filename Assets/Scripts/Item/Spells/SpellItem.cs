@@ -8,6 +8,7 @@ public class SpellItem : Item
     public GameObject spellWindUpFX;
     [Tooltip("The actual spell cast when successful")]
     public GameObject spellCastFX;
+    [SerializeField] private Vector3 spellCastFXOffset;
     public string spellAnimation;
 
     [Tooltip("Cost of the spell")]
@@ -21,9 +22,20 @@ public class SpellItem : Item
     [Tooltip("Description of what the spell do")][TextArea]
     public string spellDescription;
 
+    protected GameObject instantiatedWarmUpSpellFX, instantiatedSpellFX;
+
     public virtual void AttemptToCastSpell(AnimatorManager animatorManager, CharacterStats characterStats)
     {
         Debug.Log("Attempting spell cast!");
+
+        //Start the casting spell effects
+        if (spellWindUpFX != null)
+        {
+            instantiatedWarmUpSpellFX = Instantiate(spellWindUpFX, animatorManager.transform.position, animatorManager.transform.rotation);
+        }
+
+        //Play the animation of casting the spell
+        animatorManager.PlayTargetAnimation(spellAnimation, true);
     }
 
     public virtual void SuccessfullyCastSpell(AnimatorManager animatorManager, CharacterStats characterStats)
@@ -39,6 +51,19 @@ public class SpellItem : Item
             case SpellType.pyromancy:
                 characterStats.ConsumeStoredSunlight(spellCost);
                 break;
+        }
+
+        //Create the successful cast spell effect
+        if (spellCastFX != null)
+        {
+            //Creates a position based on offsets with the original objects location in mind
+            Vector3 position = animatorManager.transform.position + 
+                animatorManager.transform.forward * spellCastFXOffset.x +
+                animatorManager.transform.right * spellCastFXOffset.z+
+                animatorManager.transform.up* spellCastFXOffset.y;
+
+            //Create spell effect
+             instantiatedSpellFX = Instantiate(spellCastFX, position, animatorManager.transform.rotation);
         }
     }
     public enum SpellType

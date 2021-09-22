@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c52fffa827103043b6d9e1ce5417276, type: 3}
+  m_Name: Spear
+  m_EditorClassIdentifier: 
+  itemIcon: {fileID: 21300000, guid: c0280fafa88fc374899c40a7f7982b39, type: 3}
+  itemName: Spear
+  primaryWeaponModelPrefab: {fileID: 4260048596949537076, guid: 8c581b8d067d8e64fa2233bb8b44dd8c, type: 3}
+  hasSecondaryWeapon: 0
+  secondaryWeaponModelPrefab: {fileID: 0}
+  isUnarmed: 0
+  baseDamage: 25
+  weakAttackDamageMultiplier: 1
+  strongAttackDamageMultiplier: 2
+  sneakDamageMultiplier: 4
+  idleAnimation: LongswordIdle
+  weakAttacks:
+  - LongsCombo1
+  - LongsCombo2
+  - LongsCombo3
+  - LongsCombo4
+  strongAttacks:
+  - LongsStrong1
+  baseStaminaCost: 10
+  weakAttackCostMultiplier: 1
+  strongAttackCostMultiplier: 2
+  weaponType: 0

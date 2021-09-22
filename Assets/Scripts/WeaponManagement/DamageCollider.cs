@@ -4,8 +4,9 @@ using UnityEngine;
 public class DamageCollider : MonoBehaviour
 {
     private Collider damageCollider;
+    [HideInInspector]public CharacterStats ownCharacterStats = null;
 
-    public float currentWeaponDamage = 10;
+    public float currentDamage = 10;
     private void Awake()
     {
         damageCollider = GetComponent<Collider>();
@@ -34,9 +35,17 @@ public class DamageCollider : MonoBehaviour
 
             if (characterStats == null)
                 return;
+            if (ownCharacterStats == null)
+            {
+                if (characterStats != GetComponentInParent<CharacterStats>())
+                    characterStats.TakeDamage(currentDamage, true);
+            }
+            else
+            {
+                if(characterStats !=ownCharacterStats)
+                    characterStats.TakeDamage(currentDamage, true);
+            }
 
-            if (characterStats != GetComponentInParent<CharacterStats>())
-                characterStats.TakeDamage(currentWeaponDamage, true);
         }
     }
 }

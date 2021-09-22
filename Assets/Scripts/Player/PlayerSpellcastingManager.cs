@@ -33,8 +33,6 @@ public class PlayerSpellcastingManager : MonoBehaviour
         //Simple version, cast spell, if its button has been pressed
         if (inputHandler.castSpell[spellNumber])
         {
-            inputHandler.castSpell[spellNumber] = false;
-
             if (playerInventory.preparedSpells[spellNumber] == null)
                 return;
 

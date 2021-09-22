@@ -47,6 +47,22 @@ public class InputHandler : MonoBehaviour
         HandleLockOnInput();
     }
 
+    //Reset the input bools so that they do not queue up for animations
+    public void ResetInputs()
+    {
+        weakAttackInput = false;
+        strongAttackInput = false;
+        parryInput = false;
+        lockOnInput = false;
+        drawSheathInput = false;
+        dodgeInput = false;
+        jumpInput = false;
+
+        for (int i = 0; i < 8; i++)
+        {
+            castSpell[i] = false;
+        }
+    }
     private void CheckInputs()
     {
         //----------------------------------------------------------

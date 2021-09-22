@@ -48,7 +48,6 @@ public class PlayerInventory : CharacterInventory
     {
         if (inputHandler.drawSheathInput)
         {
-            inputHandler.drawSheathInput = false;
             //if currently wielding primary weapon
             if (isWieldingPrimaryWeapon)
             {

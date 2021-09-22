@@ -59,7 +59,16 @@ public class CharacterStats : MonoBehaviour
 
     public virtual void RegainHealth(float regainAmount)
     {
-        currentHealth += regainAmount;
+        //Prevent gaining health while at max
+        if (currentHealth<maxHealth)
+        {
+            //regain health
+            currentHealth += regainAmount;
+            //if current health is higher than max, set to max
+            if (currentHealth>maxHealth)
+                currentHealth = maxHealth;
+        }
+
     }
 
     #endregion

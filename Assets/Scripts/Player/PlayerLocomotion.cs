@@ -119,8 +119,6 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (inputHandler.dodgeInput)
         {
-            inputHandler.dodgeInput = false;
-
             //Do not perform another dodge if already happening
             if (playerAnimatorManager.animator.GetBool("isInteracting"))
                 return;
@@ -147,9 +145,6 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (inputHandler.jumpInput)
         {
-            //Set jump to false so it can only happen once and doesnt perform when other actions are being performed
-            inputHandler.jumpInput = false;
-
             //Do not perform another jump if already happening
             if (playerAnimatorManager.animator.GetBool("isInteracting"))
                 return;

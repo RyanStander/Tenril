@@ -38,14 +38,6 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         playerAnimatorManager.canRotate = playerAnimatorManager.animator.GetBool("canRotate");
-    }
-
-    private void FixedUpdate()
-    {
-        float delta = Time.deltaTime;
-        inputHandler.TickInput(delta);
-        
-        playerLocomotion.HandleLocomotion(delta);
 
         //Player is unable to perform certain actions whilst in spellcasting mode
         if (inputHandler.spellcastingModeInput)
@@ -55,18 +47,34 @@ public class PlayerManager : MonoBehaviour
         else
         {
             playerLocomotion.HandleDodgeAndJumping();
-            playerCombatManager.HandleAttacks(delta);
+            playerCombatManager.HandleAttacks();
             playerCombatManager.HandleDefending();
             playerInventory.SwapWeapon(weaponSlotManager);
-        }     
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        float delta = Time.deltaTime;
+        inputHandler.TickInput(delta);
+        
+        playerLocomotion.HandleLocomotion(delta);
+
+
+       
 
         playerStats.HandleStaminaRegeneration();
+    }
+
+    private void LateUpdate()
+    {
+        inputHandler.ResetInputs();
     }
 
     #region Getters & Setters
     public void SetDamageColliderDamage(float damage)
     {
-        weaponSlotManager.rightHandDamageCollider.currentWeaponDamage = damage;
+        weaponSlotManager.rightHandDamageCollider.currentDamage = damage;
     }
 
     public PlayerStats GetPlayerStats()
