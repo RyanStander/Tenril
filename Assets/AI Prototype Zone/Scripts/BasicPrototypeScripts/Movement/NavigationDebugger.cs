@@ -18,7 +18,12 @@ public class NavigationDebugger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(debuggedNavigationAgent.hasPath)
+        UpdateLine();
+    }
+
+    private void UpdateLine()
+    {
+        if (debuggedNavigationAgent.hasPath)
         {
             lineRendererPath.positionCount = debuggedNavigationAgent.path.corners.Length; //Set the number of points to debug
             lineRendererPath.SetPositions(debuggedNavigationAgent.path.corners);
