@@ -18,19 +18,21 @@ MonoBehaviour:
   hasSecondaryWeapon: 0
   secondaryWeaponModelPrefab: {fileID: 0}
   isUnarmed: 0
-  baseDamage: 25
+  baseDamage: 35
   weakAttackDamageMultiplier: 1
   strongAttackDamageMultiplier: 2
   sneakDamageMultiplier: 4
-  idleAnimation: LongswordIdle
+  idleAnimation: PolearmIdle
   weakAttacks:
-  - LongsCombo1
-  - LongsCombo2
-  - LongsCombo3
-  - LongsCombo4
+  - PoleCombo1
+  - PoleCombo2
+  - PoleCombo3
+  - PoleCombo4
+  - PoleCombo5
   strongAttacks:
-  - LongsStrong1
-  baseStaminaCost: 10
+  - PoleStrong1
+  - PoleStrong2
+  baseStaminaCost: 15
   weakAttackCostMultiplier: 1
   strongAttackCostMultiplier: 2
   weaponType: 0

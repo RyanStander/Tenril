@@ -56,7 +56,6 @@ public class InputHandler : MonoBehaviour
         weakAttackInput = false;
         strongAttackInput = false;
         parryInput = false;
-        lockOnInput = false;
         drawSheathInput = false;
         dodgeInput = false;
         jumpInput = false;

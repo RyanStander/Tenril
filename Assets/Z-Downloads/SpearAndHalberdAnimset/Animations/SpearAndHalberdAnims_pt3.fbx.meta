@@ -1,232 +1,646 @@
 fileFormatVersion: 2
 guid: 963c602205c554940aa8cac531de90a5
-timeCreated: 1588327661
-licenseType: Store
 ModelImporter:
-  serializedVersion: 21
-  fileIDToRecycleName:
-    100000: DummyMESH
-    100002: Head
-    100004: HelperLeftProp
-    100006: HelperRightProp
-    100008: Hips
-    100010: LeftArm
-    100012: LeftArmRoll
-    100014: LeftFoot
-    100016: LeftForeArm
-    100018: LeftForeArmRoll
-    100020: LeftHand
-    100022: LeftHandIndex1
-    100024: LeftHandIndex2
-    100026: LeftHandIndex3
-    100028: LeftHandIndex4
-    100030: LeftHandMiddle1
-    100032: LeftHandMiddle2
-    100034: LeftHandMiddle3
-    100036: LeftHandMiddle4
-    100038: LeftHandPinky1
-    100040: LeftHandPinky2
-    100042: LeftHandPinky3
-    100044: LeftHandPinky4
-    100046: LeftHandProp
-    100048: LeftHandRing1
-    100050: LeftHandRing2
-    100052: LeftHandRing3
-    100054: LeftHandRing4
-    100056: LeftHandThumb1
-    100058: LeftHandThumb2
-    100060: LeftHandThumb3
-    100062: LeftHandThumb4
-    100064: LeftLeg
-    100066: LeftLegRoll
-    100068: LeftShoulder
-    100070: LeftToeBase
-    100072: LeftToeBase_END
-    100074: LeftUpLeg
-    100076: LeftUpLegRoll
-    100078: Neck
-    100080: RightArm
-    100082: RightArmRoll
-    100084: RightFoot
-    100086: RightForeArm
-    100088: RightForeArmRoll
-    100090: RightHand
-    100092: RightHandIndex1
-    100094: RightHandIndex2
-    100096: RightHandIndex3
-    100098: RightHandIndex4
-    100100: RightHandMiddle1
-    100102: RightHandMiddle2
-    100104: RightHandMiddle3
-    100106: RightHandMiddle4
-    100108: RightHandPinky1
-    100110: RightHandPinky2
-    100112: RightHandPinky3
-    100114: RightHandPinky4
-    100116: RightHandProp
-    100118: RightHandRing1
-    100120: RightHandRing2
-    100122: RightHandRing3
-    100124: RightHandRing4
-    100126: RightHandThumb1
-    100128: RightHandThumb2
-    100130: RightHandThumb3
-    100132: RightHandThumb4
-    100134: RightLeg
-    100136: RightLegRoll
-    100138: RightShoulder
-    100140: RightToeBase
-    100142: RightToeBase_END
-    100144: RightUpLeg
-    100146: RightUpLegRoll
-    100148: Root
-    100150: //RootNode
-    100152: Spine
-    100154: Spine1
-    400000: DummyMESH
-    400002: Head
-    400004: HelperLeftProp
-    400006: HelperRightProp
-    400008: Hips
-    400010: LeftArm
-    400012: LeftArmRoll
-    400014: LeftFoot
-    400016: LeftForeArm
-    400018: LeftForeArmRoll
-    400020: LeftHand
-    400022: LeftHandIndex1
-    400024: LeftHandIndex2
-    400026: LeftHandIndex3
-    400028: LeftHandIndex4
-    400030: LeftHandMiddle1
-    400032: LeftHandMiddle2
-    400034: LeftHandMiddle3
-    400036: LeftHandMiddle4
-    400038: LeftHandPinky1
-    400040: LeftHandPinky2
-    400042: LeftHandPinky3
-    400044: LeftHandPinky4
-    400046: LeftHandProp
-    400048: LeftHandRing1
-    400050: LeftHandRing2
-    400052: LeftHandRing3
-    400054: LeftHandRing4
-    400056: LeftHandThumb1
-    400058: LeftHandThumb2
-    400060: LeftHandThumb3
-    400062: LeftHandThumb4
-    400064: LeftLeg
-    400066: LeftLegRoll
-    400068: LeftShoulder
-    400070: LeftToeBase
-    400072: LeftToeBase_END
-    400074: LeftUpLeg
-    400076: LeftUpLegRoll
-    400078: Neck
-    400080: RightArm
-    400082: RightArmRoll
-    400084: RightFoot
-    400086: RightForeArm
-    400088: RightForeArmRoll
-    400090: RightHand
-    400092: RightHandIndex1
-    400094: RightHandIndex2
-    400096: RightHandIndex3
-    400098: RightHandIndex4
-    400100: RightHandMiddle1
-    400102: RightHandMiddle2
-    400104: RightHandMiddle3
-    400106: RightHandMiddle4
-    400108: RightHandPinky1
-    400110: RightHandPinky2
-    400112: RightHandPinky3
-    400114: RightHandPinky4
-    400116: RightHandProp
-    400118: RightHandRing1
-    400120: RightHandRing2
-    400122: RightHandRing3
-    400124: RightHandRing4
-    400126: RightHandThumb1
-    400128: RightHandThumb2
-    400130: RightHandThumb3
-    400132: RightHandThumb4
-    400134: RightLeg
-    400136: RightLegRoll
-    400138: RightShoulder
-    400140: RightToeBase
-    400142: RightToeBase_END
-    400144: RightUpLeg
-    400146: RightUpLegRoll
-    400148: Root
-    400150: //RootNode
-    400152: Spine
-    400154: Spine1
-    4300000: DummyMESH
-    7400000: Take 001
-    7400002: Spear_AttackPlace_1
-    7400004: Spear_AttackPlace_1_tell
-    7400006: Spear_AttackPlace_1_quick
-    7400008: Spear_AttackPlace_2
-    7400010: Spear_AttackPlace_2_tell
-    7400012: Spear_AttackPlace_3_low
-    7400014: Spear_AttackPlace_3_low_tell
-    7400016: Spear_AttackPlace_4_high
-    7400018: Spear_AttackPlace_4_high_tell
-    7400020: Spear_AttackPlace_5
-    7400022: Spear_PushPlace
-    7400024: Spear_AttackPlace_Butt
-    7400026: Spear_AttackFwdCombo1_A
-    7400028: Spear_AttackFwdCombo1_B
-    7400030: Spear_AttackFwdCombo1_C
-    7400032: Spear_AttackFwdCombo1_D
-    7400034: Spear_AttackBwd_1
-    7400036: Spear_AttackRight_1
-    7400038: Spear_AttackLeft_1
-    7400040: Spear_AttackFwdCombo2_A
-    7400042: Spear_AttackFwdCombo2_B
-    7400044: Spear_AttackFwdCombo2_B1
-    7400046: Spear_AttackFromRun
-    7400048: Spear_PushFwd
-    7400050: Spear_Kick1
-    7400052: Spear_Kick2
-    7400054: Spear_Deathwheel
-    7400056: Spear_AttackFwd_Wheel_toRP
-    7400058: Spear_AttackFwd_Swing_r
-    7400060: Spear_AttackFwd_Swing_l
-    7400062: Spear_AttackFwdCombo3_A
-    7400064: Spear_AttackFwdCombo3_B
-    7400066: Spear_AttackFwd_Swing_lb
-    7400068: Spear_AttackFwd_Swing_rb
-    7400070: Spear_RP_AttackFwdCombo2_A_toLP
-    7400072: Spear_RP_AttackFwdCombo2_B
-    7400074: Spear_RP_AttackFwd_Swing_rflat
-    7400076: Spear_RP_AttackFwdCombo1_A
-    7400078: Spear_RP_AttackFwdCombo1_B
-    7400080: Spear_RP_AttackFwd_Swing_rUpwards
-    7400082: Spear_RP_AttackFwd_Swing_topHeavy
-    7400084: Spear_RP_AttackFwd_Thrust
-    7400086: Spear_RP2LP
-    7400088: Spear_LP2RP
-    7400090: Spear_Equip
-    7400092: Spear_Unequip
-    9500000: //RootNode
-    13700000: DummyMESH
+  serializedVersion: 20200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: DummyMESH
+  - first:
+      1: 100002
+    second: Head
+  - first:
+      1: 100004
+    second: HelperLeftProp
+  - first:
+      1: 100006
+    second: HelperRightProp
+  - first:
+      1: 100008
+    second: Hips
+  - first:
+      1: 100010
+    second: LeftArm
+  - first:
+      1: 100012
+    second: LeftArmRoll
+  - first:
+      1: 100014
+    second: LeftFoot
+  - first:
+      1: 100016
+    second: LeftForeArm
+  - first:
+      1: 100018
+    second: LeftForeArmRoll
+  - first:
+      1: 100020
+    second: LeftHand
+  - first:
+      1: 100022
+    second: LeftHandIndex1
+  - first:
+      1: 100024
+    second: LeftHandIndex2
+  - first:
+      1: 100026
+    second: LeftHandIndex3
+  - first:
+      1: 100028
+    second: LeftHandIndex4
+  - first:
+      1: 100030
+    second: LeftHandMiddle1
+  - first:
+      1: 100032
+    second: LeftHandMiddle2
+  - first:
+      1: 100034
+    second: LeftHandMiddle3
+  - first:
+      1: 100036
+    second: LeftHandMiddle4
+  - first:
+      1: 100038
+    second: LeftHandPinky1
+  - first:
+      1: 100040
+    second: LeftHandPinky2
+  - first:
+      1: 100042
+    second: LeftHandPinky3
+  - first:
+      1: 100044
+    second: LeftHandPinky4
+  - first:
+      1: 100046
+    second: LeftHandProp
+  - first:
+      1: 100048
+    second: LeftHandRing1
+  - first:
+      1: 100050
+    second: LeftHandRing2
+  - first:
+      1: 100052
+    second: LeftHandRing3
+  - first:
+      1: 100054
+    second: LeftHandRing4
+  - first:
+      1: 100056
+    second: LeftHandThumb1
+  - first:
+      1: 100058
+    second: LeftHandThumb2
+  - first:
+      1: 100060
+    second: LeftHandThumb3
+  - first:
+      1: 100062
+    second: LeftHandThumb4
+  - first:
+      1: 100064
+    second: LeftLeg
+  - first:
+      1: 100066
+    second: LeftLegRoll
+  - first:
+      1: 100068
+    second: LeftShoulder
+  - first:
+      1: 100070
+    second: LeftToeBase
+  - first:
+      1: 100072
+    second: LeftToeBase_END
+  - first:
+      1: 100074
+    second: LeftUpLeg
+  - first:
+      1: 100076
+    second: LeftUpLegRoll
+  - first:
+      1: 100078
+    second: Neck
+  - first:
+      1: 100080
+    second: RightArm
+  - first:
+      1: 100082
+    second: RightArmRoll
+  - first:
+      1: 100084
+    second: RightFoot
+  - first:
+      1: 100086
+    second: RightForeArm
+  - first:
+      1: 100088
+    second: RightForeArmRoll
+  - first:
+      1: 100090
+    second: RightHand
+  - first:
+      1: 100092
+    second: RightHandIndex1
+  - first:
+      1: 100094
+    second: RightHandIndex2
+  - first:
+      1: 100096
+    second: RightHandIndex3
+  - first:
+      1: 100098
+    second: RightHandIndex4
+  - first:
+      1: 100100
+    second: RightHandMiddle1
+  - first:
+      1: 100102
+    second: RightHandMiddle2
+  - first:
+      1: 100104
+    second: RightHandMiddle3
+  - first:
+      1: 100106
+    second: RightHandMiddle4
+  - first:
+      1: 100108
+    second: RightHandPinky1
+  - first:
+      1: 100110
+    second: RightHandPinky2
+  - first:
+      1: 100112
+    second: RightHandPinky3
+  - first:
+      1: 100114
+    second: RightHandPinky4
+  - first:
+      1: 100116
+    second: RightHandProp
+  - first:
+      1: 100118
+    second: RightHandRing1
+  - first:
+      1: 100120
+    second: RightHandRing2
+  - first:
+      1: 100122
+    second: RightHandRing3
+  - first:
+      1: 100124
+    second: RightHandRing4
+  - first:
+      1: 100126
+    second: RightHandThumb1
+  - first:
+      1: 100128
+    second: RightHandThumb2
+  - first:
+      1: 100130
+    second: RightHandThumb3
+  - first:
+      1: 100132
+    second: RightHandThumb4
+  - first:
+      1: 100134
+    second: RightLeg
+  - first:
+      1: 100136
+    second: RightLegRoll
+  - first:
+      1: 100138
+    second: RightShoulder
+  - first:
+      1: 100140
+    second: RightToeBase
+  - first:
+      1: 100142
+    second: RightToeBase_END
+  - first:
+      1: 100144
+    second: RightUpLeg
+  - first:
+      1: 100146
+    second: RightUpLegRoll
+  - first:
+      1: 100148
+    second: Root
+  - first:
+      1: 100150
+    second: //RootNode
+  - first:
+      1: 100152
+    second: Spine
+  - first:
+      1: 100154
+    second: Spine1
+  - first:
+      4: 400000
+    second: DummyMESH
+  - first:
+      4: 400002
+    second: Head
+  - first:
+      4: 400004
+    second: HelperLeftProp
+  - first:
+      4: 400006
+    second: HelperRightProp
+  - first:
+      4: 400008
+    second: Hips
+  - first:
+      4: 400010
+    second: LeftArm
+  - first:
+      4: 400012
+    second: LeftArmRoll
+  - first:
+      4: 400014
+    second: LeftFoot
+  - first:
+      4: 400016
+    second: LeftForeArm
+  - first:
+      4: 400018
+    second: LeftForeArmRoll
+  - first:
+      4: 400020
+    second: LeftHand
+  - first:
+      4: 400022
+    second: LeftHandIndex1
+  - first:
+      4: 400024
+    second: LeftHandIndex2
+  - first:
+      4: 400026
+    second: LeftHandIndex3
+  - first:
+      4: 400028
+    second: LeftHandIndex4
+  - first:
+      4: 400030
+    second: LeftHandMiddle1
+  - first:
+      4: 400032
+    second: LeftHandMiddle2
+  - first:
+      4: 400034
+    second: LeftHandMiddle3
+  - first:
+      4: 400036
+    second: LeftHandMiddle4
+  - first:
+      4: 400038
+    second: LeftHandPinky1
+  - first:
+      4: 400040
+    second: LeftHandPinky2
+  - first:
+      4: 400042
+    second: LeftHandPinky3
+  - first:
+      4: 400044
+    second: LeftHandPinky4
+  - first:
+      4: 400046
+    second: LeftHandProp
+  - first:
+      4: 400048
+    second: LeftHandRing1
+  - first:
+      4: 400050
+    second: LeftHandRing2
+  - first:
+      4: 400052
+    second: LeftHandRing3
+  - first:
+      4: 400054
+    second: LeftHandRing4
+  - first:
+      4: 400056
+    second: LeftHandThumb1
+  - first:
+      4: 400058
+    second: LeftHandThumb2
+  - first:
+      4: 400060
+    second: LeftHandThumb3
+  - first:
+      4: 400062
+    second: LeftHandThumb4
+  - first:
+      4: 400064
+    second: LeftLeg
+  - first:
+      4: 400066
+    second: LeftLegRoll
+  - first:
+      4: 400068
+    second: LeftShoulder
+  - first:
+      4: 400070
+    second: LeftToeBase
+  - first:
+      4: 400072
+    second: LeftToeBase_END
+  - first:
+      4: 400074
+    second: LeftUpLeg
+  - first:
+      4: 400076
+    second: LeftUpLegRoll
+  - first:
+      4: 400078
+    second: Neck
+  - first:
+      4: 400080
+    second: RightArm
+  - first:
+      4: 400082
+    second: RightArmRoll
+  - first:
+      4: 400084
+    second: RightFoot
+  - first:
+      4: 400086
+    second: RightForeArm
+  - first:
+      4: 400088
+    second: RightForeArmRoll
+  - first:
+      4: 400090
+    second: RightHand
+  - first:
+      4: 400092
+    second: RightHandIndex1
+  - first:
+      4: 400094
+    second: RightHandIndex2
+  - first:
+      4: 400096
+    second: RightHandIndex3
+  - first:
+      4: 400098
+    second: RightHandIndex4
+  - first:
+      4: 400100
+    second: RightHandMiddle1
+  - first:
+      4: 400102
+    second: RightHandMiddle2
+  - first:
+      4: 400104
+    second: RightHandMiddle3
+  - first:
+      4: 400106
+    second: RightHandMiddle4
+  - first:
+      4: 400108
+    second: RightHandPinky1
+  - first:
+      4: 400110
+    second: RightHandPinky2
+  - first:
+      4: 400112
+    second: RightHandPinky3
+  - first:
+      4: 400114
+    second: RightHandPinky4
+  - first:
+      4: 400116
+    second: RightHandProp
+  - first:
+      4: 400118
+    second: RightHandRing1
+  - first:
+      4: 400120
+    second: RightHandRing2
+  - first:
+      4: 400122
+    second: RightHandRing3
+  - first:
+      4: 400124
+    second: RightHandRing4
+  - first:
+      4: 400126
+    second: RightHandThumb1
+  - first:
+      4: 400128
+    second: RightHandThumb2
+  - first:
+      4: 400130
+    second: RightHandThumb3
+  - first:
+      4: 400132
+    second: RightHandThumb4
+  - first:
+      4: 400134
+    second: RightLeg
+  - first:
+      4: 400136
+    second: RightLegRoll
+  - first:
+      4: 400138
+    second: RightShoulder
+  - first:
+      4: 400140
+    second: RightToeBase
+  - first:
+      4: 400142
+    second: RightToeBase_END
+  - first:
+      4: 400144
+    second: RightUpLeg
+  - first:
+      4: 400146
+    second: RightUpLegRoll
+  - first:
+      4: 400148
+    second: Root
+  - first:
+      4: 400150
+    second: //RootNode
+  - first:
+      4: 400152
+    second: Spine
+  - first:
+      4: 400154
+    second: Spine1
+  - first:
+      43: 4300000
+    second: DummyMESH
+  - first:
+      74: 7400000
+    second: Take 001
+  - first:
+      74: 7400002
+    second: Spear_AttackPlace_1
+  - first:
+      74: 7400004
+    second: Spear_AttackPlace_1_tell
+  - first:
+      74: 7400006
+    second: Spear_AttackPlace_1_quick
+  - first:
+      74: 7400008
+    second: Spear_AttackPlace_2
+  - first:
+      74: 7400010
+    second: Spear_AttackPlace_2_tell
+  - first:
+      74: 7400012
+    second: Spear_AttackPlace_3_low
+  - first:
+      74: 7400014
+    second: Spear_AttackPlace_3_low_tell
+  - first:
+      74: 7400016
+    second: Spear_AttackPlace_4_high
+  - first:
+      74: 7400018
+    second: Spear_AttackPlace_4_high_tell
+  - first:
+      74: 7400020
+    second: Spear_AttackPlace_5
+  - first:
+      74: 7400022
+    second: Spear_PushPlace
+  - first:
+      74: 7400024
+    second: Spear_AttackPlace_Butt
+  - first:
+      74: 7400026
+    second: Spear_AttackFwdCombo1_A
+  - first:
+      74: 7400028
+    second: Spear_AttackFwdCombo1_B
+  - first:
+      74: 7400030
+    second: Spear_AttackFwdCombo1_C
+  - first:
+      74: 7400032
+    second: Spear_AttackFwdCombo1_D
+  - first:
+      74: 7400034
+    second: Spear_AttackBwd_1
+  - first:
+      74: 7400036
+    second: Spear_AttackRight_1
+  - first:
+      74: 7400038
+    second: Spear_AttackLeft_1
+  - first:
+      74: 7400040
+    second: Spear_AttackFwdCombo2_A
+  - first:
+      74: 7400042
+    second: Spear_AttackFwdCombo2_B
+  - first:
+      74: 7400044
+    second: Spear_AttackFwdCombo2_B1
+  - first:
+      74: 7400046
+    second: Spear_AttackFromRun
+  - first:
+      74: 7400048
+    second: Spear_PushFwd
+  - first:
+      74: 7400050
+    second: Spear_Kick1
+  - first:
+      74: 7400052
+    second: Spear_Kick2
+  - first:
+      74: 7400054
+    second: Spear_Deathwheel
+  - first:
+      74: 7400056
+    second: Spear_AttackFwd_Wheel_toRP
+  - first:
+      74: 7400058
+    second: Spear_AttackFwd_Swing_r
+  - first:
+      74: 7400060
+    second: Spear_AttackFwd_Swing_l
+  - first:
+      74: 7400062
+    second: Spear_AttackFwdCombo3_A
+  - first:
+      74: 7400064
+    second: Spear_AttackFwdCombo3_B
+  - first:
+      74: 7400066
+    second: Spear_AttackFwd_Swing_lb
+  - first:
+      74: 7400068
+    second: Spear_AttackFwd_Swing_rb
+  - first:
+      74: 7400070
+    second: Spear_RP_AttackFwdCombo2_A_toLP
+  - first:
+      74: 7400072
+    second: Spear_RP_AttackFwdCombo2_B
+  - first:
+      74: 7400074
+    second: Spear_RP_AttackFwd_Swing_rflat
+  - first:
+      74: 7400076
+    second: Spear_RP_AttackFwdCombo1_A
+  - first:
+      74: 7400078
+    second: Spear_RP_AttackFwdCombo1_B
+  - first:
+      74: 7400080
+    second: Spear_RP_AttackFwd_Swing_rUpwards
+  - first:
+      74: 7400082
+    second: Spear_RP_AttackFwd_Swing_topHeavy
+  - first:
+      74: 7400084
+    second: Spear_RP_AttackFwd_Thrust
+  - first:
+      74: 7400086
+    second: Spear_RP2LP
+  - first:
+      74: 7400088
+    second: Spear_LP2RP
+  - first:
+      74: 7400090
+    second: Spear_Equip
+  - first:
+      74: 7400092
+    second: Spear_Unequip
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: DummyMESH
+  externalObjects: {}
   materials:
-    importMaterials: 0
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    motionNodeName: Root
+    motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -238,6 +652,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Take 001
       takeName: Take 001
+      internalID: 0
       firstFrame: 0
       lastFrame: 300
       wrapMode: 0
@@ -422,6 +837,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackPlace_1
       takeName: Spear_AttackPlace_1
+      internalID: 0
       firstFrame: 0
       lastFrame: 61
       wrapMode: 0
@@ -510,6 +926,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackPlace_1_tell
       takeName: Spear_AttackPlace_1_tell
+      internalID: 0
       firstFrame: 0
       lastFrame: 76
       wrapMode: 0
@@ -598,6 +1015,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackPlace_1_quick
       takeName: Spear_AttackPlace_1_quick
+      internalID: 0
       firstFrame: 0
       lastFrame: 55
       wrapMode: 0
@@ -686,6 +1104,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackPlace_2
       takeName: Spear_AttackPlace_2
+      internalID: 0
       firstFrame: 0
       lastFrame: 72
       wrapMode: 0
@@ -774,6 +1193,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackPlace_2_tell
       takeName: Spear_AttackPlace_2_tell
+      internalID: 0
       firstFrame: 0
       lastFrame: 85
       wrapMode: 0
@@ -862,6 +1282,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackPlace_3_low
       takeName: Spear_AttackPlace_3_low
+      internalID: 0
       firstFrame: 0
       lastFrame: 73
       wrapMode: 0
@@ -950,6 +1371,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackPlace_3_low_tell
       takeName: Spear_AttackPlace_3_low_tell
+      internalID: 0
       firstFrame: 0
       lastFrame: 85
       wrapMode: 0
@@ -1038,6 +1460,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackPlace_4_high
       takeName: Spear_AttackPlace_4_high
+      internalID: 0
       firstFrame: 0
       lastFrame: 78
       wrapMode: 0
@@ -1126,6 +1549,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackPlace_4_high_tell
       takeName: Spear_AttackPlace_4_high_tell
+      internalID: 0
       firstFrame: 0
       lastFrame: 95
       wrapMode: 0
@@ -1214,6 +1638,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackPlace_5
       takeName: Spear_AttackPlace_5
+      internalID: 0
       firstFrame: 0
       lastFrame: 56
       wrapMode: 0
@@ -1302,6 +1727,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_PushPlace
       takeName: Spear_PushPlace
+      internalID: 0
       firstFrame: 0
       lastFrame: 92
       wrapMode: 0
@@ -1390,6 +1816,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackPlace_Butt
       takeName: Spear_AttackPlace_Butt
+      internalID: 0
       firstFrame: 0
       lastFrame: 83
       wrapMode: 0
@@ -1478,6 +1905,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackFwdCombo1_A
       takeName: Spear_AttackFwdCombo1_A
+      internalID: 0
       firstFrame: 0
       lastFrame: 58
       wrapMode: 0
@@ -1566,6 +1994,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackFwdCombo1_B
       takeName: Spear_AttackFwdCombo1_B
+      internalID: 0
       firstFrame: 0
       lastFrame: 77
       wrapMode: 0
@@ -1654,6 +2083,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackFwdCombo1_C
       takeName: Spear_AttackFwdCombo1_C
+      internalID: 0
       firstFrame: 0
       lastFrame: 75
       wrapMode: 0
@@ -1742,6 +2172,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackFwdCombo1_D
       takeName: Spear_AttackFwdCombo1_D
+      internalID: 0
       firstFrame: 0
       lastFrame: 87
       wrapMode: 0
@@ -1830,6 +2261,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackBwd_1
       takeName: Spear_AttackBwd_1
+      internalID: 0
       firstFrame: 0
       lastFrame: 54
       wrapMode: 0
@@ -1918,6 +2350,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackRight_1
       takeName: Spear_AttackRight_1
+      internalID: 0
       firstFrame: 0
       lastFrame: 90
       wrapMode: 0
@@ -2006,6 +2439,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackLeft_1
       takeName: Spear_AttackLeft_1
+      internalID: 0
       firstFrame: 0
       lastFrame: 72
       wrapMode: 0
@@ -2094,6 +2528,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackFwdCombo2_A
       takeName: Spear_AttackFwdCombo2_A
+      internalID: 0
       firstFrame: 0
       lastFrame: 101
       wrapMode: 0
@@ -2182,6 +2617,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackFwdCombo2_B
       takeName: Spear_AttackFwdCombo2_B
+      internalID: 0
       firstFrame: 0
       lastFrame: 77
       wrapMode: 0
@@ -2270,6 +2706,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackFwdCombo2_B1
       takeName: Spear_AttackFwdCombo2_B1
+      internalID: 0
       firstFrame: 0
       lastFrame: 91
       wrapMode: 0
@@ -2358,6 +2795,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackFromRun
       takeName: Spear_AttackFromRun
+      internalID: 0
       firstFrame: 0
       lastFrame: 99
       wrapMode: 0
@@ -2446,6 +2884,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_PushFwd
       takeName: Spear_PushFwd
+      internalID: 0
       firstFrame: 0
       lastFrame: 68
       wrapMode: 0
@@ -2534,6 +2973,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_Kick1
       takeName: Spear_Kick1
+      internalID: 0
       firstFrame: 0
       lastFrame: 129
       wrapMode: 0
@@ -2622,6 +3062,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_Kick2
       takeName: Spear_Kick2
+      internalID: 0
       firstFrame: 0
       lastFrame: 93
       wrapMode: 0
@@ -2710,6 +3151,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_Deathwheel
       takeName: Spear_Deathwheel
+      internalID: 0
       firstFrame: 0
       lastFrame: 129
       wrapMode: 0
@@ -2798,6 +3240,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackFwd_Wheel_toRP
       takeName: Spear_AttackFwd_Wheel_toRP
+      internalID: 0
       firstFrame: 0
       lastFrame: 101
       wrapMode: 0
@@ -2886,6 +3329,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackFwd_Swing_r
       takeName: Spear_AttackFwd_Swing_r
+      internalID: 0
       firstFrame: 0
       lastFrame: 101
       wrapMode: 0
@@ -2974,6 +3418,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackFwd_Swing_l
       takeName: Spear_AttackFwd_Swing_l
+      internalID: 0
       firstFrame: 0
       lastFrame: 141
       wrapMode: 0
@@ -3062,6 +3507,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackFwdCombo3_A
       takeName: Spear_AttackFwdCombo3_A
+      internalID: 0
       firstFrame: 0
       lastFrame: 84
       wrapMode: 0
@@ -3150,6 +3596,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackFwdCombo3_B
       takeName: Spear_AttackFwdCombo3_B
+      internalID: 0
       firstFrame: 0
       lastFrame: 82
       wrapMode: 0
@@ -3238,6 +3685,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackFwd_Swing_lb
       takeName: Spear_AttackFwd_Swing_lb
+      internalID: 0
       firstFrame: 0
       lastFrame: 125
       wrapMode: 0
@@ -3326,6 +3774,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_AttackFwd_Swing_rb
       takeName: Spear_AttackFwd_Swing_rb
+      internalID: 0
       firstFrame: 0
       lastFrame: 122
       wrapMode: 0
@@ -3414,6 +3863,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_RP_AttackFwdCombo2_A_toLP
       takeName: Spear_RP_AttackFwdCombo2_A_toLP
+      internalID: 0
       firstFrame: 0
       lastFrame: 69
       wrapMode: 0
@@ -3502,6 +3952,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_RP_AttackFwdCombo2_B
       takeName: Spear_RP_AttackFwdCombo2_B
+      internalID: 0
       firstFrame: 0
       lastFrame: 89
       wrapMode: 0
@@ -3590,6 +4041,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_RP_AttackFwd_Swing_rflat
       takeName: Spear_RP_AttackFwd_Swing_rflat
+      internalID: 0
       firstFrame: 0
       lastFrame: 83
       wrapMode: 0
@@ -3678,6 +4130,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_RP_AttackFwdCombo1_A
       takeName: Spear_RP_AttackFwdCombo1_A
+      internalID: 0
       firstFrame: 0
       lastFrame: 73
       wrapMode: 0
@@ -3766,6 +4219,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_RP_AttackFwdCombo1_B
       takeName: Spear_RP_AttackFwdCombo1_B
+      internalID: 0
       firstFrame: 0
       lastFrame: 85
       wrapMode: 0
@@ -3854,6 +4308,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_RP_AttackFwd_Swing_rUpwards
       takeName: Spear_RP_AttackFwd_Swing_rUpwards
+      internalID: 0
       firstFrame: 0
       lastFrame: 84
       wrapMode: 0
@@ -3942,6 +4397,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_RP_AttackFwd_Swing_topHeavy
       takeName: Spear_RP_AttackFwd_Swing_topHeavy
+      internalID: 0
       firstFrame: 0
       lastFrame: 116
       wrapMode: 0
@@ -4030,6 +4486,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_RP_AttackFwd_Thrust
       takeName: Spear_RP_AttackFwd_Thrust
+      internalID: 0
       firstFrame: 0
       lastFrame: 79
       wrapMode: 0
@@ -4118,6 +4575,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_RP2LP
       takeName: Spear_RP2LP
+      internalID: 0
       firstFrame: 0
       lastFrame: 49
       wrapMode: 0
@@ -4206,6 +4664,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_LP2RP
       takeName: Spear_LP2RP
+      internalID: 0
       firstFrame: 0
       lastFrame: 55
       wrapMode: 0
@@ -4294,6 +4753,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_Equip
       takeName: Spear_Equip
+      internalID: 0
       firstFrame: 0
       lastFrame: 78
       wrapMode: 0
@@ -4478,6 +4938,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Spear_Unequip
       takeName: Spear_Unequip
+      internalID: 0
       firstFrame: 0
       lastFrame: 133
       wrapMode: 0
@@ -4665,19 +5126,31 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
@@ -4685,10 +5158,13 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human:
     - boneName: Hips
       humanName: Hips
@@ -5127,8 +5603,7 @@ ModelImporter:
     - name: Hips
       parentName: Root
       position: {x: -0.000000093592675, y: 0.9915367, z: -0.00000003814697}
-      rotation: {x: -1.7104081e-15, y: -0.0000000035802792, z: 0.000000095584895,
-        w: 1}
+      rotation: {x: -1.7104081e-15, y: -0.0000000035802792, z: 0.000000095584895, w: 1}
       scale: {x: 1, y: 0.99999994, z: 1}
     - name: RightUpLeg
       parentName: Hips
@@ -5148,8 +5623,7 @@ ModelImporter:
     - name: RightLegRoll
       parentName: RightLeg
       position: {x: 0.25561854, y: -0.00000007485016, z: 0.00000014798077}
-      rotation: {x: -0.00000004773967, y: -0.00000004242036, z: -0.000000015799225,
-        w: 1}
+      rotation: {x: -0.00000004773967, y: -0.00000004242036, z: -0.000000015799225, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: RightFoot
       parentName: RightLeg
@@ -5264,8 +5738,7 @@ ModelImporter:
     - name: RightHandThumb4
       parentName: RightHandThumb3
       position: {x: 0.027048642, y: -0.00000018659944, z: -0.0000024111612}
-      rotation: {x: -0.000000008651755, y: 0.000000004493185, z: -0.000000006341543,
-        w: 1}
+      rotation: {x: -0.000000008651755, y: 0.000000004493185, z: -0.000000006341543, w: 1}
       scale: {x: 1, y: 1, z: 1.0000001}
     - name: RightHandRing1
       parentName: RightHand
@@ -5499,14 +5972,17 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
   additionalBone: 0
   userData: 
   assetBundleName: 
