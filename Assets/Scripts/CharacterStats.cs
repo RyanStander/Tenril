@@ -132,6 +132,23 @@ public class CharacterStats : MonoBehaviour
     #endregion
 
     #region Casting Pools
+
+    public bool HasEnoughMoonlight(float moonlightCost)
+    {
+        if (currentStoredMoonlight >= moonlightCost)
+            return true;
+        else
+            return false;
+    }
+
+    public bool HasEnoughSunlight(float sunlightCost)
+    {
+        if (currentStoredSunlight >= sunlightCost)
+            return true;
+        else
+            return false;
+    }
+
     protected float SetMaxStoredMoonlightFromMoonlightLevel()
     {
         //calculates the players magicka based on magicka level

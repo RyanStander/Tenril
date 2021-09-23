@@ -33,6 +33,29 @@ public class PlayerSpellcastingManager : MonoBehaviour
         //Simple version, cast spell, if its button has been pressed
         if (inputHandler.castSpell[spellNumber])
         {
+            //Check the type of spell being cast
+            //if the player does not have enough magic to cast the spell, they wont.
+            switch (playerInventory.preparedSpells[spellNumber].spellType)
+            {
+                case SpellItem.SpellType.biomancy:
+                    if (!playerStats.HasEnoughMoonlight(playerInventory.preparedSpells[spellNumber].spellCost))
+                    {
+                        //Play failed cast animation
+
+                        //Return
+                        return;
+                    }
+                    break;
+                case SpellItem.SpellType.pyromancy:
+                    if (!playerStats.HasEnoughSunlight(playerInventory.preparedSpells[spellNumber].spellCost))
+                    {
+                        //Play failed cast animation
+
+                        //Return
+                        return;
+                    }
+                    break;
+            }
             if (playerInventory.preparedSpells[spellNumber] == null)
                 return;
 
