@@ -26,23 +26,16 @@ public class PlayerProduction : MonoBehaviour
     {
         //Link the sliders to the production type dictionary
         playerProductions.Add(ProductionType.MILITARY, militarySlider);
-        //playerProductions.Add(ProductionType.INFRASTRUCTURE, infrastructureSlider);
-        //playerProductions.Add(ProductionType.SCIENCE, scienceSlider);
-        //playerProductions.Add(ProductionType.CULTURE, cultureSlider);
+        playerProductions.Add(ProductionType.INFRASTRUCTURE, infrastructureSlider);
+        playerProductions.Add(ProductionType.SCIENCE, scienceSlider);
+        playerProductions.Add(ProductionType.CULTURE, cultureSlider);
 
-        ////Set the maximum and minimum for the sliders
-        //foreach(KeyValuePair<ProductionType,Slider> keyvalue in playerProductions)
-        //{
-        //    //Set the minimum and maximum
-        //    keyvalue.Value.maxValue = 0;
-        //    keyvalue.Value.maxValue = maximumProductionValue;
-        //}
-    }
-
-    //For current stage testing
-    public LeaderProductionTrait testTrait;
-    public void Update()
-    {
-        testTrait.CalculateLikability(militarySlider.value, maximumProductionValue);
+        //Set the maximum and minimum for the sliders
+        foreach (KeyValuePair<ProductionType, Slider> keyvalue in playerProductions)
+        {
+            //Set the minimum and maximum
+            keyvalue.Value.maxValue = 0;
+            keyvalue.Value.maxValue = maximumProductionValue;
+        }
     }
 }

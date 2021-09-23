@@ -4,11 +4,11 @@ using UnityEngine;
 
 public enum RelationshipLevel
 {
-    Friendly = 1,
-    Receptive,
-    Neutral,
+    Hostile = 1,
     Weary,
-    Hostile
+    Neutral,
+    Receptive,
+    Friendly
 }
 
 [CreateAssetMenu(fileName = "LeaderInformation", menuName = "Diplomacy/LeaderInformation", order = 1)]
