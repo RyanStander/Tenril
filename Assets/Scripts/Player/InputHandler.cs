@@ -12,6 +12,9 @@ public class InputHandler : MonoBehaviour
     private Vector2 movementInput;
     [HideInInspector] public bool dodgeInput, sprintInput, jumpInput;
 
+    //Other inputs
+    public bool interactInput;
+
     //Combat Inputs
     public bool weakAttackInput, strongAttackInput,drawSheathInput, blockInput, parryInput, lockOnInput;
 
@@ -57,6 +60,7 @@ public class InputHandler : MonoBehaviour
         drawSheathInput = false;
         dodgeInput = false;
         jumpInput = false;
+        interactInput = false;
 
         for (int i = 0; i < 8; i++)
         {
@@ -119,6 +123,12 @@ public class InputHandler : MonoBehaviour
         //8
         inputActions.PlayerSpellcasting.Spell8.performed += i => castSpell[7] = true;
         #endregion
+
+        //----------------------------------------------------------
+        //                         Other
+        //----------------------------------------------------------
+        //Interact
+        inputActions.PlayerActions.Interact.performed += i => interactInput = true;
     }
 
     #region Movement

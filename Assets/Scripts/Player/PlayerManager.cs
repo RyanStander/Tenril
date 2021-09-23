@@ -17,6 +17,10 @@ public class PlayerManager : MonoBehaviour
     private PlayerStats playerStats;
     private WeaponSlotManager weaponSlotManager;
 
+    private InteractableUI interactableUI;
+    public GameObject interactableUIGameObject;
+    public GameObject itemInteractableGameObject;
+
     public bool canDoCombo;
     void Awake()
     {
@@ -28,6 +32,8 @@ public class PlayerManager : MonoBehaviour
         playerInventory = GetComponent<PlayerInventory>();
         playerStats = GetComponent<PlayerStats>();
         weaponSlotManager = GetComponent<WeaponSlotManager>();
+
+        interactableUI = FindObjectOfType<InteractableUI>();
     }
 
     private void Start()
@@ -51,6 +57,8 @@ public class PlayerManager : MonoBehaviour
             playerCombatManager.HandleDefending();
             playerInventory.SwapWeapon(weaponSlotManager);
         }
+
+        CheckForInteractableObject();
     }
 
     private void FixedUpdate()
@@ -60,15 +68,57 @@ public class PlayerManager : MonoBehaviour
         
         playerLocomotion.HandleLocomotion(delta);
 
-
-       
-
         playerStats.HandleStaminaRegeneration();
     }
 
     private void LateUpdate()
     {
         inputHandler.ResetInputs();
+    }
+
+    public void CheckForInteractableObject()
+    {
+        RaycastHit hit;
+
+        //Check in a sphere cast for any interactable objects
+        if (Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, 1f))
+        {
+            if (hit.collider.tag == "Interactable")
+            {
+                Interactable interactableObject = hit.collider.GetComponent<Interactable>();
+
+                //if there is an interactable object
+                if (interactableObject != null)
+                {
+                    //Assign text to the interactable object
+                    string interactableText = interactableObject.interactableText;
+                    interactableUI.interactableText.text = interactableText;
+                    
+                    //Display it
+                    interactableUIGameObject.SetActive(true);
+
+                    //if interact button is pressed while the option is available
+                    if (inputHandler.interactInput)
+                    {
+                        //call the interaction
+                        hit.collider.GetComponent<Interactable>().Interact(this);
+                    }
+                }
+            }
+        }
+        else
+        {
+            //otherwise hide the objects if moving away
+            if (interactableUIGameObject != null)
+            {
+                interactableUIGameObject.SetActive(false);
+            }
+
+            if (itemInteractableGameObject != null && inputHandler.interactInput)
+            {
+                itemInteractableGameObject.SetActive(false);
+            }
+        }
     }
 
     #region Getters & Setters
