@@ -12,6 +12,9 @@ public class DiplomacyFSM : MonoBehaviour
     private List<DiplomacyAbstractStateFSM> validStates;
     private Dictionary<DiplomacyFSMStateType, DiplomacyAbstractStateFSM> FSMStates;
 
+    //If the state should debug
+    public bool shouldDebugStates;
+
     private void Awake()
     {
         //Set to null for awake
@@ -47,6 +50,12 @@ public class DiplomacyFSM : MonoBehaviour
         if (currentState != null)
         {
             currentState.UpdateState();
+        }
+
+        //Debug setter
+        foreach(DiplomacyAbstractStateFSM state in validStates)
+        {
+            state.ToggleDebugging(shouldDebugStates);
         }
     }
 

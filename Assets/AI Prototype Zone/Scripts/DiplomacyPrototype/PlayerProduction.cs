@@ -20,7 +20,7 @@ public class PlayerProduction : MonoBehaviour
     public Slider scienceSlider;
     public Slider cultureSlider;
 
-    private Dictionary<ProductionType, Slider> playerProductions = new Dictionary<ProductionType, Slider>();
+    public Dictionary<ProductionType, Slider> playerProductions = new Dictionary<ProductionType, Slider>();
 
     private void Start()
     {
