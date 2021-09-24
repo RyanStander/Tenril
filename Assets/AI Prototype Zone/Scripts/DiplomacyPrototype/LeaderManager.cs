@@ -11,6 +11,7 @@ public class LeaderManager : MonoBehaviour
     //UI Elements manager for the leader
     public LeaderVisualManager visualManager;
 
+
     private void Start()
     {
         UpdateVisuals();
