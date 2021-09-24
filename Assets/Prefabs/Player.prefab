@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1594625837
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1594625838}
+  m_Layer: 0
+  m_Name: LockOnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1594625838
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594625837}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.409, z: 0.073}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7808220059089990413}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &220500144636752634
 GameObject:
   m_ObjectHideFlags: 0
@@ -3904,6 +3934,7 @@ GameObject:
   - component: {fileID: 6128329571030995905}
   - component: {fileID: 1949516872}
   - component: {fileID: 913450652}
+  - component: {fileID: 1704729951}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3935,6 +3966,7 @@ Transform:
   - {fileID: 7808530582337656321}
   - {fileID: 7800910898221620383}
   - {fileID: 7808309105104492979}
+  - {fileID: 1594625838}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4040,11 +4072,18 @@ MonoBehaviour:
   dodgeInput: 0
   sprintInput: 0
   jumpInput: 0
+  interactInput: 0
   weakAttackInput: 0
   strongAttackInput: 0
+  drawSheathInput: 0
+  blockInput: 0
+  parryInput: 0
+  lockOnInput: 0
+  spellcastingModeInput: 0
+  castSpell: 0000000000000000
   sprintFlag: 0
-  lockOnFlag: 0
   comboFlag: 0
+  lockOnFlag: 0
 --- !u!114 &1455011011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4057,6 +4096,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f9d97c891a5fb04ea20b99326493502, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactableUIGameObject: {fileID: 0}
+  itemInteractableGameObject: {fileID: 0}
   canDoCombo: 0
 --- !u!114 &1455011013
 MonoBehaviour:
@@ -4087,8 +4128,17 @@ MonoBehaviour:
   Gold: 250
   equippedWeapon: {fileID: 11400000, guid: 379244ca9efcbe74a84fc791cb8b4127, type: 2}
   isWieldingPrimaryWeapon: 1
-  primaryWeapon: {fileID: 0}
-  secondaryWeapon: {fileID: 0}
+  primaryWeapon: {fileID: 11400000, guid: 379244ca9efcbe74a84fc791cb8b4127, type: 2}
+  secondaryWeapon: {fileID: 11400000, guid: 293718bd1735afa4f9986ddcccb93a41, type: 2}
+  preparedSpells:
+  - {fileID: 11400000, guid: be589a2d0446284408cb4fcb09095ebf, type: 2}
+  - {fileID: 11400000, guid: 88f46b8b0cfc72a428db02eddaad133f, type: 2}
+  - {fileID: 11400000, guid: bc59dc89fa8373c4aa69e674a81c4699, type: 2}
+  - {fileID: 11400000, guid: 4fddbfde41510ef4283567cff6250891, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   Inventory: []
   weaponsInventory: []
 --- !u!114 &1949516871
@@ -4109,9 +4159,19 @@ MonoBehaviour:
   staminaLevel: 10
   maxStamina: 0
   currentStamina: 0
-  magickaLevel: 10
-  maxMagicka: 0
-  currentMagicka: 0
+  staminaRegenAmount: 1
+  staminaRegenRate: 0.001
+  staminaRegenCooldownTime: 2
+  MoonlightLevel: 10
+  maxStoredMoonlight: 0
+  currentStoredMoonlight: 0
+  SunlightLevel: 10
+  maxStoredSunlight: 0
+  currentStoredSunlight: 0
+  healthBar: {fileID: 0}
+  staminaBar: {fileID: 0}
+  sunlightBar: {fileID: 0}
+  moonlightBar: {fileID: 0}
 --- !u!114 &6128329571030995905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4133,6 +4193,8 @@ MonoBehaviour:
   raycastOffset: {x: 0, y: 0, z: 0}
   groundCheckRadius: 0.3
   rotationSpeed: 10
+  sprintStaminaCost: 0.1
+  dodgeStaminaCost: 5
 --- !u!114 &1949516872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4158,9 +4220,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ea56235252480c4cb51e33153ba6203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackingWeapon: {fileID: 0}
   leftHandDamageCollider: {fileID: 0}
   rightHandDamageCollider: {fileID: 0}
+--- !u!114 &1704729951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7803000388887419329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82d2a046baa32bf40ae1fa48dcc5b16b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7803005539856370231
 GameObject:
   m_ObjectHideFlags: 0
