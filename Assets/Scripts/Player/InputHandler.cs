@@ -166,5 +166,10 @@ public class InputHandler : MonoBehaviour
         }
     }
 
+    public PlayerController GetInputActions()
+    {
+        return inputActions;
+    }
+
     #endregion
 }
