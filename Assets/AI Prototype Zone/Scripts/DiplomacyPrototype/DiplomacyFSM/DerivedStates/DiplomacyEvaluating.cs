@@ -39,12 +39,11 @@ public class DiplomacyEvaluating : DiplomacyAbstractStateFSM
             //Update civilization relationship level (moves in single increments)
             leaderManager.leaderInfo.currentRelationshipLevel = newRelationshipLevel;
 
-            Debug.Log(newRelationshipLevel);
+            //Update the visuals
+            leaderManager.UpdateVisuals();
 
-
-            //Return to idle (for testing)
+            //Return to idle (for testing), will be replaced in future for actions
             finiteStateMachine.EnterState(DiplomacyFSMStateType.IDLE);
-            
         }
     }
 
@@ -76,9 +75,12 @@ public class DiplomacyEvaluating : DiplomacyAbstractStateFSM
                 leaderManager.playerProduction.playerProductions[trait.targettedProduction].value,
                 leaderManager.playerProduction.maximumProductionValue);
 
-            Debug.Log(trait.traitName + ": " + traitStanding);
+            DebugLogString(trait.traitName + ": " + traitStanding);
+
+            //Add to the current standing
+            currentStanding += traitStanding;
+            traitNumber++;
         }
-        Debug.Log("RAW: " + currentStanding);
 
         //Divide the traits by the number of affected traits to more accurately calculate the standing modification
         currentStanding /= Mathf.Clamp(traitNumber, 1, float.MaxValue); //Clamped to never divide less than 1
@@ -86,10 +88,11 @@ public class DiplomacyEvaluating : DiplomacyAbstractStateFSM
         //Add in the neutral standing as a middleground
         currentStanding += (int)RelationshipLevel.Neutral;
 
-        Debug.Log("FINAL: " + currentStanding);
+        //Debug the standing value
+        DebugLogString("Final Standing RAW Value: " + currentStanding);
 
-        //Clamp the current standing
-        currentStanding = Mathf.Clamp(currentStanding, (int)RelationshipLevel.Hostile, (int)RelationshipLevel.Friendly);
+        //Clamp the current standing after rounding
+        currentStanding = Mathf.Clamp(Mathf.RoundToInt(currentStanding), (int)RelationshipLevel.Hostile, (int)RelationshipLevel.Friendly);
 
         //Return relationship level rounded to the nearest relationship level
         return (RelationshipLevel)currentStanding;

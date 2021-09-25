@@ -12,15 +12,6 @@ public class DiplomacyIdle : DiplomacyAbstractStateFSM
     {
         base.OnEnable();
         stateType = DiplomacyFSMStateType.IDLE;
-
-        //Subscribe to turn button
-        leaderManager.turnButton.onClick.AddListener(NextTurn);
-    }
-
-    public void OnDisable()
-    {
-        //Unsubscribe to turn button
-        leaderManager.turnButton.onClick.RemoveListener(NextTurn);
     }
 
     public override bool EnterState()
@@ -35,6 +26,9 @@ public class DiplomacyIdle : DiplomacyAbstractStateFSM
 
             //Reset
             isInteracted = false;
+
+            //Subscribe to turn button
+            leaderManager.turnButton.onClick.AddListener(NextTurn);
         }
 
         return enteredState;
@@ -49,6 +43,7 @@ public class DiplomacyIdle : DiplomacyAbstractStateFSM
             //Change state to evaluation mode if commanded to
             if (isInteracted)
             {
+                Debug.Log("Changing!");
                 finiteStateMachine.EnterState(DiplomacyFSMStateType.EVALUATING);
             }
         }
@@ -62,12 +57,16 @@ public class DiplomacyIdle : DiplomacyAbstractStateFSM
         //Debug message
         DebugLogString("EXITED IDLE STATE");
 
+        //Unsubscribe to turn button
+        leaderManager.turnButton.onClick.RemoveListener(NextTurn);
+
         //Return true
         return true;
     }
 
     private void NextTurn()
     {
+        Debug.Log("Called next turn!");
         if (enteredState) { isInteracted = true; }
     }
 }

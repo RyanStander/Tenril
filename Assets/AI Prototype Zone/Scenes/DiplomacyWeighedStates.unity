@@ -267,6 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leaderInfo: {fileID: 11400000, guid: db10aea7bdbd638479a10d4027f963dd, type: 2}
   visualManager: {fileID: 961656754}
+  stateMachine: {fileID: 0}
   playerProduction: {fileID: 267549067}
   turnButton: {fileID: 1784572238}
 --- !u!4 &162633012
@@ -536,6 +537,14 @@ PrefabInstance:
       propertyPath: m_enableWordWrapping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 954824625863292775, guid: 0b8b9d58ade33694682538401f7e7506, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 1507798468671384516, guid: 0b8b9d58ade33694682538401f7e7506, type: 3}
+      propertyPath: m_Name
+      value: ShakaButton
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b8b9d58ade33694682538401f7e7506, type: 3}
 --- !u!224 &340866300 stripped
@@ -574,6 +583,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leaderInfo: {fileID: 11400000, guid: 4423829f37c271f4db6704489f5948d2, type: 2}
   visualManager: {fileID: 1998626619}
+  stateMachine: {fileID: 0}
   playerProduction: {fileID: 267549067}
   turnButton: {fileID: 1602721227}
 --- !u!4 &369683409
@@ -786,6 +796,14 @@ PrefabInstance:
       propertyPath: m_enableWordWrapping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 954824625863292775, guid: 0b8b9d58ade33694682538401f7e7506, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 1507798468671384516, guid: 0b8b9d58ade33694682538401f7e7506, type: 3}
+      propertyPath: m_Name
+      value: HammurabiButton
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b8b9d58ade33694682538401f7e7506, type: 3}
 --- !u!224 &655130303 stripped
@@ -900,6 +918,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1112587631}
   - component: {fileID: 1112587633}
+  - component: {fileID: 1112587632}
   m_Layer: 0
   m_Name: Ghandi Manager
   m_TagString: Untagged
@@ -921,6 +940,23 @@ Transform:
   m_Father: {fileID: 1463208963}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1112587632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112587630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e357758b1c6f5c4da612626552f9fd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingState: {fileID: 11400000, guid: d9f2fdb25cdd5874597dbc313fe3669f, type: 2}
+  validStates:
+  - {fileID: 11400000, guid: d9f2fdb25cdd5874597dbc313fe3669f, type: 2}
+  - {fileID: 11400000, guid: 5ce040af86e008341a675f73d06bd80e, type: 2}
+  shouldDebugStates: 0
 --- !u!114 &1112587633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -935,6 +971,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leaderInfo: {fileID: 11400000, guid: 81e96dc3774fd984a93576d8a09ae426, type: 2}
   visualManager: {fileID: 1619191167}
+  stateMachine: {fileID: 1112587632}
   playerProduction: {fileID: 267549067}
   turnButton: {fileID: 904559491}
 --- !u!224 &1166687192 stripped
@@ -1746,6 +1783,30 @@ PrefabInstance:
     - target: {fileID: 954824625863292772, guid: 0b8b9d58ade33694682538401f7e7506, type: 3}
       propertyPath: m_enableWordWrapping
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 954824625863292775, guid: 0b8b9d58ade33694682538401f7e7506, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 1507798468671384516, guid: 0b8b9d58ade33694682538401f7e7506, type: 3}
+      propertyPath: m_Name
+      value: GhandiButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768629014208334771, guid: 0b8b9d58ade33694682538401f7e7506, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768629014208334771, guid: 0b8b9d58ade33694682538401f7e7506, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768629014208334771, guid: 0b8b9d58ade33694682538401f7e7506, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1112587630}
+    - target: {fileID: 5768629014208334771, guid: 0b8b9d58ade33694682538401f7e7506, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b8b9d58ade33694682538401f7e7506, type: 3}

@@ -35,8 +35,7 @@ public class LeaderProductionTrait : ScriptableObject
             favorability *= -1;
         }
 
-        Debug.Log("Current favorability: " + favorability);
-
+        //Return the value
         return favorability;
     }
 }

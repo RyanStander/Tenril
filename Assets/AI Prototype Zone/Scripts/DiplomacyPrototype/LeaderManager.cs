@@ -13,7 +13,7 @@ public class LeaderManager : MonoBehaviour
     public LeaderVisualManager visualManager;
 
     //The state machine connected to the manager
-    private DiplomacyFSM stateMachine;
+    public DiplomacyFSM stateMachine;
 
     //The player being interacted with
     public PlayerProduction playerProduction;
