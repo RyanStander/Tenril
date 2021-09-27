@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DiplomacyNeutral", menuName = "Diplomacy/States/Neutral", order = 6)]
 public class DiplomacyNeutral : DiplomacyStatementState
 {
     public override void OnEnable()

@@ -247,13 +247,18 @@ GameObject:
   - component: {fileID: 162633012}
   - component: {fileID: 162633011}
   - component: {fileID: 162633013}
+  - component: {fileID: 162633018}
+  - component: {fileID: 162633017}
+  - component: {fileID: 162633016}
+  - component: {fileID: 162633015}
+  - component: {fileID: 162633014}
   m_Layer: 0
   m_Name: Hammurabi Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &162633011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,15 +303,75 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e357758b1c6f5c4da612626552f9fd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingState: {fileID: 11400000, guid: d9f2fdb25cdd5874597dbc313fe3669f, type: 2}
+  startingState: {fileID: 162633018}
   validStates:
-  - {fileID: 11400000, guid: d9f2fdb25cdd5874597dbc313fe3669f, type: 2}
-  - {fileID: 11400000, guid: 5ce040af86e008341a675f73d06bd80e, type: 2}
-  - {fileID: 11400000, guid: 6099c96e0ce06d14cb84fb4908021638, type: 2}
-  - {fileID: 11400000, guid: 17445fa0bd78d3446b8d06a0a290b77f, type: 2}
-  - {fileID: 11400000, guid: 650a1714ebc02b644b1c442215d9bc9c, type: 2}
+  - {fileID: 162633018}
+  - {fileID: 162633015}
+  - {fileID: 162633014}
+  - {fileID: 162633016}
+  - {fileID: 162633017}
   isDebuggingStates: 0
-  shouldChangeState: 0
+--- !u!114 &162633014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162633010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78eb327a210628240a534b4b6e9f8411, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &162633015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162633010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: badc49f4f9c95394aaa6b24f072d82d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &162633016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162633010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edc2b0b9e7d4d1a419501279295792d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &162633017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162633010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bfa629d8ddcd7540914d5486024fc56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &162633018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162633010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85badbd595685f14ea3bd8c320158d54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteracted: 0
 --- !u!1 &198267728
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,13 +651,18 @@ GameObject:
   - component: {fileID: 369683409}
   - component: {fileID: 369683408}
   - component: {fileID: 369683410}
+  - component: {fileID: 369683411}
+  - component: {fileID: 369683415}
+  - component: {fileID: 369683414}
+  - component: {fileID: 369683413}
+  - component: {fileID: 369683412}
   m_Layer: 0
   m_Name: Shaka Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &369683408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -637,15 +707,75 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e357758b1c6f5c4da612626552f9fd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingState: {fileID: 11400000, guid: d9f2fdb25cdd5874597dbc313fe3669f, type: 2}
+  startingState: {fileID: 369683411}
   validStates:
-  - {fileID: 11400000, guid: d9f2fdb25cdd5874597dbc313fe3669f, type: 2}
-  - {fileID: 11400000, guid: 5ce040af86e008341a675f73d06bd80e, type: 2}
-  - {fileID: 11400000, guid: 6099c96e0ce06d14cb84fb4908021638, type: 2}
-  - {fileID: 11400000, guid: 17445fa0bd78d3446b8d06a0a290b77f, type: 2}
-  - {fileID: 11400000, guid: 650a1714ebc02b644b1c442215d9bc9c, type: 2}
+  - {fileID: 369683411}
+  - {fileID: 369683414}
+  - {fileID: 369683415}
+  - {fileID: 369683412}
+  - {fileID: 369683413}
   isDebuggingStates: 0
-  shouldChangeState: 0
+--- !u!114 &369683411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369683407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85badbd595685f14ea3bd8c320158d54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteracted: 0
+--- !u!114 &369683412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369683407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edc2b0b9e7d4d1a419501279295792d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &369683413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369683407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bfa629d8ddcd7540914d5486024fc56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &369683414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369683407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: badc49f4f9c95394aaa6b24f072d82d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &369683415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369683407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78eb327a210628240a534b4b6e9f8411, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &641260711
 GameObject:
   m_ObjectHideFlags: 0
@@ -1041,6 +1171,11 @@ GameObject:
   - component: {fileID: 1112587631}
   - component: {fileID: 1112587633}
   - component: {fileID: 1112587632}
+  - component: {fileID: 1112587638}
+  - component: {fileID: 1112587637}
+  - component: {fileID: 1112587636}
+  - component: {fileID: 1112587635}
+  - component: {fileID: 1112587634}
   m_Layer: 0
   m_Name: Ghandi Manager
   m_TagString: Untagged
@@ -1074,15 +1209,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e357758b1c6f5c4da612626552f9fd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingState: {fileID: 11400000, guid: d9f2fdb25cdd5874597dbc313fe3669f, type: 2}
+  startingState: {fileID: 1112587638}
   validStates:
-  - {fileID: 11400000, guid: d9f2fdb25cdd5874597dbc313fe3669f, type: 2}
-  - {fileID: 11400000, guid: 5ce040af86e008341a675f73d06bd80e, type: 2}
-  - {fileID: 11400000, guid: 6099c96e0ce06d14cb84fb4908021638, type: 2}
-  - {fileID: 11400000, guid: 17445fa0bd78d3446b8d06a0a290b77f, type: 2}
-  - {fileID: 11400000, guid: 650a1714ebc02b644b1c442215d9bc9c, type: 2}
-  isDebuggingStates: 1
-  shouldChangeState: 0
+  - {fileID: 1112587638}
+  - {fileID: 1112587637}
+  - {fileID: 1112587636}
+  - {fileID: 1112587635}
+  - {fileID: 1112587634}
+  isDebuggingStates: 0
 --- !u!114 &1112587633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1101,6 +1235,67 @@ MonoBehaviour:
   playerProduction: {fileID: 267549067}
   statementText: {fileID: 1403116571}
   turnButton: {fileID: 904559491}
+--- !u!114 &1112587634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112587630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bfa629d8ddcd7540914d5486024fc56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1112587635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112587630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78eb327a210628240a534b4b6e9f8411, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1112587636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112587630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edc2b0b9e7d4d1a419501279295792d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1112587637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112587630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: badc49f4f9c95394aaa6b24f072d82d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1112587638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112587630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85badbd595685f14ea3bd8c320158d54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteracted: 0
 --- !u!224 &1166687192 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8423182289126130768, guid: b8edfdd19a9ca3a4391bd7b4843197f2, type: 3}

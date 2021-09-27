@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class DiplomacyAbstractStateFSM : ScriptableObject
+public abstract class DiplomacyAbstractStateFSM : MonoBehaviour
 {
     //The current manager
     protected LeaderManager leaderManager;
@@ -59,7 +59,10 @@ public abstract class DiplomacyAbstractStateFSM : ScriptableObject
 
     protected private void DebugLogString(string log)
     {
-        //Ask the FSM to debug, which is allowed to reject it
-        finiteStateMachine.DebugLogString(log);
+        //Debug the log if debugging is enabled
+        if (finiteStateMachine.isDebuggingStates)
+        {
+            Debug.Log(log);
+        }
     }
 }

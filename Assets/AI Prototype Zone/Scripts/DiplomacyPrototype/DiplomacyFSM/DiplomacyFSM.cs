@@ -13,10 +13,7 @@ public class DiplomacyFSM : MonoBehaviour
     private Dictionary<DiplomacyFSMStateType, DiplomacyAbstractStateFSM> FSMStates;
 
     //Bool for if the manager should debug the states
-    public bool isDebuggingStates;
-
-    //Bool for if the state should leave the current state, primarily for Idle
-    public bool shouldChangeState;
+    public bool isDebuggingStates = false;
 
     private void Awake()
     {
@@ -53,15 +50,6 @@ public class DiplomacyFSM : MonoBehaviour
         if (currentState != null)
         {
             currentState.UpdateState();
-        }
-    }
-
-    public void DebugLogString(string log)
-    {
-        //If debugging, log the string
-        if (isDebuggingStates)
-        {
-            Debug.Log(log);
         }
     }
 

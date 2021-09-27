@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "DiplomacyEvaluating", menuName = "Diplomacy/States/Evaluating", order = 2)]
 public class DiplomacyEvaluating : DiplomacyAbstractStateFSM
 {
     public override void OnEnable()
