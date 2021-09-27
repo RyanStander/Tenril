@@ -33,17 +33,52 @@ public class DiplomacyEvaluating : DiplomacyAbstractStateFSM
             //Run based method
             DebugLogString("UPDATING EVALUATING STATE");
 
-            //Calculate relationship level
-            RelationshipLevel newRelationshipLevel = CalculateRelationshipLevel();
+            //Update the relationship between the AI leader and player
+            UpdateRelationships();
+        }
+    }
 
-            //Update civilization relationship level (moves in single increments)
-            leaderManager.leaderInfo.currentRelationshipLevel = newRelationshipLevel;
+    private void UpdateRelationships()
+    {
+        //Calculate relationship level
+        RelationshipLevel newRelationshipLevel = CalculateRelationshipLevel();
 
-            //Update the visuals
-            leaderManager.UpdateVisuals();
+        //Update civilization relationship level (moves in single increments)
+        leaderManager.leaderInfo.currentRelationshipLevel = newRelationshipLevel;
 
-            //Return to idle (for testing), will be replaced in future for actions
-            finiteStateMachine.EnterState(DiplomacyFSMStateType.IDLE);
+        //Update the visuals
+        leaderManager.UpdateVisuals();
+
+        //Make a decision based on the current relationship
+        MakeDecisionBasedOnRelationship();
+    }
+
+    private void MakeDecisionBasedOnRelationship()
+    {
+        //Switch statement for quick work
+        switch(leaderManager.leaderInfo.currentRelationshipLevel)
+        {
+            //Compliment
+            case RelationshipLevel.Friendly:
+                finiteStateMachine.EnterState(DiplomacyFSMStateType.COMPLIMENT);
+                break;
+
+            //Neutral statement
+            case RelationshipLevel.Receptive:
+            case RelationshipLevel.Neutral:
+                finiteStateMachine.EnterState(DiplomacyFSMStateType.NEUTRAL);
+                break;
+
+            //Insult
+            case RelationshipLevel.Weary:
+            case RelationshipLevel.Hostile:
+                finiteStateMachine.EnterState(DiplomacyFSMStateType.INSULT);
+                break;
+
+            default:
+                DebugLogString("Invalid relationship to swap to! Returning to Idle...");
+                finiteStateMachine.EnterState(DiplomacyFSMStateType.IDLE);
+                break;
         }
     }
 

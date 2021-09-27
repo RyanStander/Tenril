@@ -12,8 +12,11 @@ public class DiplomacyFSM : MonoBehaviour
     private List<DiplomacyAbstractStateFSM> validStates;
     private Dictionary<DiplomacyFSMStateType, DiplomacyAbstractStateFSM> FSMStates;
 
-    //If the state should debug
-    public bool shouldDebugStates;
+    //Bool for if the manager should debug the states
+    public bool isDebuggingStates;
+
+    //Bool for if the state should leave the current state, primarily for Idle
+    public bool shouldChangeState;
 
     private void Awake()
     {
@@ -51,16 +54,18 @@ public class DiplomacyFSM : MonoBehaviour
         {
             currentState.UpdateState();
         }
+    }
 
-        //Debug setter
-        foreach(DiplomacyAbstractStateFSM state in validStates)
+    public void DebugLogString(string log)
+    {
+        //If debugging, log the string
+        if (isDebuggingStates)
         {
-            state.ToggleDebugging(shouldDebugStates);
+            Debug.Log(log);
         }
     }
 
     #region State Management
-
     //Enter the given state, exits the current one
     public void EnterState(DiplomacyAbstractStateFSM nextState)
     {
@@ -99,6 +104,5 @@ public class DiplomacyFSM : MonoBehaviour
             EnterState(nextState);
         }
     }
-
     #endregion
 }

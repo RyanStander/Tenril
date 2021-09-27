@@ -7,6 +7,6 @@ public enum DiplomacyFSMStateType
     IDLE,
     EVALUATING,
     INSULT,
-    DISMISS,
+    NEUTRAL,
     COMPLIMENT
 }

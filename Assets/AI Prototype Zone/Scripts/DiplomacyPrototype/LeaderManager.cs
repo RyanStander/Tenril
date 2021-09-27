@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using TMPro;
 
 public class LeaderManager : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class LeaderManager : MonoBehaviour
 
     //The player being interacted with
     public PlayerProduction playerProduction;
+
+    //Text that should be modified when making a statement to the player
+    public TextMeshProUGUI statementText;
 
     //Button used for triggering turn changes
     public Button turnButton;

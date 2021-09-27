@@ -5,9 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DiplomacyIdle", menuName = "Diplomacy/States/Idle", order = 1)]
 public class DiplomacyIdle : DiplomacyAbstractStateFSM
 {
-    [SerializeField]
-    private bool isInteracted = false;
-
     public override void OnEnable()
     {
         base.OnEnable();
@@ -25,7 +22,7 @@ public class DiplomacyIdle : DiplomacyAbstractStateFSM
             DebugLogString("ENTERED IDLE STATE");
 
             //Reset
-            isInteracted = false;
+            finiteStateMachine.shouldChangeState = false;
 
             //Subscribe to turn button
             leaderManager.turnButton.onClick.AddListener(NextTurn);
@@ -41,9 +38,8 @@ public class DiplomacyIdle : DiplomacyAbstractStateFSM
             DebugLogString("UPDATING IDLE STATE");
 
             //Change state to evaluation mode if commanded to
-            if (isInteracted)
+            if (finiteStateMachine.shouldChangeState)
             {
-                Debug.Log("Changing!");
                 finiteStateMachine.EnterState(DiplomacyFSMStateType.EVALUATING);
             }
         }
@@ -60,13 +56,16 @@ public class DiplomacyIdle : DiplomacyAbstractStateFSM
         //Unsubscribe to turn button
         leaderManager.turnButton.onClick.RemoveListener(NextTurn);
 
+        //Reset
+        finiteStateMachine.shouldChangeState = false;
+
         //Return true
         return true;
     }
 
     private void NextTurn()
     {
-        Debug.Log("Called next turn!");
-        if (enteredState) { isInteracted = true; }
+        DebugLogString("Called next turn!");
+        if (enteredState) { finiteStateMachine.shouldChangeState = true; }
     }
 }

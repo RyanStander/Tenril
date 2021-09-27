@@ -9,9 +9,6 @@ public abstract class DiplomacyAbstractStateFSM : ScriptableObject
     protected LeaderManager leaderManager;
     protected DiplomacyFSM finiteStateMachine;
 
-    //Bool for if the state should be debugged
-    public bool isDebugging = false;
-
     //The current execution state of the state
     public ExecutionState executionState { get; protected set; }
 
@@ -62,15 +59,7 @@ public abstract class DiplomacyAbstractStateFSM : ScriptableObject
 
     protected private void DebugLogString(string log)
     {
-        //If debugging, log the string
-        if(isDebugging)
-        {
-            Debug.Log(log);
-        }
-    }
-
-    public void ToggleDebugging(bool shouldDebug)
-    {
-        isDebugging = shouldDebug;
+        //Ask the FSM to debug, which is allowed to reject it
+        finiteStateMachine.DebugLogString(log);
     }
 }

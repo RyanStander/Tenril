@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DiplomacyInsult", menuName = "Diplomacy/States/Insult", order = 5)]
-public class DiplmacyInsult : DiplomacyStatementState
+[CreateAssetMenu(fileName = "DiplomacyNeutral", menuName = "Diplomacy/States/Neutral", order = 6)]
+public class DiplomacyNeutral : DiplomacyStatementState
 {
     public override void OnEnable()
     {
         base.OnEnable();
-        stateType = DiplomacyFSMStateType.INSULT;
+        stateType = DiplomacyFSMStateType.NEUTRAL;
     }
 
     public override bool EnterState()
@@ -19,7 +19,7 @@ public class DiplmacyInsult : DiplomacyStatementState
         if (enteredState)
         {
             //Debug message
-            DebugLogString("ENTERED INSULT STATE");
+            DebugLogString("ENTERED NEUTRAL STATE");
         }
 
         return enteredState;
@@ -30,10 +30,10 @@ public class DiplmacyInsult : DiplomacyStatementState
         if (enteredState)
         {
             //Run based method
-            DebugLogString("UPDATING INSULT STATE");
+            DebugLogString("UPDATING NEUTRAL STATE");
 
             //Get random compliment from leader & apply text change
-            leaderManager.statementText.text = leaderManager.leaderInfo.leaderName + ": " + GetRandomListString(leaderManager.leaderInfo.insultingStatements);
+            leaderManager.statementText.text = leaderManager.leaderInfo.leaderName + ": " + GetRandomListString(leaderManager.leaderInfo.neutralStatements);
 
             //Return to idle state
             finiteStateMachine.EnterState(DiplomacyFSMStateType.IDLE);
@@ -46,7 +46,7 @@ public class DiplmacyInsult : DiplomacyStatementState
         base.ExitState();
 
         //Debug message
-        DebugLogString("EXITED INSULT STATE");
+        DebugLogString("EXITED NEUTRAL STATE");
 
         //Return true
         return true;
