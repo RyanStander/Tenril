@@ -13,7 +13,7 @@ public class InputHandler : MonoBehaviour
     [HideInInspector] public bool dodgeInput, sprintInput, jumpInput;
 
     //Other inputs
-    public bool interactInput;
+    public bool interactInput, menuInput;
 
     //Combat Inputs
     public bool weakAttackInput, strongAttackInput,drawSheathInput, blockInput, parryInput, lockOnInput;
@@ -60,6 +60,7 @@ public class InputHandler : MonoBehaviour
         dodgeInput = false;
         jumpInput = false;
         interactInput = false;
+        menuInput = false;
 
         for (int i = 0; i < 8; i++)
         {
@@ -128,6 +129,9 @@ public class InputHandler : MonoBehaviour
         //----------------------------------------------------------
         //Interact
         inputActions.PlayerActions.Interact.performed += i => interactInput = true;
+        //Open/Close Menu
+        inputActions.PlayerActions.OpenMenu.performed += i => menuInput = true;
+        inputActions.MenuNavigation.CloseMenus.performed += i => menuInput = true;
     }
 
     #region Movement

@@ -37,7 +37,21 @@ public class RebindingDisplay : MonoBehaviour
         //setup the display text on load
         keybindText.text = action.name;
         keyboardStartRebindButtonText.text = InputControlPath.ToHumanReadableString(action.bindings[0].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
-        controllerStartRebindButtonText.text = InputControlPath.ToHumanReadableString(action.bindings[1].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
+        //Composites have large binding sizes so it requires some extra coding work to find the correct on
+        //If the first action is a composite, search for the next
+        if (action.bindings[0].isComposite)
+        {
+            for (int i = 1; i < action.bindings.Count; i++)
+            {
+                if (action.bindings[i].isComposite)
+                {
+                    controllerStartRebindButtonText.text = InputControlPath.ToHumanReadableString(action.bindings[i].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
+                    i = action.bindings.Count;
+                }
+            }
+        }
+        else
+            controllerStartRebindButtonText.text = InputControlPath.ToHumanReadableString(action.bindings[1].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
     }
 
     public void RebindKey(int rebindValue)

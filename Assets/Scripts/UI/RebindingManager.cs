@@ -18,6 +18,7 @@ public class RebindingManager : MonoBehaviour
         //itterates through every input in action map
         foreach (InputAction action in actionMap)
         {
+            Debug.Log(action.name + ": "+action.bindings[5].isComposite);
             //create a rebind prefab in the content box 
             GameObject createdRebindPrefab = Instantiate(keyRebindPrefab,rebindContentObject.transform);
             //get the rebinding display component on the prefab

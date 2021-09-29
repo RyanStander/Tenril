@@ -436,7 +436,7 @@ public class @PlayerController : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""645e67d2-f59b-491e-bcf2-c514aa6e712e"",
                     ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
+                    ""interactions"": ""Tap"",
                     ""processors"": """",
                     ""groups"": ""Keyboard & Mouse"",
                     ""action"": ""OpenMenu"",
@@ -447,7 +447,7 @@ public class @PlayerController : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""7db5ff34-6d94-4760-baf5-61c8cade51ce"",
                     ""path"": ""<Gamepad>/start"",
-                    ""interactions"": """",
+                    ""interactions"": ""Tap"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""OpenMenu"",
@@ -943,6 +943,44 @@ public class @PlayerController : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""MenuNavigation"",
+            ""id"": ""8753d95b-9538-48bb-8f3a-3bbd6ea3ea6f"",
+            ""actions"": [
+                {
+                    ""name"": ""Close Menus"",
+                    ""type"": ""Button"",
+                    ""id"": ""1c71a10b-970e-4be3-8b92-0775d3764b32"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""fcd4dd6d-b37c-4936-b8dc-52af7c2333fd"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Close Menus"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3adc1261-29ad-41e7-a324-862604dd000a"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Close Menus"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1005,6 +1043,9 @@ public class @PlayerController : IInputActionCollection, IDisposable
         m_PlayerSpellcasting_Spell6 = m_PlayerSpellcasting.FindAction("Spell 6", throwIfNotFound: true);
         m_PlayerSpellcasting_Spell7 = m_PlayerSpellcasting.FindAction("Spell 7", throwIfNotFound: true);
         m_PlayerSpellcasting_Spell8 = m_PlayerSpellcasting.FindAction("Spell 8", throwIfNotFound: true);
+        // MenuNavigation
+        m_MenuNavigation = asset.FindActionMap("MenuNavigation", throwIfNotFound: true);
+        m_MenuNavigation_CloseMenus = m_MenuNavigation.FindAction("Close Menus", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1366,6 +1407,39 @@ public class @PlayerController : IInputActionCollection, IDisposable
         }
     }
     public PlayerSpellcastingActions @PlayerSpellcasting => new PlayerSpellcastingActions(this);
+
+    // MenuNavigation
+    private readonly InputActionMap m_MenuNavigation;
+    private IMenuNavigationActions m_MenuNavigationActionsCallbackInterface;
+    private readonly InputAction m_MenuNavigation_CloseMenus;
+    public struct MenuNavigationActions
+    {
+        private @PlayerController m_Wrapper;
+        public MenuNavigationActions(@PlayerController wrapper) { m_Wrapper = wrapper; }
+        public InputAction @CloseMenus => m_Wrapper.m_MenuNavigation_CloseMenus;
+        public InputActionMap Get() { return m_Wrapper.m_MenuNavigation; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MenuNavigationActions set) { return set.Get(); }
+        public void SetCallbacks(IMenuNavigationActions instance)
+        {
+            if (m_Wrapper.m_MenuNavigationActionsCallbackInterface != null)
+            {
+                @CloseMenus.started -= m_Wrapper.m_MenuNavigationActionsCallbackInterface.OnCloseMenus;
+                @CloseMenus.performed -= m_Wrapper.m_MenuNavigationActionsCallbackInterface.OnCloseMenus;
+                @CloseMenus.canceled -= m_Wrapper.m_MenuNavigationActionsCallbackInterface.OnCloseMenus;
+            }
+            m_Wrapper.m_MenuNavigationActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @CloseMenus.started += instance.OnCloseMenus;
+                @CloseMenus.performed += instance.OnCloseMenus;
+                @CloseMenus.canceled += instance.OnCloseMenus;
+            }
+        }
+    }
+    public MenuNavigationActions @MenuNavigation => new MenuNavigationActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1422,5 +1496,9 @@ public class @PlayerController : IInputActionCollection, IDisposable
         void OnSpell6(InputAction.CallbackContext context);
         void OnSpell7(InputAction.CallbackContext context);
         void OnSpell8(InputAction.CallbackContext context);
+    }
+    public interface IMenuNavigationActions
+    {
+        void OnCloseMenus(InputAction.CallbackContext context);
     }
 }
