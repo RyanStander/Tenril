@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
@@ -28,7 +29,7 @@ public class InputHandler : MonoBehaviour
     //combat flags
     public bool comboFlag,lockOnFlag;
 
-    private void OnEnable()
+    private void Awake()
     {
         if (inputActions == null)
         {
@@ -40,6 +41,19 @@ public class InputHandler : MonoBehaviour
         }
 
         inputActions.Enable();
+    }
+
+    private void Start()
+    {
+        //Gets the keybinginds saved from player prefs
+        string rebinds = PlayerPrefs.GetString("keybindings", string.Empty);
+
+        //checks if its null
+        if (string.IsNullOrEmpty(rebinds))
+            return;
+
+        //loads binginds and overrides original ones
+        inputActions.asset.LoadBindingOverridesFromJson(rebinds);
     }
 
     public void TickInput(float delta)

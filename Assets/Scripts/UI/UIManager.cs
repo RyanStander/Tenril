@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Player Values")]
     [Tooltip("Input handler from the player")]
     [SerializeField] private InputHandler inputHandler;
+    [Tooltip("The animator of the player")]
+    [SerializeField] private Animator playerAnimator;
 
     [Header("UI Objects")]
     [SerializeField] private GameObject InGameGUI, MenuGUI;
@@ -44,6 +48,9 @@ public class UIManager : MonoBehaviour
                 //swap to in menu screen
                 InGameGUI.SetActive(false);
                 MenuGUI.SetActive(true);
+
+                if (playerAnimator != null)
+                    playerAnimator.SetBool("isInMenu", true);
             }
             else
             {
@@ -56,6 +63,9 @@ public class UIManager : MonoBehaviour
                 //swap to in game screen
                 InGameGUI.SetActive(true);
                 MenuGUI.SetActive(false);
+
+                if (playerAnimator != null)
+                    playerAnimator.SetBool("isInMenu", false);
             }
 
         }
