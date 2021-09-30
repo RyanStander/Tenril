@@ -2,11 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Script originally created by Ryan Stander
+//Adapted and built into the FSM by Jacques Venter
 public class EnemyStats : CharacterStats
 {
+    //[Header("Behaviour Traits")]
+    //TODO: Create traits that affect the behaviour of the AI
+    //public List<Traits> enemyTraits = new List<Traits>();
 
     [Header("Resource bars")]
     [SerializeField] private SliderBarDisplayUI healthBar;
+
     private void Start()
     {
         SetupStats();
