@@ -26,26 +26,29 @@ public class PlayerQuickslotManager : MonoBehaviour
 
     private void HandleQuickslotSelectionInputs()
     {
+        Debug.Log("current Index: " + playerInventory.quickslotItems.IndexOf(playerInventory.currentQuickSlotItem) + " count of:" + playerInventory.quickslotItems.Count);
+
         if (inputHandler.quickslotLeftInput)
         {
             //Get the index of the current quickslot item
             int currentIndexValue = playerInventory.quickslotItems.IndexOf(playerInventory.currentQuickSlotItem);
 
             //if the value is -1 that means the quick slot item that is equipped does not exist
-            if (currentIndexValue==-1)
+            if (currentIndexValue == -1)
             {
                 Debug.LogError("The currently selected quickslot item could not be found in the list, please make sure it is set properly");
                 return;
             }
 
             //if index value is 0, which would mean swapping would turn to -1
-            if (currentIndexValue==0)
+            if (currentIndexValue == 0)
             {
                 //set it to the last item in the list
-                currentIndexValue = playerInventory.quickslotItems.Count - 1;
+                currentIndexValue = playerInventory.quickslotItems.Count;
             }
             //sets the current quickslot item to the new value
-            playerInventory.currentQuickSlotItem = playerInventory.quickslotItems[currentIndexValue];
+            playerInventory.currentQuickSlotItem = playerInventory.quickslotItems[currentIndexValue - 1];
+
         }
 
         if (inputHandler.quickslotRightInput)
@@ -61,13 +64,13 @@ public class PlayerQuickslotManager : MonoBehaviour
             }
 
             //if index value is 0, which would mean swapping would turn to -1
-            if (currentIndexValue >= playerInventory.quickslotItems.Count - 1)
+            if (currentIndexValue == playerInventory.quickslotItems.Count - 1)
             {
                 //set it to the first item in the list
-                currentIndexValue = 0;
+                currentIndexValue = -1;
             }
             //sets the current quickslot item to the new value
-            playerInventory.currentQuickSlotItem = playerInventory.quickslotItems[currentIndexValue];
+            playerInventory.currentQuickSlotItem = playerInventory.quickslotItems[currentIndexValue + 1];
         }
     }
 
