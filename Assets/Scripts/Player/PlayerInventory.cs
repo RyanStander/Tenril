@@ -17,6 +17,10 @@ public class PlayerInventory : CharacterInventory
     public WeaponItem primaryWeapon, secondaryWeapon;
     [Tooltip("The spells that the player can currently cast")]
     public SpellItem[] preparedSpells = new SpellItem[8];
+    [Tooltip("The quickslot items that the player has selected")]
+    public List<QuickslotItem> quickslotItems;
+    [Tooltip("The currently selected quickslot item")]
+    public QuickslotItem currentQuickSlotItem;
 
     [Header("Backpack")]
     public List<Item> Inventory;
@@ -28,7 +32,7 @@ public class PlayerInventory : CharacterInventory
         inputHandler = GetComponent<InputHandler>();
     }
 
-    public void LoadEquippedWeapons(WeaponSlotManager weaponSlotManager)
+    internal void LoadEquippedWeapons(WeaponSlotManager weaponSlotManager)
     {
         //if it has a secondary weapon
         if (equippedWeapon.hasSecondaryWeapon)
@@ -44,7 +48,7 @@ public class PlayerInventory : CharacterInventory
         }
     }
 
-    public void SwapWeapon(WeaponSlotManager weaponSlotManager)
+    internal void SwapWeapon(WeaponSlotManager weaponSlotManager)
     {
         if (inputHandler.drawSheathInput)
         {

@@ -30,7 +30,7 @@ public class PlayerLocomotion : MonoBehaviour
         cameraObject = Camera.main.transform;
     }
 
-    public void HandleLocomotion(float delta)
+    internal void HandleLocomotion(float delta)
     {
         HandleMovement();
         HandleRotation(delta);
@@ -38,7 +38,7 @@ public class PlayerLocomotion : MonoBehaviour
         HandleFalling();
     }
 
-    public void HandleDodgeAndJumping()
+    internal void HandleDodgeAndJumping()
     {
         HandleDodge();
         HandleJump();

@@ -288,7 +288,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Switch Item Left"",
+                    ""name"": ""Quickslot Left"",
                     ""type"": ""Button"",
                     ""id"": ""947af87e-17d6-468a-bbec-5add577f77b9"",
                     ""expectedControlType"": ""Button"",
@@ -297,7 +297,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Switch Item Right"",
+                    ""name"": ""Quickslot Right"",
                     ""type"": ""Button"",
                     ""id"": ""d63691ae-8454-4c4a-a6be-7baa56c8bdd7"",
                     ""expectedControlType"": ""Button"",
@@ -306,7 +306,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Use Item"",
+                    ""name"": ""Quickslot Use"",
                     ""type"": ""Button"",
                     ""id"": ""49bdab1f-1af3-47c7-9e81-28dc1b343b35"",
                     ""expectedControlType"": ""Button"",
@@ -372,7 +372,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard & Mouse"",
-                    ""action"": ""Switch Item Left"",
+                    ""action"": ""Quickslot Left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -383,7 +383,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Switch Item Left"",
+                    ""action"": ""Quickslot Left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -394,7 +394,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard & Mouse"",
-                    ""action"": ""Switch Item Right"",
+                    ""action"": ""Quickslot Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -405,7 +405,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Switch Item Right"",
+                    ""action"": ""Quickslot Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -416,7 +416,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard & Mouse"",
-                    ""action"": ""Use Item"",
+                    ""action"": ""Quickslot Use"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -427,7 +427,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Use Item"",
+                    ""action"": ""Quickslot Use"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1055,9 +1055,9 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         // PlayerActions
         m_PlayerActions = asset.FindActionMap("PlayerActions", throwIfNotFound: true);
         m_PlayerActions_Interact = m_PlayerActions.FindAction("Interact", throwIfNotFound: true);
-        m_PlayerActions_SwitchItemLeft = m_PlayerActions.FindAction("Switch Item Left", throwIfNotFound: true);
-        m_PlayerActions_SwitchItemRight = m_PlayerActions.FindAction("Switch Item Right", throwIfNotFound: true);
-        m_PlayerActions_UseItem = m_PlayerActions.FindAction("Use Item", throwIfNotFound: true);
+        m_PlayerActions_QuickslotLeft = m_PlayerActions.FindAction("Quickslot Left", throwIfNotFound: true);
+        m_PlayerActions_QuickslotRight = m_PlayerActions.FindAction("Quickslot Right", throwIfNotFound: true);
+        m_PlayerActions_QuickslotUse = m_PlayerActions.FindAction("Quickslot Use", throwIfNotFound: true);
         m_PlayerActions_DrawSheath = m_PlayerActions.FindAction("Draw/Sheath", throwIfNotFound: true);
         m_PlayerActions_OpenMenu = m_PlayerActions.FindAction("OpenMenu", throwIfNotFound: true);
         m_PlayerActions_OpenMap = m_PlayerActions.FindAction("Open Map", throwIfNotFound: true);
@@ -1208,9 +1208,9 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerActions;
     private IPlayerActionsActions m_PlayerActionsActionsCallbackInterface;
     private readonly InputAction m_PlayerActions_Interact;
-    private readonly InputAction m_PlayerActions_SwitchItemLeft;
-    private readonly InputAction m_PlayerActions_SwitchItemRight;
-    private readonly InputAction m_PlayerActions_UseItem;
+    private readonly InputAction m_PlayerActions_QuickslotLeft;
+    private readonly InputAction m_PlayerActions_QuickslotRight;
+    private readonly InputAction m_PlayerActions_QuickslotUse;
     private readonly InputAction m_PlayerActions_DrawSheath;
     private readonly InputAction m_PlayerActions_OpenMenu;
     private readonly InputAction m_PlayerActions_OpenMap;
@@ -1219,9 +1219,9 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         private @PlayerController m_Wrapper;
         public PlayerActionsActions(@PlayerController wrapper) { m_Wrapper = wrapper; }
         public InputAction @Interact => m_Wrapper.m_PlayerActions_Interact;
-        public InputAction @SwitchItemLeft => m_Wrapper.m_PlayerActions_SwitchItemLeft;
-        public InputAction @SwitchItemRight => m_Wrapper.m_PlayerActions_SwitchItemRight;
-        public InputAction @UseItem => m_Wrapper.m_PlayerActions_UseItem;
+        public InputAction @QuickslotLeft => m_Wrapper.m_PlayerActions_QuickslotLeft;
+        public InputAction @QuickslotRight => m_Wrapper.m_PlayerActions_QuickslotRight;
+        public InputAction @QuickslotUse => m_Wrapper.m_PlayerActions_QuickslotUse;
         public InputAction @DrawSheath => m_Wrapper.m_PlayerActions_DrawSheath;
         public InputAction @OpenMenu => m_Wrapper.m_PlayerActions_OpenMenu;
         public InputAction @OpenMap => m_Wrapper.m_PlayerActions_OpenMap;
@@ -1237,15 +1237,15 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 @Interact.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInteract;
-                @SwitchItemLeft.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSwitchItemLeft;
-                @SwitchItemLeft.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSwitchItemLeft;
-                @SwitchItemLeft.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSwitchItemLeft;
-                @SwitchItemRight.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSwitchItemRight;
-                @SwitchItemRight.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSwitchItemRight;
-                @SwitchItemRight.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSwitchItemRight;
-                @UseItem.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnUseItem;
-                @UseItem.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnUseItem;
-                @UseItem.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnUseItem;
+                @QuickslotLeft.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuickslotLeft;
+                @QuickslotLeft.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuickslotLeft;
+                @QuickslotLeft.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuickslotLeft;
+                @QuickslotRight.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuickslotRight;
+                @QuickslotRight.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuickslotRight;
+                @QuickslotRight.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuickslotRight;
+                @QuickslotUse.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuickslotUse;
+                @QuickslotUse.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuickslotUse;
+                @QuickslotUse.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnQuickslotUse;
                 @DrawSheath.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDrawSheath;
                 @DrawSheath.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDrawSheath;
                 @DrawSheath.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDrawSheath;
@@ -1262,15 +1262,15 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
-                @SwitchItemLeft.started += instance.OnSwitchItemLeft;
-                @SwitchItemLeft.performed += instance.OnSwitchItemLeft;
-                @SwitchItemLeft.canceled += instance.OnSwitchItemLeft;
-                @SwitchItemRight.started += instance.OnSwitchItemRight;
-                @SwitchItemRight.performed += instance.OnSwitchItemRight;
-                @SwitchItemRight.canceled += instance.OnSwitchItemRight;
-                @UseItem.started += instance.OnUseItem;
-                @UseItem.performed += instance.OnUseItem;
-                @UseItem.canceled += instance.OnUseItem;
+                @QuickslotLeft.started += instance.OnQuickslotLeft;
+                @QuickslotLeft.performed += instance.OnQuickslotLeft;
+                @QuickslotLeft.canceled += instance.OnQuickslotLeft;
+                @QuickslotRight.started += instance.OnQuickslotRight;
+                @QuickslotRight.performed += instance.OnQuickslotRight;
+                @QuickslotRight.canceled += instance.OnQuickslotRight;
+                @QuickslotUse.started += instance.OnQuickslotUse;
+                @QuickslotUse.performed += instance.OnQuickslotUse;
+                @QuickslotUse.canceled += instance.OnQuickslotUse;
                 @DrawSheath.started += instance.OnDrawSheath;
                 @DrawSheath.performed += instance.OnDrawSheath;
                 @DrawSheath.canceled += instance.OnDrawSheath;
@@ -1516,9 +1516,9 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
     public interface IPlayerActionsActions
     {
         void OnInteract(InputAction.CallbackContext context);
-        void OnSwitchItemLeft(InputAction.CallbackContext context);
-        void OnSwitchItemRight(InputAction.CallbackContext context);
-        void OnUseItem(InputAction.CallbackContext context);
+        void OnQuickslotLeft(InputAction.CallbackContext context);
+        void OnQuickslotRight(InputAction.CallbackContext context);
+        void OnQuickslotUse(InputAction.CallbackContext context);
         void OnDrawSheath(InputAction.CallbackContext context);
         void OnOpenMenu(InputAction.CallbackContext context);
         void OnOpenMap(InputAction.CallbackContext context);
