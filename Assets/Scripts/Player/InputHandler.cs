@@ -18,6 +18,7 @@ public class InputHandler : MonoBehaviour
 
     //Combat Inputs
     public bool weakAttackInput, strongAttackInput,drawSheathInput, blockInput, parryInput, lockOnInput;
+    public bool quickslotLeftInput, quickslotRightInput, quickslotUseInput;
 
     //Spellcasting Inputs
     public bool spellcastingModeInput;
@@ -56,7 +57,7 @@ public class InputHandler : MonoBehaviour
         inputActions.asset.LoadBindingOverridesFromJson(rebinds);
     }
 
-    public void TickInput(float delta)
+    internal void TickInput(float delta)
     {
         //Movement inputs  
         HandleMovementInput();
@@ -65,7 +66,7 @@ public class InputHandler : MonoBehaviour
     }
 
     //Reset the input bools so that they do not queue up for animations
-    public void ResetInputs()
+    internal void ResetInputs()
     {
         weakAttackInput = false;
         strongAttackInput = false;
@@ -75,6 +76,10 @@ public class InputHandler : MonoBehaviour
         jumpInput = false;
         interactInput = false;
         menuInput = false;
+
+        quickslotLeftInput = false;
+        quickslotRightInput = false;
+        quickslotUseInput = false;
 
         for (int i = 0; i < 8; i++)
         {
@@ -112,6 +117,12 @@ public class InputHandler : MonoBehaviour
         inputActions.PlayerCombat.Block.canceled += i => blockInput = false;
         //Parry
         inputActions.PlayerCombat.Parry.performed += i => parryInput = true;
+        //Quickslot left
+        inputActions.PlayerActions.QuickslotLeft.performed += i => quickslotLeftInput = true;
+        //Quickslot right
+        inputActions.PlayerActions.QuickslotRight.performed += i => quickslotRightInput = true;
+        //Quickslot use
+        inputActions.PlayerActions.QuickslotUse.performed += i => quickslotUseInput = true;
 
         //----------------------------------------------------------
         //                         Spellcasting

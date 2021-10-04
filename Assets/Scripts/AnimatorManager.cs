@@ -6,7 +6,7 @@ public class AnimatorManager : MonoBehaviour
 {
     [HideInInspector]public Animator animator;
     public bool canRotate;
-    public void PlayTargetAnimation(string targetAnim, bool isInteracting)
+    internal void PlayTargetAnimation(string targetAnim, bool isInteracting)
     {
         //Play a specific animation, if isInteracting is true, no other inputs can be performed during the animation
         animator.applyRootMotion = isInteracting;
