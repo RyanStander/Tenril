@@ -99,7 +99,7 @@ public class RebindingDisplay : MonoBehaviour
         waitingForInputObject.SetActive(true);
 
         //Disable the input actions to allow for modifying inputs
-        inputHandler.GetInputActions().MenuNavigation.Disable();
+        inputHandler.GetInputActions().UIControls.Disable();
 
         //Rebind to the key that was input
         switch (rebindValue)
@@ -154,6 +154,6 @@ public class RebindingDisplay : MonoBehaviour
         waitingForInputObject.SetActive(false);
 
         //Swap back to gameplay inputs
-        inputHandler.GetInputActions().MenuNavigation.Enable();
+        inputHandler.GetInputActions().UIControls.Enable();
     }
 }

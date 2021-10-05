@@ -92,71 +92,71 @@ public class InputHandler : MonoBehaviour
         //                         Locomotion
         //----------------------------------------------------------
         //Movement
-        inputActions.PlayerMovement.Movement.performed += movementInputActions => movementInput = movementInputActions.ReadValue<Vector2>();
+        inputActions.CharacterControls.Movement.performed += movementInputActions => movementInput = movementInputActions.ReadValue<Vector2>();
         //Sprint
-        inputActions.PlayerMovement.Sprint.performed += i => sprintInput = true;
-        inputActions.PlayerMovement.Sprint.canceled += i => sprintInput = false;
+        inputActions.CharacterControls.Sprint.performed += i => sprintInput = true;
+        inputActions.CharacterControls.Sprint.canceled += i => sprintInput = false;
         //Dodge
-        inputActions.PlayerMovement.Dodge.performed += i => dodgeInput = true;
+        inputActions.CharacterControls.Dodge.performed += i => dodgeInput = true;
         //Jump
-        inputActions.PlayerMovement.Jump.performed += i => jumpInput = true;
+        inputActions.CharacterControls.Jump.performed += i => jumpInput = true;
 
         //----------------------------------------------------------
         //                         Combat
         //----------------------------------------------------------
         //Lock On
-        inputActions.PlayerCombat.LockOn.performed += i => lockOnInput = true;
+        inputActions.CharacterControls.LockOn.performed += i => lockOnInput = true;
         //Swap weapon
-        inputActions.PlayerActions.DrawSheath.performed += i => drawSheathInput = true;
+        inputActions.CharacterControls.DrawSheath.performed += i => drawSheathInput = true;
         //Weak attack
-        inputActions.PlayerCombat.WeakAttack.performed += i => weakAttackInput = true;
+        inputActions.CharacterControls.WeakAttack.performed += i => weakAttackInput = true;
         //Strong Attack
-        inputActions.PlayerCombat.StrongAttack.performed += i => strongAttackInput = true;
+        inputActions.CharacterControls.StrongAttack.performed += i => strongAttackInput = true;
         //Block
-        inputActions.PlayerCombat.Block.performed += i => blockInput = true;
-        inputActions.PlayerCombat.Block.canceled += i => blockInput = false;
+        inputActions.CharacterControls.Block.performed += i => blockInput = true;
+        inputActions.CharacterControls.Block.canceled += i => blockInput = false;
         //Parry
-        inputActions.PlayerCombat.Parry.performed += i => parryInput = true;
+        inputActions.CharacterControls.Parry.performed += i => parryInput = true;
         //Quickslot left
-        inputActions.PlayerActions.QuickslotLeft.performed += i => quickslotLeftInput = true;
+        inputActions.CharacterControls.QuickslotLeft.performed += i => quickslotLeftInput = true;
         //Quickslot right
-        inputActions.PlayerActions.QuickslotRight.performed += i => quickslotRightInput = true;
+        inputActions.CharacterControls.QuickslotRight.performed += i => quickslotRightInput = true;
         //Quickslot use
-        inputActions.PlayerActions.QuickslotUse.performed += i => quickslotUseInput = true;
+        inputActions.CharacterControls.QuickslotUse.performed += i => quickslotUseInput = true;
 
         //----------------------------------------------------------
         //                         Spellcasting
         //----------------------------------------------------------
         #region Spellcasts
         //Enable Spellcasting
-        inputActions.PlayerCombat.SpellcastingMode.performed += i => spellcastingModeInput = true;
-        inputActions.PlayerCombat.SpellcastingMode.canceled += i => spellcastingModeInput = false;
+        inputActions.CharacterControls.SpellcastingMode.performed += i => spellcastingModeInput = true;
+        inputActions.CharacterControls.SpellcastingMode.canceled += i => spellcastingModeInput = false;
         //1
-        inputActions.PlayerSpellcasting.Spell1.performed += i => castSpell[0]=true;
+        inputActions.CharacterControls.Spell1.performed += i => castSpell[0]=true;
         //2
-        inputActions.PlayerSpellcasting.Spell2.performed += i => castSpell[1] = true;
+        inputActions.CharacterControls.Spell2.performed += i => castSpell[1] = true;
         //3
-        inputActions.PlayerSpellcasting.Spell3.performed += i => castSpell[2] = true;
+        inputActions.CharacterControls.Spell3.performed += i => castSpell[2] = true;
         //4
-        inputActions.PlayerSpellcasting.Spell4.performed += i => castSpell[3] = true;
+        inputActions.CharacterControls.Spell4.performed += i => castSpell[3] = true;
         //5
-        inputActions.PlayerSpellcasting.Spell5.performed += i => castSpell[4] = true;
+        inputActions.CharacterControls.Spell5.performed += i => castSpell[4] = true;
         //6
-        inputActions.PlayerSpellcasting.Spell6.performed += i => castSpell[5] = true;
+        inputActions.CharacterControls.Spell6.performed += i => castSpell[5] = true;
         //7
-        inputActions.PlayerSpellcasting.Spell7.performed += i => castSpell[6] = true;
+        inputActions.CharacterControls.Spell7.performed += i => castSpell[6] = true;
         //8
-        inputActions.PlayerSpellcasting.Spell8.performed += i => castSpell[7] = true;
+        inputActions.CharacterControls.Spell8.performed += i => castSpell[7] = true;
         #endregion
 
         //----------------------------------------------------------
         //                         Other
         //----------------------------------------------------------
         //Interact
-        inputActions.PlayerActions.Interact.performed += i => interactInput = true;
+        inputActions.CharacterControls.Interact.performed += i => interactInput = true;
         //Open/Close Menu
-        inputActions.PlayerActions.OpenMenu.performed += i => menuInput = true;
-        inputActions.MenuNavigation.CloseMenus.performed += i => menuInput = true;
+        inputActions.CharacterControls.OpenMenu.performed += i => menuInput = true;
+        inputActions.UIControls.CloseMenus.performed += i => menuInput = true;
     }
 
     #region Movement

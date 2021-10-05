@@ -40,11 +40,8 @@ public class UIManager : MonoBehaviour
             if (isInMenuMode)
             {
                 //Disable gameplay inputs and enable menu inputs
-                inputHandler.GetInputActions().PlayerActions.Disable();
-                inputHandler.GetInputActions().PlayerCombat.Disable();
-                inputHandler.GetInputActions().PlayerMovement.Disable();
-                inputHandler.GetInputActions().PlayerSpellcasting.Disable();
-                inputHandler.GetInputActions().MenuNavigation.Enable();
+                inputHandler.GetInputActions().CharacterControls.Disable();
+                inputHandler.GetInputActions().UIControls.Enable();
                 //swap to in menu screen
                 InGameGUI.SetActive(false);
                 MenuGUI.SetActive(true);
@@ -55,11 +52,8 @@ public class UIManager : MonoBehaviour
             else
             {
                 //Enable gameplay inputs and disable menu inputs
-                inputHandler.GetInputActions().PlayerActions.Enable();
-                inputHandler.GetInputActions().PlayerCombat.Enable();
-                inputHandler.GetInputActions().PlayerMovement.Enable();
-                inputHandler.GetInputActions().PlayerSpellcasting.Enable();
-                inputHandler.GetInputActions().MenuNavigation.Disable();
+                inputHandler.GetInputActions().CharacterControls.Enable();
+                inputHandler.GetInputActions().UIControls.Disable();
                 //swap to in game screen
                 InGameGUI.SetActive(true);
                 MenuGUI.SetActive(false);
