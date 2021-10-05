@@ -26,8 +26,6 @@ public class PlayerQuickslotManager : MonoBehaviour
 
     private void HandleQuickslotSelectionInputs()
     {
-        Debug.Log("current Index: " + playerInventory.quickslotItems.IndexOf(playerInventory.currentQuickSlotItem) + " count of:" + playerInventory.quickslotItems.Count);
-
         if (inputHandler.quickslotLeftInput)
         {
             //Get the index of the current quickslot item
@@ -49,6 +47,8 @@ public class PlayerQuickslotManager : MonoBehaviour
             //sets the current quickslot item to the new value
             playerInventory.currentQuickSlotItem = playerInventory.quickslotItems[currentIndexValue - 1];
 
+            //Update the ui display
+            EventManager.currentManager.AddEvent(new UpdateQuickslotDisplay());
         }
 
         if (inputHandler.quickslotRightInput)
@@ -71,6 +71,9 @@ public class PlayerQuickslotManager : MonoBehaviour
             }
             //sets the current quickslot item to the new value
             playerInventory.currentQuickSlotItem = playerInventory.quickslotItems[currentIndexValue + 1];
+
+            //Update the ui display
+            EventManager.currentManager.AddEvent(new UpdateQuickslotDisplay());
         }
     }
 
@@ -87,6 +90,9 @@ public class PlayerQuickslotManager : MonoBehaviour
 
             playerInventory.currentQuickSlotItem.AttemptToUseItem(playerAnimatorManager, playerStats);
             currentQuickSlotItem = playerInventory.currentQuickSlotItem;
+
+            //Update the ui display
+            EventManager.currentManager.AddEvent(new UpdateQuickslotDisplay());
         }
     }
 

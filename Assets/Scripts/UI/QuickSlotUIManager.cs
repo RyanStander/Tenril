@@ -2,12 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class QuickSlotUIManager : MonoBehaviour
 {
     [SerializeField] private PlayerInventory playerInventory;
 
     [SerializeField] private Image quickSlotItemRight,quickSlotItemLeft,currentQuickSlotItem;
+    [SerializeField] private TMP_Text currentQuickSlotDisplayText;
+
+    private void OnEnable()
+    {
+        EventManager.currentManager.Subscribe(EventType.UpdateQuickslotDisplay, OnUpdateQuickSlotDisplay);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.currentManager.Unsubscribe(EventType.UpdateQuickslotDisplay, OnUpdateQuickSlotDisplay);
+    }
 
     private void Start()
     {
@@ -16,6 +28,18 @@ public class QuickSlotUIManager : MonoBehaviour
             playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
         }
         LoadQuickslotItemsToDisplay();
+    }
+
+    private void OnUpdateQuickSlotDisplay(EventData eventData)
+    {
+        if (eventData is UpdateQuickslotDisplay)
+        {
+            LoadQuickslotItemsToDisplay();
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.UpdateQuickslotDisplay was received but is not of class UpdateQuickslotDisplay.");
+        }
     }
 
     private void LoadQuickslotItemsToDisplay()
@@ -37,8 +61,8 @@ public class QuickSlotUIManager : MonoBehaviour
             quickSlotItemRight.color = transperant;
             return;
         }
-
-
+        if(currentQuickSlotDisplayText!=null)
+            currentQuickSlotDisplayText.text = playerInventory.currentQuickSlotItem.itemName;
         currentQuickSlotItem.sprite = playerInventory.currentQuickSlotItem.itemIcon;
 
         //if there is only a single quick slot item, hide the left and right ones
