@@ -10,27 +10,20 @@ public class EnemyStats : CharacterStats
     //TODO: Create traits that affect the behaviour of the AI
     //public List<Traits> enemyTraits = new List<Traits>();
 
-    [Header("Resource bars")]
-    [SerializeField] private SliderBarDisplayUI healthBar;
-
     private void Start()
     {
         SetupStats();
-        healthBar.SetMaxValue(maxHealth);
     }
 
     public override void TakeDamage(float damageAmount, bool playAnimation = true)
     {
-        if (isDead)
-            return;
+        //Return if already dead
+        if (isDead) return;
 
-        //change current health
+        //Change current health
         base.TakeDamage(damageAmount);
 
-        //update health display on the healthbar
-        healthBar.SetCurrentValue(currentHealth);
-
-        //If player health reaches or goes pass 0, play death animation and handle death
+        //If character health reaches or goes past 0, play death animation and handle death
         if (currentHealth <= 0)
         {
             currentHealth = 0;
@@ -43,13 +36,10 @@ public class EnemyStats : CharacterStats
 
     public override void RegainHealth(float regainAmount)
     {
-        if (isDead)
-            return;
+        //Return if already dead
+        if (isDead) return;
 
         //change current health
         base.RegainHealth(regainAmount);
-
-        //update health display on the healthbar
-        healthBar.SetCurrentValue(currentHealth);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class WeaponSlotManager : MonoBehaviour
 {
     private PlayerManager playerManager;
-    private PlayerInventory playerInventory;
+    private CharacterInventory playerInventory;
 
     private WeaponHolderSlot leftHandSlot, rightHandSlot, rightSideSlot, leftSideSlot, backSlot;
 
@@ -16,7 +16,7 @@ public class WeaponSlotManager : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         playerManager = GetComponent<PlayerManager>();
-        playerInventory = GetComponent<PlayerInventory>();
+        playerInventory = GetComponent<CharacterInventory>();
 
         //Get all weapon holder slots on the character
         WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();
@@ -111,6 +111,7 @@ public class WeaponSlotManager : MonoBehaviour
 
         //get the value of the damage collider
         rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
+
         //set the damage of the collider equal to that of the right weapon
         rightHandDamageCollider.currentDamage = playerInventory.equippedWeapon.baseDamage;
     }

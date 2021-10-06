@@ -8,13 +8,6 @@ public class PlayerInventory : CharacterInventory
 
     public int Gold=250;
 
-    [Header("Equipped Items")]
-    [Tooltip("The weapon the player currently has equipped")]
-    public WeaponItem equippedWeapon;
-    [Tooltip("Determines the weapon that the player currently has equiped and used for swapping")]
-    public bool isWieldingPrimaryWeapon = true;
-    [Tooltip("The 2 weapons that a player can swap between")]
-    public WeaponItem primaryWeapon, secondaryWeapon;
     [Tooltip("The spells that the player can currently cast")]
     public SpellItem[] preparedSpells = new SpellItem[8];
 

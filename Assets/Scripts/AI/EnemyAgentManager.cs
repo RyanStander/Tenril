@@ -17,4 +17,15 @@ public class EnemyAgentManager : MonoBehaviour
 
     //The state machine connected to the manager
     public EnemyFSM stateMachine;
+
+    //The inventory of the enemy
+    public EnemyInventory inventory;
+
+    //The inventory of the enemy
+    public WeaponSlotManager weaponSlotManager;
+
+    private void Start()
+    {
+        inventory.LoadEquippedWeapons(weaponSlotManager);
+    }
 }
