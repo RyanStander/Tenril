@@ -181,18 +181,18 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Spellcasting Mode"",
+                    ""name"": ""Lock On"",
                     ""type"": ""Button"",
-                    ""id"": ""13f904bb-fb5d-45bb-a6b0-408ec4a97477"",
+                    ""id"": ""b2a11934-e499-4477-bbae-cb7adf944118"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Lock On"",
+                    ""name"": ""Spellcasting Mode"",
                     ""type"": ""Button"",
-                    ""id"": ""b2a11934-e499-4477-bbae-cb7adf944118"",
+                    ""id"": ""13f904bb-fb5d-45bb-a6b0-408ec4a97477"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -736,28 +736,6 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""2c848cd0-8e02-4b8b-9179-49aa0ec91fe0"",
-                    ""path"": ""<Keyboard>/alt"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard & Mouse"",
-                    ""action"": ""Spellcasting Mode"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3bdfe05a-5660-4d72-8fab-d768680c123c"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Spellcasting Mode"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""57ad613f-7b07-42dd-b623-babe8abd8c6d"",
                     ""path"": ""<Keyboard>/backquote"",
                     ""interactions"": ""Tap"",
@@ -953,6 +931,28 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""action"": ""Spell 8"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2c848cd0-8e02-4b8b-9179-49aa0ec91fe0"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Spellcasting Mode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3bdfe05a-5660-4d72-8fab-d768680c123c"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Spellcasting Mode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1040,8 +1040,8 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         m_CharacterControls_SpecialAttack = m_CharacterControls.FindAction("Special Attack", throwIfNotFound: true);
         m_CharacterControls_Block = m_CharacterControls.FindAction("Block", throwIfNotFound: true);
         m_CharacterControls_Parry = m_CharacterControls.FindAction("Parry", throwIfNotFound: true);
-        m_CharacterControls_SpellcastingMode = m_CharacterControls.FindAction("Spellcasting Mode", throwIfNotFound: true);
         m_CharacterControls_LockOn = m_CharacterControls.FindAction("Lock On", throwIfNotFound: true);
+        m_CharacterControls_SpellcastingMode = m_CharacterControls.FindAction("Spellcasting Mode", throwIfNotFound: true);
         m_CharacterControls_Spell1 = m_CharacterControls.FindAction("Spell 1", throwIfNotFound: true);
         m_CharacterControls_Spell2 = m_CharacterControls.FindAction("Spell 2", throwIfNotFound: true);
         m_CharacterControls_Spell3 = m_CharacterControls.FindAction("Spell 3", throwIfNotFound: true);
@@ -1129,8 +1129,8 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_SpecialAttack;
     private readonly InputAction m_CharacterControls_Block;
     private readonly InputAction m_CharacterControls_Parry;
-    private readonly InputAction m_CharacterControls_SpellcastingMode;
     private readonly InputAction m_CharacterControls_LockOn;
+    private readonly InputAction m_CharacterControls_SpellcastingMode;
     private readonly InputAction m_CharacterControls_Spell1;
     private readonly InputAction m_CharacterControls_Spell2;
     private readonly InputAction m_CharacterControls_Spell3;
@@ -1160,8 +1160,8 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         public InputAction @SpecialAttack => m_Wrapper.m_CharacterControls_SpecialAttack;
         public InputAction @Block => m_Wrapper.m_CharacterControls_Block;
         public InputAction @Parry => m_Wrapper.m_CharacterControls_Parry;
-        public InputAction @SpellcastingMode => m_Wrapper.m_CharacterControls_SpellcastingMode;
         public InputAction @LockOn => m_Wrapper.m_CharacterControls_LockOn;
+        public InputAction @SpellcastingMode => m_Wrapper.m_CharacterControls_SpellcastingMode;
         public InputAction @Spell1 => m_Wrapper.m_CharacterControls_Spell1;
         public InputAction @Spell2 => m_Wrapper.m_CharacterControls_Spell2;
         public InputAction @Spell3 => m_Wrapper.m_CharacterControls_Spell3;
@@ -1230,12 +1230,12 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 @Parry.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnParry;
                 @Parry.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnParry;
                 @Parry.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnParry;
-                @SpellcastingMode.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSpellcastingMode;
-                @SpellcastingMode.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSpellcastingMode;
-                @SpellcastingMode.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSpellcastingMode;
                 @LockOn.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLockOn;
                 @LockOn.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLockOn;
                 @LockOn.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLockOn;
+                @SpellcastingMode.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSpellcastingMode;
+                @SpellcastingMode.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSpellcastingMode;
+                @SpellcastingMode.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSpellcastingMode;
                 @Spell1.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSpell1;
                 @Spell1.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSpell1;
                 @Spell1.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSpell1;
@@ -1315,12 +1315,12 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 @Parry.started += instance.OnParry;
                 @Parry.performed += instance.OnParry;
                 @Parry.canceled += instance.OnParry;
-                @SpellcastingMode.started += instance.OnSpellcastingMode;
-                @SpellcastingMode.performed += instance.OnSpellcastingMode;
-                @SpellcastingMode.canceled += instance.OnSpellcastingMode;
                 @LockOn.started += instance.OnLockOn;
                 @LockOn.performed += instance.OnLockOn;
                 @LockOn.canceled += instance.OnLockOn;
+                @SpellcastingMode.started += instance.OnSpellcastingMode;
+                @SpellcastingMode.performed += instance.OnSpellcastingMode;
+                @SpellcastingMode.canceled += instance.OnSpellcastingMode;
                 @Spell1.started += instance.OnSpell1;
                 @Spell1.performed += instance.OnSpell1;
                 @Spell1.canceled += instance.OnSpell1;
@@ -1419,8 +1419,8 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         void OnSpecialAttack(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
         void OnParry(InputAction.CallbackContext context);
-        void OnSpellcastingMode(InputAction.CallbackContext context);
         void OnLockOn(InputAction.CallbackContext context);
+        void OnSpellcastingMode(InputAction.CallbackContext context);
         void OnSpell1(InputAction.CallbackContext context);
         void OnSpell2(InputAction.CallbackContext context);
         void OnSpell3(InputAction.CallbackContext context);
