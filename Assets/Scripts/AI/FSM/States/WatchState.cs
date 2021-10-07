@@ -24,12 +24,21 @@ public class WatchState : AbstractStateFSM
     //Head of the agent watching
     public Transform agentHead;
 
+    //Bool for if a searchrate should be used
+    public bool isUsingSearchRate;
+
     //Performance related rate at which the agent should cast search
     [Range(0,1)]
     public float searchRate = 0.5f;
 
     //Helped bool for delayed searches
     private bool isWaitingToSearch = true;
+
+    //Dictionary to hold potential targets and their distances
+    private Dictionary<GameObject, float> targetsByDistance = new Dictionary<GameObject, float>();
+
+    //Current target
+    private GameObject currentTarget = null;
 
     public override void OnEnable()
     {
@@ -52,6 +61,9 @@ public class WatchState : AbstractStateFSM
 
             //Set helped bool is using delay
             isWaitingToSearch = true;
+
+            //Set current target to null
+            currentTarget = null;
         }
 
         return enteredState;
@@ -66,22 +78,30 @@ public class WatchState : AbstractStateFSM
             //If was alerted, enter chase state
             if (wasAlerted == true)
             {
-                Debug.Log("Alerted!");
-                wasAlerted = false;
+                DebugLogString("Alerted!");
+
+                //Update the current target in the agent manager
+                enemyManager.currentTarget = currentTarget;
 
                 //Change to chase state
-                //Currently no state change implemented
-                //finiteStateMachine.EnterState();
+                finiteStateMachine.EnterState(StateTypeFSM.CHASE);
             }
             else
             {
-                CheckForTarget();
+                if (isWaitingToSearch && isUsingSearchRate)
+                {
+                    //Start a delayed courotine for target checking
+                    StartCoroutine(DelayedTargetCheck(searchRate));
+                }
+                else if (!isUsingSearchRate)
+                {
+                    //Default automatic check
+                    CheckForTarget();
+                }
+
+                //Check for the closest target (if any)
+                CheckForClosestTarget();
             }
-            //else if (isWaitingToSearch)
-            //{
-            //    //Start a delayed courotine for target checking
-            //    StartCoroutine(DelayedTargetCheck(searchRate));
-            //}
         }
     }
 
@@ -116,9 +136,9 @@ public class WatchState : AbstractStateFSM
     {
         //Cast a sphere wrapping the head and check for characters within range
         Collider[] hitColliders = Physics.OverlapSphere(agentHead.position, alertRadius, characterLayer);
-        
-        //Declare temporary dictionary to hold targets and their distances
-        Dictionary<GameObject, int> targetsByDistance = new Dictionary<GameObject, int>();
+
+        //Clear the dictionary to free up space for new detected targets
+        targetsByDistance.Clear();
 
         //Check each character for if it is within valid distance and for its faction
         foreach (var hitCollider in hitColliders)
@@ -131,8 +151,7 @@ public class WatchState : AbstractStateFSM
                 //If there are no objects blocking the way, move onto faction filtering
                 else if (detectionBlockLayer != (detectionBlockLayer | (1 << hit.transform.gameObject.layer)))
                 {
-                    Debug.Log("Colliding with character object!: " + hit.transform.gameObject);
-                    
+                    //DebugLogString("Colliding with character object!: " + hit.transform.gameObject);
 
                     //Debug the line results
                     Debug.DrawRay(agentHead.position, hit.point - agentHead.position, Color.green);
@@ -144,8 +163,8 @@ public class WatchState : AbstractStateFSM
                         //If valid, add to dictionary with unpathed & direct distance
                         if (stats.assignedFaction != enemyManager.enemyStats.assignedFaction && stats.assignedFaction != Faction.NONE)
                         {
-                           // Debug.Log("GameObject: " + hitCollider.gameObject + "| Distance: " + (int)Vector3.Distance(agentHead.position, hitCollider.gameObject.transform.position));
-                            targetsByDistance.Add(hitCollider.gameObject, (int)Vector3.Distance(agentHead.position, hitCollider.gameObject.transform.position));
+                            //DebugLogString("Target Character Found: " + hitCollider.gameObject + "| Distance: " + Vector3.Distance(agentHead.position, hitCollider.gameObject.transform.position));
+                            targetsByDistance.Add(hitCollider.gameObject, Vector3.Distance(agentHead.position, hitCollider.gameObject.transform.position));
                         }
                     }
                 }
@@ -154,6 +173,45 @@ public class WatchState : AbstractStateFSM
                     //Debug the line results
                     Debug.DrawRay(agentHead.position, hit.point - agentHead.position, Color.red);
                 }
+            }
+        }
+    }
+
+    private void CheckForClosestTarget()
+    {
+        foreach(KeyValuePair<GameObject, float> valuePair in targetsByDistance)
+        {
+            DebugLogString(valuePair.Key + " at distance " + valuePair.Value);
+        }
+
+        //Null & empty check for the dictionary
+        if(targetsByDistance.Count > 0 && targetsByDistance != null)
+        {
+            //Temporary int for the distance
+            float shortestDistance = float.MaxValue;
+
+            //Iterate over the dictionary for the closest target
+            foreach (KeyValuePair<GameObject, float> valuePair in targetsByDistance)
+            {
+                //Check if closer than the current distance
+                if(valuePair.Value < shortestDistance)
+                {
+                    //Set new distance
+                    shortestDistance = valuePair.Value;
+
+                    //Set new target
+                    currentTarget = valuePair.Key;
+                }
+            }
+
+            //Debug the chosen target at a specified distance
+            targetsByDistance.TryGetValue(currentTarget, out float val);
+            DebugLogString("Chosen target: " + currentTarget + " at distance " + val);
+            
+            //Second null check, if passed declare a found target
+            if(currentTarget != null)
+            {
+                wasAlerted = true;
             }
         }
     }

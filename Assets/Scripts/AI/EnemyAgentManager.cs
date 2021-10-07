@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,6 +24,9 @@ public class EnemyAgentManager : MonoBehaviour
 
     //The inventory of the enemy
     public WeaponSlotManager weaponSlotManager;
+
+    //The current target of the agent
+    internal GameObject currentTarget;
 
     private void Start()
     {

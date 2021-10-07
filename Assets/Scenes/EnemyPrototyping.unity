@@ -1124,7 +1124,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   agentHead: {fileID: 1923873518}
-  searchRate: 0.1
+  isUsingSearchRate: 0
+  searchRate: 0.25
 --- !u!4 &265412029
 Transform:
   m_ObjectHideFlags: 0
@@ -1483,7 +1484,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   agentHead: {fileID: 1910775980}
-  searchRate: 0.1
+  isUsingSearchRate: 1
+  searchRate: 0.25
 --- !u!4 &330024551
 Transform:
   m_ObjectHideFlags: 0
@@ -2042,7 +2044,7 @@ PrefabInstance:
       objectReference: {fileID: 330024550}
     - target: {fileID: -5642952564883507446, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: isDebuggingStates
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5642952564883507446, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: validStates.Array.size
@@ -2103,6 +2105,10 @@ PrefabInstance:
     - target: {fileID: 6051805372053708825, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6051805372053708825, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6051805373545155770, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: navAgent
@@ -3368,7 +3374,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.14751913, y: 0.000000028936832, z: -0.0000000011454508, w: 0.98905927}
+  m_LocalRotation: {x: 0.14751913, y: 0.000000026110525, z: -3.071213e-10, w: 0.98905927}
   m_LocalPosition: {x: 0, y: 2.4579134, z: -2.7320724}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -3793,6 +3799,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   agentHead: {fileID: 1131648338}
+  isUsingSearchRate: 0
   searchRate: 0.1
 --- !u!1 &1066256225
 GameObject:
@@ -4598,7 +4605,7 @@ PrefabInstance:
       objectReference: {fileID: 265412028}
     - target: {fileID: -5642952564883507446, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: isDebuggingStates
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5642952564883507446, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: validStates.Array.size
@@ -4659,6 +4666,10 @@ PrefabInstance:
     - target: {fileID: 6051805372053708825, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6051805372053708825, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6051805373545155770, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: navAgent
@@ -4914,11 +4925,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 462597420182148401, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000027189824
+      value: 0.000000020917481
       objectReference: {fileID: 0}
     - target: {fileID: 462597420182148401, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00000000382546
+      value: -0.0000000029429759
       objectReference: {fileID: 0}
     - target: {fileID: 462597420413940776, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4970,11 +4981,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 462597421166302662, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000004275059
+      value: 0.00000000427506
       objectReference: {fileID: 0}
     - target: {fileID: 462597421166302662, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 4.770619e-10
+      value: -4.77062e-10
       objectReference: {fileID: 0}
     - target: {fileID: 462597421253155052, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_Follow
@@ -5018,11 +5029,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 462597421395179367, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1.3193313e-15
+      value: 4.5204336e-23
       objectReference: {fileID: 0}
     - target: {fileID: 462597421395179367, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -1.8264133e-16
+      value: -7.695083e-24
       objectReference: {fileID: 0}
     - target: {fileID: 462597421750081532, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_Name
@@ -5292,7 +5303,7 @@ PrefabInstance:
       objectReference: {fileID: 1507357168}
     - target: {fileID: -5642952564883507446, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: isDebuggingStates
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5642952564883507446, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: validStates.Array.size
@@ -5353,6 +5364,10 @@ PrefabInstance:
     - target: {fileID: 6051805372053708825, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6051805372053708825, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6051805373545155770, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: navAgent
@@ -5701,7 +5716,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   agentHead: {fileID: 1779629559}
-  searchRate: 0.1
+  isUsingSearchRate: 1
+  searchRate: 1
 --- !u!4 &1507357169
 Transform:
   m_ObjectHideFlags: 0
@@ -14025,7 +14041,7 @@ PrefabInstance:
       objectReference: {fileID: 1042659297}
     - target: {fileID: -5642952564883507446, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: isDebuggingStates
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5642952564883507446, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: validStates.Array.size
