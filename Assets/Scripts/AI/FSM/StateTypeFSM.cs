@@ -3,7 +3,8 @@ public enum StateTypeFSM
     IDLE,
     WATCH,
     PATROL,
-    CHASE,
+    CHASETARGET,
     ATTACK,
+    DEFEND,
     FLEE
 }

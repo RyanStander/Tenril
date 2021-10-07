@@ -936,7 +936,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb151d95482802c439f309dfc9b73bb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parentOverride: {fileID: 7988751565095089269}
+  parentOverride: {fileID: 0}
   currentWeapon: {fileID: 0}
   weaponSlot: 0
   currentWeaponModel: {fileID: 0}
@@ -1074,9 +1074,8 @@ GameObject:
   - component: {fileID: 4565213117828222514}
   - component: {fileID: 8203391001447571458}
   - component: {fileID: 6485897505272901038}
-  - component: {fileID: 6948207675098016046}
   m_Layer: 0
-  m_Name: EnemyArcher
+  m_Name: BrokenArcher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1111,7 +1110,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: bd80eb2c6ff4d9141960fc5099cc6ee9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -1147,20 +1146,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &6948207675098016046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3718720902294664033}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ea56235252480c4cb51e33153ba6203, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftHandDamageCollider: {fileID: 0}
-  rightHandDamageCollider: {fileID: 0}
 --- !u!1 &3738866208634569071
 GameObject:
   m_ObjectHideFlags: 0

@@ -67,7 +67,7 @@ public abstract class AbstractStateFSM : MonoBehaviour
         }
     }
 
-    public virtual void SetExecutingAnimationManager(AnimatorManager givenManager)
+    public virtual void SetExecutingAnimationManager(EnemyAnimatorManager givenManager)
     {
         if (givenManager != null)
         {

@@ -7,19 +7,10 @@ public class WatchState : AbstractStateFSM
 {
     //Bool to track if alerted
     private bool wasAlerted = false;
-    
-    //"Blind" range
-    public int alertRadius = 10;
 
+    //Masks for detection and vision blocking
     public LayerMask detectionBlockLayer = 1 << 9;
     public LayerMask characterLayer = 1 << 10;
-
-    ////Range at which the the AI can see
-    //public int visionRange = 20;
-
-    ////Angle at which the AI can see
-    //[Range(0, 180)]
-    //public int fieldOfVision = 90;
 
     //Head of the agent watching
     public Transform agentHead;
@@ -84,7 +75,7 @@ public class WatchState : AbstractStateFSM
                 enemyManager.currentTarget = currentTarget;
 
                 //Change to chase state
-                finiteStateMachine.EnterState(StateTypeFSM.CHASE);
+                finiteStateMachine.EnterState(StateTypeFSM.CHASETARGET);
             }
             else
             {
@@ -135,7 +126,7 @@ public class WatchState : AbstractStateFSM
     private void CheckForTarget()
     {
         //Cast a sphere wrapping the head and check for characters within range
-        Collider[] hitColliders = Physics.OverlapSphere(agentHead.position, alertRadius, characterLayer);
+        Collider[] hitColliders = Physics.OverlapSphere(agentHead.position, enemyManager.enemyStats.alertRadius, characterLayer);
 
         //Clear the dictionary to free up space for new detected targets
         targetsByDistance.Clear();
@@ -220,6 +211,6 @@ public class WatchState : AbstractStateFSM
     {
         //Debug the sphere of view
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(agentHead.position, alertRadius);
+        Gizmos.DrawWireSphere(agentHead.position, enemyManager.enemyStats.alertRadius);
     }
 }

@@ -25,7 +25,7 @@ public class EnemyFSM : MonoBehaviour
 
         //Get the agents
         EnemyAgentManager agentManager = this.GetComponent<EnemyAgentManager>();
-        AnimatorManager animationManager = this.GetComponent<AnimatorManager>();
+        EnemyAnimatorManager animationManager = this.GetComponent<EnemyAnimatorManager>();
         NavMeshAgent navAgent = this.GetComponent<NavMeshAgent>();
 
         //Apply relevant information internally to the states
@@ -95,6 +95,21 @@ public class EnemyFSM : MonoBehaviour
 
             //Set & enter new state
             EnterState(nextState);
+        }
+    }
+
+    //Get a specific state of given type
+    public AbstractStateFSM GetState(StateTypeFSM givenType)
+    {
+        //Search for state and return if existing
+        if (FSMStates.ContainsKey(givenType))
+        {
+            //Return state of type
+            return FSMStates[givenType];
+        }
+        else
+        {
+            return null;
         }
     }
     #endregion
