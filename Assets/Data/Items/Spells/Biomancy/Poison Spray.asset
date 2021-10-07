@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e0b3dde20cc7374c8ef00cc0fcd568d, type: 3}
+  m_Name: Poison Spray
+  m_EditorClassIdentifier: 
+  itemIcon: {fileID: 21300000, guid: 385da099954d14cc28853d00b4f705b0, type: 3}
+  itemName: Poison Spray
+  spellWindUpFX: {fileID: 0}
+  spellCastFX: {fileID: 520670889292294596, guid: f5b03555b69021e4b901f7b88983da83, type: 3}
+  spellCastFXOffset: {x: 1, y: 1, z: 0}
+  spellAnimation: ProjectileThrow
+  spellCost: 5
+  spellType: 0
+  spellDescription: Poison do damage
+  poisonedStatusEffect: {fileID: 11400000, guid: 5c5d065870f49a142a368880a9b8d995, type: 2}

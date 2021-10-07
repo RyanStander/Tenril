@@ -26,7 +26,7 @@ public class SpellItem : Item
 
     public virtual void AttemptToCastSpell(AnimatorManager animatorManager, CharacterStats characterStats)
     {
-        Debug.Log("Attempting spell cast!");
+        //Debug.Log("Attempting spell cast!");
 
         //Start the casting spell effects
         if (spellWindUpFX != null)
@@ -40,7 +40,7 @@ public class SpellItem : Item
 
     public virtual void SuccessfullyCastSpell(AnimatorManager animatorManager, CharacterStats characterStats)
     {
-        Debug.Log("Spell cast has succeeded");
+        //Debug.Log("Spell cast has succeeded");
 
         //Check what type of spell it is then casts based on the type
         switch (spellType)
