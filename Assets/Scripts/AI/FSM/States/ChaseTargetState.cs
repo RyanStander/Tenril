@@ -7,9 +7,9 @@ using UnityEngine;
 
 public class ChaseTargetState : AbstractStateFSM
 {
-    Vector3 worldDeltaPosition;
-    Vector2 groundDeltaPosition;
-    Vector2 velocity = Vector2.zero;
+    //Hashes for quick animator parameter modification
+    private int forwardHash;
+    private int leftHash;
 
     public override void OnEnable()
     {
@@ -28,7 +28,11 @@ public class ChaseTargetState : AbstractStateFSM
             DebugLogString("ENTERED CHASE STATE");
 
             //Disable parts of navmesh controls in order to allow for animation driven movement
-            enemyManager.navAgent.updatePosition = false;
+            //enemyManager.navAgent.updatePosition = false;
+
+            //Quick hash for parameters
+            forwardHash = Animator.StringToHash("Forward");
+            leftHash = Animator.StringToHash("Left");
         }
 
         return enteredState;
@@ -60,6 +64,8 @@ public class ChaseTargetState : AbstractStateFSM
             animatorManager.animator.SetFloat("Forward", 0, 0.1f, Time.deltaTime);
             return;
         }
+
+        HandleMovement();
     }
 
     public override bool ExitState()
@@ -75,8 +81,49 @@ public class ChaseTargetState : AbstractStateFSM
     }
 
 
+    private void HandleMovement()
+    {
+        //Have root motion be applied
+        animatorManager.animator.applyRootMotion = true;
+
+        //Rotate towards the next position that is gotten from the agent
+        RotateTowardsNextPosition();
+
+        //Handle the forward movement of the agent
+        HandleAnimationMovement();
+    }
+
+    private void HandleAnimationMovement()
+    {
+        //Set the velocity in the animator
+        //animatorManager.animator.SetFloat(forwardHash, agentVelocityX);
+        //animatorManager.animator.SetFloat(leftHash, agentVelocityZ);
+    }
+
+    private void RotateTowardsTargetPosition(Vector3 target, float rotationSpeed)
+    {
+        //Get the direction
+        Vector3 direction = (target - transform.root.position).normalized;
+
+        //Calculate the look rotation
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+
+        //Slerp towards what the nav agent wants the target
+        transform.root.rotation = Quaternion.Slerp(transform.root.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+    }
+
+    private void RotateTowardsNextPosition()
+    {
+        //Disable agent forced rotation
+        enemyManager.navAgent.updateRotation = false;
+
+        //Simulates the agents next steer target
+        RotateTowardsTargetPosition(enemyManager.navAgent.steeringTarget, enemyManager.enemyStats.rotationSpeed);
+    }
+
     private bool IsWithinAttackRange()
     {
+        //If within attack range based on remaining NavMesh distance, return true
         if (enemyManager.navAgent.remainingDistance <= enemyManager.enemyStats.maximumAttackRange)
         {
             return true;
@@ -86,6 +133,23 @@ public class ChaseTargetState : AbstractStateFSM
             return false;
         }
     }
+
+    private void OnAnimatorMove()
+    {
+        //transform.root.position = enemyManager.navAgent.nextPosition;
+
+        float delta = Time.deltaTime;
+        enemyManager.rigidBody.drag = 0;
+        Vector3 deltaPosition = animatorManager.animator.deltaPosition;
+        deltaPosition.y = 0;
+        Vector3 velocity = deltaPosition / delta;
+        enemyManager.rigidBody.velocity = velocity;
+    }
+
+
+    Vector3 worldDeltaPosition;
+    Vector2 groundDeltaPosition;
+    Vector2 velocity = Vector2.zero;
 
     private void ClockworksGamesMethodAttempt()
     {
