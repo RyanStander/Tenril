@@ -7,6 +7,10 @@ using UnityEngine;
 
 public class ChaseTargetState : AbstractStateFSM
 {
+    Vector3 worldDeltaPosition;
+    Vector2 groundDeltaPosition;
+    Vector2 velocity = Vector2.zero;
+
     public override void OnEnable()
     {
         base.OnEnable();
@@ -22,6 +26,9 @@ public class ChaseTargetState : AbstractStateFSM
         {
             //Debug message
             DebugLogString("ENTERED CHASE STATE");
+
+            //Disable parts of navmesh controls in order to allow for animation driven movement
+            enemyManager.navAgent.updatePosition = false;
         }
 
         return enteredState;
@@ -40,6 +47,11 @@ public class ChaseTargetState : AbstractStateFSM
             //Change to chase state
             finiteStateMachine.EnterState(StateTypeFSM.WATCH);
         }
+        else
+        {
+            //Set the destination to the target
+            enemyManager.navAgent.SetDestination(enemyManager.currentTarget.transform.position);
+        }
 
         //Return and do not run any more methods until the current action/animation is completed
         if (enemyManager.isPerformingAction)
@@ -48,7 +60,65 @@ public class ChaseTargetState : AbstractStateFSM
             animatorManager.animator.SetFloat("Forward", 0, 0.1f, Time.deltaTime);
             return;
         }
+    }
 
+    public override bool ExitState()
+    {
+        //Run based method
+        base.ExitState();
+
+        //Debug message
+        DebugLogString("EXITED CHASE STATE");
+
+        //Return true
+        return true;
+    }
+
+
+    private bool IsWithinAttackRange()
+    {
+        if (enemyManager.navAgent.remainingDistance <= enemyManager.enemyStats.maximumAttackRange)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private void ClockworksGamesMethodAttempt()
+    {
+        //Calculate the world delta position using the next and current position
+        worldDeltaPosition = enemyManager.navAgent.nextPosition - transform.root.position;
+
+        //Conversion to forward and side motion
+        groundDeltaPosition.x = Vector3.Dot(transform.right, worldDeltaPosition);
+        groundDeltaPosition.y = Vector3.Dot(transform.forward, worldDeltaPosition);
+
+        //Calculate an intended velocity from these deltas
+        velocity = (Time.deltaTime > 1e-5f) ? groundDeltaPosition / Time.deltaTime : velocity = Vector2.zero;
+
+        //Bool for if movement should occur
+        bool shouldMove = velocity.magnitude > 0.025f && enemyManager.navAgent.remainingDistance < enemyManager.enemyStats.maximumAttackRange;
+
+        //Based on previous calculations set the animatior parameters
+        animatorManager.animator.SetBool("Moving", shouldMove);
+        animatorManager.animator.SetFloat("Left", velocity.x);
+        animatorManager.animator.SetFloat("Forward", velocity.y);
+
+        Debug.Log(shouldMove);
+        Debug.Log(velocity);
+    }
+
+    //private void OnAnimatorMove()
+    //{
+    //    transform.root.position = enemyManager.navAgent.nextPosition;
+    //}
+
+
+    private void RyansMethodAttempt()
+    {
         //Calculate target distance
         float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
 
@@ -59,7 +129,7 @@ public class ChaseTargetState : AbstractStateFSM
         }
 
         //Handle the rotation logic for the AI
-        HandleRotationToTarget();
+        RyansMethodAttemptHandleRotationToTarget();
 
         //Reset the navigation agent transforms
         enemyManager.navAgent.transform.localPosition = Vector3.zero;
@@ -76,19 +146,7 @@ public class ChaseTargetState : AbstractStateFSM
         }
     }
 
-    public override bool ExitState()
-    {
-        //Run based method
-        base.ExitState();
-
-        //Debug message
-        DebugLogString("EXITED CHASE STATE");
-
-        //Return true
-        return true;
-    }
-
-    private void HandleRotationToTarget()
+    private void RyansMethodAttemptHandleRotationToTarget()
     {
         //Circumvents the navigation mesh rotation by directly rotating towards the target
         //Allows enemies to attack a target without worrying about obstructions

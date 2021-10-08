@@ -209,6 +209,9 @@ public class WatchState : AbstractStateFSM
 
     private void OnDrawGizmosSelected()
     {
+        //Return if needed items are not available yet
+        if (enemyManager == null || enemyManager.enemyStats == null) return;
+
         //Debug the sphere of view
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(agentHead.position, enemyManager.enemyStats.alertRadius);

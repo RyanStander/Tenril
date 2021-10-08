@@ -9,7 +9,7 @@ using UnityEngine.AI;
 public class EnemyAgentManager : MonoBehaviour
 {
     //Enemy stats to manage
-    public EnemyStats enemyStats;
+    internal EnemyStats enemyStats;
 
     //Navigation agent attached
     internal NavMeshAgent navAgent;
