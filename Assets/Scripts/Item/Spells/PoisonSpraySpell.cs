@@ -17,13 +17,13 @@ public class PoisonSpraySpell : SpellItem
     {
         base.SuccessfullyCastSpell(animatorManager, characterStats);
 
-        //Get the spells damage collider
-        ApplyPoison applyPoison = instantiatedSpellFX.GetComponent<ApplyPoison>();
+        //Get the spells poison effect
+        ApplyStatusEffect applyStatusEffect = instantiatedSpellFX.GetComponent<ApplyStatusEffect>();
 
-        //Set the spells damage and open the collider
-        if (applyPoison != null)
+        //Set the status effect of poison
+        if (applyStatusEffect != null)
         {
-            applyPoison.SetPoisonedStatusEffect(poisonedStatusEffect);
+            applyStatusEffect.SetStatusEffect(poisonedStatusEffect);
         }
     }
 }

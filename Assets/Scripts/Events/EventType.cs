@@ -7,5 +7,6 @@ public enum EventType
 {
     ReceiveDebug,
     ClickedPlaceableGUI,
-    UpdateQuickslotDisplay
+    UpdateQuickslotDisplay,
+    UpdateStatusEffectsDisplay
 }

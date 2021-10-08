@@ -6,11 +6,12 @@ using System;
 
 public class StatusEffectManager : MonoBehaviour
 {
-    [SerializeField]private List<StatusEffect> statusEffects;
-    private List<float> timeLeft=new List<float>();
+    public List<StatusEffect> statusEffects;
+    public List<float> timeLeft=new List<float>();
 
     //Status Effects
     private PoisonEffect poisonEffect;
+    [HideInInspector]public bool isRooted;
 
     //temporary
     [SerializeField]CharacterStats character;
@@ -23,6 +24,7 @@ public class StatusEffectManager : MonoBehaviour
 
     internal void CheckThroughStatusEffects(CharacterStats characterStats)
     {
+        //itterate through all status effects
         for (int i = 0; i < statusEffects.Count; i++)
         {
             switch (statusEffects[i].statusEffectType)
@@ -33,6 +35,7 @@ public class StatusEffectManager : MonoBehaviour
                     HandlePoisonStatusEffect(statusEffects[i],characterStats);
                     break;
                 case StatusEffectType.rooted:
+                    HandleRootStatusEffect(statusEffects[i], characterStats);
                     break;
                 case StatusEffectType.burning:
                     break;
@@ -56,6 +59,11 @@ public class StatusEffectManager : MonoBehaviour
                 {
                     timeLeft[indexVal] = statusEffect.statusEffectDuration + Time.time;
 
+                    if (character is PlayerStats)
+                    {
+                        EventManager.currentManager.AddEvent(new UpdateStatusEffectsDisplay(this));
+                    }
+
                     //IMPROVEMENT: if there is time, change it so that it will base it on which effect is strongest
                 }
                 //exit out of function
@@ -65,6 +73,10 @@ public class StatusEffectManager : MonoBehaviour
         //if no status effect of same type was found, add it
         statusEffects.Add(statusEffect);
         timeLeft.Add((statusEffect.statusEffectDuration + Time.time));
+        if (character is PlayerStats)
+        {
+            EventManager.currentManager.AddEvent(new UpdateStatusEffectsDisplay(this));
+        }
     }
 
     private void RemoveStatusEffect(StatusEffect statusEffect)
@@ -77,8 +89,13 @@ public class StatusEffectManager : MonoBehaviour
         //remove status effect
         statusEffects.RemoveAt(indexVal);
         timeLeft.RemoveAt(indexVal);
+        if (character is PlayerStats)
+        {
+            EventManager.currentManager.AddEvent(new UpdateStatusEffectsDisplay(this));
+        }
     }
 
+    #region Handle Status Effects
     private void HandlePoisonStatusEffect(StatusEffect statusEffect,CharacterStats characterStats)
     {
         //find the index of the object
@@ -107,4 +124,33 @@ public class StatusEffectManager : MonoBehaviour
             }
         }
     }
+
+    private void HandleRootStatusEffect(StatusEffect statusEffect, CharacterStats characterStats)
+    {
+        //find the index of the object
+        int indexVal = statusEffects.IndexOf(statusEffect);
+        //if the duration of the effect has ended
+        if (Time.time > timeLeft[indexVal])
+        {
+            //remove the status effect
+            RemoveStatusEffect(statusEffect);
+            isRooted = false;
+        }
+        //otherwise, handle the status effect
+        else
+        {
+            isRooted = true;
+            //if a rooted effect does not exists, create one
+
+            //otherwise handle current one
+        }
+    }
+    #endregion
+
+    #region Getters & Setters
+    internal bool GetIsRooted()
+    {
+        return isRooted;
+    }
+    #endregion
 }

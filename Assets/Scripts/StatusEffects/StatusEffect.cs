@@ -7,6 +7,7 @@ public class StatusEffect : ScriptableObject
 {
     public StatusEffectType statusEffectType;
     public float statusEffectDuration;
+    public Sprite itemIcon;
 }
 
 public enum StatusEffectType

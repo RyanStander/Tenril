@@ -20,3 +20,13 @@ public class UpdateQuickslotDisplay : EventData
     {
     }
 }
+
+//Event that informs subscribers of the quickslot being updated
+public class UpdateStatusEffectsDisplay : EventData
+{
+    public readonly StatusEffectManager statusEffectManager;
+    public UpdateStatusEffectsDisplay(StatusEffectManager statusEffectManager) : base(EventType.UpdateStatusEffectsDisplay)
+    {
+        this.statusEffectManager = statusEffectManager;
+    }
+}

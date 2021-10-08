@@ -9,12 +9,6 @@ public class DamageOverTime : MonoBehaviour
     private float damageDuration;//how long the DOT will laste
 
     private float nextDamage;//how long until the next damage interval
-    private float remainDuration;//how long the object remains
-
-    private void Start()
-    {
-        remainDuration = Time.time + damageDuration;
-    }
     private void FixedUpdate()
     {
         CheckDamage();
@@ -38,13 +32,7 @@ public class DamageOverTime : MonoBehaviour
         }
         else
         {
-            //if enough time has passed for destruction, destroy object
-            if (Time.time > remainDuration)
-            {
-                Destroy(gameObject);
-            }
-            else
-                givenDamageCollider.DisableDamageCollider();
+            givenDamageCollider.DisableDamageCollider();
         }
     }
 }

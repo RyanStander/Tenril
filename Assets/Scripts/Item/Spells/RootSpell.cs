@@ -9,6 +9,8 @@ public class RootSpell : SpellItem
     public int damageAmount=10;
     [Tooltip("The ticks between damage")]
     public float damageInterval = 1f;
+    [Tooltip("the root applied")]
+    public StatusEffect rootedStatusEffect;
 
     [Tooltip("How long the root lasts")]
     public float rootDuation;
@@ -33,6 +35,11 @@ public class RootSpell : SpellItem
             damageCollider.ownCharacterStats=characterStats;
 
             //Create root effect debuff
+            ApplyStatusEffect applyStatusEffect = instantiatedSpellFX.GetComponent<ApplyStatusEffect>();
+            if (applyStatusEffect != null)
+                applyStatusEffect.SetStatusEffect(rootedStatusEffect);
+            else
+                Debug.LogWarning("No ApplyStatusEffect component was found on the root spell effect, please make sure its applied");
 
             //Create damage over time effect
             DamageOverTime damageOverTime = instantiatedSpellFX.AddComponent<DamageOverTime>();
