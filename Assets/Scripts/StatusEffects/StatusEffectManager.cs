@@ -79,7 +79,7 @@ public class StatusEffectManager : MonoBehaviour
         }
     }
 
-    private void RemoveStatusEffect(StatusEffect statusEffect)
+    private void RemoveStatusEffectAfterTimeout(StatusEffect statusEffect)
     {
         //find the index of the object
         int indexVal = statusEffects.IndexOf(statusEffect);
@@ -104,7 +104,7 @@ public class StatusEffectManager : MonoBehaviour
         if (Time.time > timeLeft[indexVal])
         {
             //remove the status effect
-            RemoveStatusEffect(statusEffect);
+            RemoveStatusEffectAfterTimeout(statusEffect);
             poisonEffect = null;
         }
         //otherwise, handle the status effect
@@ -133,7 +133,7 @@ public class StatusEffectManager : MonoBehaviour
         if (Time.time > timeLeft[indexVal])
         {
             //remove the status effect
-            RemoveStatusEffect(statusEffect);
+            RemoveStatusEffectAfterTimeout(statusEffect);
             isRooted = false;
         }
         //otherwise, handle the status effect
@@ -147,10 +147,29 @@ public class StatusEffectManager : MonoBehaviour
     }
     #endregion
 
-    #region Getters & Setters
+    #region Accessors
     internal bool GetIsRooted()
     {
         return isRooted;
+    }
+
+    internal void RemoveStatusEffect(StatusEffect statusEffect)
+    {
+        //Find the index of the status effect
+        int indexVal = statusEffects.IndexOf(statusEffect);
+        //Check if the status effect exists
+        if (indexVal == -1)
+        {
+            Debug.Log("Couldnt find poison");
+            return;
+        }
+        //Remove it from the list
+        statusEffects.RemoveAt(indexVal);
+        timeLeft.RemoveAt(indexVal);
+        if (character is PlayerStats)
+        {
+            EventManager.currentManager.AddEvent(new UpdateStatusEffectsDisplay(this));
+        }
     }
     #endregion
 }

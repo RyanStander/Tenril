@@ -28,5 +28,12 @@ public class DamageSpell : SpellItem
 
             damageCollider.ownCharacterStats=characterStats;
         }
+        //check if there is a fx_sd script, if so, prevent it from hurting the player
+        FX_SpawnDirection fX_SpawnDirection = instantiatedSpellFX.GetComponent<FX_SpawnDirection>();
+        if (fX_SpawnDirection != null)
+        {
+            fX_SpawnDirection.damage = damageAmount;
+            fX_SpawnDirection.ownCharacterStats = characterStats;
+        }
     }
 }
