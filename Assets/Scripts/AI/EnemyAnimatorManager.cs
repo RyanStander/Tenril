@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyAnimatorManager : AnimatorManager
 {
+    //Hashes for quick animator parameter modification
+    internal int forwardHash;
+
     private Rigidbody rigidBody = null;
+
+    private NavMeshAgent navAgent = null;
 
     private void Awake()
     {
@@ -15,6 +21,13 @@ public class EnemyAnimatorManager : AnimatorManager
         //Get the rigidbody & null check
         rigidBody = GetComponentInChildren<Rigidbody>();
         if (rigidBody == null) Debug.LogWarning("Missing Rigidbody on " + gameObject + "!");
+
+        //Get the NavMeshAgent & null check
+        navAgent = GetComponentInChildren<NavMeshAgent>();
+        if (navAgent == null) Debug.LogWarning("Missing NavMeshAgent on " + gameObject + "!");
+
+        //Quick hash for easy parameter modification
+        forwardHash = Animator.StringToHash("Forward");
     }
 
     
@@ -22,6 +35,9 @@ public class EnemyAnimatorManager : AnimatorManager
     {
         //Synchronize the location/speed of the rigidbody with the intended speed of the animation
         SynchronizeRigidbody();
+
+        //Synchronize the height of the transform with the navigation agent
+        SynchronizeHeight();
     }
 
     private void SynchronizeRigidbody()
@@ -38,5 +54,13 @@ public class EnemyAnimatorManager : AnimatorManager
 
         //Apply proportional velocity to the rigid body
         rigidBody.velocity = velocity;
+    }
+
+    private void SynchronizeHeight()
+    {
+        //Update the transform position to match the Y axis of the navigation agent
+        Vector3 position = animator.rootPosition;
+        position.y = navAgent.nextPosition.y;
+        transform.root.position = position;
     }
 }

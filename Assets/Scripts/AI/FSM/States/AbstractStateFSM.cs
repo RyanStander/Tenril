@@ -9,7 +9,7 @@ public abstract class AbstractStateFSM : MonoBehaviour
     protected NavMeshAgent navAgent;
     protected EnemyAgentManager enemyManager;
     protected EnemyFSM finiteStateMachine;
-    protected AnimatorManager animatorManager;
+    protected EnemyAnimatorManager animatorManager;
 
     //The current execution state of the state
     public ExecutionState executionState { get; protected set; }

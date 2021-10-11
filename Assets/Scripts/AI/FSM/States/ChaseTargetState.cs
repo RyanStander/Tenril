@@ -7,8 +7,11 @@ using UnityEngine;
 
 public class ChaseTargetState : AbstractStateFSM
 {
-    //Hashes for quick animator parameter modification
+    //Hash to allow for quick changes
     private int forwardHash;
+
+    //Bool to toggle between higher quality animations or better obstacle avoidance
+    public bool hasPreciseAvoidance = true;
 
     public override void OnEnable()
     {
@@ -26,11 +29,11 @@ public class ChaseTargetState : AbstractStateFSM
             //Debug message
             DebugLogString("ENTERED CHASE STATE");
 
-            //Quick hash for parameters
-            forwardHash = Animator.StringToHash("Forward");
-
             //Have root motion be applied
             animatorManager.animator.applyRootMotion = true;
+
+            //Assign the hash from the animator
+            forwardHash = animatorManager.forwardHash;
 
             //Disable certain navAgent features
             enemyManager.navAgent.isStopped = false; //Prevents agent from using any given speeds by accident
@@ -107,15 +110,19 @@ public class ChaseTargetState : AbstractStateFSM
             //Handle the forward movement of the agent
             HandleForwardAnimationMovement();
 
-            //Correct the location of the NavmeshAgent
-            CorrectAgentLocation();
+            //Correct the location of the NavmeshAgent with precise or estimated calculations
+            //Choice between precise or estimated
+            if(hasPreciseAvoidance)
+            {
+                //Method sacrifices animation quality (increasing foot sliding) at the improvement of obstacle avoidance
+                CorrectAgentLocationPrecise();
+            }
+            else
+            {
+                //Method preserves animation quality (reducing foot sliding) at the cost of obstacle avoidance
+                CorrectAgentLocationEstimated();
+            }
         }
-    }
-
-    private void OnAnimatorMove()
-    {
-        //Correct the location of the NavmeshAgent
-        CorrectAgentLocation();
     }
 
     private void HandleForwardAnimationMovement()
@@ -145,16 +152,24 @@ public class ChaseTargetState : AbstractStateFSM
         RotateTowardsTargetPosition(enemyManager.navAgent.steeringTarget, enemyManager.enemyStats.rotationSpeed);
     }
 
-    private void CorrectAgentLocation()
+    //Method sacrifices animation quality (increasing foot sliding) at the improvement of obstacle avoidance
+    private void CorrectAgentLocationPrecise()
+    {
+        //Set the navAgents predicted position to be the root transform
+        enemyManager.navAgent.nextPosition = transform.root.position;
+    }
+
+    //Method preserves animation quality (reducing foot sliding) at the cost of obstacle avoidance
+    private void CorrectAgentLocationEstimated()
     {
         //Get the world delta position in relation to the agent and the intended body to follow
-        Vector3 worldDeltaPosition = enemyManager.navAgent.nextPosition - transform.position;
-        
+        Vector3 worldDeltaPosition = enemyManager.navAgent.nextPosition - transform.root.position;
+
         //If not following within the radius, correct it
         if (worldDeltaPosition.magnitude > enemyManager.navAgent.radius)
         {
             //Set the next position
-            enemyManager.navAgent.nextPosition = transform.position + 0.9f * worldDeltaPosition;
+            enemyManager.navAgent.nextPosition = transform.root.position + 0.9f * worldDeltaPosition;
         }
     }
 
