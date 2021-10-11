@@ -4,6 +4,7 @@ public enum StateTypeFSM
     WATCH,
     PATROL,
     CHASETARGET,
+    EVALUATECOMBAT,
     ATTACK,
     DEFEND,
     FLEE

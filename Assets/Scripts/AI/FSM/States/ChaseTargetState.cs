@@ -57,8 +57,7 @@ public class ChaseTargetState : AbstractStateFSM
         //Change states if within attacking range and if the calculated path is not pending
         if (IsWithinAttackRange() && !enemyManager.navAgent.pathPending)
         {
-            //finiteStateMachine.EnterState(StateTypeFSM.ATTACK);
-            Debug.Log("Im within attack range!");
+            finiteStateMachine.EnterState(StateTypeFSM.EVALUATECOMBAT);
         }
     }
 
@@ -88,7 +87,7 @@ public class ChaseTargetState : AbstractStateFSM
         //If no target exists, return to watch state
         if (enemyManager.currentTarget == null)
         {
-            //Change to chase state
+            //Change to watch state
             finiteStateMachine.EnterState(StateTypeFSM.WATCH);
 
             //Return early

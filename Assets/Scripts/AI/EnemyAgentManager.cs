@@ -36,7 +36,7 @@ public class EnemyAgentManager : MonoBehaviour
     internal bool isPerformingAction, isInteracting;
 
     //Current time in animation recovery
-    private float currentRecoveryTime = 0;
+    internal float currentRecoveryTime = 0;
 
     //Bool to track the current life state of the enemy
     internal bool enemyIsDead = false;
@@ -87,7 +87,7 @@ public class EnemyAgentManager : MonoBehaviour
         //If currently performing an animation related action
         if (isPerformingAction)
         {
-            //Ignore
+            //Check if recovery time is completed
             if (currentRecoveryTime <= 0)
             {
                 //If the enemy is not dead yet, reset bool

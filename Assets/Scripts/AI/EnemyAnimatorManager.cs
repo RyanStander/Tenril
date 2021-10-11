@@ -7,9 +7,9 @@ public class EnemyAnimatorManager : AnimatorManager
 {
     //Hashes for quick animator parameter modification
     internal int forwardHash;
+    internal int leftHash;
 
     private Rigidbody rigidBody = null;
-
     private NavMeshAgent navAgent = null;
 
     private void Awake()
@@ -26,8 +26,9 @@ public class EnemyAnimatorManager : AnimatorManager
         navAgent = GetComponentInChildren<NavMeshAgent>();
         if (navAgent == null) Debug.LogWarning("Missing NavMeshAgent on " + gameObject + "!");
 
-        //Quick hash for easy parameter modification
+        //Quick hashes for easy parameter modification
         forwardHash = Animator.StringToHash("Forward");
+        leftHash = Animator.StringToHash("Left");
     }
 
     
