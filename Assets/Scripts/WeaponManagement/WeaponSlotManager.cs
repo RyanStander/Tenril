@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class WeaponSlotManager : MonoBehaviour
 {
-    private PlayerManager playerManager;
-    private CharacterInventory playerInventory;
+    private CharacterStats chracterStats;
+    private CharacterInventory characterInventory;
 
     private WeaponHolderSlot leftHandSlot, rightHandSlot, rightSideSlot, leftSideSlot, backSlot;
 
@@ -15,8 +15,8 @@ public class WeaponSlotManager : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        playerManager = GetComponent<PlayerManager>();
-        playerInventory = GetComponent<CharacterInventory>();
+        chracterStats = GetComponent<CharacterStats>();
+        characterInventory = GetComponent<CharacterInventory>();
 
         //Get all weapon holder slots on the character
         WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();
@@ -54,7 +54,7 @@ public class WeaponSlotManager : MonoBehaviour
             //set the current weapon in the left hand slot equal to the weapon item
             leftHandSlot.currentWeapon = weaponItem;
             //load the secondary weapon of the weapon item to the left hand slot
-            leftHandSlot.LoadWeaponModel(weaponItem,true);
+            leftHandSlot.LoadWeaponModel(weaponItem, true);
             //if successful, load the damage collider
             if (leftHandSlot != null)
                 LoadLeftWeaponDamageCollider();
@@ -80,7 +80,7 @@ public class WeaponSlotManager : MonoBehaviour
         //set the current weapon in the right hand slot equal to the weapon item
         rightHandSlot.currentWeapon = weaponItem;
         //load the primary weapon of the weapon item to the left hand slot
-        rightHandSlot.LoadWeaponModel(weaponItem,false);
+        rightHandSlot.LoadWeaponModel(weaponItem, false);
         //if successful, load the damage collider
         if (rightHandSlot != null)
             LoadRightWeaponDamageCollider();
@@ -99,7 +99,7 @@ public class WeaponSlotManager : MonoBehaviour
         //get the value of the damage collider
         leftHandDamageCollider = leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
         //set the damage of the collider equal to that of the left weapon
-        leftHandDamageCollider.currentDamage = playerInventory.equippedWeapon.baseDamage;
+        leftHandDamageCollider.currentDamage = characterInventory.equippedWeapon.baseDamage;
     }
 
     private void LoadRightWeaponDamageCollider()
@@ -111,16 +111,15 @@ public class WeaponSlotManager : MonoBehaviour
 
         //get the value of the damage collider
         rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
-
         //set the damage of the collider equal to that of the right weapon
-        rightHandDamageCollider.currentDamage = playerInventory.equippedWeapon.baseDamage;
+        rightHandDamageCollider.currentDamage = characterInventory.equippedWeapon.baseDamage;
     }
 
     public void OpenDamageCollider()
     {
         //check if there is a secondary weapon
         //open the damage colliders
-        if(leftHandDamageCollider!=null)
+        if (leftHandDamageCollider != null)
             leftHandDamageCollider.EnableDamageCollider();
 
         if (rightHandDamageCollider != null)
@@ -147,12 +146,12 @@ public class WeaponSlotManager : MonoBehaviour
     public void DrainWeakStaminaAttack()
     {
         //Drains stamina based on what attack type the player is using
-        playerManager.GetPlayerStats().DrainStamina(playerInventory.equippedWeapon.baseStaminaCost * playerInventory.equippedWeapon.weakAttackCostMultiplier);
+        chracterStats.DrainStamina(characterInventory.equippedWeapon.baseStaminaCost * characterInventory.equippedWeapon.weakAttackCostMultiplier);
     }
 
     public void DrainStrongStaminaAttack()
     {
         //Drains stamina based on what attack type the player is using
-        playerManager.GetPlayerStats().DrainStamina(playerInventory.equippedWeapon.baseStaminaCost * playerInventory.equippedWeapon.strongAttackCostMultiplier);
+        chracterStats.DrainStamina(characterInventory.equippedWeapon.baseStaminaCost * characterInventory.equippedWeapon.strongAttackCostMultiplier);
     }
 }

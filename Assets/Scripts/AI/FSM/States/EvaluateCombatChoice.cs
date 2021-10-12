@@ -71,7 +71,7 @@ public class EvaluateCombatChoice : AbstractStateFSM
         RotateTowardsTargetPosition(enemyManager.currentTarget.transform.position, enemyManager.enemyStats.rotationSpeed);
 
         //Check if within attack range and has recovered since last animation
-        if (enemyManager.currentRecoveryTime <= 0 && IsWithinAttackRange())
+        if (enemyManager.currentRecoveryTime <= 0 && IsDirectlyWithinAttackRange())
         {
             //SPEED REMOVE TEMPORARY
             //animatorManager.animator.SetFloat(forwardHash, 0, 0.1f, Time.deltaTime);
@@ -80,7 +80,7 @@ public class EvaluateCombatChoice : AbstractStateFSM
             finiteStateMachine.EnterState(StateTypeFSM.ATTACK);
         }
         //If the target is out of attack range, return to chasing
-        else if (!IsWithinAttackRange())
+        else if (!IsDirectlyWithinAttackRange())
         {
             //Change to chase state
             finiteStateMachine.EnterState(StateTypeFSM.CHASETARGET);
@@ -121,9 +121,9 @@ public class EvaluateCombatChoice : AbstractStateFSM
         enemyManager.navAgent.nextPosition = transform.root.position;
     }
 
-    private bool IsWithinAttackRange()
+    private bool IsDirectlyWithinAttackRange()
     {
-        //If within attack range based on direct distance, return true
+        //If within attack range based on direct & unpathed distance, return true
         if (Vector3.Distance(enemyManager.currentTarget.transform.position, transform.root.position) <= enemyManager.enemyStats.maximumAttackRange)
         {
             return true;
