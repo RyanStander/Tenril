@@ -64,4 +64,14 @@ public class EnemyAnimatorManager : AnimatorManager
         position.y = navAgent.nextPosition.y;
         transform.root.position = position;
     }
+
+    public void EnableCombo()
+    {
+        animator.SetBool("canDoCombo", true);
+    }
+
+    public void DisableCombo()
+    {
+        animator.SetBool("canDoCombo", false);
+    }
 }
