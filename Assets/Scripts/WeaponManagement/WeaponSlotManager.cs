@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WeaponSlotManager : MonoBehaviour
 {
-    private PlayerManager characterManager;
+    private CharacterStats chracterStats;
     private CharacterInventory characterInventory;
 
     private WeaponHolderSlot leftHandSlot, rightHandSlot, rightSideSlot, leftSideSlot, backSlot;
@@ -15,7 +15,7 @@ public class WeaponSlotManager : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        characterManager = GetComponent<PlayerManager>();
+        chracterStats = GetComponent<CharacterStats>();
         characterInventory = GetComponent<CharacterInventory>();
 
         //Get all weapon holder slots on the character
@@ -146,12 +146,12 @@ public class WeaponSlotManager : MonoBehaviour
     public void DrainWeakStaminaAttack()
     {
         //Drains stamina based on what attack type the player is using
-        characterManager.GetPlayerStats().DrainStamina(characterInventory.equippedWeapon.baseStaminaCost * characterInventory.equippedWeapon.weakAttackCostMultiplier);
+        chracterStats.DrainStamina(characterInventory.equippedWeapon.baseStaminaCost * characterInventory.equippedWeapon.weakAttackCostMultiplier);
     }
 
     public void DrainStrongStaminaAttack()
     {
         //Drains stamina based on what attack type the player is using
-        characterManager.GetPlayerStats().DrainStamina(characterInventory.equippedWeapon.baseStaminaCost * characterInventory.equippedWeapon.strongAttackCostMultiplier);
+        chracterStats.DrainStamina(characterInventory.equippedWeapon.baseStaminaCost * characterInventory.equippedWeapon.strongAttackCostMultiplier);
     }
 }

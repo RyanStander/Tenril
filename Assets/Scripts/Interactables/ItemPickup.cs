@@ -25,8 +25,9 @@ public class ItemPickup : Interactable
 
         //Plays the animation of picking up item
         playerAnimatorManager.PlayTargetAnimation("PickUp", true);
-        
+
         //Add Item to inventory
+        playerInventory.Inventory.Add(item);
 
         //Notify player of obtaining item
         playerManager.itemInteractableGameObject.GetComponentInChildren<TextMeshProUGUI>().text = "You obtained " + item.itemName + "!";

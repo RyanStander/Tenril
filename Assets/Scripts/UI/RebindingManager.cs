@@ -41,7 +41,7 @@ public class RebindingManager : MonoBehaviour
     {
         foreach (Transform child in rebindContentObject.transform)
         {
-            GameObject.Destroy(child.gameObject);
+            Destroy(child.gameObject);
         }
 
         //sets the map of the input actions

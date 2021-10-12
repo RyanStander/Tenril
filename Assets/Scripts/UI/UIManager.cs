@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
 
     [Header("UI Objects")]
     [SerializeField] private GameObject InGameGUI, MenuGUI;
+    [SerializeField] private List<GameObject> ExtraMenuGUIs;
 
     private bool isInMenuMode;
     void Start()
@@ -57,6 +58,12 @@ public class UIManager : MonoBehaviour
                 //swap to in game screen
                 InGameGUI.SetActive(true);
                 MenuGUI.SetActive(false);
+
+                //Disable extra menus
+                foreach (GameObject menuToDisable in ExtraMenuGUIs)
+                {
+                    menuToDisable.SetActive(false);
+                }
 
                 if (playerAnimator != null)
                     playerAnimator.SetBool("isInMenu", false);
