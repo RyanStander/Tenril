@@ -63,6 +63,12 @@ public class EvaluateCombatChoice : AbstractStateFSM
             //Set to minimal forward movement while still performing action
             animatorManager.animator.SetFloat(forwardHash, 0, 0.1f, Time.deltaTime);
 
+            //Allow for rotation towards the target for as long as the animator allows rotation
+            if(animatorManager.animator.GetBool(animatorManager.canRotateHash))
+            {
+                RotateTowardsTargetPosition(enemyManager.currentTarget.transform.position, enemyManager.enemyStats.attackRotationSpeed);
+            }
+
             //Return early
             return;
         }
@@ -73,9 +79,6 @@ public class EvaluateCombatChoice : AbstractStateFSM
         //Check if within attack range and has recovered since last animation
         if (enemyManager.currentRecoveryTime <= 0 && IsDirectlyWithinAttackRange())
         {
-            //SPEED REMOVE TEMPORARY
-            //animatorManager.animator.SetFloat(forwardHash, 0, 0.1f, Time.deltaTime);
-
             //Change to attack state
             finiteStateMachine.EnterState(StateTypeFSM.ATTACK);
         }

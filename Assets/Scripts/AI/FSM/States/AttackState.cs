@@ -183,13 +183,11 @@ public class AttackState : AbstractStateFSM
     #region Attack Getters
     private AttackData GetLightAttack()
     {
-        Debug.Log("Trying to get heavy attack...");
         return GetAttackFromList(currentWeapon.attackSet.lightAttacks);
     }
 
     private AttackData GetHeavyAttack()
     {
-        Debug.Log("Trying to get light attack...");
         return GetAttackFromList(currentWeapon.attackSet.heavyAttacks);
     }
 

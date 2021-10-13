@@ -670,6 +670,7 @@ MonoBehaviour:
   chaseRange: 20
   maximumAttackRange: 1.5
   rotationSpeed: 15
+  attackRotationSpeed: 2.5
 --- !u!136 &119837564
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -916,6 +917,7 @@ MonoBehaviour:
   chaseRange: 20
   maximumAttackRange: 1.5
   rotationSpeed: 15
+  attackRotationSpeed: 2.5
 --- !u!136 &132892019
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1588,6 +1590,7 @@ MonoBehaviour:
   chaseRange: 20
   maximumAttackRange: 1.5
   rotationSpeed: 15
+  attackRotationSpeed: 2.5
 --- !u!114 &375193362 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -5642952564883507446, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
@@ -1959,6 +1962,7 @@ MonoBehaviour:
   chaseRange: 20
   maximumAttackRange: 1.5
   rotationSpeed: 15
+  attackRotationSpeed: 2.5
 --- !u!114 &570286941 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -5642952564883507446, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
@@ -2300,6 +2304,7 @@ MonoBehaviour:
   chaseRange: 20
   maximumAttackRange: 1.5
   rotationSpeed: 15
+  attackRotationSpeed: 2.5
 --- !u!136 &694244547
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2559,6 +2564,7 @@ MonoBehaviour:
   chaseRange: 20
   maximumAttackRange: 1.5
   rotationSpeed: 15
+  attackRotationSpeed: 2.5
 --- !u!136 &751203931
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3332,7 +3338,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.14751913, y: -0.000000025360265, z: 4.5284734e-11, w: 0.98905927}
+  m_LocalRotation: {x: 0.14751913, y: -0.000000028939638, z: 0.0000000011462002, w: 0.98905927}
   m_LocalPosition: {x: 0, y: 2.4579134, z: -2.7320724}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -4324,6 +4330,7 @@ MonoBehaviour:
   chaseRange: 20
   maximumAttackRange: 1.5
   rotationSpeed: 15
+  attackRotationSpeed: 2.5
 --- !u!136 &1136479934
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4838,11 +4845,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 462597420182148401, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000019056813
+      value: -0.00000002719564
       objectReference: {fileID: 0}
     - target: {fileID: 462597420182148401, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000026811897
+      value: 0.0000000038262784
       objectReference: {fileID: 0}
     - target: {fileID: 462597420413940776, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4942,11 +4949,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 462597421395179367, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 4.5204317e-23
+      value: 1.3193313e-15
       objectReference: {fileID: 0}
     - target: {fileID: 462597421395179367, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -7.695078e-24
+      value: -1.8264133e-16
       objectReference: {fileID: 0}
     - target: {fileID: 462597421750081532, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_Name
@@ -6238,6 +6245,7 @@ MonoBehaviour:
   chaseRange: 20
   maximumAttackRange: 1.5
   rotationSpeed: 15
+  attackRotationSpeed: 2.5
 --- !u!114 &1690234828 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -5642952564883507446, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
@@ -13421,6 +13429,7 @@ MonoBehaviour:
   chaseRange: 20
   maximumAttackRange: 1.5
   rotationSpeed: 15
+  attackRotationSpeed: 2.5
 --- !u!136 &2046071199
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -13628,6 +13637,7 @@ MonoBehaviour:
   chaseRange: 20
   maximumAttackRange: 1.5
   rotationSpeed: 15
+  attackRotationSpeed: 2.5
 --- !u!136 &2110046166
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -13945,6 +13955,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 318429251, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
+      propertyPath: attackRotationSpeed
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6051805372053224953, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: m_RootOrder
       value: 2
