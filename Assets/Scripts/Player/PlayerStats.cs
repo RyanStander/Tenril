@@ -26,6 +26,9 @@ public class PlayerStats : CharacterStats
     #region Health
     public override void TakeDamage(float damageAmount, bool playAnimation = true)
     {
+        if (playerAnimatorManager.animator.GetBool("isInvulnerable"))
+            return;
+
         if (isDead)
             return;
 

@@ -23,4 +23,14 @@ public class AnimatorManager : MonoBehaviour
     {
         animator.SetBool("canRotate", false);
     }
+
+    public void EnableInvulnerability()
+    {
+        animator.SetBool("isInvulnerable", true);
+    }
+
+    public void DisableInvulnerability()
+    {
+        animator.SetBool("isInvulnerable", false);
+    }
 }
