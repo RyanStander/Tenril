@@ -114,9 +114,7 @@ public class AttackState : AbstractStateFSM
 
     private void PerformCurrentAttack()
     {
-        Vector3 targetDirection = enemyManager.currentTarget.transform.position - enemyManager.transform.position;
-        float viewableAngle = Vector3.Angle(targetDirection, enemyManager.transform.forward);
-        float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
+        float viewableAngle = Vector3.Angle(enemyManager.currentTarget.transform.position - enemyManager.transform.position, enemyManager.transform.forward);
 
         //If close enough to attack and within the viewable angle, attack
         if(IsDirectlyWithinAttackRange() && viewableAngle <= attackAngle && viewableAngle >= -attackAngle)

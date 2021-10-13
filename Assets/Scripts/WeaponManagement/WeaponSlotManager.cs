@@ -111,6 +111,7 @@ public class WeaponSlotManager : MonoBehaviour
 
         //get the value of the damage collider
         rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
+
         //set the damage of the collider equal to that of the right weapon
         rightHandDamageCollider.currentDamage = characterInventory.equippedWeapon.baseDamage;
     }
