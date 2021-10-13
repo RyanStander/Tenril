@@ -13,14 +13,6 @@ public class AttackState : AbstractStateFSM
     //The previous weapon attack
     internal AttackData previousAttack;
 
-    //The general angle of view at which attacking is valid
-    [Range(5,45)]
-    public int attackAngle = 35;
-
-    //The  time needed for recovery
-    [Range(1, 3)]
-    public float recoveryTime = 2;
-
     //Hashes to allow for quick changes
     private int forwardHash;
     private int leftHash;
@@ -146,7 +138,7 @@ public class AttackState : AbstractStateFSM
             enemyManager.isPerformingAction = true;
 
             //Set the manager into recovery
-            enemyManager.currentRecoveryTime = recoveryTime;
+            enemyManager.currentRecoveryTime = currentAttack.recoveryTime;
         }
     }
 
@@ -251,19 +243,6 @@ public class AttackState : AbstractStateFSM
     {
         //If close enough to attack and is within the viewable angle
         if (IsWithinAttackRangeData(givenData) && IsWithinAttackViewData(givenData))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    private bool IsDirectlyWithinAttackRange()
-    {
-        //If within attack range based on direct & unpathed distance, return true
-        if (Vector3.Distance(enemyManager.currentTarget.transform.position, transform.root.position) <= enemyManager.enemyStats.maximumAttackRange)
         {
             return true;
         }

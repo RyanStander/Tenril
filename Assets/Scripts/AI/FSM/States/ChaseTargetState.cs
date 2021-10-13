@@ -103,6 +103,16 @@ public class ChaseTargetState : AbstractStateFSM
         //Prevents problems with calculating remaining distance between the target and agent
         if (!enemyManager.navAgent.pathPending)
         {
+            //Check if target is too far away, if so then return to watch state
+            if(!IsWithinChaseRange())
+            {
+                //Change to watch state
+                finiteStateMachine.EnterState(StateTypeFSM.WATCH);
+
+                //Return early
+                return;
+            }
+
             //Rotate towards the next position that is gotten from the agent
             RotateTowardsNextPosition();
 
@@ -176,6 +186,19 @@ public class ChaseTargetState : AbstractStateFSM
     {
         //If within attack range based on remaining NavMesh distance, return true
         if (enemyManager.navAgent.remainingDistance <= enemyManager.enemyStats.maximumAttackRange)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private bool IsWithinChaseRange()
+    {
+        //If within attack range based on remaining NavMesh distance, return true
+        if (enemyManager.navAgent.remainingDistance <= enemyManager.enemyStats.chaseRange)
         {
             return true;
         }

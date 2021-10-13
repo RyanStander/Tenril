@@ -15,9 +15,9 @@ public class EnemyStats : CharacterStats
 
     [Header("Awareness Abilities")]
     public int alertRadius = 10; //"Blind" vision range, accounts for the area around the enemy
-    //public int visionRange = 20; //Range at which the the AI can directly see
+    //public int visionRange = 15; //Range at which the the AI can directly see
     //[Range(0, 180)] public int fieldOfVision = 90; //Angle at which the AI can directly see
-    public float chaseRange = 20; //Range for creature chasing, should ideally be greater than the alert and vision radius
+    public float chaseRange = 15; //Range for creature chasing, should ideally be greater than the alert and vision radius
     public float maximumAttackRange = 1.5f; //The range at which attacking should begin
     [Range(1,10)] public float rotationSpeed = 5; //The rotational speed for the AI
 

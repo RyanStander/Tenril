@@ -92,8 +92,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d6938ea9c09b5647acf1960ecb07ed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackAngle: 35
-  recoveryTime: 2
 --- !u!1 &6051805372053708801
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,8 +672,9 @@ MonoBehaviour:
   maxStoredSunlight: 0
   currentStoredSunlight: 0
   assignedFaction: 0
+  heavyAttackLikeliness: 0.25
   alertRadius: 10
-  chaseRange: 15
+  chaseRange: 10
   maximumAttackRange: 3
   rotationSpeed: 5
 --- !u!195 &318429253
