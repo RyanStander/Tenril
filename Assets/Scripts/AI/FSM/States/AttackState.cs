@@ -8,10 +8,10 @@ public class AttackState : AbstractStateFSM
     private WeaponItem currentWeapon;
 
     //The current weapon attack to be executed
-    internal string currentAttack;
+    internal AttackData currentAttack;
 
     //The previous weapon attack
-    internal string previousAttack;
+    internal AttackData previousAttack;
 
     //The general angle of view at which attacking is valid
     [Range(5,45)]
@@ -39,7 +39,7 @@ public class AttackState : AbstractStateFSM
         if (enteredState)
         {
             //Debug message
-            DebugLogString("ENTERED EVALUATE COMBAT STATE");
+            DebugLogString("ENTERED ATTACK STATE");
 
             //Have root motion be applied
             animatorManager.animator.applyRootMotion = true;
@@ -55,6 +55,9 @@ public class AttackState : AbstractStateFSM
 
             //Get the current weapon
             currentWeapon = enemyManager.inventory.equippedWeapon;
+
+            //Reduce the forward speed
+            animatorManager.animator.SetFloat(forwardHash, 0.5f, 0.1f, Time.deltaTime);
         }
 
         return enteredState;
@@ -64,7 +67,7 @@ public class AttackState : AbstractStateFSM
     {
         if (enteredState)
         {
-            DebugLogString("UPDATING EVALUATE COMBAT STATE");
+            DebugLogString("UPDATING ATTACK STATE");
         }
 
         //If no target exists, return to watch state
@@ -77,8 +80,12 @@ public class AttackState : AbstractStateFSM
             return;
         }
 
-        //Return and do not run any more methods until the current action/animation is completed or if no weapon exists
-        if (enemyManager.isPerformingAction || currentWeapon == null)
+        //Return and do not run any more methods if...
+        //1. The current action/animation is not completed
+        //2. No weapon exists
+        //3. The creature is still in recovery time
+        //Although these are checked in performing the attack, a pre-emptive check saves on needing to look through valid attacks
+        if (enemyManager.isPerformingAction || currentWeapon == null || enemyManager.currentRecoveryTime > 0)
         {
             //Change to evaluate state
             finiteStateMachine.EnterState(StateTypeFSM.EVALUATECOMBAT);
@@ -87,13 +94,21 @@ public class AttackState : AbstractStateFSM
             return;
         }
 
-        //Get a random attack, for now we will only test with weak attacks
-        SetRandomWeakAttack();
+        //Reset the current attack
+        ResetCurrentAttack();
 
-        //If current attack is not null, perform the attack
-        if (currentAttack != null)
+        //Set a new intended attack
+        SetNewAttack();
+
+        //Attempt to perform the attack
+        if(currentAttack != null)
         {
             PerformCurrentAttack();
+        }
+        else
+        {
+            DebugLogString("No valid attack could be found/set!");
+            //In future this should return to evaulate combat and the character should try to reposition for an attack
         }
 
         //Return to evaluate state
@@ -106,7 +121,7 @@ public class AttackState : AbstractStateFSM
         base.ExitState();
 
         //Debug message
-        DebugLogString("EXITED EVALUATE COMBAT STATE");
+        DebugLogString("EXITED ATTACK STATE");
 
         //Return true
         return true;
@@ -114,33 +129,24 @@ public class AttackState : AbstractStateFSM
 
     private void PerformCurrentAttack()
     {
-        float viewableAngle = Vector3.Angle(enemyManager.currentTarget.transform.position - enemyManager.transform.position, enemyManager.transform.forward);
-
-        //If close enough to attack and within the viewable angle, attack
-        if(IsDirectlyWithinAttackRange() && viewableAngle <= attackAngle && viewableAngle >= -attackAngle)
+        //If the recovery time and allows for an attack and they are not performing an action
+        if (enemyManager.currentRecoveryTime <= 0 && !enemyManager.isPerformingAction && currentAttack != null)
         {
-            //If the recovery time and allows for an attack and they are not performing an action
-            if (enemyManager.currentRecoveryTime <= 0 && enemyManager.isPerformingAction == false)
-            {
-                //Stop locomotion velocity incase any is happening
-                animatorManager.animator.SetFloat(forwardHash, 0, 0.1f, Time.deltaTime);
-                animatorManager.animator.SetFloat(leftHash, 0, 0.1f, Time.deltaTime);
+            //Debug the attack being performed
+            DebugLogString("Attack being performed: " + currentAttack.attackAnimation);
 
-                //Play the target animation of the attack
-                animatorManager.PlayTargetAnimation(currentAttack, true);
+            //Stop locomotion velocity incase any is happening
+            animatorManager.animator.SetFloat(forwardHash, 0, 0.1f, Time.deltaTime);
+            animatorManager.animator.SetFloat(leftHash, 0, 0.1f, Time.deltaTime);
 
-                //Set the manager to believe they are performing an action
-                enemyManager.isPerformingAction = true;
+            //Play the target animation of the attack
+            animatorManager.PlayTargetAnimation(currentAttack.attackAnimation, true);
 
-                //Set the manager into recovery
-                enemyManager.currentRecoveryTime = recoveryTime;
+            //Set the manager to believe they are performing an action
+            enemyManager.isPerformingAction = true;
 
-                //Reset the current attack
-                ResetCurrentAttack();
-
-                //Return to evaluate state
-                finiteStateMachine.EnterState(StateTypeFSM.EVALUATECOMBAT);
-            }
+            //Set the manager into recovery
+            enemyManager.currentRecoveryTime = recoveryTime;
         }
     }
 
@@ -151,22 +157,107 @@ public class AttackState : AbstractStateFSM
         currentAttack = null;
     }
 
-    private void SetRandomWeakAttack()
+    private void SetNewAttack()
     {
-        //Null check for if weapon or list is null/empty
-        if (currentWeapon == null || currentWeapon.weakAttacks.Count < 1) { currentAttack = null; return; }
+        //Helper bool for if one set of attacks is invalid
+        bool isHeavyAttacking = false;
 
-        //Return a random attack from the list
-        currentAttack = currentWeapon.weakAttacks[Random.Range(0, currentWeapon.weakAttacks.Count)];
+        //Decide on if attempting a strong or weak attack
+        //If less than or equal the heavy likeliness, then get a heavy attack
+        if(Random.Range(0,1) < enemyManager.enemyStats.heavyAttackLikeliness)
+        {
+            //Try and get a heavy attack
+            currentAttack = GetHeavyAttack();
+            isHeavyAttacking = true;
+        }
+        else
+        {
+            currentAttack = GetLightAttack();
+        }
+
+        //If getting was unsuccesful, try with the other set of attacks
+        if(currentAttack == null && isHeavyAttacking)
+        {
+            //Try getting a light attack
+            currentAttack = GetLightAttack();
+        }
+        else if(currentAttack == null && !isHeavyAttacking)
+        {
+            //Try getting a heavy attack
+            currentAttack = GetHeavyAttack();
+        }
     }
 
-    private void SetRandomStrongAttack()
+    #region Attack Getters
+    private AttackData GetLightAttack()
     {
-        //Null check for if weapon or list is null/empty
-        if (currentWeapon == null || currentWeapon.strongAttacks.Count < 1) { currentAttack = null; return; }
+        Debug.Log("Trying to get heavy attack...");
+        return GetAttackFromList(currentWeapon.attackSet.lightAttacks);
+    }
 
-        //Return a random attack from the list
-        currentAttack = currentWeapon.strongAttacks[Random.Range(0, currentWeapon.strongAttacks.Count)];
+    private AttackData GetHeavyAttack()
+    {
+        Debug.Log("Trying to get light attack...");
+        return GetAttackFromList(currentWeapon.attackSet.heavyAttacks);
+    }
+
+    private AttackData GetAttackFromList(List<AttackData> attackList)
+    {
+        //List of possible attacks based on range and angle
+        List<AttackData> validAttacks = new List<AttackData>();
+
+        //Iterate over each attack and check if it is possible
+        foreach (AttackData data in attackList)
+        {
+            //If the attack is possible based on angle and distance
+            if (IsAttackValid(data))
+            {
+                //Add to the list of valid attacks
+                validAttacks.Add(data);
+            }
+        }
+
+        //If the list of valid attacks has at least one attack, get based on weights
+        if (validAttacks.Count > 0)
+        {
+            //Temporary list to hold each attack weighed
+            List<AttackData> weighedAttacks = new List<AttackData>();
+
+            //Add each valid attack to the weighed attack
+            foreach (AttackData data in validAttacks)
+            {
+                //Add the attack a number of times equal to its weight
+                for (int i = 0; i < data.attackWeight; i++)
+                {
+                    //Add to the list
+                    weighedAttacks.Add(data);
+                }
+            }
+
+            //Return a random attack from this weighed list
+            return weighedAttacks[Random.Range(0, weighedAttacks.Count)];
+        }
+        else
+        {
+            //Return null if no valid attacks are found
+            return null;
+        }
+    }
+    #endregion
+
+    #region Valid Attack Checking
+    //Bool to check if an attack is possible based on its attack data
+    private bool IsAttackValid(AttackData givenData)
+    {
+        //If close enough to attack and is within the viewable angle
+        if (IsWithinAttackRangeData(givenData) && IsWithinAttackViewData(givenData))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private bool IsDirectlyWithinAttackRange()
@@ -181,4 +272,46 @@ public class AttackState : AbstractStateFSM
             return false;
         }
     }
+
+    private bool IsWithinAttackRange(float minimumDistance, float maximumDistance)
+    {
+        //Calculate the direct distance to the target
+        float distance = Vector3.Distance(enemyManager.currentTarget.transform.position, transform.root.position);
+
+        //If within the minimum and maximum range
+        if (distance >= minimumDistance && distance <= maximumDistance)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private bool IsWithinAttackRangeData(AttackData givenData)
+    {
+        return IsWithinAttackRange(givenData.minimumDistanceNeededToAttack, givenData.maximumDistanceNeededToAttack);
+    }
+
+    private bool IsWithinAttackView(float givenAngle)
+    {
+        //Calculate the current viewable angle
+        float viewableAngle = Vector3.Angle(enemyManager.currentTarget.transform.position - enemyManager.transform.position, enemyManager.transform.forward);
+
+        //Check if calculated angle is within the attacks view angle
+        if (viewableAngle <= givenAngle && viewableAngle >= -givenAngle)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    private bool IsWithinAttackViewData(AttackData givenData)
+    {
+        return IsWithinAttackView(givenData.attackAngle);
+    }
+    #endregion
 }

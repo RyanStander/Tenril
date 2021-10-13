@@ -665,6 +665,7 @@ MonoBehaviour:
   maxStoredSunlight: 0
   currentStoredSunlight: 0
   assignedFaction: 3
+  heavyAttackLikeliness: 0.25
   alertRadius: 10
   chaseRange: 20
   maximumAttackRange: 1.5
@@ -910,6 +911,7 @@ MonoBehaviour:
   maxStoredSunlight: 0
   currentStoredSunlight: 0
   assignedFaction: 3
+  heavyAttackLikeliness: 0.25
   alertRadius: 10
   chaseRange: 20
   maximumAttackRange: 1.5
@@ -1581,6 +1583,7 @@ MonoBehaviour:
   maxStoredSunlight: 0
   currentStoredSunlight: 0
   assignedFaction: 0
+  heavyAttackLikeliness: 0.25
   alertRadius: 10
   chaseRange: 20
   maximumAttackRange: 1.5
@@ -1951,6 +1954,7 @@ MonoBehaviour:
   maxStoredSunlight: 0
   currentStoredSunlight: 0
   assignedFaction: 0
+  heavyAttackLikeliness: 0.25
   alertRadius: 10
   chaseRange: 20
   maximumAttackRange: 1.5
@@ -2291,6 +2295,7 @@ MonoBehaviour:
   maxStoredSunlight: 0
   currentStoredSunlight: 0
   assignedFaction: 3
+  heavyAttackLikeliness: 0.25
   alertRadius: 10
   chaseRange: 20
   maximumAttackRange: 1.5
@@ -2549,6 +2554,7 @@ MonoBehaviour:
   maxStoredSunlight: 0
   currentStoredSunlight: 0
   assignedFaction: 3
+  heavyAttackLikeliness: 0.25
   alertRadius: 10
   chaseRange: 20
   maximumAttackRange: 1.5
@@ -4313,6 +4319,7 @@ MonoBehaviour:
   maxStoredSunlight: 0
   currentStoredSunlight: 0
   assignedFaction: 3
+  heavyAttackLikeliness: 0.25
   alertRadius: 10
   chaseRange: 20
   maximumAttackRange: 1.5
@@ -4615,6 +4622,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 986410233}
     - target: {fileID: 1949516871, guid: 333e83dcfecb7f141955a51d535a27e6, type: 3}
+      propertyPath: healthLevel
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949516871, guid: 333e83dcfecb7f141955a51d535a27e6, type: 3}
       propertyPath: sunlightBar
       value: 
       objectReference: {fileID: 509473442}
@@ -4883,11 +4894,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 462597421166302662, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00000000427506
+      value: -0.000000004275059
       objectReference: {fileID: 0}
     - target: {fileID: 462597421166302662, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -4.77062e-10
+      value: 4.770619e-10
       objectReference: {fileID: 0}
     - target: {fileID: 462597421253155052, guid: f9fe8a9b8d005f6439856624af4853a2, type: 3}
       propertyPath: m_Follow
@@ -6222,6 +6233,7 @@ MonoBehaviour:
   maxStoredSunlight: 0
   currentStoredSunlight: 0
   assignedFaction: 0
+  heavyAttackLikeliness: 0.25
   alertRadius: 10
   chaseRange: 20
   maximumAttackRange: 1.5
@@ -13404,6 +13416,7 @@ MonoBehaviour:
   maxStoredSunlight: 0
   currentStoredSunlight: 0
   assignedFaction: 3
+  heavyAttackLikeliness: 0.25
   alertRadius: 10
   chaseRange: 20
   maximumAttackRange: 1.5
@@ -13610,6 +13623,7 @@ MonoBehaviour:
   maxStoredSunlight: 0
   currentStoredSunlight: 0
   assignedFaction: 3
+  heavyAttackLikeliness: 0.25
   alertRadius: 10
   chaseRange: 20
   maximumAttackRange: 1.5

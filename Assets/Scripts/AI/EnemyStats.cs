@@ -10,6 +10,9 @@ public class EnemyStats : CharacterStats
     //TODO: Create traits that affect the behaviour of the AI
     //public List<Traits> enemyTraits = new List<Traits>();
 
+    
+    [Range(0, 1)] public float heavyAttackLikeliness = 0.25f; //The likeliness that an attack should be heavy
+
     [Header("Awareness Abilities")]
     public int alertRadius = 10; //"Blind" vision range, accounts for the area around the enemy
     //public int visionRange = 20; //Range at which the the AI can directly see
