@@ -8,5 +8,12 @@ public enum EventType
     ReceiveDebug,
     ClickedPlaceableGUI,
     UpdateQuickslotDisplay,
-    UpdateStatusEffectsDisplay
+    UpdateStatusEffectsDisplay,
+    UpdateInventoryDisplay,
+    EquipWeapon,
+    AddQuickslotItem,
+    RemoveQuickslotItem,
+    UseItem,
+    DropItem,
+
 }

@@ -9,14 +9,48 @@ public class InventoryDisplayManager : MonoBehaviour
     [SerializeField] private GameObject inventoryItemDisplayPrefab;
     [SerializeField] private GameObject inventoryContentObject;
     [SerializeField] private TMP_Text goldDisplay;
+    private CurrentlyDisplayedInventory currentlyDisplayedInventory = CurrentlyDisplayedInventory.all;
 
     private void OnEnable()
     {
         UpdateGoldDisplay();
 
         LoadAllInventoryToDisplay();
+
+        EventManager.currentManager.Subscribe(EventType.UpdateInventoryDisplay, OnUpdateInventory);
     }
 
+    private void OnDisable()
+    {
+        EventManager.currentManager.Unsubscribe(EventType.UpdateInventoryDisplay, OnUpdateInventory);
+    }
+
+    private void OnUpdateInventory(EventData eventData)
+    {
+        if (eventData is UpdateInventoryDisplay)
+        {
+            switch (currentlyDisplayedInventory)
+            {
+                case CurrentlyDisplayedInventory.all:
+                    LoadAllInventoryToDisplay();
+                    break;
+                case CurrentlyDisplayedInventory.consumable:
+                    LoadConsumableInventoryToDisplay();
+                    break;
+                case CurrentlyDisplayedInventory.weapon:
+                    LoadWeaponInventoryToDisplay();
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.UpdateInventoryDisplay was received but is not of class UpdateInventoryDisplay.");
+        }
+    }
+
+    #region inventory display loading
     private void UpdateGoldDisplay()
     {
         goldDisplay.text = playerInventory.Gold.ToString();
@@ -29,7 +63,7 @@ public class InventoryDisplayManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-
+        currentlyDisplayedInventory = CurrentlyDisplayedInventory.all;
         foreach (Item item in playerInventory.Inventory)
         {
             //create inventory item
@@ -41,7 +75,7 @@ public class InventoryDisplayManager : MonoBehaviour
             //check if an inventoryitemdisplay script is present
             if (inventoryItemDisplay!=null)
             {
-                inventoryItemDisplay.LoadValues(item.itemName, item.itemIcon);
+                inventoryItemDisplay.LoadValues(item);
             }
         }
     }
@@ -53,7 +87,7 @@ public class InventoryDisplayManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-
+        currentlyDisplayedInventory = CurrentlyDisplayedInventory.weapon;
         foreach (Item item in playerInventory.Inventory)
         {
             //check if the item is a weapon item
@@ -68,7 +102,7 @@ public class InventoryDisplayManager : MonoBehaviour
                 //check if an inventoryitemdisplay script is present
                 if (inventoryItemDisplay != null)
                 {
-                    inventoryItemDisplay.LoadValues(item.itemName, item.itemIcon);
+                    inventoryItemDisplay.LoadValues(item);
                 }
             }
         }
@@ -81,7 +115,7 @@ public class InventoryDisplayManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-
+        currentlyDisplayedInventory = CurrentlyDisplayedInventory.consumable;
         foreach (Item item in playerInventory.Inventory)
         {
             //check if the item is a weapon item
@@ -96,10 +130,18 @@ public class InventoryDisplayManager : MonoBehaviour
                 //check if an inventoryitemdisplay script is present
                 if (inventoryItemDisplay != null)
                 {
-                    inventoryItemDisplay.LoadValues(item.itemName, item.itemIcon);
+                    inventoryItemDisplay.LoadValues(item);
                 }
             }
         }
+    }
+
+    #endregion
+    private enum CurrentlyDisplayedInventory
+    {
+        all,
+        consumable,
+        weapon
     }
 
 }

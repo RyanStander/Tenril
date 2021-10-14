@@ -23,6 +23,17 @@ public class PlayerManager : MonoBehaviour
     public GameObject itemInteractableGameObject;
 
     public bool canDoCombo;
+
+    private void OnEnable()
+    {
+        EventManager.currentManager.Subscribe(EventType.EquipWeapon, OnEquipWeapon);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.currentManager.Unsubscribe(EventType.EquipWeapon, OnEquipWeapon);
+    }
+
     void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
@@ -123,6 +134,20 @@ public class PlayerManager : MonoBehaviour
             }
         }
     }
+
+    #region onEvents
+    private void OnEquipWeapon(EventData eventData)
+    {
+        if (eventData is EquipWeapon equipWeapon)
+        {
+            playerInventory.EquipWeapon(weaponSlotManager, equipWeapon.weaponItem, equipWeapon.isPrimaryWeapon);
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.EquipWeapon was received but is not of class EquipWeapon.");
+        }
+    }
+    #endregion
 
     #region Getters & Setters
     internal void SetDamageColliderDamage(float damage)

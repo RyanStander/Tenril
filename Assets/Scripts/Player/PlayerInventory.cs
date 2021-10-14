@@ -25,6 +25,20 @@ public class PlayerInventory : CharacterInventory
         inputHandler = GetComponent<InputHandler>();
     }
 
+    internal void EquipWeapon(WeaponSlotManager weaponSlotManager, WeaponItem weaponItem,bool isPrimaryWeapon)
+    {
+        if (isPrimaryWeapon)
+        {
+            primaryWeapon = weaponItem;
+            EquipNewWeapon(weaponSlotManager);
+        }
+        else
+        {
+            secondaryWeapon = weaponItem;
+            EquipNewWeapon(weaponSlotManager);
+        }
+    }
+
     internal void LoadEquippedWeapons(WeaponSlotManager weaponSlotManager)
     {
         //if it has a secondary weapon
@@ -39,6 +53,24 @@ public class PlayerInventory : CharacterInventory
             //load dual weapons weapon
             weaponSlotManager.LoadWeaponOnSlot(equippedWeapon, false);
         }
+    }
+
+    internal void EquipNewWeapon(WeaponSlotManager weaponSlotManager)
+    {
+            //if currently wielding primary weapon
+            if (isWieldingPrimaryWeapon)
+            {
+                equippedWeapon = primaryWeapon;
+
+                LoadEquippedWeapons(weaponSlotManager);
+            }
+            //if currently wielding secondary weapon
+            else
+            {
+                equippedWeapon = secondaryWeapon;
+
+                LoadEquippedWeapons(weaponSlotManager);
+            }
     }
 
     internal void SwapWeapon(WeaponSlotManager weaponSlotManager)

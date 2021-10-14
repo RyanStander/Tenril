@@ -30,3 +30,62 @@ public class UpdateStatusEffectsDisplay : EventData
         this.statusEffectManager = statusEffectManager;
     }
 }
+
+public class UpdateInventoryDisplay : EventData
+{
+    public UpdateInventoryDisplay() : base(EventType.UpdateInventoryDisplay)
+    {
+    }
+}
+
+//Event that informs subscribers of a weapon being equipped
+public class EquipWeapon : EventData
+{
+    public readonly WeaponItem weaponItem;
+    public readonly bool isPrimaryWeapon;
+    public EquipWeapon(WeaponItem weaponItem, bool isPrimaryWeapon) : base(EventType.EquipWeapon)
+    {
+        this.weaponItem = weaponItem;
+        this.isPrimaryWeapon = isPrimaryWeapon;
+    }
+}
+
+//Event that informs subscribers of a quickslot is being added
+public class addQuickslotItem : EventData
+{
+    public readonly QuickslotItem quickslotItem;
+    public addQuickslotItem(QuickslotItem quickslotItem) : base(EventType.AddQuickslotItem)
+    {
+        this.quickslotItem = quickslotItem;
+    }
+}
+
+//Event that informs subscribers of a quickslot is being removed
+public class removeQuickslotItem : EventData
+{
+    public readonly QuickslotItem quickslotItem;
+    public removeQuickslotItem(QuickslotItem quickslotItem) : base(EventType.RemoveQuickslotItem)
+    {
+        this.quickslotItem = quickslotItem;
+    }
+}
+
+//Event that informs subscribers of an item being dropped
+public class DropItem : EventData
+{
+    public readonly Item item;
+    public DropItem(Item item) : base(EventType.DropItem)
+    {
+        this.item = item;
+    }
+}
+
+//Event that informs subscribers of an item being used
+public class UseItem : EventData
+{
+    public readonly Item item;
+    public UseItem(Item item) : base(EventType.UseItem)
+    {
+        this.item = item;
+    }
+}
