@@ -65,6 +65,9 @@ public class UIManager : MonoBehaviour
                     menuToDisable.SetActive(false);
                 }
 
+                //destroy inventory option holders
+                EventManager.currentManager.AddEvent(new DestroyInventoryOptionHolders());
+
                 if (playerAnimator != null)
                     playerAnimator.SetBool("isInMenu", false);
             }

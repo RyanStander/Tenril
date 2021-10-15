@@ -13,4 +13,22 @@ public class InventoryOptionHolder : MonoBehaviour
     public GameObject removeQuickSlotButton;
     public GameObject dropItemButton;
 
+
+    private void OnEnable()
+    {
+        StartCoroutine(LateSubscribe());
+    }
+
+    private void OnDestroyInventoryOptionHolders(EventData eventData)
+    {
+        EventManager.currentManager.Unsubscribe(EventType.DestroyInventoryOptionHolders, OnDestroyInventoryOptionHolders);
+
+        Destroy(gameObject);
+    }
+
+    private IEnumerator LateSubscribe()
+    {
+        yield return new WaitForSeconds(0.1f);
+        EventManager.currentManager.Subscribe(EventType.DestroyInventoryOptionHolders, OnDestroyInventoryOptionHolders);
+    }
 }

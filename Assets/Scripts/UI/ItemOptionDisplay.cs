@@ -31,6 +31,9 @@ public class ItemOptionDisplay : MonoBehaviour,IPointerClickHandler
 
         if (optionObject != null)
         {
+            //destroy previous option holders
+            EventManager.currentManager.AddEvent(new DestroyInventoryOptionHolders());
+
             //set the object active
             isObjectActive = true;
 

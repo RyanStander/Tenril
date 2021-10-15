@@ -89,3 +89,11 @@ public class UseItem : EventData
         this.item = item;
     }
 }
+
+//Event that informs subscribers of a inventory options being created
+public class DestroyInventoryOptionHolders : EventData
+{
+    public DestroyInventoryOptionHolders() : base(EventType.DestroyInventoryOptionHolders)
+    {
+    }
+}
