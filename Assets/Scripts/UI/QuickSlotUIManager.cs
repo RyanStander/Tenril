@@ -29,7 +29,6 @@ public class QuickSlotUIManager : MonoBehaviour
     {
         if (eventData is UpdateQuickslotDisplay)
         {
-            Debug.Log("what");
             LoadQuickslotItemsToDisplay();
         }
         else
