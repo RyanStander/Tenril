@@ -22,7 +22,7 @@ public class PlayerCombatManager : MonoBehaviour
     }
 
     #region Attacking
-    public void HandleAttacks()
+    internal void HandleAttacks()
     {
         //Player performing weak attack
         if (inputHandler.weakAttackInput)
@@ -185,7 +185,7 @@ public class PlayerCombatManager : MonoBehaviour
 
     #region Defending
 
-    public void HandleDefending()
+    internal void HandleDefending()
     {
 
         BlockAction();

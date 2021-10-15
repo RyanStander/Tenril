@@ -18,7 +18,7 @@ public class PlayerSpellcastingManager : MonoBehaviour
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
     }
 
-    public void HandleSpellcasting()
+    internal void HandleSpellcasting()
     {
         //iterated through all spells
         for (int i = 0; i < 8; i++)

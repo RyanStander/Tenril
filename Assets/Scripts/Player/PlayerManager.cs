@@ -13,6 +13,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerAnimatorManager playerAnimatorManager;
     private PlayerCombatManager playerCombatManager;
     private PlayerSpellcastingManager playerSpellcastingManager;
+    private PlayerQuickslotManager playerQuickslotManager;
     private PlayerInventory playerInventory;
     private PlayerStats playerStats;
     private WeaponSlotManager weaponSlotManager;
@@ -22,6 +23,17 @@ public class PlayerManager : MonoBehaviour
     public GameObject itemInteractableGameObject;
 
     public bool canDoCombo;
+
+    private void OnEnable()
+    {
+        EventManager.currentManager.Subscribe(EventType.EquipWeapon, OnEquipWeapon);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.currentManager.Unsubscribe(EventType.EquipWeapon, OnEquipWeapon);
+    }
+
     void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
@@ -29,6 +41,7 @@ public class PlayerManager : MonoBehaviour
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
         playerCombatManager = GetComponent<PlayerCombatManager>();
         playerSpellcastingManager = GetComponent<PlayerSpellcastingManager>();
+        playerQuickslotManager = GetComponent<PlayerQuickslotManager>();
         playerInventory = GetComponent<PlayerInventory>();
         playerStats = GetComponent<PlayerStats>();
         weaponSlotManager = GetComponent<WeaponSlotManager>();
@@ -56,6 +69,7 @@ public class PlayerManager : MonoBehaviour
             playerCombatManager.HandleAttacks();
             playerCombatManager.HandleDefending();
             playerInventory.SwapWeapon(weaponSlotManager);
+            playerQuickslotManager.HandleQuickslotInputs();
         }
 
         CheckForInteractableObject();
@@ -76,7 +90,7 @@ public class PlayerManager : MonoBehaviour
         inputHandler.ResetInputs();
     }
 
-    public void CheckForInteractableObject()
+    internal void CheckForInteractableObject()
     {
         RaycastHit hit;
 
@@ -121,13 +135,27 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    #region onEvents
+    private void OnEquipWeapon(EventData eventData)
+    {
+        if (eventData is EquipWeapon equipWeapon)
+        {
+            playerInventory.EquipWeapon(weaponSlotManager, equipWeapon.weaponItem, equipWeapon.isPrimaryWeapon);
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.EquipWeapon was received but is not of class EquipWeapon.");
+        }
+    }
+    #endregion
+
     #region Getters & Setters
-    public void SetDamageColliderDamage(float damage)
+    internal void SetDamageColliderDamage(float damage)
     {
         weaponSlotManager.rightHandDamageCollider.currentDamage = damage;
     }
 
-    public PlayerStats GetPlayerStats()
+    internal PlayerStats GetPlayerStats()
     {
         return playerStats;
     }

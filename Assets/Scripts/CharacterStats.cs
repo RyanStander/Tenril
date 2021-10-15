@@ -83,7 +83,7 @@ public class CharacterStats : MonoBehaviour
             return false;
     }
 
-    public void HandleStaminaRegeneration()
+    internal void HandleStaminaRegeneration()
     {
         //if the character is able to regenerate stamina and it is not at max already, restore stamina
         //uses cooldowns to manage how fast stamina regenerates
@@ -117,7 +117,7 @@ public class CharacterStats : MonoBehaviour
         staminaRegenTimeStamp = Time.time + staminaRegenRate;
     }
 
-    public void PutStaminaRegenOnCooldown()
+    internal void PutStaminaRegenOnCooldown()
     {
         staminaCDTimeStamp = Time.time + staminaRegenCooldownTime;
         canRegen = false;

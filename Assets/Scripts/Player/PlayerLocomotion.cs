@@ -8,6 +8,7 @@ public class PlayerLocomotion : MonoBehaviour
     private PlayerStats playerStats;
     private InputHandler inputHandler;
     private Transform cameraObject;
+    private StatusEffectManager statusEffectManager;
 
     [Header("Ground & Air Detection")]
     [SerializeField] private float fallDuration=0;
@@ -28,9 +29,10 @@ public class PlayerLocomotion : MonoBehaviour
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
         playerStats = GetComponent<PlayerStats>();
         cameraObject = Camera.main.transform;
+        statusEffectManager = GetComponent<StatusEffectManager>();
     }
 
-    public void HandleLocomotion(float delta)
+    internal void HandleLocomotion(float delta)
     {
         HandleMovement();
         HandleRotation(delta);
@@ -38,7 +40,7 @@ public class PlayerLocomotion : MonoBehaviour
         HandleFalling();
     }
 
-    public void HandleDodgeAndJumping()
+    internal void HandleDodgeAndJumping()
     {
         HandleDodge();
         HandleJump();
@@ -235,15 +237,32 @@ public class PlayerLocomotion : MonoBehaviour
         //if player is strafing, use both left and forward
         if (isStafeMovement)
         {
-            playerAnimatorManager.animator.SetFloat("Forward", forwardMovement, 0.1f, Time.deltaTime);
-            playerAnimatorManager.animator.SetFloat("Left", -leftMovement, 0.1f, Time.deltaTime);
+            //Do not allow movement if the character is rooted
+            if (statusEffectManager.GetIsRooted())
+            {
+                playerAnimatorManager.animator.SetFloat("Forward", 0, 0.1f, Time.deltaTime);
+                playerAnimatorManager.animator.SetFloat("Left", 0, 0.1f, Time.deltaTime);
+            }
+            else
+            {
+                playerAnimatorManager.animator.SetFloat("Forward", forwardMovement, 0.1f, Time.deltaTime);
+                playerAnimatorManager.animator.SetFloat("Left", -leftMovement, 0.1f, Time.deltaTime);
+            }
         }
         //otherwise use move amount to work with rotations
         else
-        {     
-            playerAnimatorManager.animator.SetFloat("Forward", movementAmount, 0.1f, Time.deltaTime);
-            //ensure left is 0 to avoid strange movement out of lock on
-            playerAnimatorManager.animator.SetFloat("Left", 0, 0.1f, Time.deltaTime);
+        {    //Do not allow movement if the character is rooted
+            if (statusEffectManager.GetIsRooted())
+            {
+                playerAnimatorManager.animator.SetFloat("Forward", 0, 0.1f, Time.deltaTime);
+                playerAnimatorManager.animator.SetFloat("Left", 0, 0.1f, Time.deltaTime);
+            }
+            else
+            {
+                playerAnimatorManager.animator.SetFloat("Forward", movementAmount, 0.1f, Time.deltaTime);
+                //ensure left is 0 to avoid strange movement out of lock on
+                playerAnimatorManager.animator.SetFloat("Left", 0, 0.1f, Time.deltaTime);
+            }
         }   
     }
 }
