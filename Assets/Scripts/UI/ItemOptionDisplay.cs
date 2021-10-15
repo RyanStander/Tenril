@@ -73,6 +73,7 @@ public class ItemOptionDisplay : MonoBehaviour,IPointerClickHandler
         if (isObjectActive)
         {
             isObjectActive = false;
+            inventoryOptionHolder.UnsubscribeOptionHolderDestroyEvent();
             Destroy(availableOptions);
         }
     }

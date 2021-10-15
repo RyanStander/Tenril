@@ -31,4 +31,9 @@ public class InventoryOptionHolder : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         EventManager.currentManager.Subscribe(EventType.DestroyInventoryOptionHolders, OnDestroyInventoryOptionHolders);
     }
+
+    internal void UnsubscribeOptionHolderDestroyEvent()
+    {
+        EventManager.currentManager.Unsubscribe(EventType.DestroyInventoryOptionHolders, OnDestroyInventoryOptionHolders);
+    }
 }
