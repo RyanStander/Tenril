@@ -16,11 +16,6 @@ public class QuickSlotUIManager : MonoBehaviour
         EventManager.currentManager.Subscribe(EventType.UpdateQuickslotDisplay, OnUpdateQuickSlotDisplay);
     }
 
-    private void OnDisable()
-    {
-        EventManager.currentManager.Unsubscribe(EventType.UpdateQuickslotDisplay, OnUpdateQuickSlotDisplay);
-    }
-
     private void Start()
     {
         if (playerInventory == null)
@@ -34,6 +29,7 @@ public class QuickSlotUIManager : MonoBehaviour
     {
         if (eventData is UpdateQuickslotDisplay)
         {
+            Debug.Log("what");
             LoadQuickslotItemsToDisplay();
         }
         else
@@ -52,6 +48,14 @@ public class QuickSlotUIManager : MonoBehaviour
         //used to show ui elements
         Color nonTransperant = new Color(1, 1, 1, 1);
 
+        //if the current quickslot item is null, do not show any items
+        if (playerInventory.currentQuickSlotItem==null)
+        {
+            currentQuickSlotItem.color = transperant;
+            quickSlotItemLeft.color = transperant;
+            quickSlotItemRight.color = transperant;
+            return;
+        }
         //if the value is -1 that means the quick slot item that is equipped does not exist
         if (currentIndexValue == -1)
         {

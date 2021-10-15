@@ -64,7 +64,7 @@ public class InventoryDisplayManager : MonoBehaviour
             Destroy(child.gameObject);
         }
         currentlyDisplayedInventory = CurrentlyDisplayedInventory.all;
-        foreach (Item item in playerInventory.Inventory)
+        foreach (Item item in playerInventory.inventory)
         {
             //create inventory item
             GameObject createdInventoryItemPrefab = Instantiate(inventoryItemDisplayPrefab, inventoryContentObject.transform);
@@ -88,7 +88,7 @@ public class InventoryDisplayManager : MonoBehaviour
             Destroy(child.gameObject);
         }
         currentlyDisplayedInventory = CurrentlyDisplayedInventory.weapon;
-        foreach (Item item in playerInventory.Inventory)
+        foreach (Item item in playerInventory.inventory)
         {
             //check if the item is a weapon item
             if (item is WeaponItem weapon)
@@ -116,7 +116,7 @@ public class InventoryDisplayManager : MonoBehaviour
             Destroy(child.gameObject);
         }
         currentlyDisplayedInventory = CurrentlyDisplayedInventory.consumable;
-        foreach (Item item in playerInventory.Inventory)
+        foreach (Item item in playerInventory.inventory)
         {
             //check if the item is a weapon item
             if (item is QuickslotItem consumable)

@@ -51,20 +51,20 @@ public class EquipWeapon : EventData
 }
 
 //Event that informs subscribers of a quickslot is being added
-public class addQuickslotItem : EventData
+public class AddQuickslotItem : EventData
 {
     public readonly QuickslotItem quickslotItem;
-    public addQuickslotItem(QuickslotItem quickslotItem) : base(EventType.AddQuickslotItem)
+    public AddQuickslotItem(QuickslotItem quickslotItem) : base(EventType.AddQuickslotItem)
     {
         this.quickslotItem = quickslotItem;
     }
 }
 
 //Event that informs subscribers of a quickslot is being removed
-public class removeQuickslotItem : EventData
+public class RemoveQuickslotItem : EventData
 {
     public readonly QuickslotItem quickslotItem;
-    public removeQuickslotItem(QuickslotItem quickslotItem) : base(EventType.RemoveQuickslotItem)
+    public RemoveQuickslotItem(QuickslotItem quickslotItem) : base(EventType.RemoveQuickslotItem)
     {
         this.quickslotItem = quickslotItem;
     }

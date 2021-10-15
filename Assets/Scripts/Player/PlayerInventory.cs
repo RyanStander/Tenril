@@ -16,9 +16,23 @@ public class PlayerInventory : CharacterInventory
     public QuickslotItem currentQuickSlotItem;
 
     [Header("Backpack")]
-    public List<Item> Inventory;
+    public List<Item> inventory;
     //Inventory Subcategories
     public List<WeaponItem> weaponsInventory;
+
+    private void OnEnable()
+    {
+        EventManager.currentManager.Subscribe(EventType.DropItem, OnDropItem);
+        EventManager.currentManager.Subscribe(EventType.AddQuickslotItem, OnAddQuickslot);
+        EventManager.currentManager.Subscribe(EventType.RemoveQuickslotItem, OnRemoveQuickslot);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.currentManager.Unsubscribe(EventType.DropItem, OnDropItem);
+        EventManager.currentManager.Unsubscribe(EventType.AddQuickslotItem, OnAddQuickslot);
+        EventManager.currentManager.Unsubscribe(EventType.RemoveQuickslotItem, OnRemoveQuickslot);
+    }
 
     private void Awake()
     {
@@ -97,4 +111,88 @@ public class PlayerInventory : CharacterInventory
             }
         }
     }
+
+    #region On Events
+    private void OnDropItem(EventData eventData)
+    {
+        if (eventData is DropItem dropItem)
+        {
+            //remove item from inventory
+            inventory.Remove(dropItem.item);
+            //update the inventory display
+            EventManager.currentManager.AddEvent(new UpdateInventoryDisplay());
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.EquipWeapon was received but is not of class EquipWeapon.");
+        }
+    }
+
+    private void OnAddQuickslot(EventData eventData)
+    {
+        if (eventData is AddQuickslotItem addQuickslot)
+        {
+            //check if the list does not contain the item
+            if (!quickslotItems.Contains(addQuickslot.quickslotItem))
+            {
+                //if there are no quickslot items
+                if (quickslotItems.Count == 0)
+                    //set the current quickslot item to be the newly added one
+                    currentQuickSlotItem = addQuickslot.quickslotItem;
+                //add item to the quickslot list
+                quickslotItems.Add(addQuickslot.quickslotItem);
+                //update quickslot display
+                EventManager.currentManager.AddEvent(new UpdateQuickslotDisplay());
+            }
+            else
+            {
+                //give feedback that the item is already there
+            }
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.AddQuickslotItem was received but is not of class AddQuickslotItem.");
+        }
+    }
+
+    private void OnRemoveQuickslot(EventData eventData)
+    {
+        if (eventData is RemoveQuickslotItem removeQuickslot)
+        {
+            //check if the list contains the item
+            if (quickslotItems.Contains(removeQuickslot.quickslotItem))
+            {
+                //remove item from the quickslot list
+                quickslotItems.Remove(removeQuickslot.quickslotItem);
+                //check if the item is currently selected, if so remove it
+                if (currentQuickSlotItem==removeQuickslot.quickslotItem)
+                {
+                    //check the size of the list
+                    if (quickslotItems.Count>0)
+                    {
+                        //set it to the first one in the list
+                        currentQuickSlotItem = quickslotItems[0];
+                    }
+                    else
+                    {
+                        //set quickslot item to null if there are none
+                        currentQuickSlotItem = null;
+                    }
+
+                }
+                //update quickslot display
+                EventManager.currentManager.AddEvent(new UpdateQuickslotDisplay());
+            }
+            else
+            {
+                //give feedback that the item does not exist
+                Debug.LogWarning("the item to be removed was not found");
+            }
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.RemoveQuickslotItem was received but is not of class RemoveQuickslotItem.");
+        }
+    }
+    #endregion
 }
