@@ -13,7 +13,9 @@ public class PlayerInventory : CharacterInventory
     [Tooltip("The quickslot items that the player has selected")]
     public List<QuickslotItem> quickslotItems;
     [Tooltip("The currently selected quickslot item")]
-    public QuickslotItem currentQuickSlotItem;
+    public QuickslotItem currentlySelectedQuickSlotItem;
+    //this is the item referenced when actually using a quickslot item
+    public QuickslotItem quickslotItemInUse;
 
     [Header("Backpack")]
     public List<Item> inventory;
@@ -37,6 +39,12 @@ public class PlayerInventory : CharacterInventory
     private void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
+
+        if (currentlySelectedQuickSlotItem==null&&quickslotItems.Count!=0)
+        {
+            currentlySelectedQuickSlotItem = quickslotItems[0];
+            quickslotItemInUse = currentlySelectedQuickSlotItem;
+        }
     }
 
     internal void EquipWeapon(WeaponSlotManager weaponSlotManager, WeaponItem weaponItem,bool isPrimaryWeapon)
@@ -138,7 +146,7 @@ public class PlayerInventory : CharacterInventory
                 //if there are no quickslot items
                 if (quickslotItems.Count == 0)
                     //set the current quickslot item to be the newly added one
-                    currentQuickSlotItem = addQuickslot.quickslotItem;
+                    currentlySelectedQuickSlotItem = addQuickslot.quickslotItem;
                 //add item to the quickslot list
                 quickslotItems.Add(addQuickslot.quickslotItem);
                 //update quickslot display
@@ -165,18 +173,18 @@ public class PlayerInventory : CharacterInventory
                 //remove item from the quickslot list
                 quickslotItems.Remove(removeQuickslot.quickslotItem);
                 //check if the item is currently selected, if so remove it
-                if (currentQuickSlotItem==removeQuickslot.quickslotItem)
+                if (currentlySelectedQuickSlotItem==removeQuickslot.quickslotItem)
                 {
                     //check the size of the list
                     if (quickslotItems.Count>0)
                     {
                         //set it to the first one in the list
-                        currentQuickSlotItem = quickslotItems[0];
+                        currentlySelectedQuickSlotItem = quickslotItems[0];
                     }
                     else
                     {
                         //set quickslot item to null if there are none
-                        currentQuickSlotItem = null;
+                        currentlySelectedQuickSlotItem = null;
                     }
 
                 }
@@ -194,5 +202,7 @@ public class PlayerInventory : CharacterInventory
             throw new System.Exception("Error: EventData class with EventType.RemoveQuickslotItem was received but is not of class RemoveQuickslotItem.");
         }
     }
+
+
     #endregion
 }
