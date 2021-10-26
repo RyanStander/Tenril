@@ -47,6 +47,11 @@ public class PlayerInventory : CharacterInventory
         }
     }
 
+    private void Update()
+    {
+        Debug.Log(isWieldingPrimaryWeapon);
+    }
+
     internal void EquipWeapon(WeaponSlotManager weaponSlotManager, WeaponItem weaponItem,bool isPrimaryWeapon)
     {
         if (isPrimaryWeapon)
@@ -63,6 +68,7 @@ public class PlayerInventory : CharacterInventory
 
     internal void LoadEquippedWeapons(WeaponSlotManager weaponSlotManager)
     {
+
         //if it has a secondary weapon
         if (equippedWeapon.hasSecondaryWeapon)
         {
@@ -75,6 +81,9 @@ public class PlayerInventory : CharacterInventory
             //load dual weapons weapon
             weaponSlotManager.LoadWeaponOnSlot(equippedWeapon, false);
         }
+
+        //send out event to update ui
+        EventManager.currentManager.AddEvent(new UpdateWeaponDisplay(primaryWeapon, secondaryWeapon, isWieldingPrimaryWeapon));
     }
 
     internal void EquipNewWeapon(WeaponSlotManager weaponSlotManager)
@@ -102,20 +111,22 @@ public class PlayerInventory : CharacterInventory
             //if currently wielding primary weapon
             if (isWieldingPrimaryWeapon)
             {
+                //change to secondary weapon
                 equippedWeapon = secondaryWeapon;
-                
-                LoadEquippedWeapons(weaponSlotManager);
 
                 isWieldingPrimaryWeapon = false;
+
+                LoadEquippedWeapons(weaponSlotManager);
             }
             //if currently wielding secondary weapon
             else
             {
+                //change to primary weapon
                 equippedWeapon = primaryWeapon;
 
-                LoadEquippedWeapons(weaponSlotManager);
-
                 isWieldingPrimaryWeapon = true;
+
+                LoadEquippedWeapons(weaponSlotManager);
             }
         }
     }
