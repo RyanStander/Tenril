@@ -24,6 +24,9 @@ public class CharacterStats : MonoBehaviour
     [SerializeField] protected int SunlightLevel = 10;
     [SerializeField] protected float maxStoredSunlight, currentStoredSunlight;
 
+    [Header("Extras")]
+    public Faction assignedFaction = Faction.NONE;
+
     private void Start()
     {
         SetupStats();

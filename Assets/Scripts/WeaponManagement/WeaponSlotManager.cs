@@ -54,7 +54,7 @@ public class WeaponSlotManager : MonoBehaviour
             //set the current weapon in the left hand slot equal to the weapon item
             leftHandSlot.currentWeapon = weaponItem;
             //load the secondary weapon of the weapon item to the left hand slot
-            leftHandSlot.LoadWeaponModel(weaponItem,true);
+            leftHandSlot.LoadWeaponModel(weaponItem, true);
             //if successful, load the damage collider
             if (leftHandSlot != null)
                 LoadLeftWeaponDamageCollider();
@@ -80,7 +80,7 @@ public class WeaponSlotManager : MonoBehaviour
         //set the current weapon in the right hand slot equal to the weapon item
         rightHandSlot.currentWeapon = weaponItem;
         //load the primary weapon of the weapon item to the left hand slot
-        rightHandSlot.LoadWeaponModel(weaponItem,false);
+        rightHandSlot.LoadWeaponModel(weaponItem, false);
         //if successful, load the damage collider
         if (rightHandSlot != null)
             LoadRightWeaponDamageCollider();
@@ -111,6 +111,7 @@ public class WeaponSlotManager : MonoBehaviour
 
         //get the value of the damage collider
         rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
+
         //set the damage of the collider equal to that of the right weapon
         rightHandDamageCollider.currentDamage = characterInventory.equippedWeapon.baseDamage;
     }
@@ -119,7 +120,7 @@ public class WeaponSlotManager : MonoBehaviour
     {
         //check if there is a secondary weapon
         //open the damage colliders
-        if(leftHandDamageCollider!=null)
+        if (leftHandDamageCollider != null)
             leftHandDamageCollider.EnableDamageCollider();
 
         if (rightHandDamageCollider != null)
