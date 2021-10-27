@@ -10277,6 +10277,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8309865361876958579}
+  - component: {fileID: 222745039}
   m_Layer: 5
   m_Name: EquippedWeapons
   m_TagString: Untagged
@@ -10306,6 +10307,20 @@ RectTransform:
   m_AnchoredPosition: {x: 334.9, y: -192.9}
   m_SizeDelta: {x: 125, y: 49.8195}
   m_Pivot: {x: 0.50000006, y: 0.5}
+--- !u!114 &222745039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 857791801559271214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ea7e043d987b41408b1e43301f11932, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  primaryWeapon: {fileID: 1129353723}
+  secondaryWeapon: {fileID: 1601049606}
 --- !u!1 &874273065286263133
 GameObject:
   m_ObjectHideFlags: 0
@@ -12004,6 +12019,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2731596436204663179}
+  - component: {fileID: 1601049606}
   m_Layer: 5
   m_Name: SecondaryWeapon
   m_TagString: Untagged
@@ -12034,6 +12050,21 @@ RectTransform:
   m_AnchoredPosition: {x: -0.0000013411045, y: 11}
   m_SizeDelta: {x: 118, y: 22}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1601049606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3332113459471493408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96dda31183a899747b361291702ecc93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponIcon: {fileID: 5011779913223155230}
+  weaponName: {fileID: 2968234308644158267}
+  unselectedHighlight: {fileID: 4016845676284668278}
 --- !u!1 &3379106209474301982
 GameObject:
   m_ObjectHideFlags: 0
@@ -13214,7 +13245,7 @@ GameObject:
   - component: {fileID: 6359584839474824080}
   - component: {fileID: 3616308648185695103}
   m_Layer: 5
-  m_Name: UnselectedOverlay
+  m_Name: UnselectedHighlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18476,6 +18507,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1159071284589883060}
+  - component: {fileID: 1129353723}
   m_Layer: 5
   m_Name: PrimaryWeapon
   m_TagString: Untagged
@@ -18506,6 +18538,21 @@ RectTransform:
   m_AnchoredPosition: {x: -0.0000013411045, y: -11}
   m_SizeDelta: {x: 118, y: 22}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1129353723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7049053579409707928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96dda31183a899747b361291702ecc93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponIcon: {fileID: 1502381633604636547}
+  weaponName: {fileID: 1367826356881871726}
+  unselectedHighlight: {fileID: 9151296665648960398}
 --- !u!1 &7185380276858232239
 GameObject:
   m_ObjectHideFlags: 0
@@ -20895,7 +20942,7 @@ GameObject:
   - component: {fileID: 7880151216365777025}
   - component: {fileID: 1564183480799926247}
   m_Layer: 5
-  m_Name: UnselectedOverlay
+  m_Name: UnselectedHighlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
