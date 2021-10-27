@@ -24,6 +24,7 @@ public class WeaponItem : Item
     public string idleAnimation;
 
     [Header("Attack Animations")]
+    public AttackSet attackSet;
     public List<string> weakAttacks;
     public List<string> strongAttacks;
 
@@ -42,3 +43,4 @@ public class WeaponItem : Item
         castingWeapon
     }
 }
+

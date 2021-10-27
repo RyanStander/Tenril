@@ -47,11 +47,6 @@ public class PlayerInventory : CharacterInventory
         }
     }
 
-    private void Update()
-    {
-        Debug.Log(isWieldingPrimaryWeapon);
-    }
-
     internal void EquipWeapon(WeaponSlotManager weaponSlotManager, WeaponItem weaponItem,bool isPrimaryWeapon)
     {
         if (isPrimaryWeapon)

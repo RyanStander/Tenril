@@ -4194,7 +4194,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b4227b60b1507304caa7f04341cb4a7b, type: 2}
   - {fileID: 11400000, guid: 7d60350e21f1e024b9e723e45ca7fc27, type: 2}
   - {fileID: 11400000, guid: 083a95e82826f2047b46d3bdd56921bb, type: 2}
-  currentQuickSlotItem: {fileID: 11400000, guid: b4227b60b1507304caa7f04341cb4a7b, type: 2}
+  currentlySelectedQuickSlotItem: {fileID: 0}
+  quickslotItemInUse: {fileID: 0}
   inventory:
   - {fileID: 11400000, guid: 379244ca9efcbe74a84fc791cb8b4127, type: 2}
   - {fileID: 11400000, guid: 92735e3b99674a741ac327fbf4264d5f, type: 2}
@@ -4230,6 +4231,7 @@ MonoBehaviour:
   SunlightLevel: 10
   maxStoredSunlight: 0
   currentStoredSunlight: 0
+  assignedFaction: 1
   healthBar: {fileID: 0}
   staminaBar: {fileID: 0}
   sunlightBar: {fileID: 0}
