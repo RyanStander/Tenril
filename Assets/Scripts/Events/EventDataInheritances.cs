@@ -97,3 +97,16 @@ public class DestroyInventoryOptionHolders : EventData
     {
     }
 }
+
+//Event that informs subscribers of equipped weapons being modified
+public class  UpdateWeaponDisplay : EventData
+{
+    public readonly WeaponItem primaryWeapon, secondaryWeapon;
+    public readonly bool isWieldingPrimaryWeapon;
+    public UpdateWeaponDisplay(WeaponItem primaryWeapon, WeaponItem secondaryWeapon, bool isWieldingPrimaryWeapon) : base(EventType.UpdateWeaponDisplay)
+    {
+        this.primaryWeapon = primaryWeapon;
+        this.secondaryWeapon = secondaryWeapon;
+        this.isWieldingPrimaryWeapon = isWieldingPrimaryWeapon;
+    }
+}

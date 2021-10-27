@@ -27,11 +27,13 @@ public class PlayerManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.EquipWeapon, OnEquipWeapon);
+        EventManager.currentManager.Subscribe(EventType.UseItem, OnUseItem);
     }
 
     private void OnDisable()
     {
         EventManager.currentManager.Unsubscribe(EventType.EquipWeapon, OnEquipWeapon);
+        EventManager.currentManager.Unsubscribe(EventType.UseItem, OnUseItem);
     }
 
     void Awake()
@@ -145,6 +147,24 @@ public class PlayerManager : MonoBehaviour
         else
         {
             throw new System.Exception("Error: EventData class with EventType.EquipWeapon was received but is not of class EquipWeapon.");
+        }
+    }
+
+    private void OnUseItem(EventData eventData)
+    {
+        if (eventData is UseItem useItem)
+        {
+            if (useItem.item is QuickslotItem quickslotItem)
+            {
+                //set item to the current quick slot
+                playerInventory.quickslotItemInUse = quickslotItem;
+                //attempt using item
+                quickslotItem.AttemptToUseItem(playerAnimatorManager, playerStats);
+            }
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.UseItem was received but is not of class UseItem.");
         }
     }
     #endregion

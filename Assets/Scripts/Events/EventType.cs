@@ -10,6 +10,7 @@ public enum EventType
     UpdateQuickslotDisplay,
     UpdateStatusEffectsDisplay,
     UpdateInventoryDisplay,
+    UpdateWeaponDisplay,
     EquipWeapon,
     AddQuickslotItem,
     RemoveQuickslotItem,

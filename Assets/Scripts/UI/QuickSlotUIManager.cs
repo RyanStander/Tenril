@@ -40,7 +40,7 @@ public class QuickSlotUIManager : MonoBehaviour
     private void LoadQuickslotItemsToDisplay()
     {
         //Get current quickslotItem
-        int currentIndexValue = playerInventory.quickslotItems.IndexOf(playerInventory.currentQuickSlotItem);
+        int currentIndexValue = playerInventory.quickslotItems.IndexOf(playerInventory.currentlySelectedQuickSlotItem);
 
         //used to hide ui elements
         Color transperant = new Color(1, 1, 1, 0);
@@ -48,7 +48,7 @@ public class QuickSlotUIManager : MonoBehaviour
         Color nonTransperant = new Color(1, 1, 1, 1);
 
         //if the current quickslot item is null, do not show any items
-        if (playerInventory.currentQuickSlotItem==null)
+        if (playerInventory.currentlySelectedQuickSlotItem==null)
         {
             currentQuickSlotItem.color = transperant;
             quickSlotItemLeft.color = transperant;
@@ -65,8 +65,8 @@ public class QuickSlotUIManager : MonoBehaviour
             return;
         }
         if(currentQuickSlotDisplayText!=null)
-            currentQuickSlotDisplayText.text = playerInventory.currentQuickSlotItem.itemName;
-        currentQuickSlotItem.sprite = playerInventory.currentQuickSlotItem.itemIcon;
+            currentQuickSlotDisplayText.text = playerInventory.currentlySelectedQuickSlotItem.itemName;
+        currentQuickSlotItem.sprite = playerInventory.currentlySelectedQuickSlotItem.itemIcon;
 
         //if there is only a single quick slot item, hide the left and right ones
         if (playerInventory.quickslotItems.Count==1)

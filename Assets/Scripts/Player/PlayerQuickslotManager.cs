@@ -8,7 +8,6 @@ public class PlayerQuickslotManager : MonoBehaviour
     private PlayerAnimatorManager playerAnimatorManager;
     private PlayerStats playerStats;
     private InputHandler inputHandler;
-    private QuickslotItem currentQuickSlotItem;
 
     private void Awake()
     {
@@ -29,7 +28,7 @@ public class PlayerQuickslotManager : MonoBehaviour
         if (inputHandler.quickslotLeftInput)
         {
             //Get the index of the current quickslot item
-            int currentIndexValue = playerInventory.quickslotItems.IndexOf(playerInventory.currentQuickSlotItem);
+            int currentIndexValue = playerInventory.quickslotItems.IndexOf(playerInventory.currentlySelectedQuickSlotItem);
 
             //if the value is -1 that means the quick slot item that is equipped does not exist
             if (currentIndexValue == -1)
@@ -45,7 +44,7 @@ public class PlayerQuickslotManager : MonoBehaviour
                 currentIndexValue = playerInventory.quickslotItems.Count;
             }
             //sets the current quickslot item to the new value
-            playerInventory.currentQuickSlotItem = playerInventory.quickslotItems[currentIndexValue - 1];
+            playerInventory.currentlySelectedQuickSlotItem = playerInventory.quickslotItems[currentIndexValue - 1];
 
             //Update the ui display
             EventManager.currentManager.AddEvent(new UpdateQuickslotDisplay());
@@ -54,7 +53,7 @@ public class PlayerQuickslotManager : MonoBehaviour
         if (inputHandler.quickslotRightInput)
         {
             //Get the index of the current quickslot item
-            int currentIndexValue = playerInventory.quickslotItems.IndexOf(playerInventory.currentQuickSlotItem);
+            int currentIndexValue = playerInventory.quickslotItems.IndexOf(playerInventory.currentlySelectedQuickSlotItem);
 
             //if the value is -1 that means the quick slot item that is equipped does not exist
             if (currentIndexValue == -1)
@@ -70,7 +69,7 @@ public class PlayerQuickslotManager : MonoBehaviour
                 currentIndexValue = -1;
             }
             //sets the current quickslot item to the new value
-            playerInventory.currentQuickSlotItem = playerInventory.quickslotItems[currentIndexValue + 1];
+            playerInventory.currentlySelectedQuickSlotItem = playerInventory.quickslotItems[currentIndexValue + 1];
 
             //Update the ui display
             EventManager.currentManager.AddEvent(new UpdateQuickslotDisplay());
@@ -82,14 +81,18 @@ public class PlayerQuickslotManager : MonoBehaviour
         //use selected quickslot if pressed
         if (inputHandler.quickslotUseInput)
         {
-            if (playerInventory.currentQuickSlotItem == null)
+            if (playerInventory.quickslotItemInUse == null)
                 return;
 
             if (playerAnimatorManager.animator.GetBool("isInteracting"))
                 return;
 
-            playerInventory.currentQuickSlotItem.AttemptToUseItem(playerAnimatorManager, playerStats);
-            currentQuickSlotItem = playerInventory.currentQuickSlotItem;
+            //sets the item in us to the currently selected item
+            playerInventory.quickslotItemInUse = playerInventory.currentlySelectedQuickSlotItem;
+
+            //attempt using the item
+            playerInventory.quickslotItemInUse.AttemptToUseItem(playerAnimatorManager, playerStats);
+
 
             //Update the ui display
             EventManager.currentManager.AddEvent(new UpdateQuickslotDisplay());
@@ -98,6 +101,7 @@ public class PlayerQuickslotManager : MonoBehaviour
 
     public void SuccessfulyUsedItem()
     {
-        currentQuickSlotItem.SuccessfullyUsedItem(playerAnimatorManager, playerStats);
+        //perform success item
+        playerInventory.quickslotItemInUse.SuccessfullyUsedItem(playerAnimatorManager, playerStats);        
     }
 }
