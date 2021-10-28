@@ -16,6 +16,8 @@ public enum EventType
     RemoveQuickslotItem,
     UseItem,
     DropItem,
-    DestroyInventoryOptionHolders
+    DestroyInventoryOptionHolders,
+    InitiateDialogue,
+    CeaseDialogue
 
 }

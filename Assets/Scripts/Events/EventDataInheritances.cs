@@ -110,3 +110,21 @@ public class  UpdateWeaponDisplay : EventData
         this.isWieldingPrimaryWeapon = isWieldingPrimaryWeapon;
     }
 }
+
+//Event that informs subscribers of initiating dialogue with npc
+public class InitiateDialogue : EventData
+{
+    public InitiateDialogue() : base(EventType.InitiateDialogue)
+    {
+
+    }
+}
+
+//Event that informs subscribers of ceasing dialoague with npc
+public class CeaseDialogue : EventData
+{
+    public CeaseDialogue() : base(EventType.CeaseDialogue)
+    {
+
+    }
+}

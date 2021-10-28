@@ -308,7 +308,7 @@ GameObject:
   - component: {fileID: 6954047794115294965}
   - component: {fileID: 6954047794115294962}
   - component: {fileID: 6954047794115294966}
-  - component: {fileID: 4371780369589096354}
+  - component: {fileID: 318142687}
   m_Layer: 0
   m_Name: DamageableCapsule
   m_TagString: Enemy
@@ -426,8 +426,8 @@ MonoBehaviour:
   statusEffects: []
   timeLeft: []
   isRooted: 0
-  character: {fileID: 0}
---- !u!114 &4371780369589096354
+  character: {fileID: 318142687}
+--- !u!114 &318142687
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -436,7 +436,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6954047794115294927}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b769d1744559c8049b5a74fba2c642d5, type: 3}
+  m_Script: {fileID: 11500000, guid: 4baddc88739eb234e9999944606c24fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthLevel: 10
@@ -455,6 +455,7 @@ MonoBehaviour:
   maxStoredSunlight: 0
   currentStoredSunlight: 0
   assignedFaction: 3
+  healthBar: {fileID: 6954047794165173712}
 --- !u!1 &6954047794165173550
 GameObject:
   m_ObjectHideFlags: 0
