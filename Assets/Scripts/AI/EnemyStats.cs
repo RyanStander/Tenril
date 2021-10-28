@@ -24,11 +24,14 @@ public class EnemyStats : CharacterStats
 
     private EnemyAnimatorManager enemyAnimatorManager;
 
+    [SerializeField] private SliderBarDisplayUI healthBar;
     private void Start()
     {
         SetupStats();
 
         enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
+
+        healthBar.SetMaxValue(maxHealth);
     }
 
     public override void TakeDamage(float damageAmount, bool playAnimation = true)
@@ -41,6 +44,9 @@ public class EnemyStats : CharacterStats
 
         //change current health
         base.TakeDamage(damageAmount);
+
+        //update health display on the healthbar
+        healthBar.SetCurrentValue(currentHealth);
 
         //play animation that enemy has taken damage
         if (playAnimation)
