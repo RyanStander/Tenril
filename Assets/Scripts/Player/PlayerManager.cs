@@ -97,7 +97,7 @@ public class PlayerManager : MonoBehaviour
         RaycastHit hit;
 
         //Check in a sphere cast for any interactable objects
-        if (Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, 1f))
+        if (Physics.SphereCast(transform.position,0.3f, transform.forward, out hit, 1f))
         {
             if (hit.collider.tag == "Interactable")
             {

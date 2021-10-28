@@ -12,17 +12,22 @@ public class WeapondDisplayDataHolder : MonoBehaviour
 
     public void SetValues(Sprite weaponIcon, string weaponName)
     {
-        this.weaponIcon.sprite = weaponIcon;
-        this.weaponName.text = weaponName;
+        if (this.weaponIcon!=null)
+            this.weaponIcon.sprite = weaponIcon;
+
+        if (this.weaponName!=null)
+            this.weaponName.text = weaponName;
     }
 
     public void DeselectWeapon()
     {
-        unselectedHighlight.SetActive(true);
+        if (unselectedHighlight!=null)
+            unselectedHighlight.SetActive(true);
     }
 
     public void SelectWeapon()
     {
-        unselectedHighlight.SetActive(false);
+        if (unselectedHighlight != null)
+            unselectedHighlight.SetActive(false);
     }
 }

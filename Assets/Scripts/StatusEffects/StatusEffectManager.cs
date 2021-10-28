@@ -14,7 +14,7 @@ public class StatusEffectManager : MonoBehaviour
     [HideInInspector]public bool isRooted;
 
     //temporary
-    [SerializeField]CharacterStats character;
+    [SerializeField] private CharacterStats character;
 
     private void Update()
     {
