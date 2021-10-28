@@ -19,9 +19,11 @@ public class ItemPickup : Interactable
     protected virtual void PickUpItem(PlayerManager playerManager)
     {
         PlayerAnimatorManager playerAnimatorManager;
+        PlayerInteraction playerInteraction;
 
         playerInventory = playerManager.GetComponent<PlayerInventory>();
         playerAnimatorManager = playerManager.GetComponent<PlayerAnimatorManager>();
+        playerInteraction = playerManager.GetComponent<PlayerInteraction>();
 
         //Plays the animation of picking up item
         playerAnimatorManager.PlayTargetAnimation("PickUp", true);
@@ -30,11 +32,11 @@ public class ItemPickup : Interactable
         playerInventory.inventory.Add(item);
 
         //Notify player of obtaining item
-        playerManager.itemInteractableGameObject.GetComponentInChildren<TextMeshProUGUI>().text = "You obtained " + item.itemName + "!";
+        playerInteraction.itemInteractableGameObject.GetComponentInChildren<TextMeshProUGUI>().text = "You obtained " + item.itemName + "!";
         //Set the weapon icon to display item
-        playerManager.itemInteractableGameObject.GetComponentInChildren<RawImage>().texture = item.itemIcon.texture;
+        playerInteraction.itemInteractableGameObject.GetComponentInChildren<RawImage>().texture = item.itemIcon.texture;
         //Enable the game object
-        playerManager.itemInteractableGameObject.SetActive(true);
+        playerInteraction.itemInteractableGameObject.SetActive(true);
 
         //Destroy the interactable after pick up
         Destroy(gameObject);

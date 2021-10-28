@@ -307,8 +307,8 @@ GameObject:
   - component: {fileID: 6954047794115294963}
   - component: {fileID: 6954047794115294965}
   - component: {fileID: 6954047794115294962}
-  - component: {fileID: 6954047794115294961}
   - component: {fileID: 6954047794115294966}
+  - component: {fileID: 4371780369589096354}
   m_Layer: 0
   m_Name: DamageableCapsule
   m_TagString: Enemy
@@ -411,7 +411,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6954047794115294961
+--- !u!114 &6954047794115294966
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -420,7 +420,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 6954047794115294927}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae1ed7543ae76864fb3f3aeb9baea264, type: 3}
+  m_Script: {fileID: 11500000, guid: 7fa6420ea7f2b9e49866cf48cd7374c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statusEffects: []
+  timeLeft: []
+  isRooted: 0
+  character: {fileID: 0}
+--- !u!114 &4371780369589096354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6954047794115294927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b769d1744559c8049b5a74fba2c642d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthLevel: 10
@@ -438,21 +454,7 @@ MonoBehaviour:
   SunlightLevel: 10
   maxStoredSunlight: 0
   currentStoredSunlight: 0
-  healthBar: {fileID: 6954047794165173712}
---- !u!114 &6954047794115294966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6954047794115294927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fa6420ea7f2b9e49866cf48cd7374c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  statusEffects: []
-  character: {fileID: 6954047794115294961}
+  assignedFaction: 3
 --- !u!1 &6954047794165173550
 GameObject:
   m_ObjectHideFlags: 0
