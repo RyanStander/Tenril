@@ -77,7 +77,7 @@ public class ChaseTargetState : AbstractStateFSM
     private void HandleMovement()
     {
         //Return and do not run any more methods until the current action/animation is completed
-        if (enemyManager.isPerformingAction)
+        if (enemyManager.isInteracting)
         {
             //Set to minimal forward movement while still performing action
             animatorManager.animator.SetFloat(forwardHash, 0, 0.1f, Time.deltaTime);

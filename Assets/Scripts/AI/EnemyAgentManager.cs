@@ -32,8 +32,8 @@ public class EnemyAgentManager : MonoBehaviour
     //The current target of the agent
     internal GameObject currentTarget;
 
-    //Helper bools to prevent animations/actions from occuring until an animation is completed
-    internal bool isPerformingAction, isInteracting;
+    //Helper bool to prevent animations/actions from occuring until an animation is completed
+    internal bool isInteracting;
 
     //Current time in animation recovery
     internal float currentRecoveryTime = 0;
@@ -85,7 +85,7 @@ public class EnemyAgentManager : MonoBehaviour
         }
 
         //If currently performing an animation related action
-        if (isPerformingAction)
+        if (isInteracting)
         {
             //Check if recovery time is completed
             if (currentRecoveryTime <= 0)
@@ -93,7 +93,7 @@ public class EnemyAgentManager : MonoBehaviour
                 //If the enemy is not dead yet, reset bool
                 if (enemyIsDead != true)
                 {
-                    isPerformingAction = false;
+                    isInteracting = false;
                 }
             }
         }

@@ -77,7 +77,7 @@ public class AttackState : AbstractStateFSM
         //2. No weapon exists
         //3. The creature is still in recovery time
         //Although these are checked in performing the attack, a pre-emptive check saves on needing to look through valid attacks
-        if (enemyManager.isPerformingAction || currentWeapon == null || enemyManager.currentRecoveryTime > 0)
+        if (enemyManager.isInteracting || currentWeapon == null || enemyManager.currentRecoveryTime > 0)
         {
             //Change to evaluate state
             finiteStateMachine.EnterState(StateTypeFSM.EVALUATECOMBAT);
@@ -122,7 +122,7 @@ public class AttackState : AbstractStateFSM
     private void PerformCurrentAttack()
     {
         //If the recovery time and allows for an attack and they are not performing an action
-        if (enemyManager.currentRecoveryTime <= 0 && !enemyManager.isPerformingAction && currentAttack != null)
+        if (enemyManager.currentRecoveryTime <= 0 && !enemyManager.isInteracting && currentAttack != null)
         {
             //Debug the attack being performed
             DebugLogString("Attack being performed: " + currentAttack.attackAnimation);
@@ -135,7 +135,7 @@ public class AttackState : AbstractStateFSM
             animatorManager.PlayTargetAnimation(currentAttack.attackAnimation, true);
 
             //Set the manager to believe they are performing an action
-            enemyManager.isPerformingAction = true;
+            enemyManager.isInteracting = true;
 
             //Set the manager into recovery
             enemyManager.currentRecoveryTime = currentAttack.recoveryTime;
