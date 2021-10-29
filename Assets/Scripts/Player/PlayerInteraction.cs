@@ -5,8 +5,9 @@ using UnityEngine;
 public class PlayerInteraction : MonoBehaviour
 {
     private InteractableUI interactableUI;
-    public GameObject interactableUIGameObject;
-    public GameObject itemInteractableGameObject;
+    public GameObject interactionPopUp;
+    public GameObject itemPopUp;
+    public GameObject dialoguePopUp;
 
     [Header("OverlapBox setup")]
     [SerializeField] private Vector3 overlapBoxOffset;
@@ -46,13 +47,19 @@ public class PlayerInteraction : MonoBehaviour
                     interactableUI.interactableText.text = interactableText;
 
                     //Display it
-                    interactableUIGameObject.SetActive(true);
+                    interactionPopUp.SetActive(true);
 
                     //if interact button is pressed while the option is available
                     if (inputHandler.interactInput)
                     {
                         //call the interaction
                         hitColliders[i].GetComponent<Interactable>().Interact(GetComponent<PlayerManager>());
+
+                        //hide the interactable ui and reset
+                        if (interactionPopUp != null)
+                        {
+                            interactionPopUp.SetActive(false);
+                        }
                     }
                 }
             }
@@ -65,14 +72,9 @@ public class PlayerInteraction : MonoBehaviour
         if (0 == hitColliders.Length)
         {
             //hide the interactable ui and reset
-            if (interactableUIGameObject != null)
+            if (itemPopUp != null && inputHandler.interactInput)
             {
-                interactableUIGameObject.SetActive(false);
-            }
-
-            if (itemInteractableGameObject != null && inputHandler.interactInput)
-            {
-                itemInteractableGameObject.SetActive(false);
+                itemPopUp.SetActive(false);
             }
         }
     }

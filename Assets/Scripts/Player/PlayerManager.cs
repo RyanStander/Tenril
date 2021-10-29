@@ -25,12 +25,14 @@ public class PlayerManager : MonoBehaviour
     {
         EventManager.currentManager.Subscribe(EventType.EquipWeapon, OnEquipWeapon);
         EventManager.currentManager.Subscribe(EventType.UseItem, OnUseItem);
+        EventManager.currentManager.Subscribe(EventType.InitiateDialogue, OnInitiateDialogue);
     }
 
     private void OnDisable()
     {
         EventManager.currentManager.Unsubscribe(EventType.EquipWeapon, OnEquipWeapon);
         EventManager.currentManager.Unsubscribe(EventType.UseItem, OnUseItem);
+        EventManager.currentManager.Unsubscribe(EventType.InitiateDialogue, OnInitiateDialogue);
     }
 
     void Awake()
@@ -116,6 +118,21 @@ public class PlayerManager : MonoBehaviour
         else
         {
             throw new System.Exception("Error: EventData class with EventType.UseItem was received but is not of class UseItem.");
+        }
+    }
+
+    private void OnInitiateDialogue(EventData eventData)
+    {
+        if (eventData is InitiateDialogue)
+        {
+            //Hide model
+            gameObject.SetActive(false);
+            //Disable Character Controls
+            inputHandler.GetInputActions().CharacterControls.Disable();
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.InitiateDialogue was received but is not of class InitiateDialogue.");
         }
     }
     #endregion
