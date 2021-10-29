@@ -31,10 +31,3 @@ public class OpenDialogue : Interactable
 
     }
 }
-
-
-//lock player movement
-
-//open dialogue window
-
-//let npc greet player

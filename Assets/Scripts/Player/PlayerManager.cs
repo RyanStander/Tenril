@@ -26,6 +26,7 @@ public class PlayerManager : MonoBehaviour
         EventManager.currentManager.Subscribe(EventType.EquipWeapon, OnEquipWeapon);
         EventManager.currentManager.Subscribe(EventType.UseItem, OnUseItem);
         EventManager.currentManager.Subscribe(EventType.InitiateDialogue, OnInitiateDialogue);
+
     }
 
     private void OnDisable()
@@ -33,6 +34,8 @@ public class PlayerManager : MonoBehaviour
         EventManager.currentManager.Unsubscribe(EventType.EquipWeapon, OnEquipWeapon);
         EventManager.currentManager.Unsubscribe(EventType.UseItem, OnUseItem);
         EventManager.currentManager.Unsubscribe(EventType.InitiateDialogue, OnInitiateDialogue);
+
+        //EventManager.currentManager.Subscribe(EventType.InitiateDialogue, OnCeaseDialogue);
     }
 
     void Awake()
@@ -47,6 +50,9 @@ public class PlayerManager : MonoBehaviour
         playerStats = GetComponent<PlayerStats>();
         playerInteraction = GetComponent<PlayerInteraction>();
         weaponSlotManager = GetComponent<WeaponSlotManager>();
+
+
+        EventManager.currentManager.Subscribe(EventType.CeaseDialogue, OnCeaseDialogue);
     }
 
     private void Start()
@@ -133,6 +139,21 @@ public class PlayerManager : MonoBehaviour
         else
         {
             throw new System.Exception("Error: EventData class with EventType.InitiateDialogue was received but is not of class InitiateDialogue.");
+        }
+    }
+
+    private void OnCeaseDialogue(EventData eventData)
+    {
+        if (eventData is CeaseDialogue)
+        {
+            //Show model
+            gameObject.SetActive(true);
+            //Disable Character Controls
+            inputHandler.GetInputActions().CharacterControls.Enable();
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.CeaseDialogue was received but is not of class CeaseDialogue.");
         }
     }
     #endregion

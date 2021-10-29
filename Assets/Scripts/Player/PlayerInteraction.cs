@@ -72,9 +72,9 @@ public class PlayerInteraction : MonoBehaviour
         if (0 == hitColliders.Length)
         {
             //hide the interactable ui and reset
-            if (itemPopUp != null && inputHandler.interactInput)
+            if (interactionPopUp != null)
             {
-                itemPopUp.SetActive(false);
+                interactionPopUp.SetActive(false);
             }
         }
     }
