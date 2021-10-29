@@ -192,6 +192,12 @@ public class InputHandler : MonoBehaviour
         {
             lockOnInput = false;
             lockOnFlag = !lockOnFlag;
+            if (lockOnFlag)
+                //send out event to swap to lock on camera
+                EventManager.currentManager.AddEvent(new SwapToLockOnCamera());
+            else
+                //send out event to swap to exploration camera
+                EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
         }
     }
 

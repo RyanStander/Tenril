@@ -47,8 +47,9 @@ public class UIManager : MonoBehaviour
                 InGameGUI.SetActive(false);
                 MenuGUI.SetActive(true);
 
-                if (playerAnimator != null)
-                    playerAnimator.SetBool("isInMenu", true);
+                inputHandler.lockOnFlag = false;
+                //send out event to swap to menu camera
+                EventManager.currentManager.AddEvent(new SwapToMenuCamera());
             }
             else
             {
@@ -68,8 +69,8 @@ public class UIManager : MonoBehaviour
                 //destroy inventory option holders
                 EventManager.currentManager.AddEvent(new DestroyInventoryOptionHolders());
 
-                if (playerAnimator != null)
-                    playerAnimator.SetBool("isInMenu", false);
+                //send out event to swap to exploration camera
+                EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
             }
 
         }

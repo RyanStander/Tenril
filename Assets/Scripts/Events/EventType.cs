@@ -18,6 +18,10 @@ public enum EventType
     DropItem,
     DestroyInventoryOptionHolders,
     InitiateDialogue,
-    CeaseDialogue
+    CeaseDialogue,
+    SwapToLockOnCamera,
+    SwapToExplorationCamera,
+    SwapToMenuCamera,
+    SwapToNPCCamera
 
 }

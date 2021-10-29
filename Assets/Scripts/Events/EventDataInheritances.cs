@@ -128,3 +128,39 @@ public class CeaseDialogue : EventData
 
     }
 }
+
+#region Camera Events
+
+public class SwapToLockOnCamera : EventData
+{
+    public SwapToLockOnCamera() : base(EventType.SwapToLockOnCamera)
+    {
+
+    }
+}
+
+public class SwapToExplorationCamera : EventData
+{
+    public SwapToExplorationCamera() : base(EventType.SwapToExplorationCamera)
+    {
+
+    }
+}
+
+public class SwapToMenuCamera : EventData
+{
+    public SwapToMenuCamera() : base(EventType.SwapToMenuCamera)
+    {
+
+    }
+}
+
+public class SwapToNPCCamera: EventData
+{
+    public readonly GameObject npcCamera;
+    public SwapToNPCCamera(GameObject npcCamera) : base(EventType.SwapToNPCCamera)
+    {
+        this.npcCamera = npcCamera;
+    }
+}
+#endregion
