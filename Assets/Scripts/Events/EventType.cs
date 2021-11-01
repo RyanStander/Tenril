@@ -19,6 +19,8 @@ public enum EventType
     DestroyInventoryOptionHolders,
     InitiateDialogue,
     CeaseDialogue,
+    SendDialogueData,
+    SendDialogueSentence,
     SwapToLockOnCamera,
     SwapToExplorationCamera,
     SwapToMenuCamera,

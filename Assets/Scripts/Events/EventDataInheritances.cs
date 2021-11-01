@@ -111,6 +111,8 @@ public class  UpdateWeaponDisplay : EventData
     }
 }
 
+#region Dialogue Events
+
 //Event that informs subscribers of initiating dialogue with npc
 public class InitiateDialogue : EventData
 {
@@ -128,6 +130,30 @@ public class CeaseDialogue : EventData
 
     }
 }
+
+//sends a list of dialogue for a specific interaction
+public class SendDialogueData : EventData
+{
+    public readonly Dialogue dialogue;
+    public SendDialogueData(Dialogue dialogue) : base(EventType.SendDialogueData)
+    {
+        this.dialogue = dialogue;
+    }
+}
+
+//sends a single string of dialogue to subscribers
+public class SendDialogueSentence : EventData
+{
+    public readonly string npcName;
+    public readonly string sentence;
+    public SendDialogueSentence(string npcName,string sentence):base(EventType.SendDialogueSentence)
+    {
+        this.npcName = npcName;
+        this.sentence = sentence;
+    }
+}
+
+#endregion
 
 #region Camera Events
 
