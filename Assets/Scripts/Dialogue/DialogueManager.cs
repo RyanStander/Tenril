@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Tables;
 
 public class DialogueManager : MonoBehaviour
 {
+    [SerializeField] private LocalizedStringTable dialogueStringTable;
+    private StringTable currentStringTable;
+
     private Queue<string> sentences;
     private string currentNPCName;
 
@@ -21,20 +26,23 @@ public class DialogueManager : MonoBehaviour
     private void Start()
     {
         sentences = new Queue<string>();
+
+        currentStringTable = dialogueStringTable.GetTable();
     }
 
     private void OnSendDialogueDataReceived(EventData eventData)
     {
         if (eventData is SendDialogueData sendDialogueData)
         {
-            currentNPCName = sendDialogueData.dialogue.name;
+            currentNPCName = sendDialogueData.dialogueData.npcName;
 
             //remove all previous sentences from the queue
             sentences.Clear();
 
             //gather all sentences from the received dialogue and place them in the queue
-            foreach(string sentence in sendDialogueData.dialogue.sentences)
+            foreach(string stringKey in sendDialogueData.dialogueData.stringKeys)
             {
+                string sentence = currentStringTable[stringKey].LocalizedValue;
                 sentences.Enqueue(sentence);
             }
 

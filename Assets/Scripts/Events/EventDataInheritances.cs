@@ -134,10 +134,10 @@ public class CeaseDialogue : EventData
 //sends a list of dialogue for a specific interaction
 public class SendDialogueData : EventData
 {
-    public readonly Dialogue dialogue;
-    public SendDialogueData(Dialogue dialogue) : base(EventType.SendDialogueData)
+    public readonly DialogueData dialogueData;
+    public SendDialogueData(DialogueData dialogueData) : base(EventType.SendDialogueData)
     {
-        this.dialogue = dialogue;
+        this.dialogueData = dialogueData;
     }
 }
 
