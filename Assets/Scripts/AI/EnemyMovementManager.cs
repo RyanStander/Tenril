@@ -163,10 +163,3 @@ public class EnemyMovementManager : MonoBehaviour
         enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.leftHash, 0);
     }
 }
-
-//Helper enum for understanding the intended orientation of movement
-public enum MovementOrientation
-{
-    forward,
-    horizontal
-}

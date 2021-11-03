@@ -48,9 +48,6 @@ public class ChaseTargetState : AbstractStateFSM
             DebugLogString("UPDATING CHASE STATE");
         }
 
-        //Run based method
-        base.UpdateState();
-
         //Handle rotation and forward movement and state swapping
         HandleChaseLogic();
     }
@@ -74,6 +71,7 @@ public class ChaseTargetState : AbstractStateFSM
         {
             //Set to minimal forward movement while the action is being performed
             movementManager.StopMovement(0.1f, Time.deltaTime);
+
             return;
         }
 
@@ -120,8 +118,17 @@ public class ChaseTargetState : AbstractStateFSM
     #region Range Booleans
     private bool IsWithinGivenRange(float givenRange)
     {
+        //Temporary flaot to track distance
+        float remainingDistance = enemyManager.navAgent.remainingDistance;
+
+        //Check for the infinity 'bug', if detected then manually calculate the distance
+        if (remainingDistance == Mathf.Infinity)
+        {
+            remainingDistance = ExtensionMethods.GetRemainingPathDistance(navAgent);
+        }
+        
         //If within the given range based on remaining NavMesh distance, return true
-        if (enemyManager.navAgent.remainingDistance <= givenRange)
+        if (remainingDistance <= givenRange)
         {
             return true;
         }
