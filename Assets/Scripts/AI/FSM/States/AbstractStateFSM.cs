@@ -11,6 +11,7 @@ public abstract class AbstractStateFSM : MonoBehaviour
     protected EnemyFSM finiteStateMachine;
     protected EnemyAnimatorManager animatorManager;
     protected EnemyMovementManager movementManager;
+    protected float movementDampeningTime = 0.5f;
 
     //The current execution state of the state
     public ExecutionState executionState { get; protected set; }
@@ -42,7 +43,11 @@ public abstract class AbstractStateFSM : MonoBehaviour
     }
 
     //Update the current state that is active in the state machine
-    public abstract void UpdateState();
+    public virtual void UpdateState()
+    {
+        //Set/dampen movement to zero to prevent accidental movement overlaps or carry overs
+        movementManager.StopMovement(movementDampeningTime, Time.deltaTime);
+    }
 
     //Run when exiting the state
     public virtual bool ExitState()

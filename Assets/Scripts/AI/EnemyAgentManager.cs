@@ -35,6 +35,9 @@ public class EnemyAgentManager : MonoBehaviour
     //The movement manager for the NPC
     internal EnemyMovementManager movementManager;
 
+    //The status manager for the NPC
+    internal StatusEffectManager statusManager;
+
     //Helper bool to prevent animations/actions from occuring until an animation is completed
     internal bool isInteracting;
 
@@ -55,6 +58,7 @@ public class EnemyAgentManager : MonoBehaviour
         inventory = GetComponentInChildren<EnemyInventory>();
         weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         movementManager = GetComponentInChildren<EnemyMovementManager>();
+        statusManager = GetComponentInChildren<StatusEffectManager>();
 
         //Nullcheck for missing, throw exception as this does not guarantee it will break the code, but is likely to
         if (enemyStats == null) throw new MissingComponentException("Missing EnemyStats on " + gameObject + "!");
@@ -65,6 +69,7 @@ public class EnemyAgentManager : MonoBehaviour
         if (inventory == null) throw new MissingComponentException("Missing EnemyInventory on " + gameObject + "!");
         if (weaponSlotManager == null) throw new MissingComponentException("Missing WeaponSlotManager on " + gameObject + "!");
         if (movementManager == null) throw new MissingComponentException("Missing EnemyMovementManager on " + gameObject + "!");
+        if (statusManager == null) throw new MissingComponentException("Missing StatusEffectManager on " + gameObject + "!");
     }
 
     private void Start()

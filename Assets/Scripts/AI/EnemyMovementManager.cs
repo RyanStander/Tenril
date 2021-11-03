@@ -10,9 +10,6 @@ public class EnemyMovementManager : MonoBehaviour
     //Relevant attached manager
     protected EnemyAgentManager enemyManager;
 
-    //Hash to allow for quick changes
-    private int forwardHash;
-
     //Bool to toggle between higher quality animations or better obstacle avoidance
     public bool hasPreciseAvoidance = true;
 
@@ -32,9 +29,6 @@ public class EnemyMovementManager : MonoBehaviour
     {
         //Have root motion be applied
         enemyManager.animatorManager.animator.applyRootMotion = true;
-
-        //Assign the hash from the animator
-        forwardHash = enemyManager.animatorManager.forwardHash;
     }
 
     internal void DisableNavMeshAgent()
@@ -46,7 +40,7 @@ public class EnemyMovementManager : MonoBehaviour
     }
 
     //Standard cycle of using the NavMeshAgent for navigation while trying to follow a given target
-    internal void HandleStandardTargetMovement(float targetSpeed)
+    internal void HandleNavMeshTargetMovement(float targetSpeed)
     {
         //Return and do not run any more methods until the current action/animation is completed
         if (enemyManager.isInteracting)
@@ -63,9 +57,17 @@ public class EnemyMovementManager : MonoBehaviour
             //Rotate towards the next position that is gotten from the agent
             RotateTowardsNextPosition();
 
-            //Handle the forward movement of the agent
-            SetForwardMovement(targetSpeed, 0.5f, Time.deltaTime);
-
+            //Set movement to 0 if rooted, otherwise continue
+            if(enemyManager.statusManager.GetIsRooted())
+            {
+                StopMovementImmediate();
+            }
+            else
+            {
+                //Handle the forward movement of the agent
+                SetForwardMovement(targetSpeed, 0.5f, Time.deltaTime);
+            }
+            
             //Correct the location of the NavmeshAgent with precise or estimated calculations
             //Choice between precise or estimated
             if (hasPreciseAvoidance)
@@ -144,7 +146,21 @@ public class EnemyMovementManager : MonoBehaviour
 
     internal void SetForwardMovement(float givenValue, float givenDampTime, float givenTime)
     {
-        enemyManager.animatorManager.animator.SetFloat(forwardHash, givenValue, givenDampTime, givenTime);
+        enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.forwardHash, givenValue, givenDampTime, givenTime);
+    }
+
+    public void StopMovement(float givenDampeningTime, float givenTime)
+    {
+        //Stop the animations movement of forward and leftward based on given parameters
+        enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.forwardHash, 0, givenDampeningTime, givenTime);
+        enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.leftHash, 0, givenDampeningTime, givenTime);
+    }
+
+    public void StopMovementImmediate()
+    {
+        //Stop the animations movement of forward and leftward immediately
+        enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.forwardHash, 0);
+        enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.leftHash, 0);
     }
 }
 

@@ -65,34 +65,37 @@ public class WatchState : AbstractStateFSM
         if (enteredState)
         {
             DebugLogString("UPDATING IDLE STATE");
+        }
 
-            //If was alerted, enter chase state
-            if (wasAlerted == true)
+        //Run based method
+        base.UpdateState();
+
+        //If was alerted, enter chase state
+        if (wasAlerted == true)
+        {
+            DebugLogString("Alerted!");
+
+            //Update the current target in the agent manager
+            enemyManager.currentTarget = currentTarget;
+
+            //Change to chase state
+            finiteStateMachine.EnterState(StateTypeFSM.CHASETARGET);
+        }
+        else
+        {
+            if (isWaitingToSearch && isUsingSearchRate)
             {
-                DebugLogString("Alerted!");
-
-                //Update the current target in the agent manager
-                enemyManager.currentTarget = currentTarget;
-
-                //Change to chase state
-                finiteStateMachine.EnterState(StateTypeFSM.CHASETARGET);
+                //Start a delayed courotine for target checking
+                StartCoroutine(DelayedTargetCheck(searchRate));
             }
-            else
+            else if (!isUsingSearchRate)
             {
-                if (isWaitingToSearch && isUsingSearchRate)
-                {
-                    //Start a delayed courotine for target checking
-                    StartCoroutine(DelayedTargetCheck(searchRate));
-                }
-                else if (!isUsingSearchRate)
-                {
-                    //Default automatic check
-                    CheckForTarget();
-                }
-
-                //Check for the closest target (if any)
-                CheckForClosestTarget();
+                //Default automatic check
+                CheckForTarget();
             }
+
+            //Check for the closest target (if any)
+            CheckForClosestTarget();
         }
     }
 

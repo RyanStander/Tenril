@@ -7,9 +7,6 @@ using UnityEngine;
 
 public class ChaseTargetState : AbstractStateFSM
 {
-    //Hash to allow for quick changes
-    private int forwardHash;
-
     //Bool to toggle between higher quality animations or better obstacle avoidance
     public bool hasPreciseAvoidance = true;
 
@@ -32,9 +29,6 @@ public class ChaseTargetState : AbstractStateFSM
             //Have root motion be applied
             animatorManager.animator.applyRootMotion = true;
 
-            //Assign the hash from the animator
-            forwardHash = animatorManager.forwardHash;
-
             //Disable certain navAgent features
             enemyManager.navAgent.isStopped = false; //Prevents agent from using any given speeds by accident
             enemyManager.navAgent.updatePosition = false; //Disable agent forced position
@@ -54,6 +48,9 @@ public class ChaseTargetState : AbstractStateFSM
             DebugLogString("UPDATING CHASE STATE");
         }
 
+        //Run based method
+        base.UpdateState();
+
         //Handle rotation and forward movement and state swapping
         HandleChaseLogic();
     }
@@ -62,9 +59,6 @@ public class ChaseTargetState : AbstractStateFSM
     {
         //Run based method
         base.ExitState();
-
-        //Set movement to zero to prevent accidental chase overlap
-        movementManager.SetForwardMovement(0, 0.5f, Time.deltaTime);
 
         //Debug message
         DebugLogString("EXITED CHASE STATE");
@@ -79,7 +73,7 @@ public class ChaseTargetState : AbstractStateFSM
         if (enemyManager.isInteracting)
         {
             //Set to minimal forward movement while the action is being performed
-            movementManager.SetForwardMovement(0, 0.1f, Time.deltaTime);
+            movementManager.StopMovement(0.1f, Time.deltaTime);
             return;
         }
 
@@ -119,7 +113,7 @@ public class ChaseTargetState : AbstractStateFSM
             }
 
             //Execute standard movement & rotation towards the target
-            movementManager.HandleStandardTargetMovement(enemyManager.enemyStats.chaseSpeed);
+            movementManager.HandleNavMeshTargetMovement(enemyManager.enemyStats.chaseSpeed);
         }
     }
 

@@ -62,6 +62,9 @@ public class AttackState : AbstractStateFSM
             DebugLogString("UPDATING ATTACK STATE");
         }
 
+        //Run based method
+        base.UpdateState();
+
         //If no target exists, return to watch state
         if (enemyManager.currentTarget == null)
         {

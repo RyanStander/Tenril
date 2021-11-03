@@ -47,6 +47,9 @@ public class EvaluateCombatChoice : AbstractStateFSM
             DebugLogString("UPDATING EVALUATE COMBAT STATE");
         }
 
+        //Run based method
+        base.UpdateState();
+
         //If no target exists, return to watch state
         if (enemyManager.currentTarget == null)
         {
