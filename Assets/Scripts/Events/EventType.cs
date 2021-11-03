@@ -21,6 +21,8 @@ public enum EventType
     CeaseDialogue,
     SendDialogueData,
     SendDialogueSentence,
+    SendDialogueOptions,
+    SendStartingStringTableForDialogue,
     SwapToLockOnCamera,
     SwapToExplorationCamera,
     SwapToMenuCamera,

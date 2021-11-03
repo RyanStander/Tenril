@@ -1,33 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Tables;
 
 public class DialogueManager : MonoBehaviour
 {
-    [SerializeField] private LocalizedStringTable dialogueStringTable;
     private StringTable currentStringTable;
 
+    //data fetched from dialogue option
     private Queue<string> sentences;
     private string currentNPCName;
+    //the list of options the player can choose at the end of the dialogue
+    private List<string> currentOptions;
+    //the dialoge datas loaded depending on the chosen dialogue
+    private List<DialogueData> followingDialogues;
 
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.SendDialogueData, OnSendDialogueDataReceived);
+        EventManager.currentManager.Subscribe(EventType.SendStartingStringTableForDialogue, OnSendStartingStringTableForDialogueReceived);
     }
 
     private void OnDisable()
     {
         EventManager.currentManager.Unsubscribe(EventType.SendDialogueData, OnSendDialogueDataReceived);
+        EventManager.currentManager.Unsubscribe(EventType.SendStartingStringTableForDialogue, OnSendStartingStringTableForDialogueReceived);
     }
 
     // Start is called before the first frame update
     private void Start()
     {
         sentences = new Queue<string>();
-
-        currentStringTable = dialogueStringTable.GetTable();
     }
 
     private void OnSendDialogueDataReceived(EventData eventData)
@@ -35,6 +40,9 @@ public class DialogueManager : MonoBehaviour
         if (eventData is SendDialogueData sendDialogueData)
         {
             currentNPCName = sendDialogueData.dialogueData.npcName;
+
+            currentOptions = sendDialogueData.dialogueData.options.ToList();
+            followingDialogues = sendDialogueData.dialogueData.nextDialogue.ToList();
 
             //remove all previous sentences from the queue
             sentences.Clear();
@@ -54,12 +62,20 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    private void OnSendStartingStringTableForDialogueReceived(EventData eventData)
+    {
+        if (eventData is SendStartingStringTableForDialogue sendStartingStringTableForDialogue)
+        {
+            currentStringTable = sendStartingStringTableForDialogue.localizedStringTable.GetTable();
+        }
+    }
+
     public void DisplayNextSentence()
     {
         //if no more sentences, end dialogue
         if (sentences.Count==0)
         {
-            EndDialogue();
+            ShowOptions();
             return;
         }
 
@@ -69,8 +85,16 @@ public class DialogueManager : MonoBehaviour
         EventManager.currentManager.AddEvent(new SendDialogueSentence(currentNPCName,sentence));
     }
 
-    private void EndDialogue()
+    private void ShowOptions()
     {
         Debug.Log("convo end");
+
+        //check if there are any options
+        if (currentOptions.Count>0)
+        {
+            EventManager.currentManager.AddEvent(new SendDialogueOptions(currentOptions, followingDialogues));
+        }
+
+        
     }
 }

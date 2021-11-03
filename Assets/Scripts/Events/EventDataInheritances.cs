@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 
 //Event that informs subscribers of a debug log
 public class SendDebugLog : EventData
@@ -141,6 +142,16 @@ public class SendDialogueData : EventData
     }
 }
 
+public class SendStartingStringTableForDialogue : EventData
+{
+    public readonly LocalizedStringTable localizedStringTable;
+
+        public SendStartingStringTableForDialogue(LocalizedStringTable localizedStringTable) : base(EventType.SendStartingStringTableForDialogue)
+    {
+        this.localizedStringTable = localizedStringTable;
+    }
+}
+
 //sends a single string of dialogue to subscribers
 public class SendDialogueSentence : EventData
 {
@@ -150,6 +161,17 @@ public class SendDialogueSentence : EventData
     {
         this.npcName = npcName;
         this.sentence = sentence;
+    }
+}
+
+public class SendDialogueOptions : EventData
+{
+    public readonly List<string> options;
+    public readonly List<DialogueData> nextDialogues;
+    public SendDialogueOptions(List<string> options, List<DialogueData> nextDialogues) : base(EventType.SendDialogueOptions)
+    {
+        this.options = options;
+        this.nextDialogues = nextDialogues;
     }
 }
 
