@@ -32,6 +32,9 @@ public class EnemyAgentManager : MonoBehaviour
     //The current target of the agent
     internal GameObject currentTarget;
 
+    //The movement manager for the NPC
+    internal EnemyMovementManager movementManager;
+
     //Helper bool to prevent animations/actions from occuring until an animation is completed
     internal bool isInteracting;
 
@@ -51,15 +54,17 @@ public class EnemyAgentManager : MonoBehaviour
         stateMachine = GetComponentInChildren<EnemyFSM>();
         inventory = GetComponentInChildren<EnemyInventory>();
         weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
+        movementManager = GetComponentInChildren<EnemyMovementManager>();
 
-        //Nullcheck for missing, debug warning as this does not guarantee it will break the code, but is likely to
-        if (enemyStats == null) Debug.LogWarning("Missing EnemyStats on " + gameObject + "!");
-        if (navAgent == null) Debug.LogWarning("Missing NavMeshAgent on " + gameObject + "!");
-        if (rigidBody == null) Debug.LogWarning("Missing Rigidbody on " + gameObject + "!");
-        if (animatorManager == null) Debug.LogWarning("Missing EnemyAnimatorManager on " + gameObject + "!");
-        if (stateMachine == null) Debug.LogWarning("Missing EnemyFSM on " + gameObject + "!");
-        if (inventory == null) Debug.LogWarning("Missing EnemyInventory on " + gameObject + "!");
-        if (weaponSlotManager == null) Debug.LogWarning("Missing WeaponSlotManager on " + gameObject + "!");
+        //Nullcheck for missing, throw exception as this does not guarantee it will break the code, but is likely to
+        if (enemyStats == null) throw new MissingComponentException("Missing EnemyStats on " + gameObject + "!");
+        if (navAgent == null) throw new MissingComponentException("Missing NavMeshAgent on " + gameObject + "!");
+        if (rigidBody == null) throw new MissingComponentException("Missing Rigidbody on " + gameObject + "!");
+        if (animatorManager == null) throw new MissingComponentException("Missing EnemyAnimatorManager on " + gameObject + "!");
+        if (stateMachine == null) throw new MissingComponentException("Missing EnemyFSM on " + gameObject + "!");
+        if (inventory == null) throw new MissingComponentException("Missing EnemyInventory on " + gameObject + "!");
+        if (weaponSlotManager == null) throw new MissingComponentException("Missing WeaponSlotManager on " + gameObject + "!");
+        if (movementManager == null) throw new MissingComponentException("Missing EnemyMovementManager on " + gameObject + "!");
     }
 
     private void Start()

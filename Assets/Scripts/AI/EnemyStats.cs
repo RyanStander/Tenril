@@ -18,7 +18,8 @@ public class EnemyStats : CharacterStats
     //public int visionRange = 15; //Range at which the the AI can directly see
     //[Range(0, 180)] public int fieldOfVision = 90; //Angle at which the AI can directly see
     public float chaseRange = 15; //Range for creature chasing, should ideally be greater than the alert and vision radius
-    public float maximumAttackRange = 1.5f; //The range at which attacking should begin
+    [Range(0, 2)] public float chaseSpeed = 1; //The chase speed of the AI
+    public float maximumAttackRange = 1.5f; //The range at which attacking should begin, should be replaced with preffered attacks
     [Range(1,10)] public float rotationSpeed = 5; //The rotational speed for the AI
     [Range(1, 10)] public float attackRotationSpeed = 2.5f; //The rotational speed for the AI while attacking, recommended to be lower
 

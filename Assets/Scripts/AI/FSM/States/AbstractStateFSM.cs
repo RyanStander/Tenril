@@ -10,6 +10,7 @@ public abstract class AbstractStateFSM : MonoBehaviour
     protected EnemyAgentManager enemyManager;
     protected EnemyFSM finiteStateMachine;
     protected EnemyAnimatorManager animatorManager;
+    protected EnemyMovementManager movementManager;
 
     //The current execution state of the state
     public ExecutionState executionState { get; protected set; }
@@ -72,6 +73,14 @@ public abstract class AbstractStateFSM : MonoBehaviour
         if (givenManager != null)
         {
             animatorManager = givenManager;
+        }
+    }
+
+    public virtual void SetExecutingMovementManager(EnemyMovementManager givenManager)
+    {
+        if (givenManager != null)
+        {
+            movementManager = givenManager;
         }
     }
 
