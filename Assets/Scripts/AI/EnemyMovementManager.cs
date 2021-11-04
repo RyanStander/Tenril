@@ -125,13 +125,13 @@ public class EnemyMovementManager : MonoBehaviour
     internal void RotateTowardsTargetPosition(Vector3 target, float rotationSpeed)
     {
         //Get the direction
-        Vector3 direction = (target - transform.root.position).normalized;
+        Vector3 direction = (target - transform.position).normalized;
 
         //Calculate the look rotation
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
 
         //Slerp towards what the nav agent wants the target
-        transform.root.rotation = Quaternion.Slerp(transform.root.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+        transform.root.rotation = Quaternion.Lerp(transform.root.rotation, lookRotation, Time.deltaTime * rotationSpeed);
     }
 
     internal void RotateTowardsNextPosition()
