@@ -28,7 +28,7 @@ public class DamageOverTime : MonoBehaviour
         {
             //if enough time passed, do damage
             nextDamage = Time.time + damageInterval;
-            givenDamageCollider.EnableDamageCollider();
+            givenDamageCollider.EnableDamageCollider(false);
         }
         else
         {

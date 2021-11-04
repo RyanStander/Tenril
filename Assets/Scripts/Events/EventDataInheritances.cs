@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 
 //Event that informs subscribers of a debug log
 public class SendDebugLog : EventData
@@ -110,3 +111,104 @@ public class  UpdateWeaponDisplay : EventData
         this.isWieldingPrimaryWeapon = isWieldingPrimaryWeapon;
     }
 }
+
+#region Dialogue Events
+
+//Event that informs subscribers of initiating dialogue with npc
+public class InitiateDialogue : EventData
+{
+    public InitiateDialogue() : base(EventType.InitiateDialogue)
+    {
+
+    }
+}
+
+//Event that informs subscribers of ceasing dialoague with npc
+public class CeaseDialogue : EventData
+{
+    public CeaseDialogue() : base(EventType.CeaseDialogue)
+    {
+
+    }
+}
+
+//sends a list of dialogue for a specific interaction
+public class SendDialogueData : EventData
+{
+    public readonly DialogueData dialogueData;
+    public SendDialogueData(DialogueData dialogueData) : base(EventType.SendDialogueData)
+    {
+        this.dialogueData = dialogueData;
+    }
+}
+
+public class SendStartingStringTableForDialogue : EventData
+{
+    public readonly LocalizedStringTable localizedStringTable;
+
+        public SendStartingStringTableForDialogue(LocalizedStringTable localizedStringTable) : base(EventType.SendStartingStringTableForDialogue)
+    {
+        this.localizedStringTable = localizedStringTable;
+    }
+}
+
+//sends a single string of dialogue to subscribers
+public class SendDialogueSentence : EventData
+{
+    public readonly string npcName;
+    public readonly string sentence;
+    public SendDialogueSentence(string npcName,string sentence):base(EventType.SendDialogueSentence)
+    {
+        this.npcName = npcName;
+        this.sentence = sentence;
+    }
+}
+
+public class SendDialogueOptions : EventData
+{
+    public readonly List<string> options;
+    public readonly List<DialogueData> nextDialogues;
+    public SendDialogueOptions(List<string> options, List<DialogueData> nextDialogues) : base(EventType.SendDialogueOptions)
+    {
+        this.options = options;
+        this.nextDialogues = nextDialogues;
+    }
+}
+
+#endregion
+
+#region Camera Events
+
+public class SwapToLockOnCamera : EventData
+{
+    public SwapToLockOnCamera() : base(EventType.SwapToLockOnCamera)
+    {
+
+    }
+}
+
+public class SwapToExplorationCamera : EventData
+{
+    public SwapToExplorationCamera() : base(EventType.SwapToExplorationCamera)
+    {
+
+    }
+}
+
+public class SwapToMenuCamera : EventData
+{
+    public SwapToMenuCamera() : base(EventType.SwapToMenuCamera)
+    {
+
+    }
+}
+
+public class SwapToNPCCamera: EventData
+{
+    public readonly GameObject npcCamera;
+    public SwapToNPCCamera(GameObject npcCamera) : base(EventType.SwapToNPCCamera)
+    {
+        this.npcCamera = npcCamera;
+    }
+}
+#endregion

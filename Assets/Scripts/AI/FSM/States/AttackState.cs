@@ -77,7 +77,7 @@ public class AttackState : AbstractStateFSM
         //2. No weapon exists
         //3. The creature is still in recovery time
         //Although these are checked in performing the attack, a pre-emptive check saves on needing to look through valid attacks
-        if (enemyManager.isPerformingAction || currentWeapon == null || enemyManager.currentRecoveryTime > 0)
+        if (enemyManager.isInteracting || currentWeapon == null || enemyManager.currentRecoveryTime > 0)
         {
             //Change to evaluate state
             finiteStateMachine.EnterState(StateTypeFSM.EVALUATECOMBAT);

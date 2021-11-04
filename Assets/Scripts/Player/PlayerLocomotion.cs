@@ -67,7 +67,9 @@ public class PlayerLocomotion : MonoBehaviour
 
         if (inputHandler.lockOnFlag)
         {
-            playerAnimatorManager.animator.SetBool("isLockedOn", true);
+            //send out event to swap to lock on camera
+            //EventManager.currentManager.AddEvent(new SwapToLockOnCamera());
+
             if (inputHandler.sprintFlag || inputHandler.dodgeInput)
             {
                 targetDirection = cameraObject.forward * inputHandler.forward;
@@ -96,7 +98,8 @@ public class PlayerLocomotion : MonoBehaviour
         }
         else
         {
-            playerAnimatorManager.animator.SetBool("isLockedOn", false);
+            //send out event to swap to exploration camera
+            //EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
 
             //Sets direction in relation towards the camera
             targetDirection = cameraObject.forward * inputHandler.forward;

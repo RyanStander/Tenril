@@ -7,6 +7,8 @@ public class DamageCollider : MonoBehaviour
     [HideInInspector]public CharacterStats ownCharacterStats = null;
 
     public float currentDamage = 10;
+
+    private bool hasInterrupt=true;
     private void Awake()
     {
         damageCollider = GetComponent<Collider>();
@@ -15,8 +17,10 @@ public class DamageCollider : MonoBehaviour
         damageCollider.enabled = false;
     }
 
-    public void EnableDamageCollider()
+    public void EnableDamageCollider(bool hasInterrupt=true)
     {
+        this.hasInterrupt = hasInterrupt;
+
         damageCollider.enabled = true;
     }
 
@@ -38,12 +42,12 @@ public class DamageCollider : MonoBehaviour
             if (ownCharacterStats == null)
             {
                 if (characterStats != GetComponentInParent<CharacterStats>())
-                    characterStats.TakeDamage(currentDamage, true);
+                    characterStats.TakeDamage(currentDamage, hasInterrupt);
             }
             else
             {
                 if(characterStats !=ownCharacterStats)
-                    characterStats.TakeDamage(currentDamage, true);
+                    characterStats.TakeDamage(currentDamage, hasInterrupt);
             }
 
         }

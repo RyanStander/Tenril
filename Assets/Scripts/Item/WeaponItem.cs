@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Items/Weapon Item")]
+[CreateAssetMenu(menuName = "Items/Weapon")]
 public class WeaponItem : Item
 {
     [Tooltip("The model that is created on the weapon")]

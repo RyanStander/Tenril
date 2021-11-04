@@ -76,4 +76,14 @@ public class EnemyAnimatorManager : AnimatorManager
     {
         animator.SetBool("canDoCombo", false);
     }
+
+    public void EnableIsInteracting()
+    {
+        animator.SetBool("isInteracting", true);
+    }
+
+    public void DisableIsInteracting()
+    {
+        animator.SetBool("isInteracting", false);
+    }
 }

@@ -33,6 +33,11 @@ public class PlayerSpellcastingManager : MonoBehaviour
         //Simple version, cast spell, if its button has been pressed
         if (inputHandler.castSpell[spellNumber])
         {
+            if (playerInventory.preparedSpells[spellNumber]==null)
+            {
+                Debug.Log("There is not spell prepared on this slot");
+                return;
+            }
             //Check the type of spell being cast
             //if the player does not have enough magic to cast the spell, they wont.
             switch (playerInventory.preparedSpells[spellNumber].spellType)

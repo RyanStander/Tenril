@@ -22,7 +22,7 @@ public class DelayedEffect : MonoBehaviour
         float startDelay = particleEffect.main.startDelay.constant;
         startTime = startDelay + Time.time;
 
-        durationUntilDestroy = lifetime + Time.time+1;
+        durationUntilDestroy = lifetime + Time.time;
     }
 
     private void Update()
