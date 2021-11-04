@@ -68,6 +68,10 @@ public class DialogueManager : MonoBehaviour
         {
             currentStringTable = sendStartingStringTableForDialogue.localizedStringTable.GetTable();
         }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.SendStartingStringTableForDialogue was received but is not of class SendStartingStringTableForDialogue.");
+        }
     }
 
     public void DisplayNextSentence()
