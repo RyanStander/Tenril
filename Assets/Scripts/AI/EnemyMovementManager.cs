@@ -13,6 +13,9 @@ public class EnemyMovementManager : MonoBehaviour
     //Bool to toggle between higher quality animations or better obstacle avoidance
     public bool hasPreciseAvoidance = true;
 
+    //The time it takes for movement to dampen when swapping states
+    public float movementDampeningTime = 0.1f;
+
     private void Awake()
     {
         //Getter for relevant reference
@@ -98,14 +101,14 @@ public class EnemyMovementManager : MonoBehaviour
     }
 
     //Method sacrifices animation quality (increasing foot sliding) at the improvement of obstacle avoidance
-    private void CorrectAgentLocationPrecise()
+    internal void CorrectAgentLocationPrecise()
     {
         //Set the navAgents predicted position to be the root transform
         enemyManager.navAgent.nextPosition = transform.root.position;
     }
 
     //Method preserves animation quality (reducing foot sliding) at the cost of obstacle avoidance
-    private void CorrectAgentLocationEstimated()
+    internal void CorrectAgentLocationEstimated()
     {
         //Get the world delta position in relation to the agent and the intended body to follow
         Vector3 worldDeltaPosition = enemyManager.navAgent.nextPosition - transform.root.position;
@@ -147,6 +150,23 @@ public class EnemyMovementManager : MonoBehaviour
     internal void SetForwardMovement(float givenValue, float givenDampTime, float givenTime)
     {
         enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.forwardHash, givenValue, givenDampTime, givenTime);
+    }
+
+    internal IEnumerator StopMovementCourotine()
+    {
+        //Timer for stop movement to complete dampening
+        float timeRemaining = movementDampeningTime;
+        while (timeRemaining > 0)
+        {
+            //Lower the remaining time
+            timeRemaining -= Time.deltaTime;
+
+            //Run stopping movement
+            StopMovement(movementDampeningTime, Time.deltaTime);
+
+            //Yield return
+            yield return null;
+        }
     }
 
     public void StopMovement(float givenDampeningTime, float givenTime)

@@ -11,7 +11,6 @@ public abstract class AbstractStateFSM : MonoBehaviour
     protected EnemyFSM finiteStateMachine;
     protected EnemyAnimatorManager animatorManager;
     protected EnemyMovementManager movementManager;
-    protected float movementDampeningTime = 0.5f;
 
     //The current execution state of the state
     public ExecutionState executionState { get; protected set; }
@@ -31,6 +30,9 @@ public abstract class AbstractStateFSM : MonoBehaviour
         //Set the execution state
         executionState = ExecutionState.ACTIVE;
 
+        //Set/dampen movement to zero to prevent accidental movement overlaps or carry overs
+        StartCoroutine(movementManager.StopMovementCourotine());
+
         //Track the success of entering the state
         bool hasNavAgent;
         bool hasNPCAgent;
@@ -43,11 +45,7 @@ public abstract class AbstractStateFSM : MonoBehaviour
     }
 
     //Update the current state that is active in the state machine
-    public virtual void UpdateState()
-    {
-        //Set/dampen movement to zero to prevent accidental movement overlaps or carry overs
-        movementManager.StopMovement(movementDampeningTime, Time.deltaTime);
-    }
+    public abstract void UpdateState();
 
     //Run when exiting the state
     public virtual bool ExitState()

@@ -26,14 +26,6 @@ public class ChaseTargetState : AbstractStateFSM
             //Debug message
             DebugLogString("ENTERED CHASE STATE");
 
-            //Have root motion be applied
-            animatorManager.animator.applyRootMotion = true;
-
-            //Disable certain navAgent features
-            enemyManager.navAgent.isStopped = false; //Prevents agent from using any given speeds by accident
-            enemyManager.navAgent.updatePosition = false; //Disable agent forced position
-            enemyManager.navAgent.updateRotation = false; //Disable agent forced rotation
-
             //Reset NavMeshAgent location in case of beginning off place
             movementManager.SynchronizeHeight();
         }
@@ -56,6 +48,9 @@ public class ChaseTargetState : AbstractStateFSM
     {
         //Run based method
         base.ExitState();
+
+        //Reset NavMeshAgent location in case of beginning off place
+        movementManager.SynchronizeHeight();
 
         //Debug message
         DebugLogString("EXITED CHASE STATE");

@@ -67,9 +67,6 @@ public class WatchState : AbstractStateFSM
             DebugLogString("UPDATING IDLE STATE");
         }
 
-        //Run based method
-        base.UpdateState();
-
         //If was alerted, enter chase state
         if (wasAlerted == true)
         {
