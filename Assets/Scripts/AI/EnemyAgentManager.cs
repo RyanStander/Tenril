@@ -44,9 +44,6 @@ public class EnemyAgentManager : MonoBehaviour
     //Current time in animation recovery
     internal float currentRecoveryTime = 0;
 
-    //Bool to track the current life state of the enemy
-    internal bool enemyIsDead = false;
-
     private void Awake()
     {
         //Getters for relevant references
@@ -74,6 +71,7 @@ public class EnemyAgentManager : MonoBehaviour
 
     private void Start()
     {
+        //Loads the current equipment
         inventory.LoadEquippedWeapons(weaponSlotManager);
     }
 
@@ -101,7 +99,7 @@ public class EnemyAgentManager : MonoBehaviour
             if (currentRecoveryTime <= 0)
             {
                 //If the enemy is not dead yet, reset bool
-                if (enemyIsDead != true)
+                if (enemyStats.isDead != true)
                 {
                     isInteracting = false;
                 }
