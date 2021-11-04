@@ -20,7 +20,7 @@ public class PlayerDropItem : MonoBehaviour
     {
         if (eventData is DropItem dropItem)
         {
-            createdDropItem = Instantiate(dropItemPrefab);
+            createdDropItem = Instantiate(dropItemPrefab,transform.root.transform.position,Quaternion.identity);
             ItemPickup itemPickup = createdDropItem.GetComponent<ItemPickup>();
             itemPickup.item = dropItem.item;
         }
