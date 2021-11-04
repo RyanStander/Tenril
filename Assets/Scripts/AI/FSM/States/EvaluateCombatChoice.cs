@@ -33,8 +33,8 @@ public class EvaluateCombatChoice : AbstractStateFSM
             DebugLogString("UPDATING EVALUATE COMBAT STATE");
         }
 
-        //If no target exists, return to watch state
-        if (enemyManager.currentTarget == null)
+        //If no target exists, or the target is dead, return to watch state
+        if (enemyManager.currentTarget == null || enemyManager.currentTarget.GetComponent<CharacterStats>().isDead)
         {
             //Change to watch state
             finiteStateMachine.EnterState(StateTypeFSM.WATCH);

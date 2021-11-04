@@ -7,8 +7,8 @@ public class CharacterStats : MonoBehaviour
     [Header("Health")]
     [SerializeField] protected int healthLevel = 10;
     [SerializeField] protected float maxHealth, currentHealth;
-    protected bool isDead = false;
-
+    public bool isDead = false;
+    
     [Header("Stamina")]
     [SerializeField] protected int staminaLevel = 10;
     [SerializeField] protected float maxStamina, currentStamina;

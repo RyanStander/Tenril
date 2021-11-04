@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public static class ExtensionMethods
 {
+    #region NavigationMesh related
     //A more costly version of NavMeshAgents get remaining distance function, but works at any range and avoids the invinity 'bug'
     public static float GetRemainingPathDistance(NavMeshAgent givenAgent)
     {
@@ -30,4 +31,25 @@ public static class ExtensionMethods
         //Return the distance
         return remainingDistance;
     }
+    #endregion
+
+    #region General Helper Methods
+    //Find a child gameobject of a given parent based on a desired tag
+    public static GameObject FindChildWithTag(GameObject searchedParent, string desiredTag)
+    {
+        //Iterate over each transform inside the parent until a child of the desired tag is found
+        foreach (Transform child in searchedParent.transform)
+        {
+            //Check if the child tag matches the desired tag
+            if (child.CompareTag(desiredTag))
+            {
+                //Return with the valid child
+                return child.gameObject;
+            }
+        }
+
+        //Return null if none were found
+        return null;
+    }
+    #endregion
 }
