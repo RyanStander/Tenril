@@ -189,14 +189,38 @@ public class PlayerLocomotion : MonoBehaviour
             {
                 //return to empty state
                 playerAnimatorManager.PlayTargetAnimation("Empty", true);
+
+                fallDuration = 0;
             }
             else
             {
                 previousVelocity = GetComponent<Rigidbody>().velocity; 
             }
-            fallDuration = 0;
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //if the player fell for more than 1 second continue
+        if (fallDuration < 1)
+        {
+            fallDuration = 0;
+            return;
+        }
+
+        fallDuration = 0;
+
+        //calculate fall damage based on the speed of which velocity is
+        float damageMultiplier = 90 / (9.81f * 6.0f);
+
+        ContactPoint contact = collision.contacts[0];
+        Vector3 normal = contact.normal;
+        Vector3 relativeVelocity = collision.relativeVelocity;
+        float damage = Vector3.Dot(normal, relativeVelocity) * damageMultiplier;
+
+        playerStats.TakeDamage(damage,false);
+    }
+
     private bool IsGrounded()
     {
         //Check with a sphere if the player is on the ground, based on outcome, will either be set to being grounded or not
