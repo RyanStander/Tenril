@@ -12,6 +12,7 @@ public class InputHandler : MonoBehaviour
     //Movement inputs
     private Vector2 movementInput;
     [HideInInspector] public bool dodgeInput, sprintInput, jumpInput;
+    [HideInInspector] public float lockOnTargetInput;
 
     //Other inputs
     public bool interactInput, menuInput;
@@ -106,6 +107,7 @@ public class InputHandler : MonoBehaviour
         //----------------------------------------------------------
         //Lock On
         inputActions.CharacterControls.LockOn.performed += i => lockOnInput = true;
+        inputActions.CharacterControls.LockOnSwapTargetInput.performed += lockOnTargetInputActions => lockOnTargetInput = lockOnTargetInputActions.ReadValue<float>();
         //Swap weapon
         inputActions.CharacterControls.DrawSheath.performed += i => drawSheathInput = true;
         //Weak attack
@@ -198,6 +200,16 @@ public class InputHandler : MonoBehaviour
             else
                 //send out event to swap to exploration camera
                 EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
+        }
+
+        //Move to the next left target
+        if (lockOnFlag && lockOnTargetInput < -0.7f)
+        {
+            EventManager.currentManager.AddEvent(new SwapToLeftLockOnTarget());
+        }//Move to the next right target
+        else if (lockOnFlag && lockOnTargetInput > 0.7f)
+        {
+            EventManager.currentManager.AddEvent(new SwapToRightLockOnTarget());
         }
     }
 

@@ -9,6 +9,7 @@ public class PlayerLocomotion : MonoBehaviour
     private InputHandler inputHandler;
     private Transform cameraObject;
     private StatusEffectManager statusEffectManager;
+    private CameraLockOn cameraLockOn;
 
     [Header("Ground & Air Detection")]
     [SerializeField] private float fallDuration=0;
@@ -30,6 +31,7 @@ public class PlayerLocomotion : MonoBehaviour
         playerStats = GetComponent<PlayerStats>();
         cameraObject = Camera.main.transform;
         statusEffectManager = GetComponent<StatusEffectManager>();
+        cameraLockOn = FindObjectOfType<CameraLockOn>();
     }
 
     internal void HandleLocomotion(float delta)
@@ -89,11 +91,23 @@ public class PlayerLocomotion : MonoBehaviour
             }
             else
             {
-                targetDirection = cameraObject.forward;
+                if (cameraLockOn.currentLockOnTarget!=null)
+                {
+                    Vector3 rotationDirection;
+                    rotationDirection = cameraLockOn.currentLockOnTarget.transform.position - transform.position;
+                    rotationDirection.y = 0;
+                    rotationDirection.Normalize();
+                    Quaternion tr = Quaternion.LookRotation(rotationDirection);
+                    Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+                    transform.rotation = targetRotation;
+                }
+                
+
+                /*targetDirection = cameraObject.forward;
 
                 targetDirection.y = 0;
 
-                transform.rotation = Quaternion.LookRotation(targetDirection);
+                transform.rotation = Quaternion.LookRotation(targetDirection);*/
             }
         }
         else

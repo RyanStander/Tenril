@@ -6,7 +6,7 @@ using UnityEngine;
 /// Manages other player scripts, most updates happen here.
 /// </summary>
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : CharacterManager
 {
     private InputHandler inputHandler;
     private PlayerLocomotion playerLocomotion;
@@ -17,7 +17,6 @@ public class PlayerManager : MonoBehaviour
     private PlayerInventory playerInventory;
     private PlayerStats playerStats;
     private PlayerInteraction playerInteraction;
-    private WeaponSlotManager weaponSlotManager;
 
     public bool canDoCombo;
 

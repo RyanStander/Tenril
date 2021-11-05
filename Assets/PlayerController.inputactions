@@ -247,6 +247,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "LockOnSwapTargetInput",
+                    "type": "Value",
+                    "id": "03910c78-7a88-4d0c-9e7f-93c54d6926ee",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -929,6 +938,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Spellcasting Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d9353a55-fa7e-43af-b0da-d38ca2721479",
+                    "path": "<Mouse>/delta/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "LockOnSwapTargetInput",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "07d5522e-c09d-4f54-906e-ecbdd14d75fb",
+                    "path": "<Gamepad>/rightStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "LockOnSwapTargetInput",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

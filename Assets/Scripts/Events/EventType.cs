@@ -26,6 +26,7 @@ public enum EventType
     SwapToLockOnCamera,
     SwapToExplorationCamera,
     SwapToMenuCamera,
-    SwapToNPCCamera
-
+    SwapToNPCCamera,
+    SwapToLeftLockOnTarget,
+    SwapToRightLockOnTarget
 }

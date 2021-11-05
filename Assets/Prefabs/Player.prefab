@@ -4181,8 +4181,8 @@ MonoBehaviour:
   secondaryWeapon: {fileID: 11400000, guid: 92735e3b99674a741ac327fbf4264d5f, type: 2}
   Gold: 250
   preparedSpells:
-  - {fileID: 11400000, guid: be589a2d0446284408cb4fcb09095ebf, type: 2}
   - {fileID: 11400000, guid: 88f46b8b0cfc72a428db02eddaad133f, type: 2}
+  - {fileID: 11400000, guid: be589a2d0446284408cb4fcb09095ebf, type: 2}
   - {fileID: 11400000, guid: bc59dc89fa8373c4aa69e674a81c4699, type: 2}
   - {fileID: 11400000, guid: 4fddbfde41510ef4283567cff6250891, type: 2}
   - {fileID: 11400000, guid: 0c67f726c5d7153419d1a5e9fa8507b7, type: 2}
@@ -4337,8 +4337,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a44211bfa7957449a15efd67b32b6a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactableUIGameObject: {fileID: 0}
-  itemInteractableGameObject: {fileID: 0}
+  interactionPopUp: {fileID: 0}
+  itemPopUp: {fileID: 0}
+  dialoguePopUp: {fileID: 0}
+  overlapBoxOffset: {x: 0, y: 1, z: 0}
+  overlapBoxDistance: 0.7
+  boxSize: {x: 0.6, y: 1.8, z: 0.76}
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 2048
+  showGizmo: 0
 --- !u!1 &7803005539856370231
 GameObject:
   m_ObjectHideFlags: 0
