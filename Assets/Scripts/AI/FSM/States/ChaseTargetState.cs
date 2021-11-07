@@ -27,7 +27,7 @@ public class ChaseTargetState : AbstractStateFSM
             DebugLogString("ENTERED CHASE STATE");
 
             //Reset NavMeshAgent location in case of beginning off place
-            movementManager.SynchronizeHeight();
+            movementManager.SynchronizeTransformToAnimation();
         }
 
         return enteredState;
@@ -50,7 +50,7 @@ public class ChaseTargetState : AbstractStateFSM
         base.ExitState();
 
         //Reset NavMeshAgent location in case of beginning off place
-        movementManager.SynchronizeHeight();
+        movementManager.SynchronizeTransformToAnimation();
 
         //Debug message
         DebugLogString("EXITED CHASE STATE");

@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 //Meant to help drive movement in an enemy
 public class EnemyMovementManager : MonoBehaviour
@@ -10,11 +12,21 @@ public class EnemyMovementManager : MonoBehaviour
     //Relevant attached manager
     protected EnemyAgentManager enemyManager;
 
+    [Header("General Movement")]
+
     //Bool to toggle between higher quality animations or better obstacle avoidance
     public bool hasPreciseAvoidance = true;
 
     //The time it takes for movement to dampen when swapping states
     public float movementDampeningTime = 0.1f;
+
+    [Header("Ground & Air Detection")]
+    public float fallDurationToPerformLand = 0.5f; //The fall time needed to perform a landing
+    public LayerMask EnvironmentLayer; //The layer being checked
+    public Vector3 raycastOffset; //The offset 
+    public float groundCheckRadius = 0.25f; //The radius of the sphere check
+
+    private float fallDuration = 0; //Duration of the current fall
 
     private void Awake()
     {
@@ -40,6 +52,12 @@ public class EnemyMovementManager : MonoBehaviour
         enemyManager.navAgent.isStopped = false; //Prevents agent from using any given speeds by accident
         enemyManager.navAgent.updatePosition = false; //Disable agent forced position
         enemyManager.navAgent.updateRotation = false; //Disable agent forced rotation
+    }
+
+    private void Update()
+    {
+        //Check for falling and handle it
+        HandleFalling();
     }
 
     //Standard cycle of using the NavMeshAgent for navigation while trying to follow a given target
@@ -88,15 +106,19 @@ public class EnemyMovementManager : MonoBehaviour
 
     private void OnAnimatorMove()
     {
-        //Synchronize the height of the transform with the navigation agent
-        SynchronizeHeight();
+        //If not falling
+        if(IsGrounded())
+        {
+            //Synchronize the transform to the root position of the animation
+            SynchronizeTransformToAnimation();
+        }
     }
 
-    internal void SynchronizeHeight()
+    internal void SynchronizeTransformToAnimation()
     {
         //Update the transform position in addition to matching the Y axis of the navigation agent
         Vector3 position = enemyManager.animatorManager.animator.rootPosition;
-        position.y = enemyManager.navAgent.nextPosition.y;
+        //position.y = enemyManager.navAgent.nextPosition.y;
         transform.position = position;
     }
 
@@ -181,5 +203,57 @@ public class EnemyMovementManager : MonoBehaviour
         //Stop the animations movement of forward and leftward immediately
         enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.forwardHash, 0);
         enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.leftHash, 0);
+    }
+
+    private void HandleFalling()
+    {
+        //If not currently grounded, track the fall
+        if (!IsGrounded())
+        {
+            //Track the current duration of the fall
+            fallDuration += Time.deltaTime;
+
+            //Play the falling animation
+            enemyManager.animatorManager.PlayTargetAnimation("Falling", true);
+            //enemyManager.animatorManager.PlayTargetAnimation("Falling Exclusive", true);
+        }
+        else
+        {
+            //If the creature is falling for enough time, perform a land animation
+            if (fallDuration > fallDurationToPerformLand)
+            {
+                //Play the landing animation
+                enemyManager.animatorManager.PlayTargetAnimation("Land", true);
+            }
+            else if (fallDuration > 0)
+            {
+                //Return to empty state
+                enemyManager.animatorManager.PlayTargetAnimation("Empty", true);
+            }
+
+            //Reset the fall timer
+            fallDuration = 0;
+        }
+    }
+
+    private bool IsGrounded()
+    {
+        //Check with a sphere if the character is on the ground, based on outcome, will either be set to being grounded or not
+        if (Physics.CheckSphere(transform.position - raycastOffset, groundCheckRadius, EnvironmentLayer))
+        {
+            enemyManager.animatorManager.animator.SetBool("isGrounded", true);
+            return true;
+        }
+        else
+        {
+            enemyManager.animatorManager.animator.SetBool("isGrounded", false);
+            return false;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        //Draw the IsGrounded check
+        Gizmos.DrawWireSphere(transform.position - raycastOffset, groundCheckRadius);
     }
 }
