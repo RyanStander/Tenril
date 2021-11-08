@@ -76,6 +76,11 @@ public class PlayerInteraction : MonoBehaviour
             {
                 interactionPopUp.SetActive(false);
             }
+
+            if (itemPopUp != null && inputHandler.interactInput)
+            {
+                itemPopUp.SetActive(false);
+            }
         }
     }
     private void OnDrawGizmos()

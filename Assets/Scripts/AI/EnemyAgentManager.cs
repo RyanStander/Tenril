@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 //Helps manage and link together pieces of an enemy agent
-public class EnemyAgentManager : MonoBehaviour
+public class EnemyAgentManager : CharacterManager
 {
     //Enemy stats to manage
     internal EnemyStats enemyStats;
@@ -25,9 +25,6 @@ public class EnemyAgentManager : MonoBehaviour
 
     //The inventory of the enemy
     internal EnemyInventory inventory;
-
-    //The inventory of the enemy
-    internal WeaponSlotManager weaponSlotManager;
 
     //The current target of the agent
     internal GameObject currentTarget;

@@ -211,4 +211,18 @@ public class SwapToNPCCamera: EventData
         this.npcCamera = npcCamera;
     }
 }
+
+public class SwapToLeftLockOnTarget : EventData
+{
+    public SwapToLeftLockOnTarget():base(EventType.SwapToLeftLockOnTarget)
+    {
+    }
+}
+
+public class SwapToRightLockOnTarget : EventData
+{
+    public SwapToRightLockOnTarget() : base(EventType.SwapToRightLockOnTarget)
+    {
+    }
+}
 #endregion

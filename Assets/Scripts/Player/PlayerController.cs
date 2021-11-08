@@ -269,6 +269,15 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LockOnSwapTargetInput"",
+                    ""type"": ""Value"",
+                    ""id"": ""03910c78-7a88-4d0c-9e7f-93c54d6926ee"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -953,6 +962,28 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""action"": ""Spellcasting Mode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d9353a55-fa7e-43af-b0da-d38ca2721479"",
+                    ""path"": ""<Mouse>/delta/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""LockOnSwapTargetInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""07d5522e-c09d-4f54-906e-ecbdd14d75fb"",
+                    ""path"": ""<Gamepad>/rightStick/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""LockOnSwapTargetInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1050,6 +1081,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         m_CharacterControls_Spell6 = m_CharacterControls.FindAction("Spell 6", throwIfNotFound: true);
         m_CharacterControls_Spell7 = m_CharacterControls.FindAction("Spell 7", throwIfNotFound: true);
         m_CharacterControls_Spell8 = m_CharacterControls.FindAction("Spell 8", throwIfNotFound: true);
+        m_CharacterControls_LockOnSwapTargetInput = m_CharacterControls.FindAction("LockOnSwapTargetInput", throwIfNotFound: true);
         // UIControls
         m_UIControls = asset.FindActionMap("UIControls", throwIfNotFound: true);
         m_UIControls_CloseMenus = m_UIControls.FindAction("Close Menus", throwIfNotFound: true);
@@ -1139,6 +1171,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Spell6;
     private readonly InputAction m_CharacterControls_Spell7;
     private readonly InputAction m_CharacterControls_Spell8;
+    private readonly InputAction m_CharacterControls_LockOnSwapTargetInput;
     public struct CharacterControlsActions
     {
         private @PlayerController m_Wrapper;
@@ -1170,6 +1203,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         public InputAction @Spell6 => m_Wrapper.m_CharacterControls_Spell6;
         public InputAction @Spell7 => m_Wrapper.m_CharacterControls_Spell7;
         public InputAction @Spell8 => m_Wrapper.m_CharacterControls_Spell8;
+        public InputAction @LockOnSwapTargetInput => m_Wrapper.m_CharacterControls_LockOnSwapTargetInput;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1260,6 +1294,9 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 @Spell8.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSpell8;
                 @Spell8.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSpell8;
                 @Spell8.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSpell8;
+                @LockOnSwapTargetInput.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLockOnSwapTargetInput;
+                @LockOnSwapTargetInput.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLockOnSwapTargetInput;
+                @LockOnSwapTargetInput.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnLockOnSwapTargetInput;
             }
             m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -1345,6 +1382,9 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 @Spell8.started += instance.OnSpell8;
                 @Spell8.performed += instance.OnSpell8;
                 @Spell8.canceled += instance.OnSpell8;
+                @LockOnSwapTargetInput.started += instance.OnLockOnSwapTargetInput;
+                @LockOnSwapTargetInput.performed += instance.OnLockOnSwapTargetInput;
+                @LockOnSwapTargetInput.canceled += instance.OnLockOnSwapTargetInput;
             }
         }
     }
@@ -1429,6 +1469,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         void OnSpell6(InputAction.CallbackContext context);
         void OnSpell7(InputAction.CallbackContext context);
         void OnSpell8(InputAction.CallbackContext context);
+        void OnLockOnSwapTargetInput(InputAction.CallbackContext context);
     }
     public interface IUIControlsActions
     {
