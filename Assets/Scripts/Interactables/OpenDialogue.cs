@@ -31,13 +31,5 @@ public class OpenDialogue : Interactable
         EventManager.currentManager.AddEvent(new InitiateDialogue());
 
         EventManager.currentManager.AddEvent(new SendDialogueData(initialDialogueData));
-
-        PlayerInteraction playerInteraction;
-
-        playerInteraction = playerManager.GetComponent<PlayerInteraction>();
-
-        //Enable the game object
-        playerInteraction.dialoguePopUp.SetActive(true);
-
     }
 }

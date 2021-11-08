@@ -9,6 +9,7 @@ public class DialogueReceiver : MonoBehaviour
     [SerializeField] private TMP_Text npcNameText;
     [SerializeField] private TMP_Text npcDialogueWindowText;
     [SerializeField] private GameObject optionButtonPrefab;
+    [SerializeField] private GameObject leaveDialogueButtonPrefab;
     [SerializeField] private GameObject optionHolder;
 
     private void Start()
@@ -46,33 +47,36 @@ public class DialogueReceiver : MonoBehaviour
                 Destroy(child.gameObject);
             }
 
-            for (int i = 0; i < sendDialogueOptions.options.Count; i++)
+            if (sendDialogueOptions.options != null)
             {
-                //create option button
-                GameObject createdOptionPrefab = Instantiate(optionButtonPrefab, optionHolder.transform);
+                for (int i = 0; i < sendDialogueOptions.options.Count; i++)
+                {
+                    //create option button
+                    GameObject createdOptionPrefab = Instantiate(optionButtonPrefab, optionHolder.transform);
 
-                //get trigger script
-                DialogueTrigger dialogueTrigger = createdOptionPrefab.GetComponent<DialogueTrigger>();
-                //set the opions values
-                if (dialogueTrigger != null)
-                    dialogueTrigger.dialogueData = sendDialogueOptions.nextDialogues[i];
-                else
-                    Debug.Log("DialogueTrigger script was not found on the object, please make sure it is on");
+                    //get trigger script
+                    DialogueTrigger dialogueTrigger = createdOptionPrefab.GetComponent<DialogueTrigger>();
+                    //set the opions values
+                    if (dialogueTrigger != null)
+                        dialogueTrigger.dialogueData = sendDialogueOptions.nextDialogues[i];
+                    else
+                        Debug.Log("DialogueTrigger script was not found on the object, please make sure it is on");
 
-                //get trigger button
-                Button triggerButton = createdOptionPrefab.GetComponent<Button>();
-                //assign button action
-                if(triggerButton!=null)
-                    triggerButton.onClick.AddListener(dialogueTrigger.TriggerDialogue);
-                else
-                    Debug.Log("Button component was not found on the object, please make sure it is on");
+                    //get trigger button
+                    Button triggerButton = createdOptionPrefab.GetComponent<Button>();
+                    //assign button action
+                    if (triggerButton != null)
+                        triggerButton.onClick.AddListener(dialogueTrigger.TriggerDialogue);
+                    else
+                        Debug.Log("Button component was not found on the object, please make sure it is on");
 
-                //get text object
-                TMP_Text optionText = createdOptionPrefab.GetComponentInChildren<TMP_Text>();
-                optionText.text = sendDialogueOptions.options[i];    
+                    //get text object
+                    TMP_Text optionText = createdOptionPrefab.GetComponentInChildren<TMP_Text>();
+                    optionText.text = sendDialogueOptions.options[i];
+                }
             }
-
             //create a button to exit the menu
+            Instantiate(leaveDialogueButtonPrefab, optionHolder.transform);
         }
         else
         {
