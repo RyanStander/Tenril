@@ -107,4 +107,9 @@ public class PlayerStats : CharacterStats
     }
 
     #endregion
+
+    internal bool GetIsDead()
+    {
+        return isDead;
+    }
 }

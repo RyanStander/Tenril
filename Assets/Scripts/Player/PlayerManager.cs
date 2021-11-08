@@ -63,21 +63,33 @@ public class PlayerManager : CharacterManager
     {
         playerAnimatorManager.canRotate = playerAnimatorManager.animator.GetBool("canRotate");
 
-        //Player is unable to perform certain actions whilst in spellcasting mode
-        if (inputHandler.spellcastingModeInput)
+        //Make sure player isnt dead
+        if (!playerStats.GetIsDead())
         {
-            playerSpellcastingManager.HandleSpellcasting();
+            //Player is unable to perform certain actions whilst in spellcasting mode
+            if (inputHandler.spellcastingModeInput)
+            {
+                playerSpellcastingManager.HandleSpellcasting();
+            }
+            else
+            {
+                playerLocomotion.HandleDodgeAndJumping();
+                playerCombatManager.HandleAttacks();
+                playerCombatManager.HandleDefending();
+                playerInventory.SwapWeapon(weaponSlotManager);
+                playerQuickslotManager.HandleQuickslotInputs();
+            }
+
+            playerInteraction.CheckForInteractableObject();
         }
         else
         {
-            playerLocomotion.HandleDodgeAndJumping();
-            playerCombatManager.HandleAttacks();
-            playerCombatManager.HandleDefending();
-            playerInventory.SwapWeapon(weaponSlotManager);
-            playerQuickslotManager.HandleQuickslotInputs();
+            //force player to play death animation if they somehow avoid it
+            if (!playerAnimatorManager.animator.GetCurrentAnimatorStateInfo(3).IsName("Death"))
+            {
+                playerAnimatorManager.animator.Play("Death");
+            }
         }
-
-        playerInteraction.CheckForInteractableObject();
     }
 
     private void FixedUpdate()
