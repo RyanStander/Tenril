@@ -13,12 +13,8 @@ public class EnemyMovementManager : MonoBehaviour
     protected EnemyAgentManager enemyManager;
 
     [Header("General Movement")]
-
-    //Bool to toggle between higher quality animations or better obstacle avoidance
-    public bool hasPreciseAvoidance = true;
-
-    //The time it takes for movement to dampen when swapping states
-    public float movementDampeningTime = 0.1f;
+    public bool hasPreciseAvoidance = true; //Bool to toggle between higher quality animations or better obstacle avoidance
+    public float movementDampeningTime = 0.1f; //The time it takes for movement to dampen when swapping states
 
     [Header("Ground & Air Detection")]
     public float fallDurationToPerformLand = 0.5f; //The fall time needed to perform a landing
@@ -143,6 +139,13 @@ public class EnemyMovementManager : MonoBehaviour
         }
     }
 
+    //Warps the agent which avoids issues with ledges
+    internal void WarpAgent()
+    {
+        //Warps the agent directly to position to be the root transform
+        enemyManager.navAgent.Warp(transform.position);
+    }
+
     #region Target Rotation
     internal void RotateTowardsTargetPosition(Vector3 target, float rotationSpeed)
     {
@@ -213,9 +216,11 @@ public class EnemyMovementManager : MonoBehaviour
             //Track the current duration of the fall
             fallDuration += Time.deltaTime;
 
+            //Return if the enemy is already performing another action, such as already falling
+            if(enemyManager.animatorManager.animator.GetBool("isInteracting")) return;
+
             //Play the falling animation
             enemyManager.animatorManager.PlayTargetAnimation("Falling", true);
-            //enemyManager.animatorManager.PlayTargetAnimation("Falling Exclusive", true);
         }
         else
         {
@@ -224,6 +229,9 @@ public class EnemyMovementManager : MonoBehaviour
             {
                 //Play the landing animation
                 enemyManager.animatorManager.PlayTargetAnimation("Land", true);
+
+                //Reposition the NavMeshAgent so it remains by the parent
+                WarpAgent();
             }
             else if (fallDuration > 0)
             {
