@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class FX_SpawnDirection : MonoBehaviour
 {
@@ -16,7 +15,7 @@ public class FX_SpawnDirection : MonoBehaviour
 	public Vector3 Noise = Vector3.zero;
 
 	public float damage;
-	public CharacterStats ownCharacterStats;
+	public CharacterManager characterManager;
 
 	void Start()
 	{
@@ -76,7 +75,7 @@ public class FX_SpawnDirection : MonoBehaviour
 				DamageCollider damageCollider = fx.AddComponent<DamageCollider>();
 				damageCollider.currentDamage = damage;
 				damageCollider.EnableDamageCollider();
-				damageCollider.ownCharacterStats = ownCharacterStats;
+				damageCollider.characterManager = characterManager;
 			}
 
 			if (LifeTime > 0)

@@ -33,4 +33,29 @@ public class AnimatorManager : MonoBehaviour
     {
         animator.SetBool("isInvulnerable", false);
     }
+
+    public void EnableIsParrying()
+    {
+        animator.SetBool("isParrying", true);
+    }
+
+    public void DisableIsParrying()
+    {
+        animator.SetBool("isParrying", false);
+    }
+
+    public void EnableCanBeRiposted()
+    {
+        animator.SetBool("canBeRiposted", true);
+    }
+
+    public void DisableCanBeRiposted()
+    {
+        animator.SetBool("canBeRiposted", false);
+    }
+
+    public virtual void TakeFinisherDamageAnimationEvent()
+    {
+
+    }
 }

@@ -9,6 +9,10 @@ public class PlayerCombatManager : MonoBehaviour
     private PlayerInventory playerInventory;
     private InputHandler inputHandler;
     private PlayerStats playerStats;
+    private WeaponSlotManager weaponSlotManager;
+
+    [SerializeField] private LayerMask riposteLayer;
+
 
     public string lastAttack;
     private void Awake()
@@ -19,6 +23,7 @@ public class PlayerCombatManager : MonoBehaviour
         playerStats = GetComponent<PlayerStats>();
         playerManager = GetComponent<PlayerManager>();
         playerInventory = GetComponent<PlayerInventory>();
+        weaponSlotManager = GetComponent<WeaponSlotManager>();
     }
 
     #region Attacking
@@ -33,7 +38,10 @@ public class PlayerCombatManager : MonoBehaviour
         //Player performing strong attack
         if (inputHandler.strongAttackInput)
         {
-            HandleStrongAttackAction();
+            //if finisher successful, do not perform attack
+            AttemptFinisher();
+
+            //HandleStrongAttackAction();
         }
     }
 
@@ -153,6 +161,17 @@ public class PlayerCombatManager : MonoBehaviour
         }
     }
 
+    private void HandleParryAction()
+    {
+        //FOR FUTURE: check for other types, such as a bow aims instead, staff perhaps smth else
+
+        if (playerInventory.equippedWeapon.canParry)
+        {
+            //perform parry action
+            PerformParryAction();
+        }
+    }
+
     #endregion
 
     #region Combat Actions
@@ -160,7 +179,7 @@ public class PlayerCombatManager : MonoBehaviour
     private void PerformWeakMeleeAction()
     {
         //If current attack can perform a combo, proceed with combo
-        if (playerAnimatorManager.animator.GetBool("canDoCombo"))
+        if (playerManager.canDoCombo)
         {
             inputHandler.comboFlag = true;
             HandleWeaponCombo(playerInventory.equippedWeapon);
@@ -169,13 +188,49 @@ public class PlayerCombatManager : MonoBehaviour
         //else, perform starting attack if possible
         else
         {
-            if (playerAnimatorManager.animator.GetBool("isInteracting"))
+            if (playerManager.isInteracting)
                 return;
 
             if (playerManager.canDoCombo)
                 return;
 
             HandleWeakAttack(playerInventory.equippedWeapon);
+        }
+    }
+
+    private void AttemptFinisher()
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(playerManager.finisherAttackRayCastStartPointTransform.position,
+            transform.TransformDirection(Vector3.forward), out hit, 0.7f, riposteLayer))
+        {
+            CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponentInParent<CharacterManager>();
+            DamageCollider rightWeaponDamageCollider = weaponSlotManager.rightHandDamageCollider;
+
+            if (enemyCharacterManager != null && enemyCharacterManager.canBeRiposted)
+            {
+                //Check for team i.d (so cant back stab allies/self)
+                //pull into a transform in front of the enemy so the riposte looks clean
+                enemyCharacterManager.riposteCollider.LerpToPoint(playerManager.transform);
+                //rotate towards that transform
+                Vector3 rotationDirection;
+                rotationDirection = hit.transform.position - playerManager.transform.position;
+                rotationDirection.y = 0;
+                rotationDirection.Normalize();
+                Quaternion tr = Quaternion.LookRotation(rotationDirection);
+                Quaternion targetRotation = Quaternion.Slerp(playerManager.transform.rotation, tr, 500 * Time.deltaTime);
+                playerManager.transform.rotation = targetRotation;
+
+                float criticalDamage = playerInventory.equippedWeapon.finisherDamageMultiplier * rightWeaponDamageCollider.currentDamage;
+                enemyCharacterManager.pendingFinisherDamage = criticalDamage;
+                //play animation
+                playerAnimatorManager.PlayTargetAnimation("Riposte", true);
+                //make enemy play animation
+                enemyCharacterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Riposted", true);
+                //do damage
+                return;
+            }
         }
     }
 
@@ -187,13 +242,19 @@ public class PlayerCombatManager : MonoBehaviour
 
     internal void HandleDefending()
     {
-
+        HandleParryAction();
         BlockAction();
     }
 
-    private void ParryAction()
+    private void PerformParryAction()
     {
+        if (inputHandler.parryInput)
+        {
+            if (playerManager.isInteracting)
+                return;
 
+            playerAnimatorManager.PlayTargetAnimation(playerInventory.equippedWeapon.parry, true);
+        }
     }
 
     private void BlockAction()

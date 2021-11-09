@@ -18,7 +18,7 @@ public class WeaponItem : Item
     public int baseDamage = 25;
     public float weakAttackDamageMultiplier = 1;
     public float strongAttackDamageMultiplier = 2;
-    public int sneakDamageMultiplier = 4;
+    public int finisherDamageMultiplier = 4;
 
     [Header("Idle Animations")]
     public string idleAnimation;
@@ -28,6 +28,9 @@ public class WeaponItem : Item
     public List<string> weakAttacks;
     public List<string> strongAttacks;
 
+    [Header("Parry Animation")]
+    public string parry= "Parry";
+
     [Header("Stamina Costs")]
     public int baseStaminaCost;
     public float weakAttackCostMultiplier=1;
@@ -35,12 +38,14 @@ public class WeaponItem : Item
 
     [Header("WeaponType")]
     public WeaponType weaponType;
+    
+    public bool canParry;
 
     public enum WeaponType
     {
         meleeWeapon,
         rangedWeapon,
-        castingWeapon
+        castingWeapon,
     }
 }
 

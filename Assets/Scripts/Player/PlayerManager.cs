@@ -18,7 +18,10 @@ public class PlayerManager : CharacterManager
     private PlayerStats playerStats;
     private PlayerInteraction playerInteraction;
 
-    public bool canDoCombo;
+    [SerializeField] private CapsuleCollider characterCollider;
+    [SerializeField] private CapsuleCollider characterCollisionBlocker;
+
+    public bool canDoCombo, isInteracting;
 
     private void OnEnable()
     {
@@ -57,11 +60,13 @@ public class PlayerManager : CharacterManager
     private void Start()
     {
         playerInventory.LoadEquippedWeapons(weaponSlotManager);
+
+        Physics.IgnoreCollision(characterCollider, characterCollisionBlocker, true);
     }
 
     private void Update()
     {
-        playerAnimatorManager.canRotate = playerAnimatorManager.animator.GetBool("canRotate");
+        GetPlayerAnimatorBools();
 
         //Make sure player isnt dead
         if (!playerStats.GetIsDead())
@@ -105,6 +110,15 @@ public class PlayerManager : CharacterManager
     private void LateUpdate()
     {
         inputHandler.ResetInputs();
+    }
+
+    private void GetPlayerAnimatorBools()
+    {
+        playerAnimatorManager.canRotate = playerAnimatorManager.animator.GetBool("canRotate");
+
+        canDoCombo = playerAnimatorManager.animator.GetBool("canDoCombo");
+        isParrying = playerAnimatorManager.animator.GetBool("isParrying");
+        isInteracting = playerAnimatorManager.animator.GetBool("isInteracting");
     }
 
     #region onEvents
