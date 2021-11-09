@@ -224,7 +224,11 @@ public class WatchState : AbstractStateFSM
         if (enemyManager == null || enemyManager.enemyStats == null) return;
 
         //Debug the sphere of view
-        Gizmos.color = Color.yellow;
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(agentHead.position, enemyManager.enemyStats.alertRadius);
+
+        //Debug the sphere of chasing
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(agentHead.position, enemyManager.enemyStats.chaseRange);
     }
 }

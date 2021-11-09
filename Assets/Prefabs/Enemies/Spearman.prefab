@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1042659297}
   - component: {fileID: 1418810352}
   - component: {fileID: 1418810353}
+  - component: {fileID: 761708098142108532}
   m_Layer: 0
   m_Name: States
   m_TagString: Untagged
@@ -90,6 +91,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d6938ea9c09b5647acf1960ecb07ed9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &761708098142108532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042659295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49421b8d80aec5241939a38520ae24c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6051805372053708801
@@ -613,6 +626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e665e5fc57b20b48a73d9af453862dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lockOnTransform: {fileID: 0}
 --- !u!114 &6051805373545155769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -661,6 +675,7 @@ MonoBehaviour:
   healthLevel: 10
   maxHealth: 0
   currentHealth: 0
+  isDead: 0
   staminaLevel: 10
   maxStamina: 10
   currentStamina: 0
@@ -731,6 +746,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasPreciseAvoidance: 1
   movementDampeningTime: 0.5
+  fallDurationToPerformLand: 0.5
+  EnvironmentLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  raycastOffset: {x: 0, y: 0, z: 0}
+  groundCheckRadius: 0.25
 --- !u!114 &728663019
 MonoBehaviour:
   m_ObjectHideFlags: 0
