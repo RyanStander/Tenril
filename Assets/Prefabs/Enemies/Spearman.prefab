@@ -372,7 +372,6 @@ GameObject:
   - component: {fileID: 2726535572165521077}
   - component: {fileID: 2726535572165521078}
   - component: {fileID: 3712933954655172088}
-  - component: {fileID: 2726535572165521079}
   m_Layer: 5
   m_Name: HealthBar
   m_TagString: Untagged
@@ -462,18 +461,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd7d679343ab3564e8f092c6aa45107c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2726535572165521079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2726535572165521064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a229bbe4636e3c74fbb5b424bb1146bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2726535572338771546
@@ -1344,7 +1331,7 @@ MonoBehaviour:
   - {fileID: 1418810352}
   - {fileID: 1418810353}
   - {fileID: 761708098142108532}
-  isDebuggingStates: 0
+  isDebuggingStates: 1
 --- !u!114 &318429251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1381,7 +1368,7 @@ MonoBehaviour:
   maximumAttackRange: 3
   rotationSpeed: 2.5
   attackRotationSpeed: 2.5
-  healthBar: {fileID: 2726535572165521079}
+  healthBar: {fileID: 3712933954655172088}
 --- !u!195 &318429253
 NavMeshAgent:
   m_ObjectHideFlags: 0
