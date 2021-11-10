@@ -63,8 +63,9 @@ public class EnemyStats : CharacterStats
             //Play the death animation
             if (playAnimation) enemyAnimatorManager.PlayTargetAnimation("Death", true);
 
-            //Set to dead
+            //Set to dead in stats & in animator controller
             isDead = true;
+            enemyAnimatorManager.animator.SetBool("isDead", true);
         }
     }
 
