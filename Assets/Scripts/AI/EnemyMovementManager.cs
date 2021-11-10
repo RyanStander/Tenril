@@ -210,6 +210,9 @@ public class EnemyMovementManager : MonoBehaviour
 
     private void HandleFalling()
     {
+        //Return if currently dead
+        if (enemyManager.enemyStats.isDead) return;
+
         //If not currently grounded, track the fall
         if (!IsGrounded())
         {
