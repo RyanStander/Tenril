@@ -7,12 +7,14 @@ public class PlayerSpellcastingManager : MonoBehaviour
     private PlayerInventory playerInventory;
     private PlayerAnimatorManager playerAnimatorManager;
     private PlayerStats playerStats;
+    private PlayerManager playerManager;
     private InputHandler inputHandler;
     private SpellItem spellBeingCast;
 
     private void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
+        playerManager = GetComponent<PlayerManager>();
         playerInventory = GetComponent<PlayerInventory>();
         playerStats = GetComponent<PlayerStats>();
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
@@ -74,6 +76,8 @@ public class PlayerSpellcastingManager : MonoBehaviour
 
     public void SuccessfulyCastSpell()
     {
-        spellBeingCast.SuccessfullyCastSpell(playerAnimatorManager, playerStats);
+        if (playerManager == null)
+            Debug.Log("could not find player manager");
+        spellBeingCast.SuccessfullyCastSpell(playerAnimatorManager, playerStats, playerManager);
     }
 }

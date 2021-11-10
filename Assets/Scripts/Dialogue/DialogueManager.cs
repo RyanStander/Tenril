@@ -93,12 +93,6 @@ public class DialogueManager : MonoBehaviour
     {
         Debug.Log("convo end");
 
-        //check if there are any options
-        if (currentOptions.Count>0)
-        {
-            EventManager.currentManager.AddEvent(new SendDialogueOptions(currentOptions, followingDialogues));
-        }
-
-        
+        EventManager.currentManager.AddEvent(new SendDialogueOptions(currentOptions, followingDialogues));
     }
 }

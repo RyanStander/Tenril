@@ -22,11 +22,13 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.InitiateDialogue, OnInitiateDialogue);
+        EventManager.currentManager.Subscribe(EventType.CeaseDialogue, OnCeaseDialogue);
     }
 
     private void OnDisable()
     {
         EventManager.currentManager.Unsubscribe(EventType.InitiateDialogue, OnInitiateDialogue);
+        EventManager.currentManager.Unsubscribe(EventType.CeaseDialogue, OnCeaseDialogue);
     }
     void Start()
     {
@@ -49,16 +51,7 @@ public class UIManager : MonoBehaviour
         {
             if (isInDialogueMode)
             {
-                isInDialogueMode = false;
-
-                dialoguePopUp.SetActive(false);
-                inGameGUI.SetActive(true);
-
                 EventManager.currentManager.AddEvent(new CeaseDialogue());
-                //swap to exploration camera
-                EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
-
-                inputHandler.ResetInputs();
             }
             else
             {
@@ -104,15 +97,38 @@ public class UIManager : MonoBehaviour
 
     private void OnInitiateDialogue(EventData eventData)
     {
-        if (eventData is InitiateDialogue initiateDialogue)
+        if (eventData is InitiateDialogue)
         {
             inGameGUI.SetActive(false);
+
+            dialoguePopUp.SetActive(true);
 
             isInDialogueMode = true;
         }
         else
         {
             throw new System.Exception("Error: EventData class with EventType.InitiateDialogue was received but is not of class InitiateDialogue.");
+        }
+    }
+
+    private void OnCeaseDialogue(EventData eventData)
+    {
+        if (eventData is CeaseDialogue)
+        {
+            inGameGUI.SetActive(true);
+
+            dialoguePopUp.SetActive(false);
+
+            isInDialogueMode = false;
+
+            inputHandler.ResetInputs();
+
+            //swap to exploration camera
+            EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.CeaseDialogue was received but is not of class CeaseDialogue.");
         }
     }
 

@@ -24,7 +24,7 @@ public class SpellItem : Item
 
     protected GameObject instantiatedWarmUpSpellFX, instantiatedSpellFX;
 
-    public virtual void AttemptToCastSpell(AnimatorManager animatorManager, CharacterStats characterStats)
+    public virtual void AttemptToCastSpell(AnimatorManager animatorManager, CharacterStats characterStats, CharacterManager characterManager=null)
     {
         //Debug.Log("Attempting spell cast!");
 
@@ -38,7 +38,7 @@ public class SpellItem : Item
         animatorManager.PlayTargetAnimation(spellAnimation, true);
     }
 
-    public virtual void SuccessfullyCastSpell(AnimatorManager animatorManager, CharacterStats characterStats)
+    public virtual void SuccessfullyCastSpell(AnimatorManager animatorManager, CharacterStats characterStats, CharacterManager characterManager = null)
     {
         //Debug.Log("Spell cast has succeeded");
 

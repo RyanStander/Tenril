@@ -38,6 +38,9 @@ public class EnemyAgentManager : CharacterManager
     //Bool to track the current life state of the enemy
     internal bool enemyIsDead = false;
 
+    [SerializeField] private CapsuleCollider characterCollider;
+    [SerializeField] private CapsuleCollider characterCollisionBlocker;
+
     private void Awake()
     {
         //Getters for relevant references
@@ -62,6 +65,8 @@ public class EnemyAgentManager : CharacterManager
     private void Start()
     {
         inventory.LoadEquippedWeapons(weaponSlotManager);
+
+        Physics.IgnoreCollision(characterCollider, characterCollisionBlocker, true);
     }
 
     private void Update()
@@ -71,6 +76,7 @@ public class EnemyAgentManager : CharacterManager
 
         //Set interactin based on the current bool being played
         isInteracting = animatorManager.animator.GetBool("isInteracting");
+        canBeRiposted = animatorManager.animator.GetBool("canBeRiposted");
     }
 
     private void HandleRecoveryTimer()

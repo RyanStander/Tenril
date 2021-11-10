@@ -11,12 +11,12 @@ public class DelayedDamageSpell : SpellItem
     [Tooltip("The amount of damage done")]
     public int damageAmount=10;
 
-    public override void AttemptToCastSpell(AnimatorManager animatorManager, CharacterStats characterStats)
+    public override void AttemptToCastSpell(AnimatorManager animatorManager, CharacterStats characterStats, CharacterManager characterManager = null)
     {
         base.AttemptToCastSpell(animatorManager, characterStats);
     }
 
-    public override void SuccessfullyCastSpell(AnimatorManager animatorManager, CharacterStats characterStats)
+    public override void SuccessfullyCastSpell(AnimatorManager animatorManager, CharacterStats characterStats, CharacterManager characterManager = null)
     {
         base.SuccessfullyCastSpell(animatorManager, characterStats);
 
@@ -28,7 +28,7 @@ public class DelayedDamageSpell : SpellItem
         {
             damageCollider.currentDamage = damageAmount;
 
-            damageCollider.ownCharacterStats=characterStats;
+            damageCollider.characterManager= characterManager;
 
             //search for delayedeffect script
             DelayedEffect delayedEffect = instantiatedSpellFX.GetComponent<DelayedEffect>();

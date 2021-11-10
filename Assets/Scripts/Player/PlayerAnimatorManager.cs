@@ -28,4 +28,14 @@ public class PlayerAnimatorManager : AnimatorManager
     {
         animator.SetBool("isInteracting", false);
     }
+
+    public override void TakeFinisherDamageAnimationEvent()
+    {
+        base.TakeFinisherDamageAnimationEvent();
+
+        PlayerManager playerManager = GetComponent<PlayerManager>();
+
+        GetComponent<PlayerStats>().TakeDamage(playerManager.pendingFinisherDamage, false);
+        playerManager.pendingFinisherDamage = 0;
+    }
 }

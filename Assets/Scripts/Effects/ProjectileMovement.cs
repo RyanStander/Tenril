@@ -14,8 +14,8 @@ public class ProjectileMovement : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        CharacterStats ownCharacterStats = (GetComponent(typeof(DamageCollider)) as DamageCollider).ownCharacterStats;
-        if (other.GetComponent<CharacterStats>() == ownCharacterStats)
+        CharacterManager characterManager = (GetComponent(typeof(DamageCollider)) as DamageCollider).characterManager;
+        if (other.GetComponent<CharacterStats>() == characterManager)
             return;
 
         Destroy(gameObject);
