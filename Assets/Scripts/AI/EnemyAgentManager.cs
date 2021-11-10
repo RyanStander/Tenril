@@ -41,6 +41,10 @@ public class EnemyAgentManager : CharacterManager
     //Current time in animation recovery
     internal float currentRecoveryTime = 0;
 
+    //Collision detection related capsules
+    [SerializeField] private CapsuleCollider characterCollider;
+    [SerializeField] private CapsuleCollider characterCollisionBlocker;
+
     private void Awake()
     {
         //Getters for relevant references
@@ -70,6 +74,7 @@ public class EnemyAgentManager : CharacterManager
     {
         //Loads the current equipment
         inventory.LoadEquippedWeapons(weaponSlotManager);
+        Physics.IgnoreCollision(characterCollider, characterCollisionBlocker, true);
     }
 
     private void Update()
@@ -79,6 +84,7 @@ public class EnemyAgentManager : CharacterManager
 
         //Set interactin based on the current bool being played
         isInteracting = animatorManager.animator.GetBool("isInteracting");
+        canBeRiposted = animatorManager.animator.GetBool("canBeRiposted");
     }
 
     private void HandleRecoveryTimer()

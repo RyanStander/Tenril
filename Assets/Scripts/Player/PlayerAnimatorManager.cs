@@ -18,4 +18,24 @@ public class PlayerAnimatorManager : AnimatorManager
     {
         animator.SetBool("canDoCombo", false);
     }
+
+    public void EnableIsInteracting()
+    {
+        animator.SetBool("isInteracting", true);
+    }
+
+    public void DisableIsInteracting()
+    {
+        animator.SetBool("isInteracting", false);
+    }
+
+    public override void TakeFinisherDamageAnimationEvent()
+    {
+        base.TakeFinisherDamageAnimationEvent();
+
+        PlayerManager playerManager = GetComponent<PlayerManager>();
+
+        GetComponent<PlayerStats>().TakeDamage(playerManager.pendingFinisherDamage, false);
+        playerManager.pendingFinisherDamage = 0;
+    }
 }

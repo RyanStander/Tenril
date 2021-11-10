@@ -7,12 +7,14 @@ public class PlayerSpellcastingManager : MonoBehaviour
     private PlayerInventory playerInventory;
     private PlayerAnimatorManager playerAnimatorManager;
     private PlayerStats playerStats;
+    private PlayerManager playerManager;
     private InputHandler inputHandler;
     private SpellItem spellBeingCast;
 
     private void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
+        playerManager = GetComponent<PlayerManager>();
         playerInventory = GetComponent<PlayerInventory>();
         playerStats = GetComponent<PlayerStats>();
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
@@ -33,6 +35,11 @@ public class PlayerSpellcastingManager : MonoBehaviour
         //Simple version, cast spell, if its button has been pressed
         if (inputHandler.castSpell[spellNumber])
         {
+            if (playerInventory.preparedSpells[spellNumber]==null)
+            {
+                Debug.Log("There is not spell prepared on this slot");
+                return;
+            }
             //Check the type of spell being cast
             //if the player does not have enough magic to cast the spell, they wont.
             switch (playerInventory.preparedSpells[spellNumber].spellType)
@@ -69,6 +76,8 @@ public class PlayerSpellcastingManager : MonoBehaviour
 
     public void SuccessfulyCastSpell()
     {
-        spellBeingCast.SuccessfullyCastSpell(playerAnimatorManager, playerStats);
+        if (playerManager == null)
+            Debug.Log("could not find player manager");
+        spellBeingCast.SuccessfullyCastSpell(playerAnimatorManager, playerStats, playerManager);
     }
 }

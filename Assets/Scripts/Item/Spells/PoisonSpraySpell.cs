@@ -8,12 +8,12 @@ public class PoisonSpraySpell : SpellItem
     [Tooltip("the poison applied")]
     public PoisonedStatusEffect poisonedStatusEffect;
 
-    public override void AttemptToCastSpell(AnimatorManager animatorManager, CharacterStats characterStats)
+    public override void AttemptToCastSpell(AnimatorManager animatorManager, CharacterStats characterStats, CharacterManager characterManager = null)
     {
         base.AttemptToCastSpell(animatorManager, characterStats);
     }
 
-    public override void SuccessfullyCastSpell(AnimatorManager animatorManager, CharacterStats characterStats)
+    public override void SuccessfullyCastSpell(AnimatorManager animatorManager, CharacterStats characterStats, CharacterManager characterManager = null)
     {
         base.SuccessfullyCastSpell(animatorManager, characterStats);
 

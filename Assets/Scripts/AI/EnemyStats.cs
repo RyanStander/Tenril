@@ -24,13 +24,15 @@ public class EnemyStats : CharacterStats
     [Range(1, 10)] public float attackRotationSpeed = 2.5f; //The rotational speed for the AI while attacking, recommended to be lower
 
     private EnemyAnimatorManager enemyAnimatorManager;
-
+    [SerializeField] private SliderBarDisplayUI healthBar;
+    
     private void Start()
     {
         SetupStats();
 
         //Get the animation manager
         enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
+        healthBar.SetMaxValue(maxHealth);
     }
 
     public override void TakeDamage(float damageAmount, bool playAnimation = true)
@@ -38,8 +40,14 @@ public class EnemyStats : CharacterStats
         //Return if already dead or invulnerable
         if (isDead || enemyAnimatorManager.animator.GetBool("isInvulnerable")) return;
 
-        //Change current health
+        if (isDead)
+            return;
+
+        //change current health
         base.TakeDamage(damageAmount);
+        
+        //update health display on the healthbar
+        healthBar.SetCurrentValue(currentHealth);
 
         //Play hit animation if damage is taken
         if (playAnimation) enemyAnimatorManager.PlayTargetAnimation("Hit", true);
@@ -49,12 +57,15 @@ public class EnemyStats : CharacterStats
         {
             //Clamp the health to 0
             currentHealth = 0;
+            if (playAnimation)
+                enemyAnimatorManager.PlayTargetAnimation("Death", true);
 
             //Play the death animation
             if (playAnimation) enemyAnimatorManager.PlayTargetAnimation("Death", true);
 
-            //Set to dead
+            //Set to dead in stats & in animator controller
             isDead = true;
+            enemyAnimatorManager.animator.SetBool("isDead", true);
         }
     }
 

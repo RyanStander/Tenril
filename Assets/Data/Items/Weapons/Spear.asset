@@ -21,7 +21,7 @@ MonoBehaviour:
   baseDamage: 35
   weakAttackDamageMultiplier: 1
   strongAttackDamageMultiplier: 2
-  sneakDamageMultiplier: 4
+  finisherDamageMultiplier: 4
   idleAnimation: PolearmIdle
   attackSet: {fileID: 11400000, guid: f3061d04fbfdb174d823fd029c0c4ac8, type: 2}
   weakAttacks:
@@ -33,7 +33,9 @@ MonoBehaviour:
   strongAttacks:
   - PoleStrong1
   - PoleStrong2
+  parry: Parry
   baseStaminaCost: 15
   weakAttackCostMultiplier: 1
   strongAttackCostMultiplier: 2
   weaponType: 0
+  canParry: 1

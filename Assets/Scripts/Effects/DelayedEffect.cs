@@ -7,7 +7,7 @@ public class DelayedEffect : MonoBehaviour
     private DamageCollider damageCollider;
 
     [SerializeField]private ParticleSystem particleEffect;
-    [SerializeField] private int lifetime=3;
+    [SerializeField] private float lifetime=3;
     private float startTime;
     private bool damageColliderEnabled = false;
 
@@ -22,7 +22,7 @@ public class DelayedEffect : MonoBehaviour
         float startDelay = particleEffect.main.startDelay.constant;
         startTime = startDelay + Time.time;
 
-        durationUntilDestroy = lifetime + Time.time+1;
+        durationUntilDestroy = lifetime + Time.time;
     }
 
     private void Update()

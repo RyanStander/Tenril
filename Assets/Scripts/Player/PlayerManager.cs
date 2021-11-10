@@ -6,7 +6,7 @@ using UnityEngine;
 /// Manages other player scripts, most updates happen here.
 /// </summary>
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : CharacterManager
 {
     private InputHandler inputHandler;
     private PlayerLocomotion playerLocomotion;
@@ -16,24 +16,28 @@ public class PlayerManager : MonoBehaviour
     private PlayerQuickslotManager playerQuickslotManager;
     private PlayerInventory playerInventory;
     private PlayerStats playerStats;
-    private WeaponSlotManager weaponSlotManager;
+    private PlayerInteraction playerInteraction;
 
-    private InteractableUI interactableUI;
-    public GameObject interactableUIGameObject;
-    public GameObject itemInteractableGameObject;
+    [SerializeField] private CapsuleCollider characterCollider;
+    [SerializeField] private CapsuleCollider characterCollisionBlocker;
 
-    public bool canDoCombo;
+    public bool canDoCombo, isInteracting;
 
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.EquipWeapon, OnEquipWeapon);
         EventManager.currentManager.Subscribe(EventType.UseItem, OnUseItem);
+        EventManager.currentManager.Subscribe(EventType.InitiateDialogue, OnInitiateDialogue);
+
     }
 
     private void OnDisable()
     {
         EventManager.currentManager.Unsubscribe(EventType.EquipWeapon, OnEquipWeapon);
         EventManager.currentManager.Unsubscribe(EventType.UseItem, OnUseItem);
+        EventManager.currentManager.Unsubscribe(EventType.InitiateDialogue, OnInitiateDialogue);
+
+        //EventManager.currentManager.Subscribe(EventType.InitiateDialogue, OnCeaseDialogue);
     }
 
     void Awake()
@@ -46,35 +50,51 @@ public class PlayerManager : MonoBehaviour
         playerQuickslotManager = GetComponent<PlayerQuickslotManager>();
         playerInventory = GetComponent<PlayerInventory>();
         playerStats = GetComponent<PlayerStats>();
+        playerInteraction = GetComponent<PlayerInteraction>();
         weaponSlotManager = GetComponent<WeaponSlotManager>();
 
-        interactableUI = FindObjectOfType<InteractableUI>();
+
+        EventManager.currentManager.Subscribe(EventType.CeaseDialogue, OnCeaseDialogue);
     }
 
     private void Start()
     {
         playerInventory.LoadEquippedWeapons(weaponSlotManager);
+
+        Physics.IgnoreCollision(characterCollider, characterCollisionBlocker, true);
     }
 
     private void Update()
     {
-        playerAnimatorManager.canRotate = playerAnimatorManager.animator.GetBool("canRotate");
+        GetPlayerAnimatorBools();
 
-        //Player is unable to perform certain actions whilst in spellcasting mode
-        if (inputHandler.spellcastingModeInput)
+        //Make sure player isnt dead
+        if (!playerStats.GetIsDead())
         {
-            playerSpellcastingManager.HandleSpellcasting();
+            //Player is unable to perform certain actions whilst in spellcasting mode
+            if (inputHandler.spellcastingModeInput)
+            {
+                playerSpellcastingManager.HandleSpellcasting();
+            }
+            else
+            {
+                playerLocomotion.HandleDodgeAndJumping();
+                playerCombatManager.HandleAttacks();
+                playerCombatManager.HandleDefending();
+                playerInventory.SwapWeapon(weaponSlotManager);
+                playerQuickslotManager.HandleQuickslotInputs();
+            }
+
+            playerInteraction.CheckForInteractableObject();
         }
         else
         {
-            playerLocomotion.HandleDodgeAndJumping();
-            playerCombatManager.HandleAttacks();
-            playerCombatManager.HandleDefending();
-            playerInventory.SwapWeapon(weaponSlotManager);
-            playerQuickslotManager.HandleQuickslotInputs();
+            //force player to play death animation if they somehow avoid it
+            if (!playerAnimatorManager.animator.GetCurrentAnimatorStateInfo(3).IsName("Death"))
+            {
+                playerAnimatorManager.animator.Play("Death");
+            }
         }
-
-        CheckForInteractableObject();
     }
 
     private void FixedUpdate()
@@ -92,49 +112,13 @@ public class PlayerManager : MonoBehaviour
         inputHandler.ResetInputs();
     }
 
-    internal void CheckForInteractableObject()
+    private void GetPlayerAnimatorBools()
     {
-        RaycastHit hit;
+        playerAnimatorManager.canRotate = playerAnimatorManager.animator.GetBool("canRotate");
 
-        //Check in a sphere cast for any interactable objects
-        if (Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, 1f))
-        {
-            if (hit.collider.tag == "Interactable")
-            {
-                Interactable interactableObject = hit.collider.GetComponent<Interactable>();
-
-                //if there is an interactable object
-                if (interactableObject != null)
-                {
-                    //Assign text to the interactable object
-                    string interactableText = interactableObject.interactableText;
-                    interactableUI.interactableText.text = interactableText;
-                    
-                    //Display it
-                    interactableUIGameObject.SetActive(true);
-
-                    //if interact button is pressed while the option is available
-                    if (inputHandler.interactInput)
-                    {
-                        //call the interaction
-                        hit.collider.GetComponent<Interactable>().Interact(this);
-                    }
-                }
-            }
-        }
-        else
-        {
-            //otherwise hide the objects if moving away
-            if (interactableUIGameObject != null)
-            {
-                interactableUIGameObject.SetActive(false);
-            }
-
-            if (itemInteractableGameObject != null && inputHandler.interactInput)
-            {
-                itemInteractableGameObject.SetActive(false);
-            }
-        }
+        canDoCombo = playerAnimatorManager.animator.GetBool("canDoCombo");
+        isParrying = playerAnimatorManager.animator.GetBool("isParrying");
+        isInteracting = playerAnimatorManager.animator.GetBool("isInteracting");
     }
 
     #region onEvents
@@ -165,6 +149,36 @@ public class PlayerManager : MonoBehaviour
         else
         {
             throw new System.Exception("Error: EventData class with EventType.UseItem was received but is not of class UseItem.");
+        }
+    }
+
+    private void OnInitiateDialogue(EventData eventData)
+    {
+        if (eventData is InitiateDialogue)
+        {
+            //Hide model
+            gameObject.SetActive(false);
+            //Disable Character Controls
+            inputHandler.GetInputActions().CharacterControls.Disable();
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.InitiateDialogue was received but is not of class InitiateDialogue.");
+        }
+    }
+
+    private void OnCeaseDialogue(EventData eventData)
+    {
+        if (eventData is CeaseDialogue)
+        {
+            //Show model
+            gameObject.SetActive(true);
+            //Disable Character Controls
+            inputHandler.GetInputActions().CharacterControls.Enable();
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.CeaseDialogue was received but is not of class CeaseDialogue.");
         }
     }
     #endregion

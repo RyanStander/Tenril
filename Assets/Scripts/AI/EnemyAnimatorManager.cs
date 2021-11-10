@@ -42,4 +42,24 @@ public class EnemyAnimatorManager : AnimatorManager
     {
         animator.SetBool("canDoCombo", false);
     }
+
+    public void EnableIsInteracting()
+    {
+        animator.SetBool("isInteracting", true);
+    }
+
+    public void DisableIsInteracting()
+    {
+        animator.SetBool("isInteracting", false);
+    }
+
+    public override void TakeFinisherDamageAnimationEvent()
+    {
+        base.TakeFinisherDamageAnimationEvent();
+
+        EnemyAgentManager enemyAgentManager = GetComponent<EnemyAgentManager>();
+
+        GetComponent<EnemyStats>().TakeDamage(enemyAgentManager.pendingFinisherDamage, false);
+        enemyAgentManager.pendingFinisherDamage = 0;
+    }
 }

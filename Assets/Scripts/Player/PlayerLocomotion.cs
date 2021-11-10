@@ -9,6 +9,7 @@ public class PlayerLocomotion : MonoBehaviour
     private InputHandler inputHandler;
     private Transform cameraObject;
     private StatusEffectManager statusEffectManager;
+    private CameraLockOn cameraLockOn;
 
     [Header("Ground & Air Detection")]
     [SerializeField] private float fallDuration=0;
@@ -30,6 +31,7 @@ public class PlayerLocomotion : MonoBehaviour
         playerStats = GetComponent<PlayerStats>();
         cameraObject = Camera.main.transform;
         statusEffectManager = GetComponent<StatusEffectManager>();
+        cameraLockOn = FindObjectOfType<CameraLockOn>();
     }
 
     internal void HandleLocomotion(float delta)
@@ -67,7 +69,9 @@ public class PlayerLocomotion : MonoBehaviour
 
         if (inputHandler.lockOnFlag)
         {
-            playerAnimatorManager.animator.SetBool("isLockedOn", true);
+            //send out event to swap to lock on camera
+            //EventManager.currentManager.AddEvent(new SwapToLockOnCamera());
+
             if (inputHandler.sprintFlag || inputHandler.dodgeInput)
             {
                 targetDirection = cameraObject.forward * inputHandler.forward;
@@ -87,16 +91,29 @@ public class PlayerLocomotion : MonoBehaviour
             }
             else
             {
-                targetDirection = cameraObject.forward;
+                if (cameraLockOn.currentLockOnTarget!=null)
+                {
+                    Vector3 rotationDirection;
+                    rotationDirection = cameraLockOn.currentLockOnTarget.transform.position - transform.position;
+                    rotationDirection.y = 0;
+                    rotationDirection.Normalize();
+                    Quaternion tr = Quaternion.LookRotation(rotationDirection);
+                    Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+                    transform.rotation = targetRotation;
+                }
+                
+
+                /*targetDirection = cameraObject.forward;
 
                 targetDirection.y = 0;
 
-                transform.rotation = Quaternion.LookRotation(targetDirection);
+                transform.rotation = Quaternion.LookRotation(targetDirection);*/
             }
         }
         else
         {
-            playerAnimatorManager.animator.SetBool("isLockedOn", false);
+            //send out event to swap to exploration camera
+            //EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
 
             //Sets direction in relation towards the camera
             targetDirection = cameraObject.forward * inputHandler.forward;
@@ -186,14 +203,38 @@ public class PlayerLocomotion : MonoBehaviour
             {
                 //return to empty state
                 playerAnimatorManager.PlayTargetAnimation("Empty", true);
+
+                fallDuration = 0;
             }
             else
             {
                 previousVelocity = GetComponent<Rigidbody>().velocity; 
             }
-            fallDuration = 0;
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //if the player fell for more than 1 second continue
+        if (fallDuration < 1)
+        {
+            fallDuration = 0;
+            return;
+        }
+
+        fallDuration = 0;
+
+        //calculate fall damage based on the speed of which velocity is
+        float damageMultiplier = 90 / (9.81f * 6.0f);
+
+        ContactPoint contact = collision.contacts[0];
+        Vector3 normal = contact.normal;
+        Vector3 relativeVelocity = collision.relativeVelocity;
+        float damage = Vector3.Dot(normal, relativeVelocity) * damageMultiplier;
+
+        playerStats.TakeDamage(damage,false);
+    }
+
     private bool IsGrounded()
     {
         //Check with a sphere if the player is on the ground, based on outcome, will either be set to being grounded or not

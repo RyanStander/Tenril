@@ -8,12 +8,12 @@ public class HealingSpell : SpellItem
     [Tooltip("The amount of health restored")]
     public int healAmount;
 
-    public override void AttemptToCastSpell(AnimatorManager animatorManager, CharacterStats characterStats)
+    public override void AttemptToCastSpell(AnimatorManager animatorManager, CharacterStats characterStats, CharacterManager characterManager = null)
     {
         base.AttemptToCastSpell(animatorManager, characterStats);
     }
 
-    public override void SuccessfullyCastSpell(AnimatorManager animatorManager, CharacterStats characterStats)
+    public override void SuccessfullyCastSpell(AnimatorManager animatorManager, CharacterStats characterStats, CharacterManager characterManager = null)
     {
         base.SuccessfullyCastSpell(animatorManager, characterStats);
 

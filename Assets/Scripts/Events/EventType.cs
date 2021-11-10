@@ -16,6 +16,17 @@ public enum EventType
     RemoveQuickslotItem,
     UseItem,
     DropItem,
-    DestroyInventoryOptionHolders
-
+    DestroyInventoryOptionHolders,
+    InitiateDialogue,
+    CeaseDialogue,
+    SendDialogueData,
+    SendDialogueSentence,
+    SendDialogueOptions,
+    SendStartingStringTableForDialogue,
+    SwapToLockOnCamera,
+    SwapToExplorationCamera,
+    SwapToMenuCamera,
+    SwapToNPCCamera,
+    SwapToLeftLockOnTarget,
+    SwapToRightLockOnTarget
 }

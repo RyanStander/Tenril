@@ -21,8 +21,9 @@ MonoBehaviour:
   baseDamage: 25
   weakAttackDamageMultiplier: 1
   strongAttackDamageMultiplier: 2
-  sneakDamageMultiplier: 4
+  finisherDamageMultiplier: 4
   idleAnimation: LongswordIdle
+  attackSet: {fileID: 0}
   weakAttacks:
   - LongsCombo1
   - LongsCombo2
@@ -30,7 +31,9 @@ MonoBehaviour:
   - LongsCombo4
   strongAttacks:
   - LongsStrong1
+  parry: Parry
   baseStaminaCost: 10
   weakAttackCostMultiplier: 1
   strongAttackCostMultiplier: 2
   weaponType: 0
+  canParry: 1
