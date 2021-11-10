@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class SliderBarDisplayUI : MonoBehaviour
 {
     //slider used to display the players current health
-    private Slider barSlider;
+    protected Slider barSlider;
 
     private void Awake()
     {

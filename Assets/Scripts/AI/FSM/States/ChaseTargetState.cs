@@ -67,6 +67,7 @@ public class ChaseTargetState : AbstractStateFSM
             //Set to minimal forward movement while the action is being performed
             movementManager.StopMovement(0.1f, Time.deltaTime);
 
+            //Return early
             return;
         }
 

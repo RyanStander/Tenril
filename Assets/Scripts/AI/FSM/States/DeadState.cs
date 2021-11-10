@@ -37,6 +37,7 @@ public class DeadState : AbstractStateFSM
             DebugLogString("UPDATING DEAD STATE");
         }
 
+        //Check if any of the death animations are playing, otherwise force the dead animation
         if(!animatorManager.animator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Death") && !animatorManager.animator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Dead"))
         {
             //Play the death animation
