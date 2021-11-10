@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Localization.Plugins.XLIFF.V20;
 using UnityEngine;
 using UnityEngine.AI;
 public class EnemyFSM : MonoBehaviour
@@ -56,7 +57,8 @@ public class EnemyFSM : MonoBehaviour
         //Null check
         if (currentState != null)
         {
-            if(!currentState.IsDeadLogicCheck())
+            //Do not continue updating the state unless it passes the dead check or is the death state itself
+            if(currentState.stateType == StateTypeFSM.DEAD || !currentState.IsDeadLogicCheck())
             {
                 currentState.UpdateState();
             }
@@ -116,6 +118,12 @@ public class EnemyFSM : MonoBehaviour
         {
             return null;
         }
+    }
+
+    //Get current state
+    public AbstractStateFSM GetCurrentState()
+    {
+        return currentState;
     }
     #endregion
 }

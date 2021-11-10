@@ -110,8 +110,11 @@ public abstract class AbstractStateFSM : MonoBehaviour
         //Check that the creature is still alive, otherwise change to the death state
         if (enemyManager.enemyStats.isDead)
         {
-            //Change to dead state
-            finiteStateMachine.EnterState(StateTypeFSM.DEAD);
+            //Change to dead state unless already in the dead state
+            if(finiteStateMachine.GetCurrentState().stateType != StateTypeFSM.DEAD)
+            {
+                finiteStateMachine.EnterState(StateTypeFSM.DEAD);
+            }
             return true;
         }
         else

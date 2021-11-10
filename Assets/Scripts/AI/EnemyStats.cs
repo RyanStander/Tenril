@@ -40,9 +40,6 @@ public class EnemyStats : CharacterStats
         //Return if already dead or invulnerable
         if (isDead || enemyAnimatorManager.animator.GetBool("isInvulnerable")) return;
 
-        if (isDead)
-            return;
-
         //change current health
         base.TakeDamage(damageAmount);
         
@@ -57,11 +54,9 @@ public class EnemyStats : CharacterStats
         {
             //Clamp the health to 0
             currentHealth = 0;
-            if (playAnimation)
-                enemyAnimatorManager.PlayTargetAnimation("Death", true);
 
             //Play the death animation
-            if (playAnimation) enemyAnimatorManager.PlayTargetAnimation("Death", true);
+            if (playAnimation) enemyAnimatorManager.animator.Play("Death");
 
             //Set to dead in stats & in animator controller
             isDead = true;
