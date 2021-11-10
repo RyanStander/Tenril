@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.U2D;
 
@@ -8,6 +9,9 @@ public class UtilityMovement : MonoBehaviour
 {
     //The current desired object the agent should move towards
     public GameObject desiredObject;
+
+    //The speed of the utility agent
+    public float agentSpeed = 1;
 
     //Number of rays that should be used when deciding on a direction
     [Range(3,100)] public int utilityRayCount;
@@ -33,17 +37,29 @@ public class UtilityMovement : MonoBehaviour
     //List of utility rays in the current frame or update cycle
     private List<UtilityRay> utilityRays = new List<UtilityRay>();
 
+    //The current direction being followed
+    private Vector3 currentDirection = Vector3.zero;
+
     //Bool to help with if the rays should be debugged
     public bool isDebugging = true;
 
     // Update is called once per frame
     void Update()
     {
+        //Generate rays based on utility and information about target
         GenerateUtilityRays();
 
-        //TODO: Get the best ray to follow
+        //Set the current direction being followed
+        currentDirection = GetAverageDirection().normalized;
 
-        //TODO: Movement & Rotation
+        //Debug visual of the average direction
+        if (isDebugging)
+        {
+            Debug.DrawRay(transform.position, currentDirection * utilityRayRange, Color.white);
+        }
+
+        //Move target in average ray direction
+        transform.position += currentDirection * agentSpeed * Time.deltaTime;
     }
 
     private void GenerateUtilityRays()
@@ -56,6 +72,28 @@ public class UtilityMovement : MonoBehaviour
         {
             utilityRays.Add(CalculateUtilityRay(i));
         }
+    }
+
+    private UtilityRay GetBestUtilityRay()
+    {
+        //Return null if no rays exist
+        if (utilityRays == null || utilityRays.Count == 0) return null;
+
+        //Temporary declaration for best ray
+        UtilityRay bestRay = utilityRays[0];
+
+        //Iterate over 
+        foreach(UtilityRay utilityRay in utilityRays)
+        {
+            //If the utility is greater, update the current best ray
+            if(utilityRay.rayUtility > bestRay.rayUtility)
+            {
+                bestRay = utilityRay;
+            }
+        }
+
+        //Return the best ray
+        return bestRay;
     }
 
     private UtilityRay CalculateUtilityRay(int rayNumber)
@@ -116,6 +154,24 @@ public class UtilityMovement : MonoBehaviour
         }
 
         //Return the utility ray calculated
-        return new UtilityRay(baseRay, 0, utilityColor);
+        return new UtilityRay(baseRay, utility, utilityColor);
+    }
+
+    private Vector3 GetAverageDirection()
+    {
+        //Return zero if no rays exist
+        if (utilityRays == null || utilityRays.Count == 0) return Vector3.zero;
+
+        //Temporary vector to track the average direction
+        Vector3 averageDirection = Vector3.zero;
+
+        //Iterate over each ray and add their direction based on utility
+        foreach (UtilityRay utilityRay in utilityRays)
+        {
+            averageDirection += utilityRay.baseRay.direction.normalized * utilityRay.rayUtility;
+        }
+
+        //Return the average desired direction
+        return averageDirection;
     }
 }

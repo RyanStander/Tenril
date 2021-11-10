@@ -7,8 +7,10 @@ public class RootSpell : SpellItem
 {
     [Tooltip("The amount of damage done")]
     public int damageAmount=10;
+
     [Tooltip("The ticks between damage")]
     public float damageInterval = 1f;
+
     [Tooltip("the root applied")]
     public StatusEffect rootedStatusEffect;
 

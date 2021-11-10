@@ -10,6 +10,7 @@ public abstract class AbstractStateFSM : MonoBehaviour
     protected EnemyAgentManager enemyManager;
     protected EnemyFSM finiteStateMachine;
     protected EnemyAnimatorManager animatorManager;
+    protected EnemyMovementManager movementManager;
 
     //The current execution state of the state
     public ExecutionState executionState { get; protected set; }
@@ -28,6 +29,9 @@ public abstract class AbstractStateFSM : MonoBehaviour
     {
         //Set the execution state
         executionState = ExecutionState.ACTIVE;
+
+        //Set/dampen movement to zero to prevent accidental movement overlaps or carry overs
+        StartCoroutine(movementManager.StopMovementCourotine());
 
         //Track the success of entering the state
         bool hasNavAgent;
@@ -75,6 +79,14 @@ public abstract class AbstractStateFSM : MonoBehaviour
         }
     }
 
+    public virtual void SetExecutingMovementManager(EnemyMovementManager givenManager)
+    {
+        if (givenManager != null)
+        {
+            movementManager = givenManager;
+        }
+    }
+
     public virtual void SetExecutingFSM(EnemyFSM givenFSM)
     {
         if (givenFSM != null)
@@ -90,6 +102,16 @@ public abstract class AbstractStateFSM : MonoBehaviour
         if (finiteStateMachine.isDebuggingStates)
         {
             Debug.Log(log);
+        }
+    }
+
+    public void DeathCheck()
+    {
+        //Check that the creature is still alive, otherwise change to the death state
+        if (enemyManager.enemyStats.isDead)
+        {
+            //Change to dead state
+            finiteStateMachine.EnterState(StateTypeFSM.DEAD);
         }
     }
 }

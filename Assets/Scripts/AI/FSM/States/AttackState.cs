@@ -13,10 +13,6 @@ public class AttackState : AbstractStateFSM
     //The previous weapon attack
     internal AttackData previousAttack;
 
-    //Hashes to allow for quick changes
-    private int forwardHash;
-    private int leftHash;
-
     public override void OnEnable()
     {
         base.OnEnable();
@@ -33,23 +29,8 @@ public class AttackState : AbstractStateFSM
             //Debug message
             DebugLogString("ENTERED ATTACK STATE");
 
-            //Have root motion be applied
-            animatorManager.animator.applyRootMotion = true;
-
-            //Assign the hashes from the animator
-            forwardHash = animatorManager.forwardHash;
-            leftHash = animatorManager.leftHash;
-
-            //Disable certain navAgent features
-            enemyManager.navAgent.isStopped = false; //Prevents agent from using any given speeds by accident
-            enemyManager.navAgent.updatePosition = false; //Disable agent forced position
-            enemyManager.navAgent.updateRotation = false; //Disable agent forced rotation
-
             //Get the current weapon
             currentWeapon = enemyManager.inventory.equippedWeapon;
-
-            //Reduce the forward speed
-            animatorManager.animator.SetFloat(forwardHash, 0.5f, 0.1f, Time.deltaTime);
         }
 
         return enteredState;
@@ -122,20 +103,19 @@ public class AttackState : AbstractStateFSM
     private void PerformCurrentAttack()
     {
         //If the recovery time and allows for an attack and they are not performing an action
-        if (enemyManager.currentRecoveryTime <= 0 && !enemyManager.isPerformingAction && currentAttack != null)
+        if (enemyManager.currentRecoveryTime <= 0 && !enemyManager.isInteracting && currentAttack != null)
         {
             //Debug the attack being performed
             DebugLogString("Attack being performed: " + currentAttack.attackAnimation);
 
             //Stop locomotion velocity incase any is happening
-            animatorManager.animator.SetFloat(forwardHash, 0, 0.1f, Time.deltaTime);
-            animatorManager.animator.SetFloat(leftHash, 0, 0.1f, Time.deltaTime);
+            movementManager.StopMovementImmediate();
 
             //Play the target animation of the attack
             animatorManager.PlayTargetAnimation(currentAttack.attackAnimation, true);
 
             //Set the manager to believe they are performing an action
-            enemyManager.isPerformingAction = true;
+            enemyManager.isInteracting = true;
 
             //Set the manager into recovery
             enemyManager.currentRecoveryTime = currentAttack.recoveryTime;

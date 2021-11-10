@@ -12,6 +12,8 @@ public class UtilityRay
         rayColor = givenColor;
     }
 
+    public UtilityRay() { }
+
     //Ray that contains ray utilityRay information
     public Ray baseRay;
 

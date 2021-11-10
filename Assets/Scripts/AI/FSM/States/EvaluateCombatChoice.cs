@@ -6,9 +6,6 @@ using UnityEngine;
 //Currently it only serves as a bridge from chasing and directly attacking
 public class EvaluateCombatChoice : AbstractStateFSM
 {
-    //Hash to allow for quick changes
-    private int forwardHash;
-
     public override void OnEnable()
     {
         base.OnEnable();
@@ -24,17 +21,6 @@ public class EvaluateCombatChoice : AbstractStateFSM
         {
             //Debug message
             DebugLogString("ENTERED EVALUATE COMBAT STATE");
-
-            //Have root motion be applied
-            animatorManager.animator.applyRootMotion = true;
-
-            //Assign the hash from the animator
-            forwardHash = animatorManager.forwardHash;
-
-            //Disable certain navAgent features
-            enemyManager.navAgent.isStopped = false; //Prevents agent from using any given speeds by accident
-            enemyManager.navAgent.updatePosition = false; //Disable agent forced position
-            enemyManager.navAgent.updateRotation = false; //Disable agent forced rotation
         }
 
         return enteredState;
@@ -47,8 +33,8 @@ public class EvaluateCombatChoice : AbstractStateFSM
             DebugLogString("UPDATING EVALUATE COMBAT STATE");
         }
 
-        //If no target exists, return to watch state
-        if (enemyManager.currentTarget == null)
+        //If no target exists, or the target is dead, return to watch state
+        if (enemyManager.currentTarget == null || enemyManager.currentTarget.GetComponent<CharacterStats>().isDead)
         {
             //Change to watch state
             finiteStateMachine.EnterState(StateTypeFSM.WATCH);
@@ -58,15 +44,14 @@ public class EvaluateCombatChoice : AbstractStateFSM
         }
 
         //Return and do not run any more methods until the current action/animation is completed
-        if (enemyManager.isPerformingAction)
+        if (enemyManager.isInteracting)
         {
-            //Set to minimal forward movement while still performing action
-            animatorManager.animator.SetFloat(forwardHash, 0, 0.1f, Time.deltaTime);
+            movementManager.StopMovement(0.1f, Time.deltaTime);
 
             //Allow for rotation towards the target for as long as the animator allows rotation
             if(animatorManager.animator.GetBool(animatorManager.canRotateHash))
             {
-                RotateTowardsTargetPosition(enemyManager.currentTarget.transform.position, enemyManager.enemyStats.attackRotationSpeed);
+                movementManager.RotateTowardsTargetPosition(enemyManager.currentTarget.transform.position, enemyManager.enemyStats.attackRotationSpeed);
             }
 
             //Return early
@@ -74,7 +59,7 @@ public class EvaluateCombatChoice : AbstractStateFSM
         }
 
         //Directly rotate towards the target
-        RotateTowardsTargetPosition(enemyManager.currentTarget.transform.position, enemyManager.enemyStats.rotationSpeed);
+        movementManager.RotateTowardsTargetPosition(enemyManager.currentTarget.transform.position, enemyManager.enemyStats.rotationSpeed);
 
         //Check if within attack range and has recovered since last animation
         if (enemyManager.currentRecoveryTime <= 0 && IsDirectlyWithinAttackRange())
@@ -82,6 +67,7 @@ public class EvaluateCombatChoice : AbstractStateFSM
             //Change to attack state
             finiteStateMachine.EnterState(StateTypeFSM.ATTACK);
         }
+
         //If the target is out of attack range, return to chasing
         else if (!IsDirectlyWithinAttackRange())
         {
@@ -90,7 +76,7 @@ public class EvaluateCombatChoice : AbstractStateFSM
         }
 
         //Precisely correct the location of the NavmeshAgent
-        CorrectAgentLocationPrecise();
+        movementManager.CorrectAgentLocationPrecise();
     }
 
     public override bool ExitState()
@@ -103,25 +89,6 @@ public class EvaluateCombatChoice : AbstractStateFSM
 
         //Return true
         return true;
-    }
-
-    private void RotateTowardsTargetPosition(Vector3 target, float rotationSpeed)
-    {
-        //Get the direction
-        Vector3 direction = (target - transform.root.position).normalized;
-
-        //Calculate the look rotation
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-
-        //Slerp towards what the nav agent wants the target
-        transform.root.rotation = Quaternion.Slerp(transform.root.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-    }
-
-    //Method sacrifices animation quality (increasing foot sliding) at the improvement of obstacle avoidance
-    private void CorrectAgentLocationPrecise()
-    {
-        //Set the navAgents predicted position to be the root transform
-        enemyManager.navAgent.nextPosition = transform.root.position;
     }
 
     private bool IsDirectlyWithinAttackRange()
