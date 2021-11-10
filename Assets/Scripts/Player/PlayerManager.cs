@@ -90,7 +90,7 @@ public class PlayerManager : CharacterManager
         else
         {
             //force player to play death animation if they somehow avoid it
-            if (!playerAnimatorManager.animator.GetCurrentAnimatorStateInfo(3).IsName("Death"))
+            if (!playerAnimatorManager.animator.GetCurrentAnimatorStateInfo(2).IsName("Death"))
             {
                 playerAnimatorManager.animator.Play("Death");
             }
