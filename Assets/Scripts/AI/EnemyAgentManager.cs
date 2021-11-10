@@ -29,16 +29,20 @@ public class EnemyAgentManager : CharacterManager
     //The current target of the agent
     internal GameObject currentTarget;
 
-    //Helper bools to prevent animations/actions from occuring until an animation is completed
-    internal bool isPerformingAction, isInteracting;
+    //The movement manager for the NPC
+    internal EnemyMovementManager movementManager;
+
+    //The status manager for the NPC
+    internal StatusEffectManager statusManager;
+
+    //Helper bool to prevent animations/actions from occuring until an animation is completed
+    internal bool isInteracting;
 
     //Current time in animation recovery
     internal float currentRecoveryTime = 0;
 
-    //Bool to track the current life state of the enemy
-    internal bool enemyIsDead = false;
-
-    [SerializeField] private CapsuleCollider characterCollider;
+    //Collision detection related capsules
+    [SerializeField] private CapsuleCollider characterCollider;
     [SerializeField] private CapsuleCollider characterCollisionBlocker;
 
     private void Awake()
@@ -51,21 +55,25 @@ public class EnemyAgentManager : CharacterManager
         stateMachine = GetComponentInChildren<EnemyFSM>();
         inventory = GetComponentInChildren<EnemyInventory>();
         weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
+        movementManager = GetComponentInChildren<EnemyMovementManager>();
+        statusManager = GetComponentInChildren<StatusEffectManager>();
 
-        //Nullcheck for missing, debug warning as this does not guarantee it will break the code, but is likely to
-        if (enemyStats == null) Debug.LogWarning("Missing EnemyStats on " + gameObject + "!");
-        if (navAgent == null) Debug.LogWarning("Missing NavMeshAgent on " + gameObject + "!");
-        if (rigidBody == null) Debug.LogWarning("Missing Rigidbody on " + gameObject + "!");
-        if (animatorManager == null) Debug.LogWarning("Missing EnemyAnimatorManager on " + gameObject + "!");
-        if (stateMachine == null) Debug.LogWarning("Missing EnemyFSM on " + gameObject + "!");
-        if (inventory == null) Debug.LogWarning("Missing EnemyInventory on " + gameObject + "!");
-        if (weaponSlotManager == null) Debug.LogWarning("Missing WeaponSlotManager on " + gameObject + "!");
+        //Nullcheck for missing, throw exception as this does not guarantee it will break the code, but is likely to
+        if (enemyStats == null) throw new MissingComponentException("Missing EnemyStats on " + gameObject + "!");
+        if (navAgent == null) throw new MissingComponentException("Missing NavMeshAgent on " + gameObject + "!");
+        if (rigidBody == null) throw new MissingComponentException("Missing Rigidbody on " + gameObject + "!");
+        if (animatorManager == null) throw new MissingComponentException("Missing EnemyAnimatorManager on " + gameObject + "!");
+        if (stateMachine == null) throw new MissingComponentException("Missing EnemyFSM on " + gameObject + "!");
+        if (inventory == null) throw new MissingComponentException("Missing EnemyInventory on " + gameObject + "!");
+        if (weaponSlotManager == null) throw new MissingComponentException("Missing WeaponSlotManager on " + gameObject + "!");
+        if (movementManager == null) throw new MissingComponentException("Missing EnemyMovementManager on " + gameObject + "!");
+        if (statusManager == null) throw new MissingComponentException("Missing StatusEffectManager on " + gameObject + "!");
     }
 
     private void Start()
     {
+        //Loads the current equipment
         inventory.LoadEquippedWeapons(weaponSlotManager);
-
         Physics.IgnoreCollision(characterCollider, characterCollisionBlocker, true);
     }
 
@@ -88,15 +96,15 @@ public class EnemyAgentManager : CharacterManager
         }
 
         //If currently performing an animation related action
-        if (isPerformingAction)
+        if (isInteracting)
         {
             //Check if recovery time is completed
             if (currentRecoveryTime <= 0)
             {
                 //If the enemy is not dead yet, reset bool
-                if (enemyIsDead != true)
+                if (enemyStats.isDead != true)
                 {
-                    isPerformingAction = false;
+                    isInteracting = false;
                 }
             }
         }

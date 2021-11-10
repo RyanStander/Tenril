@@ -27,6 +27,7 @@ public class EnemyFSM : MonoBehaviour
         EnemyAgentManager agentManager = this.GetComponent<EnemyAgentManager>();
         EnemyAnimatorManager animationManager = this.GetComponent<EnemyAnimatorManager>();
         NavMeshAgent navAgent = this.GetComponent<NavMeshAgent>();
+        EnemyMovementManager movementManager = this.GetComponent<EnemyMovementManager>();
 
         //Apply relevant information internally to the states
         foreach (AbstractStateFSM state in validStates)
@@ -36,6 +37,7 @@ public class EnemyFSM : MonoBehaviour
             state.SetNavMeshAgent(navAgent);
             state.SetExecutingManager(agentManager);
             state.SetExecutingAnimationManager(animationManager);
+            state.SetExecutingMovementManager(movementManager);
             FSMStates.Add(state.stateType, state);
         }
     }
@@ -54,6 +56,7 @@ public class EnemyFSM : MonoBehaviour
         //Null check
         if (currentState != null)
         {
+            currentState.DeathCheck();
             currentState.UpdateState();
         }
     }
