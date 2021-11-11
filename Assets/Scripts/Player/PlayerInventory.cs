@@ -65,18 +65,18 @@ public class PlayerInventory : CharacterInventory
 
     internal void LoadEquippedWeapons(WeaponSlotManager weaponSlotManager)
     {
-        WeaponItem unequippedWeapon;
         if (isWieldingPrimaryWeapon)
         {
-            unequippedWeapon = secondaryWeapon;
+            equippedWeapon = primaryWeapon;
+            //load primary weapon in hand and secondary in sheath
+            weaponSlotManager.LoadWeaponOnSlot(primaryWeapon, equippedWeapon.hasSecondaryWeapon, secondaryWeapon);
         }
         else
         {
-            unequippedWeapon = primaryWeapon;
+            equippedWeapon = secondaryWeapon;
+            //load secondary weapon in hand and primary in sheath
+            weaponSlotManager.LoadWeaponOnSlot(secondaryWeapon, equippedWeapon.hasSecondaryWeapon, primaryWeapon);
         }
-
-        //load weapon and equip it
-        weaponSlotManager.LoadWeaponOnSlot(equippedWeapon, equippedWeapon.hasSecondaryWeapon, unequippedWeapon);
 
         //send out event to update ui
         EventManager.currentManager.AddEvent(new UpdateWeaponDisplay(primaryWeapon, secondaryWeapon, isWieldingPrimaryWeapon));
