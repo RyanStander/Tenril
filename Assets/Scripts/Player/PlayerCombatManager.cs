@@ -170,6 +170,11 @@ public class PlayerCombatManager : MonoBehaviour
     private void HandleParryAction()
     {
         //FOR FUTURE: check for other types, such as a bow aims instead, staff perhaps smth else
+        if (playerInventory.equippedWeapon==null)
+        {
+            Debug.LogWarning("Player does not have weapons equipped, weapons are required");
+            return;
+        }
 
         if (playerInventory.equippedWeapon.canParry)
         {

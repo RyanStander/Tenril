@@ -65,6 +65,11 @@ public class PlayerInventory : CharacterInventory
 
     internal void LoadEquippedWeapons(WeaponSlotManager weaponSlotManager)
     {
+        if (primaryWeapon==null||secondaryWeapon==null)
+        {
+            Debug.LogWarning("Player does not have weapons equipped, weapons are required");
+            return;
+        }
         if (isWieldingPrimaryWeapon)
         {
             equippedWeapon = primaryWeapon;
