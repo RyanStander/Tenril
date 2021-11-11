@@ -41,7 +41,7 @@ public class PlayerCombatManager : MonoBehaviour
             //if finisher successful, do not perform attack
             AttemptFinisher();
 
-            //HandleStrongAttackAction();
+            HandleStrongAttackAction();
         }
     }
 
@@ -200,6 +200,9 @@ public class PlayerCombatManager : MonoBehaviour
 
     private void AttemptFinisher()
     {
+        if (playerAnimatorManager.animator.GetBool("isInteracting"))
+            return;
+
         RaycastHit hit;
 
         if (Physics.Raycast(playerManager.finisherAttackRayCastStartPointTransform.position,
