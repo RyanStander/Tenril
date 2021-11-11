@@ -27,6 +27,7 @@ public class PlayerInventory : CharacterInventory
         EventManager.currentManager.Subscribe(EventType.DropItem, OnDropItem);
         EventManager.currentManager.Subscribe(EventType.AddQuickslotItem, OnAddQuickslot);
         EventManager.currentManager.Subscribe(EventType.RemoveQuickslotItem, OnRemoveQuickslot);
+        EventManager.currentManager.Subscribe(EventType.RequestEquippedWeapons, OnRequestEquippedWeapons);
     }
 
     private void OnDisable()
@@ -34,6 +35,7 @@ public class PlayerInventory : CharacterInventory
         EventManager.currentManager.Unsubscribe(EventType.DropItem, OnDropItem);
         EventManager.currentManager.Unsubscribe(EventType.AddQuickslotItem, OnAddQuickslot);
         EventManager.currentManager.Unsubscribe(EventType.RemoveQuickslotItem, OnRemoveQuickslot);
+        EventManager.currentManager.Unsubscribe(EventType.RequestEquippedWeapons, OnRequestEquippedWeapons);
     }
 
     private void Awake()
@@ -126,6 +128,18 @@ public class PlayerInventory : CharacterInventory
     }
 
     #region On Events
+    private void OnRequestEquippedWeapons(EventData eventData)
+    {
+        if (eventData is RequestEquippedWeapons)
+        {
+            EventManager.currentManager.AddEvent(new UpdateWeaponDisplay(primaryWeapon, secondaryWeapon, isWieldingPrimaryWeapon));
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.RequestEquippedWeapons was received but is not of class RequestEquippedWeapons.");
+        }
+    }
+
     private void OnDropItem(EventData eventData)
     {
         if (eventData is DropItem dropItem)

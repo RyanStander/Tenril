@@ -9,6 +9,12 @@ public class WeaponDisplayManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.UpdateWeaponDisplay, OnUpdateWeaponDisplay);
+        EventManager.currentManager.AddEvent(new RequestEquippedWeapons());
+    }
+
+    private void OnDisable()
+    {
+        EventManager.currentManager.Unsubscribe(EventType.UpdateWeaponDisplay, OnUpdateWeaponDisplay);
     }
 
     private void OnUpdateWeaponDisplay(EventData eventData)
