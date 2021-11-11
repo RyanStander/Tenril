@@ -88,7 +88,7 @@ public class WeaponSlotManager : MonoBehaviour
         //
         if (weaponItem != null)
         {
-            animator.CrossFade(weaponItem.idleAnimation, 0.2f);
+            animator.CrossFade(weaponItem.idleAnimation, 0.1f);
         }
         else
         {
