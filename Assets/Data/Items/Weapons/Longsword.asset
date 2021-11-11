@@ -17,12 +17,16 @@ MonoBehaviour:
   primaryWeaponModelPrefab: {fileID: 4260048596949537076, guid: 6ccd56731e9f99044a639429f790813d, type: 3}
   hasSecondaryWeapon: 0
   secondaryWeaponModelPrefab: {fileID: 0}
-  isUnarmed: 0
+  displaySecondaryWeaponWhenUnequipped: 0
+  unequippedPrimaryWeaponModelPrefab: {fileID: 4260048596949537076, guid: 4040b99e13daed5488447dabe5c0f8da, type: 3}
+  unequippedSecondaryWeaponModelPrefab: {fileID: 0}
+  primarySheathPrefab: {fileID: 4260048596949537076, guid: 76402bfa3a752fa43912086c866adef3, type: 3}
+  secondarySheathPrefab: {fileID: 0}
   baseDamage: 25
   weakAttackDamageMultiplier: 1
   strongAttackDamageMultiplier: 2
-  finisherDamageMultiplier: 4
-  idleAnimation: LongswordIdle
+  finisherDamageMultiplier: 3
+  idleAnimation: LongswordEquip
   attackSet: {fileID: 0}
   weakAttacks:
   - LongsCombo1
@@ -36,4 +40,6 @@ MonoBehaviour:
   weakAttackCostMultiplier: 1
   strongAttackCostMultiplier: 2
   weaponType: 0
+  weaponSlotWhenNotWielded: 3
   canParry: 1
+  isUnarmed: 0

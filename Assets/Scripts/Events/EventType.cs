@@ -7,6 +7,15 @@ public enum EventType
 {
     ReceiveDebug,
     ClickedPlaceableGUI,
+
+    //Player Stats
+    UpdatePlayerStats,
+    UpdatePlayerHealth,
+    UpdatePlayerStamina,
+    UpdatePlayerMoonlight,
+    UpdatePlayerSunlight,
+
+    //Inventory
     UpdateQuickslotDisplay,
     UpdateStatusEffectsDisplay,
     UpdateInventoryDisplay,
@@ -17,12 +26,17 @@ public enum EventType
     UseItem,
     DropItem,
     DestroyInventoryOptionHolders,
+    RequestEquippedWeapons,
+
+    //Dialogue
     InitiateDialogue,
     CeaseDialogue,
     SendDialogueData,
     SendDialogueSentence,
     SendDialogueOptions,
     SendStartingStringTableForDialogue,
+
+    //Camera
     SwapToLockOnCamera,
     SwapToExplorationCamera,
     SwapToMenuCamera,

@@ -41,7 +41,7 @@ public class PlayerCombatManager : MonoBehaviour
             //if finisher successful, do not perform attack
             AttemptFinisher();
 
-            //HandleStrongAttackAction();
+            HandleStrongAttackAction();
         }
     }
 
@@ -53,7 +53,7 @@ public class PlayerCombatManager : MonoBehaviour
 
             //Checks the progress through combos, if not the end play the next one
             #region Attacks
-            for (int i = 0; i < weapon.weakAttacks.Count - 1; i++)
+            for (int i = 0; i < weapon.weakAttacks.Count; i++)
             {
                 if (lastAttack == weapon.weakAttacks[i])
                 {
@@ -104,12 +104,18 @@ public class PlayerCombatManager : MonoBehaviour
             playerStats.PutStaminaRegenOnCooldown();
             if (weapon != null)
             {
-                //Sets the damage colliders the weapons damage
-                playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.weakAttackDamageMultiplier);
-                //Play animation
-                playerAnimatorManager.PlayTargetAnimation(weapon.weakAttacks[0], true);
-                //Update the last attack
-                lastAttack = weapon.weakAttacks[0];
+                //only attack if there are available
+                if (weapon.weakAttacks.Count != 0)
+                {
+                    //Sets the damage colliders the weapons damage
+                    playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.weakAttackDamageMultiplier);
+                    //Play animation
+                    playerAnimatorManager.PlayTargetAnimation(weapon.weakAttacks[0], true);
+                    //Update the last attack
+                    lastAttack = weapon.weakAttacks[0];
+                }
+                else
+                    Debug.LogWarning("You are trying to attack with the weapon; " + weapon.name + " that does not have any attacks");
             }
         }
     }
@@ -164,6 +170,11 @@ public class PlayerCombatManager : MonoBehaviour
     private void HandleParryAction()
     {
         //FOR FUTURE: check for other types, such as a bow aims instead, staff perhaps smth else
+        if (playerInventory.equippedWeapon==null)
+        {
+            Debug.LogWarning("Player does not have weapons equipped, weapons are required");
+            return;
+        }
 
         if (playerInventory.equippedWeapon.canParry)
         {
@@ -200,6 +211,9 @@ public class PlayerCombatManager : MonoBehaviour
 
     private void AttemptFinisher()
     {
+        if (playerAnimatorManager.animator.GetBool("isInteracting"))
+            return;
+
         RaycastHit hit;
 
         if (Physics.Raycast(playerManager.finisherAttackRayCastStartPointTransform.position,

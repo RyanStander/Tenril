@@ -14,6 +14,75 @@ public class SendDebugLog : EventData
     }
 }
 
+#region Player Stats Events
+
+public class UpdatePlayerStats : EventData
+{
+    public readonly float playerMaxHealth, playerCurrentHealth;
+    public readonly float playerMaxStamina, playerCurrentStamina;
+    public readonly float playerMaxMoonlight, playerCurrentMoonlight;
+    public readonly float playerMaxSunlight, playerCurrentSunlight;
+    public UpdatePlayerStats (float playerMaxHealth, float playerCurrentHealth, float playerMaxStamina, float playerCurrentStamina, float playerMaxMoonlight, 
+        float playerCurrentMoonlight , float playerMaxSunlight, float playerCurrentSunlight): base(EventType.UpdatePlayerStats)
+    {
+        this.playerMaxHealth = playerMaxHealth;
+        this.playerCurrentHealth = playerCurrentHealth;
+
+        this.playerMaxStamina = playerMaxStamina;
+        this.playerCurrentStamina = playerCurrentStamina;
+
+        this.playerMaxMoonlight = playerMaxMoonlight;
+        this.playerCurrentMoonlight = playerCurrentMoonlight;
+
+        this.playerMaxSunlight = playerMaxSunlight;
+        this.playerCurrentSunlight = playerCurrentSunlight;
+    }
+}
+
+public class UpdatePlayerHealth : EventData
+{
+    public readonly float playerMaxHealth, playerCurrentHealth;
+    public UpdatePlayerHealth(float playerMaxHealth, float playerCurrentHealth) : base(EventType.UpdatePlayerHealth)
+    {
+        this.playerMaxHealth = playerMaxHealth;
+        this.playerCurrentHealth = playerCurrentHealth;
+    }
+}
+
+public class UpdatePlayerStamina : EventData
+{
+    public readonly float playerMaxStamina, playerCurrentStamina;
+    public UpdatePlayerStamina(float playerMaxStamina, float playerCurrentStamina) : base(EventType.UpdatePlayerStamina)
+    {
+        this.playerMaxStamina = playerMaxStamina;
+        this.playerCurrentStamina = playerCurrentStamina;
+    }
+}
+
+public class UpdatePlayerMoonlight : EventData
+{
+    public readonly float playerMaxMoonlight, playerCurrentMoonlight;
+    public UpdatePlayerMoonlight(float playerMaxMoonlight, float playerCurrentMoonlight) : base(EventType.UpdatePlayerMoonlight)
+    {
+        this.playerMaxMoonlight = playerMaxMoonlight;
+        this.playerCurrentMoonlight = playerCurrentMoonlight;
+
+    }
+}
+
+public class UpdatePlayerSunlight : EventData
+{
+    public readonly float playerMaxSunlight, playerCurrentSunlight;
+    public UpdatePlayerSunlight( float playerMaxSunlight, float playerCurrentSunlight) : base(EventType.UpdatePlayerSunlight)
+    {
+
+        this.playerMaxSunlight = playerMaxSunlight;
+        this.playerCurrentSunlight = playerCurrentSunlight;
+    }
+}
+#endregion
+
+#region Inventory Events
 //Event that informs subscribers of the quickslot being updated
 public class UpdateQuickslotDisplay : EventData
 {
@@ -111,6 +180,17 @@ public class  UpdateWeaponDisplay : EventData
         this.isWieldingPrimaryWeapon = isWieldingPrimaryWeapon;
     }
 }
+
+//Event that is used to ask inventory to send event on items
+public class RequestEquippedWeapons : EventData
+{
+    public RequestEquippedWeapons() : base(EventType.RequestEquippedWeapons)
+    {
+
+    }
+}
+
+#endregion
 
 #region Dialogue Events
 

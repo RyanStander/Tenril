@@ -4,8 +4,23 @@ using UnityEngine;
 
 /// <summary>
 /// Manages other player scripts, most updates happen here.
-/// </summary>
-
+/// </summary> 
+#region RequiredComponents
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(InputHandler))]
+[RequireComponent(typeof(PlayerAnimatorManager))]
+[RequireComponent(typeof(PlayerInventory))]
+[RequireComponent(typeof(PlayerStats))]
+[RequireComponent(typeof(PlayerLocomotion))]
+[RequireComponent(typeof(PlayerCombatManager))]
+[RequireComponent(typeof(WeaponSlotManager))]
+[RequireComponent(typeof(PlayerSpellcastingManager))]
+[RequireComponent(typeof(PlayerQuickslotManager))]
+[RequireComponent(typeof(StatusEffectManager))]
+[RequireComponent(typeof(PlayerInteraction))]
+#endregion
 public class PlayerManager : CharacterManager
 {
     private InputHandler inputHandler;
@@ -61,7 +76,22 @@ public class PlayerManager : CharacterManager
     {
         playerInventory.LoadEquippedWeapons(weaponSlotManager);
 
-        Physics.IgnoreCollision(characterCollider, characterCollisionBlocker, true);
+        if (gameObject.tag=="Untagged")
+        {
+            Debug.LogWarning("You did not set a tag, setting it to Player");
+            gameObject.tag = "Player";
+        }
+
+        if (gameObject.layer == 0)
+        {
+            Debug.LogWarning("You did not set a layer, setting it to Character");
+            gameObject.layer = 10;
+        }
+
+        if (characterCollider != null || characterCollisionBlocker != null)
+            Physics.IgnoreCollision(characterCollider, characterCollisionBlocker, true);
+        else
+            Debug.LogWarning("You did not set a characterCollider or a characterCollisionBlocker");
     }
 
     private void Update()
@@ -90,7 +120,7 @@ public class PlayerManager : CharacterManager
         else
         {
             //force player to play death animation if they somehow avoid it
-            if (!playerAnimatorManager.animator.GetCurrentAnimatorStateInfo(3).IsName("Death"))
+            if (!playerAnimatorManager.animator.GetCurrentAnimatorStateInfo(2).IsName("Death"))
             {
                 playerAnimatorManager.animator.Play("Death");
             }

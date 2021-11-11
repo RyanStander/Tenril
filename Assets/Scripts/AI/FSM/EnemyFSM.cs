@@ -56,8 +56,10 @@ public class EnemyFSM : MonoBehaviour
         //Null check
         if (currentState != null)
         {
-            currentState.DeathCheck();
-            currentState.UpdateState();
+            if (!currentState.IsDeadLogicCheck())
+            {
+                currentState.UpdateState();
+            }
         }
     }
 

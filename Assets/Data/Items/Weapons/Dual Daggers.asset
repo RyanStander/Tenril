@@ -17,7 +17,11 @@ MonoBehaviour:
   primaryWeaponModelPrefab: {fileID: 4260048596949537076, guid: 97942b75d3b2ac347b5ec4afb6b0905c, type: 3}
   hasSecondaryWeapon: 1
   secondaryWeaponModelPrefab: {fileID: 4260048596949537076, guid: 97942b75d3b2ac347b5ec4afb6b0905c, type: 3}
-  isUnarmed: 0
+  displaySecondaryWeaponWhenUnequipped: 0
+  unequippedPrimaryWeaponModelPrefab: {fileID: 4260048596949537076, guid: 7df11b01570ea9a41b57a0f73b3f4d27, type: 3}
+  unequippedSecondaryWeaponModelPrefab: {fileID: 0}
+  primarySheathPrefab: {fileID: 4260048596949537076, guid: b0164b51db8a64c4ca2892612fccbb85, type: 3}
+  secondarySheathPrefab: {fileID: 0}
   baseDamage: 25
   weakAttackDamageMultiplier: 1
   strongAttackDamageMultiplier: 2
@@ -31,4 +35,6 @@ MonoBehaviour:
   weakAttackCostMultiplier: 1
   strongAttackCostMultiplier: 2
   weaponType: 0
+  weaponSlotWhenNotWielded: 4
   canParry: 1
+  isUnarmed: 0

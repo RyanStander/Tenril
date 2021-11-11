@@ -6,10 +6,6 @@ public class PlayerStats : CharacterStats
 {
     private PlayerAnimatorManager playerAnimatorManager;
 
-    [Header("Resource bars")]
-    [SerializeField] private SliderBarDisplayUI healthBar;
-    [SerializeField] private SliderBarDisplayUI staminaBar, sunlightBar, moonlightBar;
-
     private void Awake()
     {
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
@@ -17,10 +13,8 @@ public class PlayerStats : CharacterStats
     private void Start()
     {
         SetupStats();
-        healthBar.SetMaxValue(maxHealth);
-        staminaBar.SetMaxValue(maxStamina);
-        sunlightBar.SetMaxValue(maxStoredSunlight);
-        moonlightBar.SetMaxValue(maxStoredMoonlight);
+
+        EventManager.currentManager.AddEvent(new UpdatePlayerStats(maxHealth, currentHealth, maxStamina,currentStamina,maxStoredMoonlight,currentStoredMoonlight,maxStoredSunlight,currentStoredSunlight));
     }
 
     #region Health
@@ -36,7 +30,7 @@ public class PlayerStats : CharacterStats
         base.TakeDamage(damageAmount);
 
         //update health display on the healthbar
-        healthBar.SetCurrentValue(currentHealth);
+        EventManager.currentManager.AddEvent(new UpdatePlayerHealth(maxHealth, currentHealth));
 
         //play animation that player has taken damage
         if (playAnimation)
@@ -64,7 +58,7 @@ public class PlayerStats : CharacterStats
         base.RegainHealth(regainAmount);
 
         //update health display on the healthbar
-        healthBar.SetCurrentValue(currentHealth);
+        EventManager.currentManager.AddEvent(new UpdatePlayerHealth(maxHealth, currentHealth));
     }
     #endregion
 
@@ -75,7 +69,7 @@ public class PlayerStats : CharacterStats
         base.DrainStamina(drain);
 
         //update the current stamina on the stamina bar
-        staminaBar.SetCurrentValue(currentStamina);
+        EventManager.currentManager.AddEvent(new UpdatePlayerStamina(maxStamina, currentStamina));
     }
 
     protected override void RegenerateStamina()
@@ -83,7 +77,7 @@ public class PlayerStats : CharacterStats
         base.RegenerateStamina();
 
         //update the current stamina on the stamina bar
-        staminaBar.SetCurrentValue(currentStamina);
+        EventManager.currentManager.AddEvent(new UpdatePlayerStamina(maxStamina, currentStamina));
     }
 
     #endregion
@@ -95,7 +89,7 @@ public class PlayerStats : CharacterStats
         base.ConsumeStoredMoonlight(cost);
 
         //update the current moonlight on the moonlight bar
-        moonlightBar.SetCurrentValue(currentStoredMoonlight);
+        EventManager.currentManager.AddEvent(new UpdatePlayerMoonlight(maxStoredMoonlight, currentStoredMoonlight));
     }
 
     public override void ConsumeStoredSunlight(float cost)
@@ -103,7 +97,7 @@ public class PlayerStats : CharacterStats
         base.ConsumeStoredSunlight(cost);
 
         //update the current sunlight on the sunlight bar
-        sunlightBar.SetCurrentValue(currentStoredSunlight);
+        EventManager.currentManager.AddEvent(new UpdatePlayerHealth(maxStoredSunlight, currentStoredSunlight));
     }
 
     #endregion

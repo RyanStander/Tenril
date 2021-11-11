@@ -175,6 +175,9 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleFalling()
     {
+        if (playerStats.isDead)
+            return;
+
         if (!IsGrounded())
         {
             //keeps velocity while falling

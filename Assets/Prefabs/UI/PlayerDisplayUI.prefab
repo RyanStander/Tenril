@@ -15131,7 +15131,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 176.64, y: 163.4}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 160, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6899388720185617670
 MonoBehaviour:
@@ -15649,6 +15649,7 @@ MonoBehaviour:
   npcNameText: {fileID: 8580274786921908136}
   npcDialogueWindowText: {fileID: 4387655213963929175}
   optionButtonPrefab: {fileID: 8970713560328587706, guid: e90638a0b20dfd946ade03cb50780ac8, type: 3}
+  leaveDialogueButtonPrefab: {fileID: 4160988939258953080, guid: ec1e8d81035ed874884d2ceb96920c92, type: 3}
   optionHolder: {fileID: 158520970033718375}
 --- !u!1 &2716261197510664116
 GameObject:
@@ -18962,6 +18963,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5601349072989522161}
+  - component: {fileID: 932770844}
   m_Layer: 5
   m_Name: ResourceBars
   m_TagString: Untagged
@@ -18993,6 +18995,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &932770844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5601349072989522162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58ccf528ae848a548bb36f44e98db4bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 5601349071284896399}
+  staminaBar: {fileID: 5601349071514104609}
+  sunlightBar: {fileID: 5601349071377363969}
+  moonlightBar: {fileID: 5601349071705224319}
 --- !u!1 &5601349072991590592
 GameObject:
   m_ObjectHideFlags: 0

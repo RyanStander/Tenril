@@ -17,12 +17,16 @@ MonoBehaviour:
   primaryWeaponModelPrefab: {fileID: 4260048596949537076, guid: 9d465f1f15bc9bd409b7a537f906f84a, type: 3}
   hasSecondaryWeapon: 0
   secondaryWeaponModelPrefab: {fileID: 0}
-  isUnarmed: 0
+  displaySecondaryWeaponWhenUnequipped: 0
+  unequippedPrimaryWeaponModelPrefab: {fileID: 4260048596949537076, guid: 90a262076662fd44586943a17bf9325c, type: 3}
+  unequippedSecondaryWeaponModelPrefab: {fileID: 0}
+  primarySheathPrefab: {fileID: 0}
+  secondarySheathPrefab: {fileID: 0}
   baseDamage: 35
   weakAttackDamageMultiplier: 1
   strongAttackDamageMultiplier: 2
   finisherDamageMultiplier: 4
-  idleAnimation: PolearmIdle
+  idleAnimation: PolearmEquip
   attackSet: {fileID: 0}
   weakAttacks:
   - PoleCombo1
@@ -38,4 +42,6 @@ MonoBehaviour:
   weakAttackCostMultiplier: 1
   strongAttackCostMultiplier: 2
   weaponType: 0
+  weaponSlotWhenNotWielded: 2
   canParry: 1
+  isUnarmed: 0
