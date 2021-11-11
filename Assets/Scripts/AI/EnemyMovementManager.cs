@@ -112,10 +112,13 @@ public class EnemyMovementManager : MonoBehaviour
 
     internal void SynchronizeTransformToAnimation()
     {
-        //Update the transform position in addition to matching the Y axis of the navigation agent
+        //Update the transform position to match the root rotation of the animator
         Vector3 position = enemyManager.animatorManager.animator.rootPosition;
-        //position.y = enemyManager.navAgent.nextPosition.y;
         transform.position = position;
+
+        //Update the transform rotation to match the root rotation of the animator
+        Quaternion rotation = enemyManager.animatorManager.animator.rootRotation;
+        transform.rotation = rotation;
     }
 
     //Method sacrifices animation quality (increasing foot sliding) at the improvement of obstacle avoidance
@@ -157,6 +160,22 @@ public class EnemyMovementManager : MonoBehaviour
 
         //Slerp towards what the nav agent wants the target
         transform.root.rotation = Quaternion.Lerp(transform.root.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+
+        //The following was an attempt to use rotation based animations, however this attempt was unsuccesful
+        //Code kept in for now for documentation purposes
+        //float signedAngle = Vector3.SignedAngle(direction, transform.forward, Vector3.up);
+        //if(signedAngle < 5)
+        //{
+        //    enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.turningHash, 45, 1f, Time.deltaTime);
+        //}
+        //else if (signedAngle > 5)
+        //{
+        //    enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.turningHash, -45, 1f, Time.deltaTime);
+        //}
+        //else
+        //{
+        //    enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.turningHash, 0, 1f, Time.deltaTime);
+        //}
     }
 
     internal void RotateTowardsNextPosition()
