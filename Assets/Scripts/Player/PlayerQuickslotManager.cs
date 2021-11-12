@@ -33,7 +33,7 @@ public class PlayerQuickslotManager : MonoBehaviour
             //if the value is -1 that means the quick slot item that is equipped does not exist
             if (currentIndexValue == -1)
             {
-                Debug.LogError("The currently selected quickslot item could not be found in the list, please make sure it is set properly");
+                Debug.LogWarning("The currently selected quickslot item could not be found in the list, please make sure it is set properly");
                 return;
             }
 
@@ -58,7 +58,7 @@ public class PlayerQuickslotManager : MonoBehaviour
             //if the value is -1 that means the quick slot item that is equipped does not exist
             if (currentIndexValue == -1)
             {
-                Debug.LogError("The currently selected quickslot item could not be found in the list, please make sure it is set properly");
+                Debug.LogWarning("The currently selected quickslot item could not be found in the list, please make sure it is set properly");
                 return;
             }
 
