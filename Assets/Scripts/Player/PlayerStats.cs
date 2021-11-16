@@ -5,10 +5,12 @@ using UnityEngine;
 public class PlayerStats : CharacterStats
 {
     private PlayerAnimatorManager playerAnimatorManager;
+    private BlockingCollider blockingCollider;
 
     private void Awake()
     {
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+        blockingCollider = GetComponentInChildren<BlockingCollider>();
     }
     private void Start()
     {
@@ -17,8 +19,29 @@ public class PlayerStats : CharacterStats
         EventManager.currentManager.AddEvent(new UpdatePlayerStats(maxHealth, currentHealth, maxStamina,currentStamina,maxStoredMoonlight,currentStoredMoonlight,maxStoredSunlight,currentStoredSunlight));
     }
 
+    public void OpenBlockingCollider(PlayerInventory playerInventory)
+    {
+        if (playerInventory==null)
+        {
+            Debug.LogWarning("Player inventory was not found, make sure the script calling this function has an inventory reference");
+            return;
+        }
+        if (playerInventory.equippedWeapon==null)
+        {
+            Debug.LogWarning("Player inventory weapon was not found, weapon is required to block");
+            return;
+        }
+        blockingCollider.SetColliderDamageAbsorption(playerInventory.equippedWeapon);
+        blockingCollider.EnableBlockingCollider();
+    }
+
+    public void CloseBlockingCollider()
+    {
+        blockingCollider.DisableBlockingCollider();
+    }
+
     #region Health
-    public override void TakeDamage(float damageAmount, bool playAnimation = true)
+    public override void TakeDamage(float damageAmount, bool playAnimation = true, string damageAnimation = "Hit")
     {
         if (playerAnimatorManager.animator.GetBool("isInvulnerable"))
             return;
@@ -34,14 +57,14 @@ public class PlayerStats : CharacterStats
 
         //play animation that player has taken damage
         if (playAnimation)
-            playerAnimatorManager.PlayTargetAnimation("Hit", true);
+            playerAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
         //If player health reaches or goes pass 0, play death animation and handle death
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            if (playAnimation)
-                playerAnimatorManager.PlayTargetAnimation("Death", true);
+            
+            playerAnimatorManager.PlayTargetAnimation("Death", true);
 
             isDead = true;
 

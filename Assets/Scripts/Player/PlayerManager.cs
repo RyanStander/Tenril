@@ -166,6 +166,7 @@ public class PlayerManager : CharacterManager
         canDoCombo = playerAnimatorManager.animator.GetBool("canDoCombo");
         isParrying = playerAnimatorManager.animator.GetBool("isParrying");
         isInteracting = playerAnimatorManager.animator.GetBool("isInteracting");
+        isBlocking = playerAnimatorManager.animator.GetBool("isBlocking");
     }
 
     #region onEvents

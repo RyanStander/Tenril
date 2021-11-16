@@ -55,7 +55,7 @@ public class CharacterStats : MonoBehaviour
         return healthLevel * 10;
     }
 
-    public virtual void TakeDamage(float damageAmount, bool playAnimation = true)
+    public virtual void TakeDamage(float damageAmount, bool playAnimation = true, string damageAnimation = "Hit")
     {
         currentHealth -= damageAmount;
     }

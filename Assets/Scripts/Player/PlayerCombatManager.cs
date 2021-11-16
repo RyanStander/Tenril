@@ -291,11 +291,11 @@ public class PlayerCombatManager : MonoBehaviour
         if (inputHandler.blockInput)
         {
             //Prevent blocking if is already performing another action
-            if (playerAnimatorManager.animator.GetBool("isInteracting"))
+            if (playerManager.isInteracting)
                 return;
 
             //Prevent blocking if is already blocking
-            if (playerAnimatorManager.animator.GetBool("isBlocking"))
+            if (playerManager.isBlocking)
                 return;
 
             //Set blocking to true
@@ -303,6 +303,8 @@ public class PlayerCombatManager : MonoBehaviour
 
             //Begin blocking
             playerAnimatorManager.animator.Play("BlockStart");
+
+            playerStats.OpenBlockingCollider(playerInventory);
         }
         else
         {

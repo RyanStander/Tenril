@@ -37,6 +37,7 @@ public class DamageCollider : MonoBehaviour
         {
             CharacterStats characterStats = other.GetComponent<CharacterStats>();
             CharacterManager targetCharacterManager = other.GetComponent<CharacterManager>();
+            BlockingCollider blockingCollider = other.transform.GetComponentInChildren<BlockingCollider>();
 
             if (targetCharacterManager!=null)
             {
@@ -50,6 +51,15 @@ public class DamageCollider : MonoBehaviour
                         Debug.LogWarning("characterManager for damage collider was not set, cant do parries without it, please set it");
 
                     return;
+                }
+                else if (blockingCollider != null && targetCharacterManager.isBlocking)
+                {
+                    float damageAfterBlock = CharacterUtilityManager.CalculateBlockingDamage(currentDamage, blockingCollider.blockingPhysicalDamageAbsorption);
+                    if (characterStats != null)
+                    {
+                        characterStats.TakeDamage(damageAfterBlock, true, "BlockGuard");
+                        return;
+                    }
                 }
             }
 
