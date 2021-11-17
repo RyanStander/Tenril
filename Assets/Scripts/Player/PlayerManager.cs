@@ -37,7 +37,6 @@ public class PlayerManager : CharacterManager
     [SerializeField] private CapsuleCollider characterCollisionBlocker;
 
     public bool canDoCombo, isInteracting;
-
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.EquipWeapon, OnEquipWeapon);
@@ -81,6 +80,7 @@ public class PlayerManager : CharacterManager
 
     private void Update()
     {
+
         GetPlayerAnimatorBools();
 
         //Make sure player isnt dead
