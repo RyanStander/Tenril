@@ -64,17 +64,16 @@ public class CameraLockOn : MonoBehaviour
         EventManager.currentManager.Subscribe(EventType.SwapToRightLockOnTarget, OnSwapToRightLockOnTarget);
     }
 
-    private void Awake()
+    private void Start()
     {
-        myTransform = transform;
-        defaultPosition = lockOnCameraTransform.localPosition.z;
-
-        inputHandler = FindObjectOfType<InputHandler>();
-        playerManager = FindObjectOfType<PlayerManager>();
+        SetupLockOnCamera();
     }
 
     private void LateUpdate()
     {
+        if (inputHandler == null)
+            return;
+
         if (inputHandler.lockOnFlag)
         {
             HandleCameraRotation();
@@ -97,6 +96,26 @@ public class CameraLockOn : MonoBehaviour
         }
     }
 
+    private void SetupLockOnCamera()
+    {
+        //set the transform of this object
+        myTransform = transform;
+
+        //set the default position of the z
+        defaultPosition = lockOnCameraTransform.localPosition.z;
+
+        //set the camera's transform
+        mainCameraTransform = Camera.main.transform;
+
+        //set the player's transform
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+
+        inputHandler = FindObjectOfType<InputHandler>();
+        if (inputHandler == null)
+            Debug.LogWarning(gameObject.name + " could not find an input handler, make sure you have one on your player");
+
+        playerManager = FindObjectOfType<PlayerManager>();
+    }
     public void FollowTarget(float delta)
     {
         //performs a lerp so that the camera moves smoothly to the target

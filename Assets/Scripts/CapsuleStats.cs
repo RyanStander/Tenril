@@ -13,7 +13,7 @@ public class CapsuleStats : CharacterStats
         healthBar.SetMaxValue(maxHealth);
     }
 
-    public override void TakeDamage(float damageAmount, bool playAnimation = true)
+    public override void TakeDamage(float damageAmount, bool playAnimation = true, string damageAnimtion="Hit")
     {
         base.TakeDamage(damageAmount, playAnimation);
 

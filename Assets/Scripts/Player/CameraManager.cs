@@ -19,6 +19,47 @@ public class CameraManager : MonoBehaviour
         EventManager.currentManager.Subscribe(EventType.SwapToNPCCamera, OnSwapToNPCCamera);
     }
 
+    private void Start()
+    {
+        SetupCameras();
+    }
+
+    private void SetupCameras()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        //setup the exploration camera values
+        if (explorationCamera != null)
+        {
+            CinemachineFreeLook explorationCameraFreeLookCam = explorationCamera.GetComponent<CinemachineFreeLook>();
+            if (explorationCameraFreeLookCam != null)
+            {
+                if (explorationCameraFreeLookCam.Follow == null)
+                    explorationCameraFreeLookCam.Follow = player.transform;
+
+                if (explorationCameraFreeLookCam.LookAt == null)
+                    explorationCameraFreeLookCam.LookAt = player.transform;
+            }
+        }
+        //setup the menu camera values
+        if (menuCamera != null)
+        {
+            CinemachineVirtualCamera menuCameraVirtual = menuCamera.GetComponent<CinemachineVirtualCamera>();
+            if (menuCameraVirtual != null)
+            {
+                if (menuCameraVirtual.Follow == null)
+                    menuCameraVirtual.Follow = player.transform;
+
+                if (menuCameraVirtual.LookAt == null)
+                {
+                    Transform spine = player.transform.Find("Root/Hips/Spine/Spine1");
+                    if (spine != null)
+                        menuCameraVirtual.LookAt = spine;
+                }
+            }
+        }
+    }
+
     #region onEvents
 
     private void OnSwapToExplorationCamera(EventData eventData)

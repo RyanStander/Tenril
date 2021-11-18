@@ -37,7 +37,6 @@ public class PlayerManager : CharacterManager
     [SerializeField] private CapsuleCollider characterCollisionBlocker;
 
     public bool canDoCombo, isInteracting;
-
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.EquipWeapon, OnEquipWeapon);
@@ -70,32 +69,18 @@ public class PlayerManager : CharacterManager
 
 
         EventManager.currentManager.Subscribe(EventType.CeaseDialogue, OnCeaseDialogue);
+
+        SetupVariables();
     }
 
     private void Start()
     {
         playerInventory.LoadEquippedWeapons(weaponSlotManager);
-
-        if (gameObject.tag=="Untagged")
-        {
-            Debug.LogWarning("You did not set a tag, setting it to Player");
-            gameObject.tag = "Player";
-        }
-
-        if (gameObject.layer == 0)
-        {
-            Debug.LogWarning("You did not set a layer, setting it to Character");
-            gameObject.layer = 10;
-        }
-
-        if (characterCollider != null || characterCollisionBlocker != null)
-            Physics.IgnoreCollision(characterCollider, characterCollisionBlocker, true);
-        else
-            Debug.LogWarning("You did not set a characterCollider or a characterCollisionBlocker");
     }
 
     private void Update()
     {
+
         GetPlayerAnimatorBools();
 
         //Make sure player isnt dead
@@ -142,6 +127,48 @@ public class PlayerManager : CharacterManager
         inputHandler.ResetInputs();
     }
 
+    private void SetupVariables()
+    {
+        //Set Player tag if it hasnt been already
+        if (gameObject.tag == "Untagged")
+            gameObject.tag = "Player";
+        //Set layer if it hasnt been already
+        if (gameObject.layer == 0)
+            gameObject.layer = 10;
+
+        //Get the animator component
+        Animator animator = gameObject.GetComponent<Animator>();
+        //Apply root motion of animator
+        animator.applyRootMotion = true;
+        //Set the update mode
+        animator.updateMode = AnimatorUpdateMode.AnimatePhysics;
+
+        //Freeze rotations
+        gameObject.GetComponent<Rigidbody>().freezeRotation = true;
+
+        //Set characterCollider 
+        characterCollider = gameObject.GetComponent<CapsuleCollider>();
+
+        //Set characterCollisonBlocker
+        Transform collisionBlockerTransform = gameObject.transform.Find("CombatColliders").Find("CharacterCollisionBlocker");
+        if (collisionBlockerTransform != null)
+            characterCollisionBlocker = collisionBlockerTransform.GetComponent<CapsuleCollider>();
+
+        if (characterCollisionBlocker != null)
+            Physics.IgnoreCollision(characterCollider, characterCollisionBlocker, true);
+        else
+            Debug.LogWarning("Could not find a CharacterCollisionBlocker, make sure you created a child in player and added an empty gameObject, name it CharacterCollisionBlocker and add a capsule collider and a rigidbody.");
+
+        //Set finisherAttackRayCastStartPointTransform
+        if (finisherAttackRayCastStartPointTransform == null)
+        {
+            finisherAttackRayCastStartPointTransform = gameObject.transform.Find("CombatTransforms").Find("FinisherAttackRaycastStartPoint");
+            if (finisherAttackRayCastStartPointTransform == null)
+                Debug.LogWarning("Could not find a FinisherAttackRaycastStartPoint gameObject on the player, create an empty gameobject as a child of player, give it that name. Position it to be in front of the players chest");
+        }
+
+    }
+
     private void GetPlayerAnimatorBools()
     {
         playerAnimatorManager.canRotate = playerAnimatorManager.animator.GetBool("canRotate");
@@ -149,6 +176,7 @@ public class PlayerManager : CharacterManager
         canDoCombo = playerAnimatorManager.animator.GetBool("canDoCombo");
         isParrying = playerAnimatorManager.animator.GetBool("isParrying");
         isInteracting = playerAnimatorManager.animator.GetBool("isInteracting");
+        isBlocking = playerAnimatorManager.animator.GetBool("isBlocking");
     }
 
     #region onEvents

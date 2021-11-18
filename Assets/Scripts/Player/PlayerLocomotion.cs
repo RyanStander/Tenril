@@ -14,6 +14,8 @@ public class PlayerLocomotion : MonoBehaviour
     [Header("Ground & Air Detection")]
     [SerializeField] private float fallDuration=0;
     [SerializeField] private float fallDurationToPerformLand=0.5f;
+    [Tooltip("The number that the environment layer is listed as")]
+    [SerializeField] private int environmentLayerNumber=9;
     [SerializeField] private LayerMask EnvironmentLayer;
     [SerializeField] private Vector3 raycastOffset;
     [SerializeField] private float groundCheckRadius=0.3f;
@@ -32,6 +34,8 @@ public class PlayerLocomotion : MonoBehaviour
         cameraObject = Camera.main.transform;
         statusEffectManager = GetComponent<StatusEffectManager>();
         cameraLockOn = FindObjectOfType<CameraLockOn>();
+
+        EnvironmentLayer = 1<<environmentLayerNumber;
     }
 
     internal void HandleLocomotion(float delta)

@@ -29,6 +29,9 @@ public class WeaponItem : Item
     public float strongAttackDamageMultiplier = 2;
     public int finisherDamageMultiplier = 4;
 
+    [Header("Damage Block")]
+    [Range(0,100)]public float physicalDamageBlockPercentage;
+
     [Header("Idle Animations")]
     public string idleAnimation;
 

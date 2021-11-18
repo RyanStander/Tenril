@@ -33,7 +33,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         if (inputHandler==null)
-            Debug.Log("Input handler for the UI manager was not set. Drag it into the inspector");
+            inputHandler=FindObjectOfType<InputHandler>();
     }
 
     private void Update()
