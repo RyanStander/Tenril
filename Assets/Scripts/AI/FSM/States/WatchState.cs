@@ -125,61 +125,8 @@ public class WatchState : AbstractStateFSM
 
     private void CheckForTarget()
     {
+        //Fetches detectable characters and returns a list of enemies
         targetsByDistance = enemyManager.visionManager.GetListOfTargets(agentHead, enemyManager.enemyStats.alertRadius, characterLayer, detectionBlockLayer);
-        return;
-
-        //Cast a sphere wrapping the head and check for characters within range
-        Collider[] hitColliders = Physics.OverlapSphere(agentHead.position, enemyManager.enemyStats.alertRadius, characterLayer);
-
-        //Clear the dictionary to free up space for new detected targets
-        targetsByDistance.Clear();
-
-        //Check each character for if it is within valid distance and for its faction
-        foreach (var hitCollider in hitColliders)
-        {
-            //If existing, get the vision point of the object, otherwise use hte hid collider
-            GameObject visionPoint = ExtensionMethods.FindChildWithTag(hitCollider.gameObject, "VisionTargetPoint");
-
-            //If no vision point was found, default to the hit collider
-            if(visionPoint == null)
-            {
-                visionPoint = hitCollider.gameObject;
-            }
-
-            //Raycast to first check if the target is valid (Performance friendly to raycast first)
-            if (Physics.Raycast(agentHead.position, visionPoint.transform.position - agentHead.position, out RaycastHit hit))
-            {
-                //Continue if the found object was not self
-                if(hitCollider.gameObject.transform.root != gameObject.transform.root)
-                {
-                    //If there are no objects blocking the way, move onto faction filtering
-                    if (detectionBlockLayer != (detectionBlockLayer | (1 << hit.transform.gameObject.layer)))
-                    {
-                        //DebugLogString("Colliding with character object!: " + hit.transform.gameObject);
-
-                        //Debug the line results
-                        Debug.DrawRay(agentHead.position, hit.point - agentHead.position, Color.green);
-
-                        //Check if character stats are attached, ignore otherwise
-                        if (hitCollider.gameObject.TryGetComponent(out CharacterStats stats))
-                        {
-                            //Check for enemy faction or no faction as well as for if the target is still alive
-                            //If valid, add to dictionary with unpathed & direct distance
-                            if (!stats.isDead && stats.assignedFaction != enemyManager.enemyStats.assignedFaction && stats.assignedFaction != Faction.NONE)
-                            {
-                                DebugLogString("Target Character Found: " + hitCollider.gameObject + "| Distance: " + Vector3.Distance(agentHead.position, hitCollider.gameObject.transform.position));
-                                targetsByDistance.Add(hitCollider.gameObject, Vector3.Distance(agentHead.position, hitCollider.gameObject.transform.position));
-                            }
-                        }
-                    }
-                    else
-                    {
-                        //Debug the line results
-                        Debug.DrawRay(agentHead.position, hit.point - agentHead.position, Color.red);
-                    }
-                }
-            }
-        }
     }
 
     private void CheckForClosestTarget()
