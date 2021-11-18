@@ -204,6 +204,7 @@ GameObject:
   - component: {fileID: 1884466008482075782}
   - component: {fileID: 1884466008482075783}
   - component: {fileID: 1884466008482075897}
+  - component: {fileID: 2041649959}
   m_Layer: 0
   m_Name: CameraManager
   m_TagString: Untagged
@@ -274,6 +275,19 @@ MonoBehaviour:
   unlockedPivotPosition: 1.65
   maximumLockOnDistance: 30
   showGizmo: 0
+--- !u!114 &2041649959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884466008482075780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd3faff74decc3647910932f27c43cee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseLockEnabled: 0
 --- !u!1 &1884466008573971299
 GameObject:
   m_ObjectHideFlags: 3
@@ -298,7 +312,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1884466008573971299}
-  m_LocalRotation: {x: 0.13932237, y: -0.000000019049061, z: 0.000000002680099, w: 0.9902471}
+  m_LocalRotation: {x: 0.13932237, y: -0.000000019049697, z: 0.0000000026801885, w: 0.9902471}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -843,7 +857,6 @@ GameObject:
   - component: {fileID: 1884466009649170104}
   - component: {fileID: 1884466009649170106}
   - component: {fileID: 1884466009649170109}
-  - component: {fileID: 1884466009649170108}
   m_Layer: 0
   m_Name: CM ExplorationCam
   m_TagString: Untagged
@@ -1014,19 +1027,6 @@ MonoBehaviour:
   m_Damping: 0.5
   m_DampingWhenOccluded: 0.2
   m_OptimalTargetDistance: 0
---- !u!114 &1884466009649170108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1884466009649170105}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd3faff74decc3647910932f27c43cee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mouseLockEnabled: 0
 --- !u!1 &1884466009725766544
 GameObject:
   m_ObjectHideFlags: 3
@@ -1051,7 +1051,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1884466009725766544}
-  m_LocalRotation: {x: 0.1109035, y: -0.000000004280446, z: 4.776631e-10, w: 0.9938312}
+  m_LocalRotation: {x: 0.1109035, y: -0.0000000044013353, z: 4.911533e-10, w: 0.9938312}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

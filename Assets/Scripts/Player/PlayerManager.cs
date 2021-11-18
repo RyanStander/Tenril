@@ -136,11 +136,21 @@ public class PlayerManager : CharacterManager
         if (gameObject.layer == 0)
             gameObject.layer = 10;
 
+        //Get the animator component
+        Animator animator = gameObject.GetComponent<Animator>();
+        //Apply root motion of animator
+        animator.applyRootMotion = true;
+        //Set the update mode
+        animator.updateMode = AnimatorUpdateMode.AnimatePhysics;
+
+        //Freeze rotations
+        gameObject.GetComponent<Rigidbody>().freezeRotation = true;
+
         //Set characterCollider 
         characterCollider = gameObject.GetComponent<CapsuleCollider>();
 
         //Set characterCollisonBlocker
-        Transform collisionBlockerTransform = gameObject.transform.Find("CharacterCollisionBlocker");
+        Transform collisionBlockerTransform = gameObject.transform.Find("CombatColliders").Find("CharacterCollisionBlocker");
         if (collisionBlockerTransform != null)
             characterCollisionBlocker = collisionBlockerTransform.GetComponent<CapsuleCollider>();
 
@@ -152,7 +162,7 @@ public class PlayerManager : CharacterManager
         //Set finisherAttackRayCastStartPointTransform
         if (finisherAttackRayCastStartPointTransform == null)
         {
-            finisherAttackRayCastStartPointTransform = gameObject.transform.Find("FinisherAttackRaycastStartPoint");
+            finisherAttackRayCastStartPointTransform = gameObject.transform.Find("CombatTransforms").Find("FinisherAttackRaycastStartPoint");
             if (finisherAttackRayCastStartPointTransform == null)
                 Debug.LogWarning("Could not find a FinisherAttackRaycastStartPoint gameObject on the player, create an empty gameobject as a child of player, give it that name. Position it to be in front of the players chest");
         }
