@@ -126,4 +126,13 @@ public class EnemyFSM : MonoBehaviour
         return currentState;
     }
     #endregion
+
+    protected internal void DebugLogString(string log)
+    {
+        //Debug the log if debugging is enabled
+        if (isDebuggingStates)
+        {
+            Debug.Log(log);
+        }
+    }
 }

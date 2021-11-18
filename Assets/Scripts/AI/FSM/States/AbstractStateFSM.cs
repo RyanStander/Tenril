@@ -96,13 +96,10 @@ public abstract class AbstractStateFSM : MonoBehaviour
     }
     #endregion End of Setters
 
-    protected private void DebugLogString(string log)
+    protected internal void DebugLogString(string log)
     {
         //Debug the log if debugging is enabled
-        if (finiteStateMachine.isDebuggingStates)
-        {
-            Debug.Log(log);
-        }
+        finiteStateMachine.DebugLogString(log);
     }
 
     public bool IsDeadLogicCheck()

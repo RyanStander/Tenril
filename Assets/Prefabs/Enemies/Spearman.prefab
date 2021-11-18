@@ -143,7 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectionBlockLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 262656
   characterLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -622,7 +622,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2363289206808409703}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: CombatColliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1176,6 +1176,7 @@ GameObject:
   - component: {fileID: 6011857014310157830}
   - component: {fileID: 728663015}
   - component: {fileID: 728663019}
+  - component: {fileID: 2768618875340935539}
   m_Layer: 10
   m_Name: Spearman
   m_TagString: Enemy
@@ -1331,7 +1332,7 @@ MonoBehaviour:
   - {fileID: 1418810352}
   - {fileID: 1418810353}
   - {fileID: 761708098142108532}
-  isDebuggingStates: 1
+  isDebuggingStates: 0
 --- !u!114 &318429251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1441,6 +1442,18 @@ MonoBehaviour:
   timeLeft: []
   isRooted: 0
   character: {fileID: 318429251}
+--- !u!114 &2768618875340935539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6051805372053708825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69aa48431045aa246980d53fa720dc8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6051805372053708827
 GameObject:
   m_ObjectHideFlags: 0

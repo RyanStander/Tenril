@@ -125,6 +125,9 @@ public class WatchState : AbstractStateFSM
 
     private void CheckForTarget()
     {
+        targetsByDistance = enemyManager.visionManager.GetListOfTargets(agentHead, enemyManager.enemyStats.alertRadius, characterLayer, detectionBlockLayer);
+        return;
+
         //Cast a sphere wrapping the head and check for characters within range
         Collider[] hitColliders = Physics.OverlapSphere(agentHead.position, enemyManager.enemyStats.alertRadius, characterLayer);
 
