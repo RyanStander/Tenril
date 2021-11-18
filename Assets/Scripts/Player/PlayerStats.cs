@@ -28,7 +28,6 @@ public class PlayerStats : CharacterStats
         }
         if (playerInventory.equippedWeapon==null)
         {
-            Debug.LogWarning("Player inventory weapon was not found, weapon is required to block");
             return;
         }
         blockingCollider.SetColliderDamageAbsorption(playerInventory.equippedWeapon);
