@@ -85,7 +85,6 @@ public class WeaponSlotManager : MonoBehaviour
 
         #region Weapon Idle Anim           
 
-        //
         if (weaponItem != null)
         {
             animator.CrossFade(weaponItem.idleAnimation, 0.1f);
@@ -96,7 +95,9 @@ public class WeaponSlotManager : MonoBehaviour
 
             //Set animation to unarmed stance 
             //(no animation for it currently, remember to rename to something else)
-            //animator.CrossFade("Unarmed", 0.2f);
+            animator.CrossFade("UnarmedIdle", 0.2f);
+
+            return;
         }
         #endregion
 

@@ -66,21 +66,25 @@ public class PlayerInventory : CharacterInventory
     internal void LoadEquippedWeapons(WeaponSlotManager weaponSlotManager)
     {
         if (primaryWeapon==null||secondaryWeapon==null)
-        {
             Debug.LogWarning("Player does not have weapons equipped, weapons are required");
-            return;
-        }
+
         if (isWieldingPrimaryWeapon)
         {
             equippedWeapon = primaryWeapon;
             //load primary weapon in hand and secondary in sheath
-            weaponSlotManager.LoadWeaponOnSlot(primaryWeapon, equippedWeapon.hasSecondaryWeapon, secondaryWeapon);
+            if(equippedWeapon!=null)
+                weaponSlotManager.LoadWeaponOnSlot(primaryWeapon, equippedWeapon.hasSecondaryWeapon, secondaryWeapon);
+            else
+                weaponSlotManager.LoadWeaponOnSlot(primaryWeapon, false, secondaryWeapon);
         }
         else
         {
             equippedWeapon = secondaryWeapon;
             //load secondary weapon in hand and primary in sheath
-            weaponSlotManager.LoadWeaponOnSlot(secondaryWeapon, equippedWeapon.hasSecondaryWeapon, primaryWeapon);
+            if (equippedWeapon != null)
+                weaponSlotManager.LoadWeaponOnSlot(secondaryWeapon, equippedWeapon.hasSecondaryWeapon, primaryWeapon);
+            else
+                weaponSlotManager.LoadWeaponOnSlot(secondaryWeapon, false, primaryWeapon);
         }
 
         //send out event to update ui
