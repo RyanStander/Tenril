@@ -94,6 +94,9 @@ public class WatchState : AbstractStateFSM
             //Check for the closest target (if any)
             CheckForClosestTarget();
         }
+
+        //Stop enemy movement in case of animation speed carry over
+        movementManager.StopMovement();
     }
 
     public override bool ExitState()

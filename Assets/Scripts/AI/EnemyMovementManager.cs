@@ -24,6 +24,9 @@ public class EnemyMovementManager : MonoBehaviour
 
     private float fallDuration = 0; //Duration of the current fall
 
+    //The default dampening speed for when velocities are changed
+    [Range(0, 1)] protected private float defaultDamp = 0.5f;
+
     private void Awake()
     {
         //Getter for relevant reference
@@ -63,7 +66,7 @@ public class EnemyMovementManager : MonoBehaviour
         if (enemyManager.isInteracting)
         {
             //Set to minimal forward movement while still performing action
-            SetForwardMovement(0, 0.5f, Time.deltaTime);
+            SetForwardMovement(0, defaultDamp, Time.deltaTime);
             return;
         }
 
@@ -82,7 +85,7 @@ public class EnemyMovementManager : MonoBehaviour
             else
             {
                 //Handle the forward movement of the agent
-                SetForwardMovement(targetSpeed, 0.5f, Time.deltaTime);
+                SetForwardMovement(targetSpeed, defaultDamp, Time.deltaTime);
             }
             
             //Correct the location of the NavmeshAgent with precise or estimated calculations
@@ -160,22 +163,6 @@ public class EnemyMovementManager : MonoBehaviour
 
         //Slerp towards what the nav agent wants the target
         transform.root.rotation = Quaternion.Lerp(transform.root.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-
-        //The following was an attempt to use rotation based animations, however this attempt was unsuccesful
-        //Code kept in for now for documentation purposes
-        //float signedAngle = Vector3.SignedAngle(direction, transform.forward, Vector3.up);
-        //if(signedAngle < 5)
-        //{
-        //    enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.turningHash, 45, 1f, Time.deltaTime);
-        //}
-        //else if (signedAngle > 5)
-        //{
-        //    enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.turningHash, -45, 1f, Time.deltaTime);
-        //}
-        //else
-        //{
-        //    enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.turningHash, 0, 1f, Time.deltaTime);
-        //}
     }
 
     internal void RotateTowardsNextPosition()
@@ -218,6 +205,12 @@ public class EnemyMovementManager : MonoBehaviour
         //Stop the animations movement of forward and leftward based on given parameters
         enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.forwardHash, 0, givenDampeningTime, givenTime);
         enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.leftHash, 0, givenDampeningTime, givenTime);
+    }
+
+    public void StopMovement()
+    {
+        //Stop the animations movement of forward and leftward based on default parameters
+        StopMovement(defaultDamp, Time.deltaTime);
     }
 
     public void StopMovementImmediate()
