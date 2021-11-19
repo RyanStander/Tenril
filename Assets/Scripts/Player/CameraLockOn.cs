@@ -40,6 +40,8 @@ public class CameraLockOn : MonoBehaviour
     [SerializeField] private float minimumCollisionOffset = 0.2f;
     [Tooltip("The y position of the camera pivot")]
     [SerializeField] private float lockedPivotPosition = 2.25f, unlockedPivotPosition = 1.65f;
+    [Tooltip("The range that the raycast extends for finding possible lock on targets, extends both ways")]
+    [SerializeField] [Range(0, 180)] private float lockOnMaxAngle=90;
     [Tooltip("How far the camera can scan for targets")]
     [SerializeField] private float maximumLockOnDistance = 30;
 
@@ -190,8 +192,11 @@ public class CameraLockOn : MonoBehaviour
         float shortestDistanceOfRightTarget = Mathf.Infinity;
         availableTargets = new List<CharacterManager>();
 
+        //get character layer
+        int characterLayer = LayerMask.GetMask("Character");
+
         //Creates a sphere to check fo any collisions
-        Collider[] colliders = Physics.OverlapSphere(mainCameraTransform.position, maximumLockOnDistance);
+        Collider[] colliders = Physics.OverlapSphere(mainCameraTransform.position, maximumLockOnDistance, characterLayer);
 
         for (int i = 0; i < colliders.Length; i++)
         {
@@ -206,7 +211,7 @@ public class CameraLockOn : MonoBehaviour
 
                 RaycastHit hit;
                 //Prevents locking onto self, sets within view distance and makes sure its not too far from the player
-                if (characterManager.transform.root != playerTransform.transform.root && viewableAngle > -50 && viewableAngle < 50 && distanceFromTarget <= maximumLockOnDistance)
+                if (characterManager.transform.root != playerTransform.transform.root && viewableAngle > -lockOnMaxAngle && viewableAngle < lockOnMaxAngle && distanceFromTarget <= maximumLockOnDistance)
                 {
                     if (Physics.Linecast(playerManager.lockOnTransform.position, characterManager.transform.position, out hit))
                     {
@@ -218,7 +223,7 @@ public class CameraLockOn : MonoBehaviour
                         else
                         {
                             availableTargets.Add(characterManager);
-                        }
+                        } 
                     }
                 }
             }

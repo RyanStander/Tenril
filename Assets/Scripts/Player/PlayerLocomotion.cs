@@ -257,7 +257,7 @@ public class PlayerLocomotion : MonoBehaviour
         }
     }
 
-    private void MovementType(bool isStafeMovement)
+    private void MovementType(bool isStrafeMovement)
     {
         if (playerAnimatorManager.animator.GetBool("isInteracting"))
             return;
@@ -283,7 +283,7 @@ public class PlayerLocomotion : MonoBehaviour
         }
 
         //if player is strafing, use both left and forward
-        if (isStafeMovement)
+        if (isStrafeMovement)
         {
             //Do not allow movement if the character is rooted
             if (statusEffectManager.GetIsRooted())
