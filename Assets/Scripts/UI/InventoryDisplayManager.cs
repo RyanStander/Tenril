@@ -64,7 +64,7 @@ public class InventoryDisplayManager : MonoBehaviour
             Destroy(child.gameObject);
         }
         currentlyDisplayedInventory = CurrentlyDisplayedInventory.all;
-        foreach (Item item in playerInventory.inventory)
+        foreach (ItemInventory item in playerInventory.inventory)
         {
             //create inventory item
             GameObject createdInventoryItemPrefab = Instantiate(inventoryItemDisplayPrefab, inventoryContentObject.transform);
@@ -75,7 +75,7 @@ public class InventoryDisplayManager : MonoBehaviour
             //check if an inventoryitemdisplay script is present
             if (inventoryItemDisplay!=null)
             {
-                inventoryItemDisplay.LoadValues(item);
+                inventoryItemDisplay.LoadValues(item.item,item.itemStackCount);
             }
         }
     }
@@ -88,10 +88,10 @@ public class InventoryDisplayManager : MonoBehaviour
             Destroy(child.gameObject);
         }
         currentlyDisplayedInventory = CurrentlyDisplayedInventory.weapon;
-        foreach (Item item in playerInventory.inventory)
+        foreach (ItemInventory item in playerInventory.inventory)
         {
             //check if the item is a weapon item
-            if (item is WeaponItem weapon)
+            if (item.item is WeaponItem weapon)
             {
                 //create inventory item
                 GameObject createdInventoryItemPrefab = Instantiate(inventoryItemDisplayPrefab, inventoryContentObject.transform);
@@ -102,7 +102,7 @@ public class InventoryDisplayManager : MonoBehaviour
                 //check if an inventoryitemdisplay script is present
                 if (inventoryItemDisplay != null)
                 {
-                    inventoryItemDisplay.LoadValues(item);
+                    inventoryItemDisplay.LoadValues(item.item, item.itemStackCount);
                 }
             }
         }
@@ -116,10 +116,10 @@ public class InventoryDisplayManager : MonoBehaviour
             Destroy(child.gameObject);
         }
         currentlyDisplayedInventory = CurrentlyDisplayedInventory.consumable;
-        foreach (Item item in playerInventory.inventory)
+        foreach (ItemInventory item in playerInventory.inventory)
         {
             //check if the item is a weapon item
-            if (item is QuickslotItem consumable)
+            if (item.item is QuickslotItem consumable)
             {
                 //create inventory item
                 GameObject createdInventoryItemPrefab = Instantiate(inventoryItemDisplayPrefab, inventoryContentObject.transform);
@@ -130,7 +130,7 @@ public class InventoryDisplayManager : MonoBehaviour
                 //check if an inventoryitemdisplay script is present
                 if (inventoryItemDisplay != null)
                 {
-                    inventoryItemDisplay.LoadValues(item);
+                    inventoryItemDisplay.LoadValues(item.item, item.itemStackCount);
                 }
             }
         }

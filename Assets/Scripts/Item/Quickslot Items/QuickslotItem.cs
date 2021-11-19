@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class QuickslotItem : Item
 {
-    [Tooltip("The maximum amount of the item that can be carried")]
-    public int amountPerStack;
     [Tooltip("Detemines whether the item is single or infinite use")]
     public bool isConsumable;
 
