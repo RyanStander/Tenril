@@ -49,6 +49,7 @@ public class PlayerInventory : CharacterInventory
         }
     }
 
+    #region Weapon Management
     internal void EquipWeapon(WeaponSlotManager weaponSlotManager, WeaponItem weaponItem,bool isPrimaryWeapon)
     {
         if (isPrimaryWeapon)
@@ -132,6 +133,8 @@ public class PlayerInventory : CharacterInventory
             }
         }
     }
+
+    #endregion
 
     #region On Events
     private void OnRequestEquippedWeapons(EventData eventData)
@@ -227,7 +230,6 @@ public class PlayerInventory : CharacterInventory
             throw new System.Exception("Error: EventData class with EventType.RemoveQuickslotItem was received but is not of class RemoveQuickslotItem.");
         }
     }
-
 
     #endregion
 }

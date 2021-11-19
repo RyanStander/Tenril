@@ -184,7 +184,21 @@ public class PlayerManager : CharacterManager
     {
         if (eventData is EquipWeapon equipWeapon)
         {
+            //Assign the old weapon
+            WeaponItem oldWeapon;
+            if (equipWeapon.isPrimaryWeapon)
+                oldWeapon = playerInventory.primaryWeapon;
+            else
+                oldWeapon = playerInventory.secondaryWeapon;
+
+            //remove weapon from inventory and and add weapon that is equipped
+            playerInventory.inventory.Remove(equipWeapon.weaponItem);
+            playerInventory.inventory.Add(oldWeapon);
+
+            //equip the new weapon
             playerInventory.EquipWeapon(weaponSlotManager, equipWeapon.weaponItem, equipWeapon.isPrimaryWeapon);
+
+            EventManager.currentManager.AddEvent(new UpdateInventoryDisplay());
         }
         else
         {
