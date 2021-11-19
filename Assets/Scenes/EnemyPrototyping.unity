@@ -3261,6 +3261,35 @@ Transform:
   m_Father: {fileID: 877216303}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1646822866 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6051805372053708825, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
+  m_PrefabInstance: {fileID: 8708027187997345261}
+  m_PrefabAsset: {fileID: 0}
+--- !u!195 &1646822871 stripped
+NavMeshAgent:
+  m_CorrespondingSourceObject: {fileID: 318429253, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
+  m_PrefabInstance: {fileID: 8708027187997345261}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1646822881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1646822866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bcb6456538e9f84599ce13aea6c3387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  navAgent: {fileID: 1646822871}
+  pathColor: {r: 1, g: 0, b: 0, a: 1}
+  nextPositionColor: {r: 0, g: 1, b: 0, a: 1}
+  offLinkPathColor: {r: 0, g: 1, b: 1, a: 1}
+  offLinkStartColor: {r: 1, g: 0, b: 1, a: 1}
+  offLinkEndColor: {r: 0, g: 0, b: 1, a: 1}
+  positionRadius: 0.15
 --- !u!1 &1703896871
 GameObject:
   m_ObjectHideFlags: 0
@@ -4726,11 +4755,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1884466009725766546, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -4.3313302e-16
+      value: -4.600729e-16
       objectReference: {fileID: 0}
     - target: {fileID: 1884466009725766546, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -2.5009573e-17
+      value: 1.8863741e-17
       objectReference: {fileID: 0}
     - target: {fileID: 2039442606742920531, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_Follow
