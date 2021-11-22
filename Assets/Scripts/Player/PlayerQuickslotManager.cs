@@ -92,6 +92,7 @@ public class PlayerQuickslotManager : MonoBehaviour
 
             //attempt using the item
             playerInventory.quickslotItemInUse.AttemptToUseItem(playerAnimatorManager, playerStats);
+            EventManager.currentManager.AddEvent(new RemoveItemFromInventory(playerInventory.quickslotItemInUse));
 
 
             //Update the ui display

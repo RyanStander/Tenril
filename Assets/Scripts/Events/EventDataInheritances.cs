@@ -140,6 +140,17 @@ public class RemoveQuickslotItem : EventData
     }
 }
 
+public class RemoveItemFromInventory : EventData
+{
+    public readonly Item item;
+    public readonly int amountToBeRemoved;
+    public RemoveItemFromInventory(Item item,int amountToBeRemoved = 1) : base(EventType.RemoveItemFromInventory)
+    {
+        this.item = item;
+        this.amountToBeRemoved = amountToBeRemoved;
+    }
+}
+
 //Event that informs subscribers of an item being dropped
 public class DropItem : EventData
 {

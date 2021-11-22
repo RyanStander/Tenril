@@ -16,7 +16,8 @@ public class InventoryItemDisplay : MonoBehaviour
         this.item = item;
         itemIcon.sprite = item.itemIcon;
 
-        if (stackCount > 1)
+        //if the item can be stacked higher than 1, display its count
+        if (item.amountPerStack > 1)
             stackCountText.text = stackCount.ToString();
         else
             stackCountText.enabled = false;

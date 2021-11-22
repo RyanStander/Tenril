@@ -23,6 +23,7 @@ public enum EventType
     EquipWeapon,
     AddQuickslotItem,
     RemoveQuickslotItem,
+    RemoveItemFromInventory,
     UseItem,
     DropItem,
     DestroyInventoryOptionHolders,

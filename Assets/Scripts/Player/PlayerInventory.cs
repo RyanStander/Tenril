@@ -38,9 +38,11 @@ public class PlayerInventory : CharacterInventory
 
     private void Awake()
     {
+        EventManager.currentManager.Subscribe(EventType.RemoveItemFromInventory, OnRemoveItem);
+
         inputHandler = GetComponent<InputHandler>();
 
-        if (currentlySelectedQuickSlotItem==null&&quickslotItems.Count!=0)
+        if (currentlySelectedQuickSlotItem == null && quickslotItems.Count != 0)
         {
             currentlySelectedQuickSlotItem = quickslotItems[0];
             quickslotItemInUse = currentlySelectedQuickSlotItem;
@@ -90,10 +92,13 @@ public class PlayerInventory : CharacterInventory
             inventory.Add(newItem);
         }
 
+        EventManager.currentManager.AddEvent(new UpdateInventoryDisplay());
     }
 
-    public void RemoveItemFromInventory(Item item)
+    public void RemoveItemFromInventory(Item item, int amountToBeRemove=1)
     {
+        //TO DO: currently does not make use of the amount to be removed, needs functionality
+
         List<ItemInventory> foundItems = new List<ItemInventory>();
         foreach (ItemInventory itemInventory in inventory)
         {
@@ -127,6 +132,29 @@ public class PlayerInventory : CharacterInventory
         {
             Debug.LogWarning("Item designated to be removed from the player's inventory was not found. This should not happen");
         }
+    }
+
+    public int GetItemStackCount(Item item)
+    {
+        //find all items of the specified type
+        List<ItemInventory> foundItems = new List<ItemInventory>();
+        foreach (ItemInventory itemInventory in inventory)
+        {
+            //check if the new item matches an existing item
+            if (itemInventory.item.UID == item.UID)
+            {
+                //add it to the list
+                foundItems.Add(itemInventory);
+            }
+        }
+        //get the total item count
+        int totalItemCount=0;
+        foreach (ItemInventory itemInventory in foundItems)
+        {
+            totalItemCount += itemInventory.itemStackCount;
+        }
+
+        return totalItemCount;
     }
 
     #region Weapon Management
@@ -308,6 +336,18 @@ public class PlayerInventory : CharacterInventory
         else
         {
             throw new System.Exception("Error: EventData class with EventType.RemoveQuickslotItem was received but is not of class RemoveQuickslotItem.");
+        }
+    }
+
+    private void OnRemoveItem(EventData eventData)
+    {
+        if (eventData is RemoveItemFromInventory removeItem)
+        {
+            RemoveItemFromInventory(removeItem.item, removeItem.amountToBeRemoved);
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.RemoveItemFromInventory was received but is not of class RemoveItemFromInventory.");
         }
     }
 
