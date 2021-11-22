@@ -51,16 +51,8 @@ public class PlayerInventory : CharacterInventory
 
     public void AddItemToInventory(Item item)
     {
-        List<ItemInventory> foundItems = new List<ItemInventory>();
-        foreach (ItemInventory itemInventory in inventory)
-        {
-            //check if the new item matches an existing item
-            if (itemInventory.item.UID==item.UID)
-            {
-                //add it to the list
-                foundItems.Add(itemInventory);
-            }
-        }
+        //find all items of the specified type
+        List<ItemInventory> foundItems = FindItemInInventory(item);
 
         bool itemAdded = false;
         //check if any items of the matching type were found
@@ -98,17 +90,8 @@ public class PlayerInventory : CharacterInventory
     public void RemoveItemFromInventory(Item item, int amountToBeRemove=1)
     {
         //TO DO: currently does not make use of the amount to be removed, needs functionality
-
-        List<ItemInventory> foundItems = new List<ItemInventory>();
-        foreach (ItemInventory itemInventory in inventory)
-        {
-            //check if the new item matches an existing item
-            if (itemInventory.item.UID == item.UID)
-            {
-                //add it to the list
-                foundItems.Add(itemInventory);
-            }
-        }
+        //find all items of the specified type
+        List<ItemInventory> foundItems = FindItemInInventory(item);
 
         //check if any items of the matching type were found
         if (foundItems.Count > 0)
@@ -137,16 +120,7 @@ public class PlayerInventory : CharacterInventory
     public int GetItemStackCount(Item item)
     {
         //find all items of the specified type
-        List<ItemInventory> foundItems = new List<ItemInventory>();
-        foreach (ItemInventory itemInventory in inventory)
-        {
-            //check if the new item matches an existing item
-            if (itemInventory.item.UID == item.UID)
-            {
-                //add it to the list
-                foundItems.Add(itemInventory);
-            }
-        }
+        List<ItemInventory> foundItems = FindItemInInventory(item);
         //get the total item count
         int totalItemCount=0;
         foreach (ItemInventory itemInventory in foundItems)
@@ -243,6 +217,36 @@ public class PlayerInventory : CharacterInventory
     }
 
     #endregion
+
+    #region Quickslot Management
+        
+    public bool CheckIfItemCanBeConsumed(Item item)
+    {
+        //find all items of the specified type
+        List<ItemInventory> foundItems = FindItemInInventory(item);
+
+        if (foundItems.Count<1)
+            return false;
+        return true;
+    }
+
+    #endregion
+
+    private List<ItemInventory> FindItemInInventory(Item item)
+    {
+        //find all items of the specified type
+        List<ItemInventory> foundItems = new List<ItemInventory>();
+        foreach (ItemInventory itemInventory in inventory)
+        {
+            //check if the new item matches an existing item
+            if (itemInventory.item.UID == item.UID)
+            {
+                //add it to the list
+                foundItems.Add(itemInventory);
+            }
+        }
+        return foundItems;
+    }
 
     #region On Events
     private void OnRequestEquippedWeapons(EventData eventData)
@@ -352,6 +356,7 @@ public class PlayerInventory : CharacterInventory
     }
 
     #endregion
+
 }
 [System.Serializable]
 public class ItemInventory
