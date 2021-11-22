@@ -1177,6 +1177,7 @@ GameObject:
   - component: {fileID: 728663015}
   - component: {fileID: 728663019}
   - component: {fileID: 2768618875340935539}
+  - component: {fileID: 633695106185292835}
   m_Layer: 10
   m_Name: Spearman
   m_TagString: Enemy
@@ -1454,6 +1455,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69aa48431045aa246980d53fa720dc8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &633695106185292835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6051805372053708825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bcb6456538e9f84599ce13aea6c3387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  navAgent: {fileID: 318429253}
+  pathColor: {r: 1, g: 0, b: 0, a: 1}
+  nextPositionColor: {r: 0, g: 1, b: 0, a: 1}
+  offLinkPathColor: {r: 0, g: 1, b: 1, a: 1}
+  offLinkStartColor: {r: 1, g: 0, b: 1, a: 1}
+  offLinkEndColor: {r: 0, g: 0, b: 1, a: 1}
+  positionRadius: 0.15
 --- !u!1 &6051805372053708827
 GameObject:
   m_ObjectHideFlags: 0

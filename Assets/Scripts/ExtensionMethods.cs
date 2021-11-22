@@ -31,6 +31,27 @@ public static class ExtensionMethods
         //Return the distance
         return remainingDistance;
     }
+
+    //Functions near identically to GetRemainingPathDistance()
+    //However this accounts for when the agent is processing off link "corners" that are not included in the agents path corners
+    public static float GetRemainingPathDistanceOffLinkFriendly(NavMeshAgent givenAgent)
+    {
+        //Begin using the remaining distance
+        float remainingDistance = GetRemainingPathDistance(givenAgent);
+
+        //Checks to ensure a path can/should have its distance calculated
+        if (remainingDistance == Mathf.NegativeInfinity)
+        {
+            //Return negative infinity as this should be seen as invalid
+            return Mathf.NegativeInfinity;
+        }
+
+        //Add on the off mesh position data (distance returns 0 if none currently active)
+        remainingDistance += Vector3.Distance(givenAgent.currentOffMeshLinkData.startPos, givenAgent.currentOffMeshLinkData.endPos);
+
+        //Return the distance
+        return remainingDistance;
+    }
     #endregion
 
     #region General Helper Methods

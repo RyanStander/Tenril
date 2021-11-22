@@ -120,9 +120,9 @@ public class ChaseTargetState : AbstractStateFSM
         //Check for the infinity 'bug', if detected then manually calculate the distance
         if (remainingDistance == Mathf.Infinity)
         {
-            remainingDistance = ExtensionMethods.GetRemainingPathDistance(navAgent);
+            remainingDistance = ExtensionMethods.GetRemainingPathDistanceOffLinkFriendly(navAgent);
         }
-        
+
         //If within the given range based on remaining NavMesh distance, return true
         if (remainingDistance <= givenRange)
         {
@@ -134,10 +134,40 @@ public class ChaseTargetState : AbstractStateFSM
         }
     }
 
+    private bool IsWithinGivenHeight(float givenHeight)
+    {
+        //Temporary flaot to track difference
+        float heightDifference = transform.position.y - navAgent.destination.y;
+
+        //If within the given range based on differing height, return true
+        if (heightDifference <= givenHeight && heightDifference >= -givenHeight)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private bool IsWithinGivenRangeAndHeight(float givenRange, float givenHeight)
+    {
+        //If within the given ranges, return true
+        if (IsWithinGivenRange(givenRange) && IsWithinGivenHeight(givenHeight))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     private bool IsWithinAttackRange()
     {
-        //If within attack range based on remaining NavMesh distance, return true
-        return IsWithinGivenRange(enemyManager.enemyStats.maximumAttackRange);
+        //If within attack range based on remaining NavMesh distance and height, return true
+        //The height check should only temporarilly use this enemy stats value as ranged weapons will need to use a different system
+        return IsWithinGivenRangeAndHeight(enemyManager.enemyStats.maximumAttackRange, enemyManager.enemyStats.maximumAttackHeight);
     }
 
     private bool IsWithinChaseRange()
