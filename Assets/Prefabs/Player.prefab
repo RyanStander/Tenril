@@ -4076,10 +4076,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.3
-  m_Height: 1.8765757
+  m_Radius: 0.25
+  m_Height: 1.8
   m_Direction: 1
-  m_Center: {x: -0.00083225965, y: 0.94364583, z: 1.0853376e-18}
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!54 &6143875477951326098
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4182,8 +4182,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   equippedWeapon: {fileID: 0}
   isWieldingPrimaryWeapon: 1
-  primaryWeapon: {fileID: 11400000, guid: 379244ca9efcbe74a84fc791cb8b4127, type: 2}
-  secondaryWeapon: {fileID: 11400000, guid: 92735e3b99674a741ac327fbf4264d5f, type: 2}
+  primaryWeapon: {fileID: 0}
+  secondaryWeapon: {fileID: 0}
   Gold: 250
   preparedSpells:
   - {fileID: 11400000, guid: 88f46b8b0cfc72a428db02eddaad133f, type: 2}

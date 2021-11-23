@@ -87,11 +87,15 @@ public class PlayerQuickslotManager : MonoBehaviour
             if (playerAnimatorManager.animator.GetBool("isInteracting"))
                 return;
 
+            if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.currentlySelectedQuickSlotItem))
+                return;
+
             //sets the item in us to the currently selected item
             playerInventory.quickslotItemInUse = playerInventory.currentlySelectedQuickSlotItem;
 
             //attempt using the item
             playerInventory.quickslotItemInUse.AttemptToUseItem(playerAnimatorManager, playerStats);
+            EventManager.currentManager.AddEvent(new RemoveItemFromInventory(playerInventory.quickslotItemInUse));
 
 
             //Update the ui display

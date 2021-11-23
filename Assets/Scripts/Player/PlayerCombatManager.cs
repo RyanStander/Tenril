@@ -26,12 +26,6 @@ public class PlayerCombatManager : MonoBehaviour
         weaponSlotManager = GetComponent<WeaponSlotManager>();
     }
 
-    private void Start()
-    {
-        if (playerInventory.equippedWeapon == null)
-            Debug.LogWarning("Player does not have weapons equipped, weapons are required");
-    }
-
     #region Attacking
     internal void HandleAttacks()
     {

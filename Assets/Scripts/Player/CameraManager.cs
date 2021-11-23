@@ -9,6 +9,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private GameObject menuCamera;
     [SerializeField] private GameObject lockOnCamera;
 
+    private CinemachineInputProvider explorationCameraInputProvider;
     private GameObject npcCamera;
 
     private void Awake()
@@ -39,6 +40,8 @@ public class CameraManager : MonoBehaviour
 
                 if (explorationCameraFreeLookCam.LookAt == null)
                     explorationCameraFreeLookCam.LookAt = player.transform;
+
+                explorationCameraInputProvider = explorationCamera.GetComponent<CinemachineInputProvider>();
             }
         }
         //setup the menu camera values
@@ -68,6 +71,7 @@ public class CameraManager : MonoBehaviour
         {
             //Enable explorationCamera
             explorationCamera.SetActive(true);
+            explorationCameraInputProvider.enabled = true;
             //disable all other cameras
             menuCamera.SetActive(false);
             lockOnCamera.SetActive(false);
@@ -90,6 +94,7 @@ public class CameraManager : MonoBehaviour
             //disable all other cameras
             menuCamera.SetActive(false);
             explorationCamera.SetActive(false);
+            explorationCameraInputProvider.enabled = false;
             if (npcCamera != null)
             {
                 npcCamera.SetActive(false);
@@ -109,6 +114,7 @@ public class CameraManager : MonoBehaviour
             //disable all other cameras
             lockOnCamera.SetActive(false);
             explorationCamera.SetActive(false);
+            explorationCameraInputProvider.enabled = false;
             if (npcCamera != null)
             {
                 npcCamera.SetActive(false);
@@ -131,6 +137,7 @@ public class CameraManager : MonoBehaviour
             //disable all other cameras
             menuCamera.SetActive(false);
             explorationCamera.SetActive(false);
+            explorationCameraInputProvider.enabled = false;
             lockOnCamera.SetActive(false);
         }
         else

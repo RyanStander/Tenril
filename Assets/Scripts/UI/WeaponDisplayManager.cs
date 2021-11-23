@@ -24,13 +24,13 @@ public class WeaponDisplayManager : MonoBehaviour
             //inputs the new weapon data
             if (updateWeaponDisplay.primaryWeapon!=null)
                 primaryWeapon.SetValues(updateWeaponDisplay.primaryWeapon.itemIcon, updateWeaponDisplay.primaryWeapon.name);
-            else
-                Debug.LogWarning("No primary weapon was received for UpdateWeaponDisplay, make sure there is a primary weapon");
+            //else
+                //Need to change value to something to display no weapon
 
             if (updateWeaponDisplay.secondaryWeapon!=null)
                 secondaryWeapon.SetValues(updateWeaponDisplay.secondaryWeapon.itemIcon, updateWeaponDisplay.secondaryWeapon.name);
-            else
-                Debug.LogWarning("No secondary weapon was received for UpdateWeaponDisplay, make sure there is a primary weapon");
+            //else
+                //Need to change value to something to display no weapon
 
             //check what weapon is currently equipped
             if (updateWeaponDisplay.isWieldingPrimaryWeapon)

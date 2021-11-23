@@ -18,9 +18,7 @@ public class PlayerInventory : CharacterInventory
     public QuickslotItem quickslotItemInUse;
 
     [Header("Backpack")]
-    public List<Item> inventory;
-    //Inventory Subcategories
-    public List<WeaponItem> weaponsInventory;
+    public List<ItemInventory> inventory= new List<ItemInventory>();
 
     private void OnEnable()
     {
@@ -40,15 +38,100 @@ public class PlayerInventory : CharacterInventory
 
     private void Awake()
     {
+        EventManager.currentManager.Subscribe(EventType.RemoveItemFromInventory, OnRemoveItem);
+
         inputHandler = GetComponent<InputHandler>();
 
-        if (currentlySelectedQuickSlotItem==null&&quickslotItems.Count!=0)
+        if (currentlySelectedQuickSlotItem == null && quickslotItems.Count != 0)
         {
             currentlySelectedQuickSlotItem = quickslotItems[0];
             quickslotItemInUse = currentlySelectedQuickSlotItem;
         }
     }
 
+    public void AddItemToInventory(Item item)
+    {
+        //find all items of the specified type
+        List<ItemInventory> foundItems = FindItemInInventory(item);
+
+        bool itemAdded = false;
+        //check if any items of the matching type were found
+        if (foundItems.Count>0)
+        {
+            foreach (ItemInventory itemInventory in foundItems)
+            {
+                //if there is space in the current itemInventory
+                if (itemInventory.item.amountPerStack>itemInventory.itemStackCount)
+                {
+                    //find the index value
+                    int indexVal = inventory.IndexOf(itemInventory);
+                    //increase the stack count
+                    inventory[indexVal].itemStackCount++;
+                 
+                    itemAdded = true;
+                    //exit out of foreach
+                    break;
+                }
+            }
+        }
+        //if no item was added
+        if (!itemAdded)
+        {
+            //create a new one and set its stack count to 1
+            ItemInventory newItem = new ItemInventory();
+            newItem.item = item;
+            newItem.itemStackCount = 1;
+            inventory.Add(newItem);
+        }
+
+        EventManager.currentManager.AddEvent(new UpdateInventoryDisplay());
+    }
+
+    public void RemoveItemFromInventory(Item item, int amountToBeRemove=1)
+    {
+        //TO DO: currently does not make use of the amount to be removed, needs functionality
+        //find all items of the specified type
+        List<ItemInventory> foundItems = FindItemInInventory(item);
+
+        //check if any items of the matching type were found
+        if (foundItems.Count > 0)
+        {
+            foreach (ItemInventory itemInventory in foundItems)
+            {
+                //find the index value
+                int indexVal = inventory.IndexOf(itemInventory);
+
+                if (inventory[indexVal].itemStackCount > 1)
+                    //decrease the stack count
+                    inventory[indexVal].itemStackCount--;
+                else
+                    inventory.RemoveAt(indexVal);
+
+                //exit out of foreach
+                break;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Item designated to be removed from the player's inventory was not found. This should not happen");
+        }
+    }
+
+    public int GetItemStackCount(Item item)
+    {
+        //find all items of the specified type
+        List<ItemInventory> foundItems = FindItemInInventory(item);
+        //get the total item count
+        int totalItemCount=0;
+        foreach (ItemInventory itemInventory in foundItems)
+        {
+            totalItemCount += itemInventory.itemStackCount;
+        }
+
+        return totalItemCount;
+    }
+
+    #region Weapon Management
     internal void EquipWeapon(WeaponSlotManager weaponSlotManager, WeaponItem weaponItem,bool isPrimaryWeapon)
     {
         if (isPrimaryWeapon)
@@ -65,9 +148,6 @@ public class PlayerInventory : CharacterInventory
 
     internal void LoadEquippedWeapons(WeaponSlotManager weaponSlotManager)
     {
-        if (primaryWeapon==null||secondaryWeapon==null)
-            Debug.LogWarning("Player does not have weapons equipped, weapons are required");
-
         if (isWieldingPrimaryWeapon)
         {
             equippedWeapon = primaryWeapon;
@@ -136,6 +216,38 @@ public class PlayerInventory : CharacterInventory
         }
     }
 
+    #endregion
+
+    #region Quickslot Management
+        
+    public bool CheckIfItemCanBeConsumed(Item item)
+    {
+        //find all items of the specified type
+        List<ItemInventory> foundItems = FindItemInInventory(item);
+
+        if (foundItems.Count<1)
+            return false;
+        return true;
+    }
+
+    #endregion
+
+    private List<ItemInventory> FindItemInInventory(Item item)
+    {
+        //find all items of the specified type
+        List<ItemInventory> foundItems = new List<ItemInventory>();
+        foreach (ItemInventory itemInventory in inventory)
+        {
+            //check if the new item matches an existing item
+            if (itemInventory.item.UID == item.UID)
+            {
+                //add it to the list
+                foundItems.Add(itemInventory);
+            }
+        }
+        return foundItems;
+    }
+
     #region On Events
     private void OnRequestEquippedWeapons(EventData eventData)
     {
@@ -154,7 +266,7 @@ public class PlayerInventory : CharacterInventory
         if (eventData is DropItem dropItem)
         {
             //remove item from inventory
-            inventory.Remove(dropItem.item);
+            RemoveItemFromInventory(dropItem.item);
             //update the inventory display
             EventManager.currentManager.AddEvent(new UpdateInventoryDisplay());
         }
@@ -231,6 +343,30 @@ public class PlayerInventory : CharacterInventory
         }
     }
 
+    private void OnRemoveItem(EventData eventData)
+    {
+        if (eventData is RemoveItemFromInventory removeItem)
+        {
+            RemoveItemFromInventory(removeItem.item, removeItem.amountToBeRemoved);
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.RemoveItemFromInventory was received but is not of class RemoveItemFromInventory.");
+        }
+    }
 
     #endregion
+
+}
+[System.Serializable]
+public class ItemInventory
+{
+    /// <summary>
+    /// The item in the inventory slot
+    /// </summary>
+    public Item item;
+    /// <summary>
+    /// How many of the item is in the stack
+    /// </summary>
+    public int itemStackCount;
 }
