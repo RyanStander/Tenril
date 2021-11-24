@@ -11,6 +11,8 @@ public class WeaponSlotManager : MonoBehaviour
 
     public DamageCollider leftHandDamageCollider, rightHandDamageCollider;
 
+    private GameObject displayObject;
+
     private Animator animator;
     private void Awake()
     {
@@ -42,6 +44,42 @@ public class WeaponSlotManager : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public void HideWeapons()
+    {
+        if(leftHandSlot.currentWeaponModel != null)
+            leftHandSlot.currentWeaponModel.SetActive(false);
+        if (rightHandSlot.currentWeaponModel != null)
+            rightHandSlot.currentWeaponModel.SetActive(false);
+    }
+
+    public void ShowWeapons()
+    {
+        if (leftHandSlot.currentWeaponModel != null)
+            leftHandSlot.currentWeaponModel.SetActive(true);
+        if (rightHandSlot.currentWeaponModel != null)
+            rightHandSlot.currentWeaponModel.SetActive(true);
+    }
+
+    public void DisplayObjectInHand(GameObject objectToDisplay)
+    {
+        if (leftHandSlot.currentWeaponModel != null)
+            leftHandSlot.currentWeaponModel.SetActive(false);
+        if (objectToDisplay != null)
+        {
+            if (leftHandSlot.parentOverride != null)
+                displayObject = Instantiate(objectToDisplay, leftHandSlot.parentOverride);
+            else
+                displayObject = Instantiate(objectToDisplay, leftHandSlot.transform);
+        }
+    }
+    public void HideObjectInHand()
+    {
+        if(displayObject!=null)
+            Destroy(displayObject);
+        if (leftHandSlot.currentWeaponModel != null)
+            leftHandSlot.currentWeaponModel.SetActive(true);
     }
 
     public void LoadWeaponOnSlot(WeaponItem weaponItem, bool hasSecondaryWeapon, WeaponItem unequippedWeapon = null)

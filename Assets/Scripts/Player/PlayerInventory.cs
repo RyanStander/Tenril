@@ -49,10 +49,12 @@ public class PlayerInventory : CharacterInventory
         }
     }
 
+    #region Inventory Management
+
     public void AddItemToInventory(Item item)
     {
         //find all items of the specified type
-        List<ItemInventory> foundItems = FindItemInInventory(item);
+        List<ItemInventory> foundItems = FindAllInstancesOfItemInInventory(item);
 
         bool itemAdded = false;
         //check if any items of the matching type were found
@@ -85,13 +87,14 @@ public class PlayerInventory : CharacterInventory
         }
 
         EventManager.currentManager.AddEvent(new UpdateInventoryDisplay());
+        FilterInventory();
     }
 
     public void RemoveItemFromInventory(Item item, int amountToBeRemove=1)
     {
         //TO DO: currently does not make use of the amount to be removed, needs functionality
         //find all items of the specified type
-        List<ItemInventory> foundItems = FindItemInInventory(item);
+        List<ItemInventory> foundItems = FindAllInstancesOfItemInInventory(item);
 
         //check if any items of the matching type were found
         if (foundItems.Count > 0)
@@ -110,6 +113,8 @@ public class PlayerInventory : CharacterInventory
                 //exit out of foreach
                 break;
             }
+
+            FilterInventory();
         }
         else
         {
@@ -117,10 +122,86 @@ public class PlayerInventory : CharacterInventory
         }
     }
 
+    private void FilterInventory()
+    {
+        //List of items that have been checked
+        List<ItemInventory> itemsChecked = new List<ItemInventory>();
+        //List of items that need to be removed from the inventory (if they reach 0)
+        List<ItemInventory> invetoryItemsToRemove = new List<ItemInventory>();
+
+        //itterate through the inventory to check items
+        foreach (ItemInventory itemToCheck in inventory)
+        {
+            //if the item has already been checked, go to next loop
+            if (itemsChecked.Contains(itemToCheck))
+                continue;
+
+            //If it hasnt been checked, add it to the item checked list
+            itemsChecked.Add(itemToCheck);
+
+            //Find all instances of the item
+            List<ItemInventory> foundItems = FindAllInstancesOfItemInInventory(itemToCheck.item);
+
+            //Used to determine if still need to check items
+            bool hasInteratedThroughAllOfItemType = false;
+
+            while (!hasInteratedThroughAllOfItemType)
+            {
+                List<ItemInventory> itemsToBeRemoved = new List<ItemInventory>();
+
+                //if there is less than 2 items
+                if (foundItems.Count < 2)
+                {
+                    //exit out of the while loop;
+                    hasInteratedThroughAllOfItemType = true;
+                    continue;
+                }
+
+                //if the first item does not have max count
+                if (foundItems[0].itemStackCount < foundItems[0].item.amountPerStack)
+                {
+                    //decrease the 2nd and increase the first
+                    foundItems[0].itemStackCount++;
+                    foundItems[1].itemStackCount--;
+                }
+                else
+                {
+                    //if its full, remove it from the list to check
+                    itemsToBeRemoved.Add(foundItems[0]);
+                }
+
+                //if the 2nd item is empty, remove it
+                if (foundItems[1].itemStackCount < 1)
+                {
+                    itemsToBeRemoved.Add(foundItems[1]);
+                    invetoryItemsToRemove.Add(foundItems[1]);
+                }
+
+                //if there are items to remove, do so
+                if (itemsToBeRemoved.Count>0)
+                {
+                    foreach (ItemInventory itemToRemove in itemsToBeRemoved)
+                    {
+                        foundItems.Remove(itemToRemove);
+                    }
+                }
+            }
+
+        }
+        //if any items have reached a count of 0, remove it from the inventory
+        if (invetoryItemsToRemove.Count > 0)
+        {
+            foreach (ItemInventory itemToRemove in invetoryItemsToRemove)
+            {
+                inventory.Remove(itemToRemove);
+            }
+        }
+    }
+
     public int GetItemStackCount(Item item)
     {
         //find all items of the specified type
-        List<ItemInventory> foundItems = FindItemInInventory(item);
+        List<ItemInventory> foundItems = FindAllInstancesOfItemInInventory(item);
         //get the total item count
         int totalItemCount=0;
         foreach (ItemInventory itemInventory in foundItems)
@@ -130,6 +211,8 @@ public class PlayerInventory : CharacterInventory
 
         return totalItemCount;
     }
+
+    #endregion
 
     #region Weapon Management
     internal void EquipWeapon(WeaponSlotManager weaponSlotManager, WeaponItem weaponItem,bool isPrimaryWeapon)
@@ -216,6 +299,26 @@ public class PlayerInventory : CharacterInventory
         }
     }
 
+    internal void HideWeapons(WeaponSlotManager weaponSlotManager)
+    {
+        weaponSlotManager.HideWeapons();
+    }
+
+    internal void ShowWeapons(WeaponSlotManager weaponSlotManager)
+    {
+        weaponSlotManager.ShowWeapons();
+    }
+
+    internal void DisplayQuickslotItem(WeaponSlotManager weaponSlotManager, GameObject displayObject)
+    {
+        weaponSlotManager.DisplayObjectInHand(displayObject);
+    }
+
+    internal void HideQuickslotItem(WeaponSlotManager weaponSlotManager)
+    {
+        weaponSlotManager.HideObjectInHand();
+    }
+
     #endregion
 
     #region Quickslot Management
@@ -223,7 +326,7 @@ public class PlayerInventory : CharacterInventory
     public bool CheckIfItemCanBeConsumed(Item item)
     {
         //find all items of the specified type
-        List<ItemInventory> foundItems = FindItemInInventory(item);
+        List<ItemInventory> foundItems = FindAllInstancesOfItemInInventory(item);
 
         if (foundItems.Count<1)
             return false;
@@ -232,7 +335,7 @@ public class PlayerInventory : CharacterInventory
 
     #endregion
 
-    private List<ItemInventory> FindItemInInventory(Item item)
+    private List<ItemInventory> FindAllInstancesOfItemInInventory(Item item)
     {
         //find all items of the specified type
         List<ItemInventory> foundItems = new List<ItemInventory>();

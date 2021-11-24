@@ -8,12 +8,12 @@ public class WeaponHolderSlot : MonoBehaviour
     /// Place these on areas where the weapons should be attached to, such as hands for blades, back for a back weapon, etc.
     /// Can make a child to override the placement of the weapon.
     /// </summary>
-    [Header("Used for overriding where the weapon is loaded onto")]
+    [Tooltip("Used for overriding where the weapon is loaded onto")]
     public Transform parentOverride;
-    [Header("The weapon that is currently loaded")]
+    [Tooltip("The weapon that is currently loaded")]
     public WeaponItem currentWeapon;
 
-    [Header("The slot to assign the weapon to")]
+    [Tooltip("The slot to assign the weapon to")]
     public WeaponSlot weaponSlot;
 
     //The model of the loaded weapon

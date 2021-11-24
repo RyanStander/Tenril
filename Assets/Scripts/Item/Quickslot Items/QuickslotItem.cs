@@ -12,6 +12,9 @@ public class QuickslotItem : Item
     [SerializeField] private Vector3 itemUsedFXOffset;
     public string quickslotUseAnimation;
 
+    [Tooltip("The object that is displayed when consuming a potion")]
+    public GameObject consumablePrefab;
+
     [Header("Item Description")]
     [Tooltip("Description of what the item do")]
     [TextArea]
@@ -24,6 +27,9 @@ public class QuickslotItem : Item
 
         //Play the animation of using the item
         animatorManager.PlayTargetAnimation(quickslotUseAnimation, true);
+
+        //Send out event to hide the weapon
+        EventManager.currentManager.AddEvent(new DisplayQuickslotItem(consumablePrefab));
     }
 
     public virtual void SuccessfullyUsedItem(AnimatorManager animatorManager, CharacterStats characterStats)
