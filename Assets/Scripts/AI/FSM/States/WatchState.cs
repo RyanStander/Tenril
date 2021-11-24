@@ -15,7 +15,7 @@ public class WatchState : AbstractStateFSM
     //Head of the agent watching
     public Transform agentHead;
 
-    //Bool for if a searchrate should be used
+    //Bool for if a search rate should be used
     public bool isUsingSearchRate;
 
     //Performance related rate at which the agent should cast search
@@ -129,7 +129,7 @@ public class WatchState : AbstractStateFSM
     private void CheckForTarget()
     {
         //Fetches detectable characters and returns a list of enemies
-        targetsByDistance = enemyManager.visionManager.GetListOfTargets(agentHead, enemyManager.enemyStats.alertRadius, characterLayer, detectionBlockLayer);
+        targetsByDistance = enemyManager.visionManager.GetListOfVisibleEnemyTargets(agentHead, enemyManager.enemyStats.alertRadius, characterLayer, detectionBlockLayer);
     }
 
     private void CheckForClosestTarget()

@@ -17,7 +17,7 @@ public class EnemyVisionManager : MonoBehaviour
         if (enemyManager == null) throw new MissingComponentException("Missing EnemyAgentManager on " + gameObject + "!");
     }
 
-    internal Dictionary<GameObject, float> GetListOfTargets(Transform originPoint, float radius, LayerMask characterLayer, LayerMask detectionBlockLayer)
+    internal Dictionary<GameObject, float> GetListOfVisibleEnemyTargets(Transform originPoint, float radius, LayerMask characterLayer, LayerMask detectionBlockLayer)
     {
         //Cast a sphere wrapping the head and check for characters within range
         Collider[] hitColliders = Physics.OverlapSphere(originPoint.position, radius, characterLayer);
@@ -31,27 +31,14 @@ public class EnemyVisionManager : MonoBehaviour
             //Continue (skip) execution if the found object was self, while avoiding any break to the foreach
             if (hitCollider.transform.gameObject == gameObject) continue;
 
-            enemyManager.stateMachine.DebugLogString("Checking for line of sight with detected character " + hitCollider.name);
-
             //If existing, get the vision point of the object, otherwise default to the hit collider
-            GameObject visionPoint = ExtensionMethods.FindChildWithTag(hitCollider.gameObject, "VisionTargetPoint");
-
-            //If no vision point was found, default to the hit collider
-            if (visionPoint == null)
-            {
-                visionPoint = hitCollider.gameObject;
-            }
+            GameObject visionPoint = GetVisionPoint(hitCollider.gameObject);
 
             //Temporary float for rough distance between objects
             float distance = Vector3.Distance(visionPoint.transform.position, originPoint.position);
 
-            //Raycast to first check if the target is valid (Performance friendly to raycast first), checks if any objects are in the way
-            if (!Physics.Raycast(originPoint.position, visionPoint.transform.position - originPoint.position, out RaycastHit hit, distance, detectionBlockLayer))
+            if (IsTargetUnobstructed(visionPoint.transform, originPoint, detectionBlockLayer))
             {
-                //Debug the line results
-                Debug.DrawRay(originPoint.position, visionPoint.transform.position - originPoint.position, Color.green);
-                enemyManager.stateMachine.DebugLogString("No obstacles detected!");
-
                 //Check if character stats are attached, ignore otherwise
                 if (hitCollider.gameObject.TryGetComponent(out CharacterStats stats))
                 {
@@ -64,17 +51,55 @@ public class EnemyVisionManager : MonoBehaviour
                     }
                 }
             }
-            else
-            {
-                //Debug what was collided with
-                enemyManager.stateMachine.DebugLogString("Failed to see target, obstacle detected: " + hit.transform.name);
-
-                //Debug the line results
-                Debug.DrawRay(originPoint.position, hit.point - originPoint.position, Color.red);
-            }
         }
 
         //Return the dictionary of targets
         return targetsByDistance;
+    }
+
+    //Checks for line of sight
+    internal bool IsTargetUnobstructed(Transform targetPoint, Transform originPoint, LayerMask detectionBlockLayer)
+    {
+        enemyManager.stateMachine.DebugLogString("Checking for line of sight with character " + targetPoint.name);
+
+        //Raycast to first check if the target is valid (Performance friendly to raycast first), checks if any objects are in the way
+        if (!Physics.Raycast(originPoint.position, targetPoint.transform.position - originPoint.position, out RaycastHit hit, Vector3.Distance(targetPoint.transform.position, originPoint.position), detectionBlockLayer))
+        {
+            //Debug the hit result
+            enemyManager.stateMachine.DebugLogString("No obstacles detected!");
+
+            //Debug the line results
+            Debug.DrawRay(originPoint.position, targetPoint.transform.position - originPoint.position, Color.green);
+
+            //Return as unobstructed
+            return true;
+        }
+        else
+        {
+            //Debug what was collided with
+            enemyManager.stateMachine.DebugLogString("Failed to see target, obstacle detected: " + hit.transform.name);
+
+            //Debug the line results
+            Debug.DrawRay(originPoint.position, hit.point - originPoint.position, Color.red);
+
+            //Return as obstructed
+            return false;
+        }
+    }
+
+    //Get the vision point (if applicable)
+    private GameObject GetVisionPoint(GameObject searchedObject)
+    {
+        //If existing, get the vision point of the object, otherwise default to the searched object
+        GameObject visionPoint = ExtensionMethods.FindChildWithTag(searchedObject, "VisionTargetPoint");
+
+        //If no vision point was found, default to the target
+        if (visionPoint == null)
+        {
+            visionPoint = searchedObject;
+        }
+
+        //Return with results
+        return visionPoint;
     }
 }
