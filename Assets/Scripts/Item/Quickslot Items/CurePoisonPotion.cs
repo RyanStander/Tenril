@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Potions/Cure Poison")]
+[CreateAssetMenu(menuName = "Items/Potions/Cure Poison")]
 public class CurePoisonPotion : PotionItem
 {
     [SerializeField] private StatusEffect poisonStatusEffect;

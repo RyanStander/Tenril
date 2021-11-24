@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Spells/Delayed Damage Spell")]
+[CreateAssetMenu(menuName = "Items/Spells/Delayed Damage Spell")]
 public class DelayedDamageSpell : SpellItem
 {
     /// <summary>

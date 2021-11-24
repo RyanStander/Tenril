@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Spells/Poison Spray Spell")]
+[CreateAssetMenu(menuName = "Items/Spells/Poison Spray Spell")]
 public class PoisonSpraySpell : SpellItem
 {
     [Tooltip("the poison applied")]
