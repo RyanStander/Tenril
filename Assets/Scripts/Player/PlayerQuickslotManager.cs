@@ -106,6 +106,7 @@ public class PlayerQuickslotManager : MonoBehaviour
     public void SuccessfulyUsedItem()
     {
         //perform success item
-        playerInventory.quickslotItemInUse.SuccessfullyUsedItem(playerAnimatorManager, playerStats);        
+        playerInventory.quickslotItemInUse.SuccessfullyUsedItem(playerAnimatorManager, playerStats);
+        EventManager.currentManager.AddEvent(new HideQuickslotItem());
     }
 }

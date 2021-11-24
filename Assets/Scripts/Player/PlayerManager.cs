@@ -42,7 +42,10 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Subscribe(EventType.EquipWeapon, OnEquipWeapon);
         EventManager.currentManager.Subscribe(EventType.UseItem, OnUseItem);
         EventManager.currentManager.Subscribe(EventType.InitiateDialogue, OnInitiateDialogue);
-
+        EventManager.currentManager.Subscribe(EventType.HideWeapon, OnHideWeapon);
+        EventManager.currentManager.Subscribe(EventType.ShowWeapon, OnShowWeapon);
+        EventManager.currentManager.Subscribe(EventType.DisplayQuickslotItem, OnDisplayQuickslotItem);
+        EventManager.currentManager.Subscribe(EventType.HideQuickslotItem, OnHideQuickslotItem);
     }
 
     private void OnDisable()
@@ -50,8 +53,10 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Unsubscribe(EventType.EquipWeapon, OnEquipWeapon);
         EventManager.currentManager.Unsubscribe(EventType.UseItem, OnUseItem);
         EventManager.currentManager.Unsubscribe(EventType.InitiateDialogue, OnInitiateDialogue);
-
-        //EventManager.currentManager.Subscribe(EventType.InitiateDialogue, OnCeaseDialogue);
+        EventManager.currentManager.Unsubscribe(EventType.HideWeapon, OnHideWeapon);
+        EventManager.currentManager.Unsubscribe(EventType.ShowWeapon, OnShowWeapon);
+        EventManager.currentManager.Unsubscribe(EventType.DisplayQuickslotItem, OnDisplayQuickslotItem);
+        EventManager.currentManager.Unsubscribe(EventType.HideQuickslotItem, OnHideQuickslotItem);
     }
 
     void Awake()
@@ -214,6 +219,7 @@ public class PlayerManager : CharacterManager
             {
                 //set item to the current quick slot
                 playerInventory.quickslotItemInUse = quickslotItem;
+
                 //attempt using item
                 quickslotItem.AttemptToUseItem(playerAnimatorManager, playerStats);
             }
@@ -221,6 +227,30 @@ public class PlayerManager : CharacterManager
         else
         {
             throw new System.Exception("Error: EventData class with EventType.UseItem was received but is not of class UseItem.");
+        }
+    }
+
+    private void OnDisplayQuickslotItem(EventData eventData)
+    {
+        if (eventData is DisplayQuickslotItem displayQuickslotItem)
+        {
+            playerInventory.DisplayQuickslotItem(weaponSlotManager,displayQuickslotItem.objectToDisplay);
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.DisplayQuickslotItem was received but is not of class DisplayQuickslotItem.");
+        }
+    }
+
+    private void OnHideQuickslotItem(EventData eventData)
+    {
+        if (eventData is HideQuickslotItem)
+        {
+            playerInventory.HideQuickslotItem(weaponSlotManager);
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.HideQuickslotItem was received but is not of class HideQuickslotItem.");
         }
     }
 
@@ -251,6 +281,30 @@ public class PlayerManager : CharacterManager
         else
         {
             throw new System.Exception("Error: EventData class with EventType.CeaseDialogue was received but is not of class CeaseDialogue.");
+        }
+    }
+
+    private void OnHideWeapon(EventData eventData)
+    {
+        if (eventData is HideWeapon)
+        {
+            playerInventory.HideWeapons(weaponSlotManager);
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.HideWeapon was received but is not of class HideWeapon.");
+        }
+    }
+
+    private void OnShowWeapon(EventData eventData)
+    {
+        if (eventData is ShowWeapon)
+        {
+            playerInventory.ShowWeapons(weaponSlotManager);
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.ShowWeapon was received but is not of class ShowWeapon.");
         }
     }
     #endregion

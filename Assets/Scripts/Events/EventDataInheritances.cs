@@ -120,6 +120,22 @@ public class EquipWeapon : EventData
     }
 }
 
+public class HideWeapon : EventData
+{
+    public HideWeapon() : base(EventType.HideWeapon)
+    {
+
+    }
+}
+
+public class ShowWeapon : EventData
+{
+    public ShowWeapon() : base(EventType.ShowWeapon)
+    {
+
+    }
+}
+
 //Event that informs subscribers of a quickslot is being added
 public class AddQuickslotItem : EventData
 {
@@ -137,6 +153,23 @@ public class RemoveQuickslotItem : EventData
     public RemoveQuickslotItem(QuickslotItem quickslotItem) : base(EventType.RemoveQuickslotItem)
     {
         this.quickslotItem = quickslotItem;
+    }
+}
+
+public class DisplayQuickslotItem : EventData
+{
+    public readonly GameObject objectToDisplay;
+    public DisplayQuickslotItem(GameObject objectToDisplay) : base(EventType.DisplayQuickslotItem)
+    {
+        this.objectToDisplay = objectToDisplay;
+    }
+}
+
+public class HideQuickslotItem : EventData
+{
+    public HideQuickslotItem() : base(EventType.HideQuickslotItem)
+    {
+
     }
 }
 

@@ -113,6 +113,7 @@ public class PlayerInventory : CharacterInventory
                 //exit out of foreach
                 break;
             }
+
             FilterInventory();
         }
         else
@@ -296,6 +297,26 @@ public class PlayerInventory : CharacterInventory
                 LoadEquippedWeapons(weaponSlotManager);
             }
         }
+    }
+
+    internal void HideWeapons(WeaponSlotManager weaponSlotManager)
+    {
+        weaponSlotManager.HideWeapons();
+    }
+
+    internal void ShowWeapons(WeaponSlotManager weaponSlotManager)
+    {
+        weaponSlotManager.ShowWeapons();
+    }
+
+    internal void DisplayQuickslotItem(WeaponSlotManager weaponSlotManager, GameObject displayObject)
+    {
+        weaponSlotManager.DisplayObjectInHand(displayObject);
+    }
+
+    internal void HideQuickslotItem(WeaponSlotManager weaponSlotManager)
+    {
+        weaponSlotManager.HideObjectInHand();
     }
 
     #endregion
