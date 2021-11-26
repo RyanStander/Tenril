@@ -193,7 +193,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1042659295}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 878a3ec630cc22c4d99b88e5a140bfb0, type: 3}
   m_Name: 
@@ -205,9 +205,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 262144
   checkRate: 0.5
+  currentTarget: {fileID: 0}
   hideSensitivity: -0.5
-  MinPlayerDistance: 2.5
-  MinObstacleHeight: 0.5
+  minimumPlayerDistance: 5
+  minimumObstacleHeight: 1
   updateFrequency: 0.25
 --- !u!1 &764050060109176514
 GameObject:
@@ -1024,6 +1025,7 @@ MonoBehaviour:
   currentWeapon: {fileID: 0}
   weaponSlot: 0
   currentWeaponModel: {fileID: 0}
+  currentSheathModel: {fileID: 0}
 --- !u!1 &6051805372053708815
 GameObject:
   m_ObjectHideFlags: 0
@@ -1318,6 +1320,7 @@ MonoBehaviour:
   lockOnTransform: {fileID: 2121156118295265066}
   isParrying: 0
   canBeRiposted: 0
+  isBlocking: 0
   riposteCollider: {fileID: 8980928896605754821}
   pendingFinisherDamage: 0
   finisherAttackRayCastStartPointTransform: {fileID: 1142345804726472260}
@@ -3687,6 +3690,7 @@ MonoBehaviour:
   currentWeapon: {fileID: 0}
   weaponSlot: 1
   currentWeaponModel: {fileID: 0}
+  currentSheathModel: {fileID: 0}
 --- !u!1 &6051805372053709271
 GameObject:
   m_ObjectHideFlags: 0
