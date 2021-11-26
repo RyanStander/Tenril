@@ -24,6 +24,9 @@ public class EnemyMovementManager : MonoBehaviour
 
     private float fallDuration = 0; //Duration of the current fall
 
+    //The default dampening speed for when velocities are changed
+    [Range(0, 1)] protected private float defaultDamp = 0.5f;
+
     private void Awake()
     {
         //Getter for relevant reference
@@ -63,7 +66,7 @@ public class EnemyMovementManager : MonoBehaviour
         if (enemyManager.isInteracting)
         {
             //Set to minimal forward movement while still performing action
-            SetForwardMovement(0, 0.5f, Time.deltaTime);
+            SetForwardMovement(0, defaultDamp, Time.deltaTime);
             return;
         }
 
@@ -82,7 +85,7 @@ public class EnemyMovementManager : MonoBehaviour
             else
             {
                 //Handle the forward movement of the agent
-                SetForwardMovement(targetSpeed, 0.5f, Time.deltaTime);
+                SetForwardMovement(targetSpeed, defaultDamp, Time.deltaTime);
             }
             
             //Correct the location of the NavmeshAgent with precise or estimated calculations
@@ -112,10 +115,13 @@ public class EnemyMovementManager : MonoBehaviour
 
     internal void SynchronizeTransformToAnimation()
     {
-        //Update the transform position in addition to matching the Y axis of the navigation agent
+        //Update the transform position to match the root rotation of the animator
         Vector3 position = enemyManager.animatorManager.animator.rootPosition;
-        //position.y = enemyManager.navAgent.nextPosition.y;
         transform.position = position;
+
+        //Update the transform rotation to match the root rotation of the animator
+        Quaternion rotation = enemyManager.animatorManager.animator.rootRotation;
+        transform.rotation = rotation;
     }
 
     //Method sacrifices animation quality (increasing foot sliding) at the improvement of obstacle avoidance
@@ -201,6 +207,12 @@ public class EnemyMovementManager : MonoBehaviour
         enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.leftHash, 0, givenDampeningTime, givenTime);
     }
 
+    public void StopMovement()
+    {
+        //Stop the animations movement of forward and leftward based on default parameters
+        StopMovement(defaultDamp, Time.deltaTime);
+    }
+
     public void StopMovementImmediate()
     {
         //Stop the animations movement of forward and leftward immediately
@@ -210,6 +222,9 @@ public class EnemyMovementManager : MonoBehaviour
 
     private void HandleFalling()
     {
+        //Return if currently dead
+        if (enemyManager.enemyStats.isDead) return;
+
         //If not currently grounded, track the fall
         if (!IsGrounded())
         {

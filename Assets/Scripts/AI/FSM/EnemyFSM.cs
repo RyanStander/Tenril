@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Localization.Plugins.XLIFF.V20;
 using UnityEngine;
 using UnityEngine.AI;
 public class EnemyFSM : MonoBehaviour
@@ -28,6 +29,7 @@ public class EnemyFSM : MonoBehaviour
         EnemyAnimatorManager animationManager = this.GetComponent<EnemyAnimatorManager>();
         NavMeshAgent navAgent = this.GetComponent<NavMeshAgent>();
         EnemyMovementManager movementManager = this.GetComponent<EnemyMovementManager>();
+        EnemyVisionManager visionManager = this.GetComponent<EnemyVisionManager>();
 
         //Apply relevant information internally to the states
         foreach (AbstractStateFSM state in validStates)
@@ -38,6 +40,7 @@ public class EnemyFSM : MonoBehaviour
             state.SetExecutingManager(agentManager);
             state.SetExecutingAnimationManager(animationManager);
             state.SetExecutingMovementManager(movementManager);
+            state.SetExecutingVisionManager(visionManager);
             FSMStates.Add(state.stateType, state);
         }
     }
@@ -56,7 +59,8 @@ public class EnemyFSM : MonoBehaviour
         //Null check
         if (currentState != null)
         {
-            if (!currentState.IsDeadLogicCheck())
+            //Do not continue updating the state unless it passes the dead check or is the death state itself
+            if(currentState.stateType == StateTypeFSM.DEAD || !currentState.IsDeadLogicCheck())
             {
                 currentState.UpdateState();
             }
@@ -117,5 +121,20 @@ public class EnemyFSM : MonoBehaviour
             return null;
         }
     }
+
+    //Get current state
+    public AbstractStateFSM GetCurrentState()
+    {
+        return currentState;
+    }
     #endregion
+
+    protected internal void DebugLogString(string log)
+    {
+        //Debug the log if debugging is enabled
+        if (isDebuggingStates)
+        {
+            Debug.Log(log);
+        }
+    }
 }

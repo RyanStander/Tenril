@@ -3,12 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.U2D;
 
 public class UtilityMovement : MonoBehaviour
 {
-    //The current desired object the agent should move towards
-    public GameObject desiredObject;
+    //The current object of interest to the agent
+    public GameObject objectOfInterest;
+
+    //Agent being used
+    public NavMeshAgent navAgent;
 
     //The speed of the utility agent
     public float agentSpeed = 1;
@@ -43,23 +47,54 @@ public class UtilityMovement : MonoBehaviour
     //Bool to help with if the rays should be debugged
     public bool isDebugging = true;
 
+    private void Start()
+    {
+        //Disable certain navAgent features
+        navAgent.isStopped = false; //Prevents agent from using any given speeds by accident
+        navAgent.updatePosition = false; //Disable agent forced position
+        navAgent.updateRotation = false; //Disable agent forced rotation
+
+        //Set the destination to the target
+        navAgent.SetDestination(objectOfInterest.transform.position);
+    }
+
     // Update is called once per frame
     void Update()
     {
         //Generate rays based on utility and information about target
         GenerateUtilityRays();
 
-        //Set the current direction being followed
-        currentDirection = GetAverageDirection().normalized;
-
-        //Debug visual of the average direction
-        if (isDebugging)
+        //Suspend movement logic until the path is completely calcualted
+        //Prevents problems with calculating remaining distance between the target and agent
+        if (!IsPathPending())
         {
+            //Set the current direction being followed
+            currentDirection = GetAverageDirectionExponential().normalized;
+
+            //Movement
+            Movement(currentDirection);
+
+            //Visual of the average direction
             Debug.DrawRay(transform.position, currentDirection * utilityRayRange, Color.white);
+
+            //Debug the looking direction
+            Debug.DrawRay(transform.position, transform.forward * utilityRayRange, Color.magenta);
+
+            //Method sacrifices animation quality (increasing foot sliding) at the improvement of obstacle avoidance
+            CorrectAgentLocationPrecise();
         }
+    }
+
+    private void Movement(Vector3 currentDirection)
+    {
+        //Calculate the look rotation
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(currentDirection.x, 0, currentDirection.z));
+
+        //Slerp towards what the nav agent wants the target
+        transform.root.rotation = Quaternion.Lerp(transform.root.rotation, lookRotation, Time.deltaTime * 5);
 
         //Move target in average ray direction
-        transform.position += currentDirection * agentSpeed * Time.deltaTime;
+        transform.position += transform.forward * agentSpeed * Time.deltaTime;
     }
 
     private void GenerateUtilityRays()
@@ -98,6 +133,9 @@ public class UtilityMovement : MonoBehaviour
 
     private UtilityRay CalculateUtilityRay(int rayNumber)
     {
+        //Get the current point that is being used by the NavMeshAgent
+        Vector3 simulatedPoint = navAgent.nextPosition;
+
         //Origin of the ray
         Vector3 rayOrigin = transform.position;
         rayOrigin.y *= 0.5f;
@@ -115,14 +153,14 @@ public class UtilityMovement : MonoBehaviour
         //Declare temporary value to track utility
         float utility = 0;
 
-        //Calculate the utility based on what it hits and the favorability of how direct it is to the target
+        //Calculate the utility based on what it hits and the favorability of how direct it is to the target/steeringPoint
         if (Physics.Raycast(baseRay, out RaycastHit hit, utilityRayRange))
         {
             //Calculate a normalized distance between the object and the origin (0 to 1 inverted), the closer to (1) the object the more impactful it is
             float objectDistanceImpact = 1 - (hit.distance / utilityRayRange);
 
             //Calculate utility based on what is being found and current distance impactfulness
-            if (hit.transform.gameObject == desiredObject)
+            if (hit.transform.gameObject == objectOfInterest)
             {
                 utility = objectDistanceImpact * targetDistanceSensitivity * targetWeight;
             }
@@ -133,10 +171,13 @@ public class UtilityMovement : MonoBehaviour
         }
 
         //Direct ray to the object
-        Debug.DrawRay(rayOrigin, (desiredObject.transform.position - transform.position), Color.cyan);
+        Debug.DrawRay(rayOrigin, (objectOfInterest.transform.position - transform.position), Color.cyan);
 
-        //Calculate additional utility based on how small the angle is from the ray to the target
-        float angleBetween = Vector3.Angle(desiredObject.transform.position - transform.position, rayDirection);
+        //Direct ray to the current simulated agent point
+        Debug.DrawRay(rayOrigin, (simulatedPoint - transform.position), Color.blue);
+
+        //Calculate additional utility based on how small the angle is from the ray to the simulated agent point
+        float angleBetween = Vector3.Angle(simulatedPoint - transform.position, rayDirection);
 
         //Angle impact calculated and inverted so that the smaller angles results in higher favorability
         float angleImpact = (1 - (angleBetween / 180)) * targetAngleWeight;
@@ -157,7 +198,7 @@ public class UtilityMovement : MonoBehaviour
         return new UtilityRay(baseRay, utility, utilityColor);
     }
 
-    private Vector3 GetAverageDirection()
+    private Vector3 GetAverageDirectionExponential()
     {
         //Return zero if no rays exist
         if (utilityRays == null || utilityRays.Count == 0) return Vector3.zero;
@@ -168,10 +209,23 @@ public class UtilityMovement : MonoBehaviour
         //Iterate over each ray and add their direction based on utility
         foreach (UtilityRay utilityRay in utilityRays)
         {
-            averageDirection += utilityRay.baseRay.direction.normalized * utilityRay.rayUtility;
+            averageDirection += utilityRay.baseRay.direction.normalized * Mathf.Pow(utilityRay.rayUtility, 5);
         }
 
         //Return the average desired direction
         return averageDirection;
+    }
+
+    internal bool IsPathPending()
+    {
+        //Quick bool return for if the agent is still calculating a path
+        return navAgent.pathPending;
+    }
+
+    //Method sacrifices animation quality (increasing foot sliding) at the improvement of obstacle avoidance
+    internal void CorrectAgentLocationPrecise()
+    {
+        //Set the navAgents predicted position to be the root transform
+        navAgent.nextPosition = transform.root.position;
     }
 }

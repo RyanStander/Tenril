@@ -19,6 +19,33 @@ public static class ExtensionMethods
             return Mathf.NegativeInfinity;
         }
 
+        //Return the distance
+        return GetPathDistance(pathCorners);
+    }
+
+    //Functions near identically to GetRemainingPathDistance()
+    //However this accounts for when the agent is processing off link "corners" that are not included in the agents path corners
+    public static float GetRemainingPathDistanceOffLinkFriendly(NavMeshAgent givenAgent)
+    {
+        //Begin using the remaining distance
+        float remainingDistance = GetRemainingPathDistance(givenAgent);
+
+        //Checks to ensure a path can/should have its distance calculated
+        if (remainingDistance == Mathf.NegativeInfinity)
+        {
+            //Return negative infinity as this should be seen as invalid
+            return Mathf.NegativeInfinity;
+        }
+
+        //Add on the off mesh position data (distance returns 0 if none currently active)
+        remainingDistance += Vector3.Distance(givenAgent.currentOffMeshLinkData.startPos, givenAgent.currentOffMeshLinkData.endPos);
+
+        //Return the distance
+        return remainingDistance;
+    }
+
+    public static float GetPathDistance(Vector3[] pathCorners)
+    {
         //Temporary float to track accumalated distance
         float remainingDistance = 0;
 
@@ -28,8 +55,24 @@ public static class ExtensionMethods
             remainingDistance += Vector3.Distance(pathCorners[i], pathCorners[i + 1]);
         }
 
-        //Return the distance
         return remainingDistance;
+    }
+
+    public static float GetPathDistance(NavMeshPath givenPath)
+    {
+        return GetPathDistance(givenPath.corners);
+    }
+
+    public static float GetPathDistance(NavMeshAgent givenAgent, Transform destination)
+    {
+        //Initialize a new path
+        NavMeshPath path = new NavMeshPath();
+
+        //Calculate the path
+        givenAgent.CalculatePath(destination.position, path);
+
+        //Calculate the distance
+        return GetPathDistance(path);
     }
     #endregion
 

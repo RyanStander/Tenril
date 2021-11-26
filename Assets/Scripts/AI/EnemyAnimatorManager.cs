@@ -8,6 +8,7 @@ public class EnemyAnimatorManager : AnimatorManager
     //Hashes for quick animator parameter modification
     internal int forwardHash;
     internal int leftHash;
+    internal int turningHash;
     internal int canRotateHash;
 
     private Rigidbody rigidBody = null;
@@ -30,6 +31,7 @@ public class EnemyAnimatorManager : AnimatorManager
         //Quick hashes for easy parameter modification
         forwardHash = Animator.StringToHash("Forward");
         leftHash = Animator.StringToHash("Left");
+        turningHash = Animator.StringToHash("Turning");
         canRotateHash = Animator.StringToHash("canRotate");
     }
 

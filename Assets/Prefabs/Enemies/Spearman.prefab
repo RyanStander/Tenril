@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 1418810352}
   - component: {fileID: 1418810353}
   - component: {fileID: 761708098142108532}
+  - component: {fileID: 368452058314960232}
   m_Layer: 0
   m_Name: States
   m_TagString: Untagged
@@ -143,11 +144,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectionBlockLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 262656
   characterLayer:
     serializedVersion: 2
     m_Bits: 1024
-  agentHead: {fileID: 6051805372053224837}
   isUsingSearchRate: 0
   searchRate: 0.1
 --- !u!114 &1418810352
@@ -186,6 +186,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49421b8d80aec5241939a38520ae24c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &368452058314960232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042659295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 878a3ec630cc22c4d99b88e5a140bfb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionBlockLayer:
+    serializedVersion: 2
+    m_Bits: 262656
+  hidableLayers:
+    serializedVersion: 2
+    m_Bits: 262144
+  checkRate: 0.5
+  hideSensitivity: -0.5
+  MinPlayerDistance: 2.5
+  MinObstacleHeight: 0.5
+  updateFrequency: 0.25
 --- !u!1 &764050060109176514
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,7 +394,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2726535572165521077}
   - component: {fileID: 2726535572165521078}
-  - component: {fileID: 2726535572165521079}
+  - component: {fileID: 3712933954655172088}
   m_Layer: 5
   m_Name: HealthBar
   m_TagString: Untagged
@@ -451,7 +474,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2726535572165521079
+--- !u!114 &3712933954655172088
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -460,7 +483,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2726535572165521064}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a229bbe4636e3c74fbb5b424bb1146bf, type: 3}
+  m_Script: {fileID: 11500000, guid: dd7d679343ab3564e8f092c6aa45107c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2726535572338771546
@@ -622,7 +645,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2363289206808409703}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: CombatColliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1176,6 +1199,8 @@ GameObject:
   - component: {fileID: 6011857014310157830}
   - component: {fileID: 728663015}
   - component: {fileID: 728663019}
+  - component: {fileID: 2768618875340935539}
+  - component: {fileID: 633695106185292835}
   m_Layer: 10
   m_Name: Spearman
   m_TagString: Enemy
@@ -1331,6 +1356,7 @@ MonoBehaviour:
   - {fileID: 1418810352}
   - {fileID: 1418810353}
   - {fileID: 761708098142108532}
+  - {fileID: 368452058314960232}
   isDebuggingStates: 0
 --- !u!114 &318429251
 MonoBehaviour:
@@ -1365,10 +1391,12 @@ MonoBehaviour:
   alertRadius: 7
   chaseRange: 14
   chaseSpeed: 1.25
+  obstacleAwarenessRange: 15
   maximumAttackRange: 3
+  maximumAttackHeight: 0.5
   rotationSpeed: 2.5
   attackRotationSpeed: 2.5
-  healthBar: {fileID: 2726535572165521079}
+  healthBar: {fileID: 3712933954655172088}
 --- !u!195 &318429253
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1441,6 +1469,38 @@ MonoBehaviour:
   timeLeft: []
   isRooted: 0
   character: {fileID: 318429251}
+--- !u!114 &2768618875340935539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6051805372053708825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69aa48431045aa246980d53fa720dc8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointOfVision: {fileID: 6051805372053224837}
+--- !u!114 &633695106185292835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6051805372053708825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bcb6456538e9f84599ce13aea6c3387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  navAgent: {fileID: 318429253}
+  pathColor: {r: 1, g: 0, b: 0, a: 1}
+  nextPositionColor: {r: 0, g: 1, b: 0, a: 1}
+  offLinkPathColor: {r: 0, g: 1, b: 1, a: 1}
+  offLinkStartColor: {r: 1, g: 0, b: 1, a: 1}
+  offLinkEndColor: {r: 0, g: 0, b: 1, a: 1}
+  positionRadius: 0.15
 --- !u!1 &6051805372053708827
 GameObject:
   m_ObjectHideFlags: 0
