@@ -83,11 +83,24 @@ public class HidingState : AbstractStateFSM
             {
                 //Run and close the loop
                 hidingCourotine = StartCoroutine(OriginalHidingLogic(currentTarget.transform));
+                //hidingCourotine = StartCoroutine(HidingLogic(currentTarget.transform));
                 isRunningHidingLogic = true;
             }
 
-            //Move towards destination
-            movementManager.HandleNavMeshTargetMovement(enemyManager.enemyStats.chaseSpeed);
+            //If at destination, dont move
+            if(!navAgent.pathPending)
+            {
+                if (navAgent.remainingDistance <= 0.5f)
+                {
+                    //Move towards destination
+                    movementManager.StopMovement(0.25f, Time.deltaTime);
+                }
+                else
+                {
+                    //Move towards destination
+                    movementManager.HandleNavMeshTargetMovement(enemyManager.enemyStats.chaseSpeed);
+                }
+            }
         }
     }
 
@@ -201,7 +214,15 @@ public class HidingState : AbstractStateFSM
         }
         else
         {
-            return Vector3.Distance(navAgent.transform.position, colliderA.transform.position).CompareTo(Vector3.Distance(navAgent.transform.position, colliderB.transform.position));
+            //If using an agent
+            if(navAgent != null)
+            {
+                return ExtensionMethods.GetPathDistance(navAgent, colliderA.transform).CompareTo(ExtensionMethods.GetPathDistance(navAgent, colliderB.transform));
+            }
+            else
+            {
+                return Vector3.Distance(navAgent.transform.position, colliderA.transform.position).CompareTo(Vector3.Distance(navAgent.transform.position, colliderB.transform.position));
+            }
         }
     }
 
@@ -231,6 +252,7 @@ public class HidingState : AbstractStateFSM
         {
             //Clear old list of junk data
             validObstacles.Clear();
+            validObstaclesDistance.Clear();
 
             //If available, output a navmeshagent for the target
             bool hasAgent = currentTarget.gameObject.TryGetComponent(out NavMeshAgent targetAgent);
@@ -273,14 +295,13 @@ public class HidingState : AbstractStateFSM
 
             //Sort dictionary by distance
             validObstaclesDistance = validObstaclesDistance.OrderBy(key => key.Value).ToDictionary(t => t.Key, t => t.Value);
+            validObstacles = validObstaclesDistance.Keys.ToList();
             validObstacles.Reverse();
 
             //Iterate over each obstacle to look for a suitable hiding spot
             //For now it selects the first one found to be valid
             foreach (Collider obstacle in validObstacles)
             {
-                Debug.Log(obstacle.name);
-
                 //Sample each collider for potential positions to hide by
                 if (NavMesh.SamplePosition(obstacle.transform.position, out NavMeshHit firstHit, 2f, navAgent.areaMask))
                 {
