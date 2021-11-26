@@ -29,6 +29,7 @@ public class EnemyFSM : MonoBehaviour
         EnemyAnimatorManager animationManager = this.GetComponent<EnemyAnimatorManager>();
         NavMeshAgent navAgent = this.GetComponent<NavMeshAgent>();
         EnemyMovementManager movementManager = this.GetComponent<EnemyMovementManager>();
+        EnemyVisionManager visionManager = this.GetComponent<EnemyVisionManager>();
 
         //Apply relevant information internally to the states
         foreach (AbstractStateFSM state in validStates)
@@ -39,6 +40,7 @@ public class EnemyFSM : MonoBehaviour
             state.SetExecutingManager(agentManager);
             state.SetExecutingAnimationManager(animationManager);
             state.SetExecutingMovementManager(movementManager);
+            state.SetExecutingVisionManager(visionManager);
             FSMStates.Add(state.stateType, state);
         }
     }

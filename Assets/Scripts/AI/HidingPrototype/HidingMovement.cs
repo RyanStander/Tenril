@@ -75,7 +75,6 @@ public class HidingMovement : MonoBehaviour
     private IEnumerator Hide(Transform Target)
     {
        WaitForSeconds Wait = new WaitForSeconds(updateFrequency);
-
         while (true)
         {
             //Clears out old information in case of dangling collider information
@@ -151,24 +150,24 @@ public class HidingMovement : MonoBehaviour
         }
     }
 
-    public int ColliderArraySortComparer(Collider A, Collider B)
+    public int ColliderArraySortComparer(Collider colliderA, Collider colliderB)
     {
         //Compares given colliders to eachother and returns a given position for the array based on how it should be sorted
-        if (A == null && B != null)
+        if (colliderA == null && colliderB != null)
         {
             return 1;
         }
-        else if (A != null && B == null)
+        else if (colliderA != null && colliderB == null)
         {
             return -1;
         }
-        else if (A == null && B == null)
+        else if (colliderA == null && colliderB == null)
         {
             return 0;
         }
         else
         {
-            return Vector3.Distance(navAgent.transform.position, A.transform.position).CompareTo(Vector3.Distance(navAgent.transform.position, B.transform.position));
+            return Vector3.Distance(navAgent.transform.position, colliderA.transform.position).CompareTo(Vector3.Distance(navAgent.transform.position, colliderB.transform.position));
         }
     }
 }

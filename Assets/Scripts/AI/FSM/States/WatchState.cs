@@ -12,15 +12,11 @@ public class WatchState : AbstractStateFSM
     public LayerMask detectionBlockLayer = 1 << 9;
     public LayerMask characterLayer = 1 << 10;
 
-    //Head of the agent watching
-    public Transform agentHead;
-
     //Bool for if a search rate should be used
     public bool isUsingSearchRate;
 
     //Performance related rate at which the agent should cast search
-    [Range(0,1)]
-    public float searchRate = 0.5f;
+    [Range(0,1)] public float searchRate = 0.5f;
 
     //Helped bool for delayed searches
     private bool isWaitingToSearch = true;
@@ -129,7 +125,7 @@ public class WatchState : AbstractStateFSM
     private void CheckForTarget()
     {
         //Fetches detectable characters and returns a list of enemies
-        targetsByDistance = enemyManager.visionManager.GetListOfVisibleEnemyTargets(agentHead, enemyManager.enemyStats.alertRadius, characterLayer, detectionBlockLayer);
+        targetsByDistance = enemyManager.visionManager.GetListOfVisibleEnemyTargets(visionManager.pointOfVision, enemyManager.enemyStats.alertRadius, characterLayer, detectionBlockLayer);
     }
 
     private void CheckForClosestTarget()
@@ -174,14 +170,14 @@ public class WatchState : AbstractStateFSM
     private void OnDrawGizmosSelected()
     {
         //Return if needed items are not available yet
-        if (enemyManager == null || enemyManager.enemyStats == null) return;
+        if (enemyManager == null || enemyManager.enemyStats == null || enemyManager.visionManager == null) return;
 
         //Debug the sphere of view
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(agentHead.position, enemyManager.enemyStats.alertRadius);
+        Gizmos.DrawWireSphere(visionManager.pointOfVision.position, enemyManager.enemyStats.alertRadius);
 
         //Debug the sphere of chasing
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(agentHead.position, enemyManager.enemyStats.chaseRange);
+        Gizmos.DrawWireSphere(visionManager.pointOfVision.position, enemyManager.enemyStats.chaseRange);
     }
 }

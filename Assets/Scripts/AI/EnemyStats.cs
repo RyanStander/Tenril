@@ -22,7 +22,10 @@ public class EnemyStats : CharacterStats
 
     //The chase speed of the AI
     [Range(0, 2)] public float chaseSpeed = 1;
-    
+
+    //Range for creature knowing where obstacles that can be hidden behind are
+    public float obstacleAwarenessRange = 15;
+
     //The range at which attacking should begin, should be replaced with preffered attacks
     public float maximumAttackRange = 1.5f;
 

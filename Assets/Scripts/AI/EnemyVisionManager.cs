@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class EnemyVisionManager : MonoBehaviour
 {
+    //Point at which vision raycasting happens
+    public Transform pointOfVision;
+
     //Relevant attached manager
     private EnemyAgentManager enemyManager;
 

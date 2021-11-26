@@ -19,17 +19,8 @@ public static class ExtensionMethods
             return Mathf.NegativeInfinity;
         }
 
-        //Temporary float to track accumalated distance
-        float remainingDistance = 0;
-
-        //Iterate over each corner and calculate the remaining distance
-        for (int i = 0; i < pathCorners.Length - 1; ++i)
-        {
-            remainingDistance += Vector3.Distance(pathCorners[i], pathCorners[i + 1]);
-        }
-
         //Return the distance
-        return remainingDistance;
+        return GetPathDistance(pathCorners);
     }
 
     //Functions near identically to GetRemainingPathDistance()
@@ -51,6 +42,37 @@ public static class ExtensionMethods
 
         //Return the distance
         return remainingDistance;
+    }
+
+    public static float GetPathDistance(Vector3[] pathCorners)
+    {
+        //Temporary float to track accumalated distance
+        float remainingDistance = 0;
+
+        //Iterate over each corner and calculate the remaining distance
+        for (int i = 0; i < pathCorners.Length - 1; ++i)
+        {
+            remainingDistance += Vector3.Distance(pathCorners[i], pathCorners[i + 1]);
+        }
+
+        return remainingDistance;
+    }
+
+    public static float GetPathDistance(NavMeshPath givenPath)
+    {
+        return GetPathDistance(givenPath.corners);
+    }
+
+    public static float GetPathDistance(NavMeshAgent givenAgent, Transform destination)
+    {
+        //Initialize a new path
+        NavMeshPath path = new NavMeshPath();
+
+        //Calculate the path
+        givenAgent.CalculatePath(destination.position, path);
+
+        //Calculate the distance
+        return GetPathDistance(path);
     }
     #endregion
 
