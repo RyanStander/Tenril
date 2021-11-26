@@ -14,6 +14,8 @@ public class PlayerLocomotion : MonoBehaviour
     [Header("Ground & Air Detection")]
     [SerializeField] private float fallDuration=0;
     [SerializeField] private float fallDurationToPerformLand=0.5f;
+    [Tooltip("The number that the environment layer is listed as")]
+    [SerializeField] private int environmentLayerNumber=9;
     [SerializeField] private LayerMask EnvironmentLayer;
     [SerializeField] private Vector3 raycastOffset;
     [SerializeField] private float groundCheckRadius=0.3f;
@@ -32,6 +34,8 @@ public class PlayerLocomotion : MonoBehaviour
         cameraObject = Camera.main.transform;
         statusEffectManager = GetComponent<StatusEffectManager>();
         cameraLockOn = FindObjectOfType<CameraLockOn>();
+
+        EnvironmentLayer = 1<<environmentLayerNumber;
     }
 
     internal void HandleLocomotion(float delta)
@@ -175,6 +179,9 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleFalling()
     {
+        if (playerStats.isDead)
+            return;
+
         if (!IsGrounded())
         {
             //keeps velocity while falling
@@ -250,7 +257,7 @@ public class PlayerLocomotion : MonoBehaviour
         }
     }
 
-    private void MovementType(bool isStafeMovement)
+    private void MovementType(bool isStrafeMovement)
     {
         if (playerAnimatorManager.animator.GetBool("isInteracting"))
             return;
@@ -276,7 +283,7 @@ public class PlayerLocomotion : MonoBehaviour
         }
 
         //if player is strafing, use both left and forward
-        if (isStafeMovement)
+        if (isStrafeMovement)
         {
             //Do not allow movement if the character is rooted
             if (statusEffectManager.GetIsRooted())

@@ -33,7 +33,7 @@ public class PlayerQuickslotManager : MonoBehaviour
             //if the value is -1 that means the quick slot item that is equipped does not exist
             if (currentIndexValue == -1)
             {
-                Debug.LogError("The currently selected quickslot item could not be found in the list, please make sure it is set properly");
+                Debug.LogWarning("The currently selected quickslot item could not be found in the list, please make sure it is set properly");
                 return;
             }
 
@@ -58,7 +58,7 @@ public class PlayerQuickslotManager : MonoBehaviour
             //if the value is -1 that means the quick slot item that is equipped does not exist
             if (currentIndexValue == -1)
             {
-                Debug.LogError("The currently selected quickslot item could not be found in the list, please make sure it is set properly");
+                Debug.LogWarning("The currently selected quickslot item could not be found in the list, please make sure it is set properly");
                 return;
             }
 
@@ -87,11 +87,15 @@ public class PlayerQuickslotManager : MonoBehaviour
             if (playerAnimatorManager.animator.GetBool("isInteracting"))
                 return;
 
+            if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.currentlySelectedQuickSlotItem))
+                return;
+
             //sets the item in us to the currently selected item
             playerInventory.quickslotItemInUse = playerInventory.currentlySelectedQuickSlotItem;
 
             //attempt using the item
             playerInventory.quickslotItemInUse.AttemptToUseItem(playerAnimatorManager, playerStats);
+            EventManager.currentManager.AddEvent(new RemoveItemFromInventory(playerInventory.quickslotItemInUse));
 
 
             //Update the ui display
@@ -102,6 +106,7 @@ public class PlayerQuickslotManager : MonoBehaviour
     public void SuccessfulyUsedItem()
     {
         //perform success item
-        playerInventory.quickslotItemInUse.SuccessfullyUsedItem(playerAnimatorManager, playerStats);        
+        playerInventory.quickslotItemInUse.SuccessfullyUsedItem(playerAnimatorManager, playerStats);
+        EventManager.currentManager.AddEvent(new HideQuickslotItem());
     }
 }

@@ -228,7 +228,7 @@ public class HidingState : AbstractStateFSM
 
     private void OnDrawGizmos()
     {
-        if(navAgent != null)
+        if(navAgent != null && currentTarget != null)
         {
             //Debug at target
             Gizmos.DrawSphere(navAgent.destination, 0.5f);

@@ -50,7 +50,7 @@ public class EnemyStats : CharacterStats
         healthBar.SetMaxValue(maxHealth);
     }
 
-    public override void TakeDamage(float damageAmount, bool playAnimation = true)
+    public override void TakeDamage(float damageAmount, bool playAnimation = true, string damageAnimation = "Hit")
     {
         //Return if already dead or invulnerable
         if (isDead || enemyAnimatorManager.animator.GetBool("isInvulnerable")) return;
@@ -62,7 +62,8 @@ public class EnemyStats : CharacterStats
         healthBar.SetCurrentValue(currentHealth);
 
         //Play hit animation if damage is taken
-        if (playAnimation) enemyAnimatorManager.PlayTargetAnimation("Hit", true);
+        if (playAnimation) 
+            enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
         //If character health reaches or goes past 0, play death animation and handle death
         if (currentHealth <= 0)

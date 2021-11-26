@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class QuickslotItem : Item
 {
-    [Tooltip("The maximum amount of the item that can be carried")]
-    public int amountPerStack;
     [Tooltip("Detemines whether the item is single or infinite use")]
     public bool isConsumable;
 
@@ -13,6 +11,9 @@ public class QuickslotItem : Item
     public GameObject itemUsedFX;
     [SerializeField] private Vector3 itemUsedFXOffset;
     public string quickslotUseAnimation;
+
+    [Tooltip("The object that is displayed when consuming a potion")]
+    public GameObject consumablePrefab;
 
     [Header("Item Description")]
     [Tooltip("Description of what the item do")]
@@ -26,6 +27,9 @@ public class QuickslotItem : Item
 
         //Play the animation of using the item
         animatorManager.PlayTargetAnimation(quickslotUseAnimation, true);
+
+        //Send out event to hide the weapon
+        EventManager.currentManager.AddEvent(new DisplayQuickslotItem(consumablePrefab));
     }
 
     public virtual void SuccessfullyUsedItem(AnimatorManager animatorManager, CharacterStats characterStats)

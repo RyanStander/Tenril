@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,13 +14,23 @@ public class SpellSlotUIManager : MonoBehaviour
     {
         if (playerInventory==null)
         {
-            playerInventory=GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
+            GameObject[] player = GameObject.FindGameObjectsWithTag("Player");
+            if (player.Length!=0)
+            {
+                playerInventory= player[0].GetComponent<PlayerInventory>();
+            }
         }
-        LoadSpells();
+        if (playerInventory != null)
+            LoadSpells();
+        else
+            Debug.LogWarning("Could not find PlayerInventory script in scene, make sure it exists");
     }
 
     private void LoadSpells()
     {
+        if (playerInventory == null)
+            return;
+
         //iterates through the spell slot images and assigns prepared spells from the inventory to these images
         for (int i = 0; i < spellSlotImages.Length; i++)
         {

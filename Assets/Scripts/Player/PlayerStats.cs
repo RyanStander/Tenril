@@ -5,26 +5,42 @@ using UnityEngine;
 public class PlayerStats : CharacterStats
 {
     private PlayerAnimatorManager playerAnimatorManager;
-
-    [Header("Resource bars")]
-    [SerializeField] private SliderBarDisplayUI healthBar;
-    [SerializeField] private SliderBarDisplayUI staminaBar, sunlightBar, moonlightBar;
+    private BlockingCollider blockingCollider;
 
     private void Awake()
     {
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+        blockingCollider = GetComponentInChildren<BlockingCollider>();
     }
     private void Start()
     {
         SetupStats();
-        healthBar.SetMaxValue(maxHealth);
-        staminaBar.SetMaxValue(maxStamina);
-        sunlightBar.SetMaxValue(maxStoredSunlight);
-        moonlightBar.SetMaxValue(maxStoredMoonlight);
+
+        EventManager.currentManager.AddEvent(new UpdatePlayerStats(maxHealth, currentHealth, maxStamina,currentStamina,maxStoredMoonlight,currentStoredMoonlight,maxStoredSunlight,currentStoredSunlight));
+    }
+
+    public void OpenBlockingCollider(PlayerInventory playerInventory)
+    {
+        if (playerInventory==null)
+        {
+            Debug.LogWarning("Player inventory was not found, make sure the script calling this function has an inventory reference");
+            return;
+        }
+        if (playerInventory.equippedWeapon==null)
+        {
+            return;
+        }
+        blockingCollider.SetColliderDamageAbsorption(playerInventory.equippedWeapon);
+        blockingCollider.EnableBlockingCollider();
+    }
+
+    public void CloseBlockingCollider()
+    {
+        blockingCollider.DisableBlockingCollider();
     }
 
     #region Health
-    public override void TakeDamage(float damageAmount, bool playAnimation = true)
+    public override void TakeDamage(float damageAmount, bool playAnimation = true, string damageAnimation = "Hit")
     {
         if (playerAnimatorManager.animator.GetBool("isInvulnerable"))
             return;
@@ -36,18 +52,18 @@ public class PlayerStats : CharacterStats
         base.TakeDamage(damageAmount);
 
         //update health display on the healthbar
-        healthBar.SetCurrentValue(currentHealth);
+        EventManager.currentManager.AddEvent(new UpdatePlayerHealth(maxHealth, currentHealth));
 
         //play animation that player has taken damage
         if (playAnimation)
-            playerAnimatorManager.PlayTargetAnimation("Hit", true);
+            playerAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
         //If player health reaches or goes pass 0, play death animation and handle death
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            if (playAnimation)
-                playerAnimatorManager.PlayTargetAnimation("Death", true);
+            
+            playerAnimatorManager.PlayTargetAnimation("Death", true);
 
             isDead = true;
 
@@ -64,7 +80,7 @@ public class PlayerStats : CharacterStats
         base.RegainHealth(regainAmount);
 
         //update health display on the healthbar
-        healthBar.SetCurrentValue(currentHealth);
+        EventManager.currentManager.AddEvent(new UpdatePlayerHealth(maxHealth, currentHealth));
     }
     #endregion
 
@@ -75,7 +91,7 @@ public class PlayerStats : CharacterStats
         base.DrainStamina(drain);
 
         //update the current stamina on the stamina bar
-        staminaBar.SetCurrentValue(currentStamina);
+        EventManager.currentManager.AddEvent(new UpdatePlayerStamina(maxStamina, currentStamina));
     }
 
     protected override void RegenerateStamina()
@@ -83,7 +99,7 @@ public class PlayerStats : CharacterStats
         base.RegenerateStamina();
 
         //update the current stamina on the stamina bar
-        staminaBar.SetCurrentValue(currentStamina);
+        EventManager.currentManager.AddEvent(new UpdatePlayerStamina(maxStamina, currentStamina));
     }
 
     #endregion
@@ -95,7 +111,7 @@ public class PlayerStats : CharacterStats
         base.ConsumeStoredMoonlight(cost);
 
         //update the current moonlight on the moonlight bar
-        moonlightBar.SetCurrentValue(currentStoredMoonlight);
+        EventManager.currentManager.AddEvent(new UpdatePlayerMoonlight(maxStoredMoonlight, currentStoredMoonlight));
     }
 
     public override void ConsumeStoredSunlight(float cost)
@@ -103,7 +119,7 @@ public class PlayerStats : CharacterStats
         base.ConsumeStoredSunlight(cost);
 
         //update the current sunlight on the sunlight bar
-        sunlightBar.SetCurrentValue(currentStoredSunlight);
+        EventManager.currentManager.AddEvent(new UpdatePlayerHealth(maxStoredSunlight, currentStoredSunlight));
     }
 
     #endregion

@@ -11,6 +11,8 @@ public class WeaponSlotManager : MonoBehaviour
 
     public DamageCollider leftHandDamageCollider, rightHandDamageCollider;
 
+    private GameObject displayObject;
+
     private Animator animator;
     private void Awake()
     {
@@ -25,29 +27,88 @@ public class WeaponSlotManager : MonoBehaviour
         {
             switch (weaponHolderSlot.weaponSlot)
             {
-                case WeaponHolderSlot.WeaponSlot.rightHandSlot:
+                case WeaponSlot.rightHandSlot:
                     rightHandSlot = weaponHolderSlot;
                     break;
-                case WeaponHolderSlot.WeaponSlot.leftHandSlot:
+                case WeaponSlot.leftHandSlot:
                     leftHandSlot = weaponHolderSlot;
                     break;
-                case WeaponHolderSlot.WeaponSlot.backSlot:
+                case WeaponSlot.backSlot:
                     backSlot = weaponHolderSlot;
                     break;
-                case WeaponHolderSlot.WeaponSlot.leftSideSlot:
+                case WeaponSlot.leftSideSlot:
                     leftSideSlot = weaponHolderSlot;
                     break;
-                case WeaponHolderSlot.WeaponSlot.rightSideSlot:
+                case WeaponSlot.rightSideSlot:
                     rightSideSlot = weaponHolderSlot;
                     break;
             }
         }
     }
 
-    public void LoadWeaponOnSlot(WeaponItem weaponItem, bool hasSecondaryWeapon)
+    public void HideWeapons()
     {
-        leftHandSlot.UnloadWeaponAndDestroy();
-        rightHandSlot.UnloadWeaponAndDestroy();
+        if(leftHandSlot.currentWeaponModel != null)
+            leftHandSlot.currentWeaponModel.SetActive(false);
+        if (rightHandSlot.currentWeaponModel != null)
+            rightHandSlot.currentWeaponModel.SetActive(false);
+    }
+
+    public void ShowWeapons()
+    {
+        if (leftHandSlot.currentWeaponModel != null)
+            leftHandSlot.currentWeaponModel.SetActive(true);
+        if (rightHandSlot.currentWeaponModel != null)
+            rightHandSlot.currentWeaponModel.SetActive(true);
+    }
+
+    public void DisplayObjectInHand(GameObject objectToDisplay)
+    {
+        if (leftHandSlot.currentWeaponModel != null)
+            leftHandSlot.currentWeaponModel.SetActive(false);
+        if (objectToDisplay != null)
+        {
+            if (leftHandSlot.parentOverride != null)
+                displayObject = Instantiate(objectToDisplay, leftHandSlot.parentOverride);
+            else
+                displayObject = Instantiate(objectToDisplay, leftHandSlot.transform);
+        }
+    }
+    public void HideObjectInHand()
+    {
+        if(displayObject!=null)
+            Destroy(displayObject);
+        if (leftHandSlot.currentWeaponModel != null)
+            leftHandSlot.currentWeaponModel.SetActive(true);
+    }
+
+    public void LoadWeaponOnSlot(WeaponItem weaponItem, bool hasSecondaryWeapon, WeaponItem unequippedWeapon = null)
+    {
+        //remove all previous weapons and sheaths displayed
+        if (leftHandSlot != null)
+        {
+            leftHandSlot.UnloadWeaponAndDestroy();
+        }
+        if (rightHandSlot != null)
+        {
+            rightHandSlot.UnloadWeaponAndDestroy();
+        }
+        if (backSlot != null)
+        {
+            backSlot.UnloadWeaponAndDestroy();
+            backSlot.UnloadSheathAndDestroy();
+        }
+        if (leftSideSlot != null)
+        {
+            leftSideSlot.UnloadWeaponAndDestroy();
+            leftSideSlot.UnloadSheathAndDestroy();
+        }
+        if (rightSideSlot != null)
+        {
+            rightSideSlot.UnloadWeaponAndDestroy();
+            rightSideSlot.UnloadSheathAndDestroy();
+        }
+
         //Check if there is a secondary weapon, such as dual daggers to equip
         if (hasSecondaryWeapon)
         {
@@ -62,18 +123,19 @@ public class WeaponSlotManager : MonoBehaviour
 
         #region Weapon Idle Anim           
 
-        //
         if (weaponItem != null)
         {
-            animator.CrossFade(weaponItem.idleAnimation, 0.2f);
+            animator.CrossFade(weaponItem.idleAnimation, 0.1f);
         }
         else
         {
             //No weapon equiped
 
             //Set animation to unarmed stance 
-            //(not animation for it currently, remember to rename to something else)
-            //animator.CrossFade("Unarmed", 0.2f);
+            //(no animation for it currently, remember to rename to something else)
+            animator.CrossFade("UnarmedIdle", 0.2f);
+
+            return;
         }
         #endregion
 
@@ -85,6 +147,12 @@ public class WeaponSlotManager : MonoBehaviour
         if (rightHandSlot != null)
             LoadRightWeaponDamageCollider();
 
+        //loads the sheaths of the weapon currently wielded
+        LoadWeaponSheath(weaponItem);
+
+        //loads the weapons taht are not being wielded
+        LoadUnequippedWeapons(unequippedWeapon);
+        
     }
 
     #region Damage Colliders
@@ -147,6 +215,74 @@ public class WeaponSlotManager : MonoBehaviour
     }
 
     #endregion
+
+    private void LoadWeaponSheath(WeaponItem weaponItem)
+    {
+        switch (weaponItem.weaponSlotWhenNotWielded)
+        {
+            case WeaponSlot.rightHandSlot:
+                Debug.LogWarning("You set the weaponSlotWhenNotWielded of " + weaponItem.name + " to be that of a hand, this cannot be done");
+                break;
+            case WeaponSlot.leftHandSlot:
+                Debug.LogWarning("You set the weaponSlotWhenNotWielded of " + weaponItem.name + " to be that of a hand, this cannot be done");
+                break;
+            case WeaponSlot.backSlot:
+                if (backSlot != null)
+                    backSlot.LoadWeaponSheath(weaponItem, false);
+                break;
+            case WeaponSlot.leftSideSlot:
+                if (leftSideSlot != null)
+                {
+                    leftSideSlot.LoadWeaponSheath(weaponItem, false);
+                    if (weaponItem.displaySecondaryWeaponWhenUnequipped)
+                        rightHandSlot.LoadWeaponSheath(weaponItem, true);
+                }
+                break;
+            case WeaponSlot.rightSideSlot:
+                if (rightSideSlot != null)
+                {
+                    rightSideSlot.LoadWeaponSheath(weaponItem, false);
+                    if (weaponItem.displaySecondaryWeaponWhenUnequipped)
+                        leftSideSlot.LoadWeaponSheath(weaponItem, true);
+                }
+                break;
+        }
+    }
+
+    private void LoadUnequippedWeapons(WeaponItem unequippedWeapon)
+    {
+        //Displays the weapon slot if an unequipped weapon was given
+        if (unequippedWeapon != null)
+            switch (unequippedWeapon.weaponSlotWhenNotWielded)
+            {
+                case WeaponSlot.rightHandSlot:
+                    Debug.LogWarning("You set the unequipped weapon, " + unequippedWeapon.name + " to be that of a hand, this cannot be done");
+                    break;
+                case WeaponSlot.leftHandSlot:
+                    Debug.LogWarning("You set the unequipped weapon, " + unequippedWeapon.name + " to be that of a hand, this cannot be done");
+                    break;
+                case WeaponSlot.backSlot:
+                    if (backSlot != null)
+                        backSlot.LoadUnequippedWeaponModel(unequippedWeapon, false);
+                    break;
+                case WeaponSlot.leftSideSlot:
+                    if (leftSideSlot != null)
+                    {
+                        leftSideSlot.LoadUnequippedWeaponModel(unequippedWeapon, false);
+                        if (unequippedWeapon.displaySecondaryWeaponWhenUnequipped)
+                            rightHandSlot.LoadUnequippedWeaponModel(unequippedWeapon, true);
+                    }
+                    break;
+                case WeaponSlot.rightSideSlot:
+                    if (rightSideSlot != null)
+                    {
+                        rightSideSlot.LoadUnequippedWeaponModel(unequippedWeapon, false);
+                        if (unequippedWeapon.displaySecondaryWeaponWhenUnequipped)
+                            leftSideSlot.LoadUnequippedWeaponModel(unequippedWeapon, true);
+                    }
+                    break;
+            }
+    }
 
     public void DrainWeakStaminaAttack()
     {

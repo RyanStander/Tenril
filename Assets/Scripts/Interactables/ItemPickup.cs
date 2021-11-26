@@ -29,7 +29,7 @@ public class ItemPickup : Interactable
         playerAnimatorManager.PlayTargetAnimation("PickUp", true);
 
         //Add Item to inventory
-        playerInventory.inventory.Add(item);
+        playerInventory.AddItemToInventory(item);
 
         //Notify player of obtaining item
         playerInteraction.itemPopUp.GetComponentInChildren<TextMeshProUGUI>().text = "You obtained " + item.itemName + "!";

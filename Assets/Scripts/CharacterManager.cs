@@ -7,7 +7,7 @@ public class CharacterManager : MonoBehaviour
     public Transform lockOnTransform;
     protected WeaponSlotManager weaponSlotManager;
     
-    public bool isParrying, canBeRiposted;
+    public bool isParrying, canBeRiposted, isBlocking;
 
     [Header("Finishers Data")]
     [Tooltip("Placed on the character to indicate where the riposte can be performed from, this should be on the front")]

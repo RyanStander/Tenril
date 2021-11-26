@@ -41,53 +41,62 @@ public class PlayerCombatManager : MonoBehaviour
             //if finisher successful, do not perform attack
             AttemptFinisher();
 
-            //HandleStrongAttackAction();
+            HandleStrongAttackAction();
         }
     }
 
-    private void HandleWeaponCombo(WeaponItem weapon)
+    private void HandleWeaponCombo(WeaponItem weapon, bool isWeakAttack)
     {
         if (inputHandler.comboFlag)
         {
             playerAnimatorManager.animator.SetBool("canDoCombo", false);
 
-            //Checks the progress through combos, if not the end play the next one
             #region Attacks
-            for (int i = 0; i < weapon.weakAttacks.Count - 1; i++)
+            //checks whether its a weak or strong attack
+            if (isWeakAttack)
             {
-                if (lastAttack == weapon.weakAttacks[i])
+                //Checks the progress through combos, if not the end play the next one
+                for (int i = 0; i < weapon.weakAttacks.Count; i++)
                 {
-                    //if player has any stamina
-                    if (playerStats.HasStamina())
+                    if (lastAttack == weapon.weakAttacks[i])
                     {
-                        //put the players stamina regen on cooldown
-                        playerStats.PutStaminaRegenOnCooldown();
-                        //Update the last attack
-                        lastAttack = weapon.weakAttacks[i + 1];
-                        //Sets the damage colliders the weapons damage
-                        playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.weakAttackDamageMultiplier);
-                        //Play the following animation
-                        playerAnimatorManager.PlayTargetAnimation(lastAttack, true);
-                        break;
+                        //if player has any stamina
+                        if (playerStats.HasStamina())
+                        {
+                            //put the players stamina regen on cooldown
+                            playerStats.PutStaminaRegenOnCooldown();
+                            //Update the last attack
+                            lastAttack = weapon.weakAttacks[i + 1];
+                            //Sets the damage colliders the weapons damage
+                            playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.weakAttackDamageMultiplier);
+                            //Play the following animation
+                            playerAnimatorManager.PlayTargetAnimation(lastAttack, true);
+                            break;
+                        }
                     }
                 }
             }
-            for (int i = 0; i < weapon.strongAttacks.Count - 1; i++)
+            else
             {
-                if (lastAttack == weapon.strongAttacks[i])
+
+
+                for (int i = 0; i < weapon.strongAttacks.Count - 1; i++)
                 {
-                    //if player has any stamina
-                    if (playerStats.HasStamina())
+                    if (lastAttack == weapon.strongAttacks[i])
                     {
-                        //put the players stamina regen on cooldown
-                        playerStats.PutStaminaRegenOnCooldown();
-                        //Update the last attack
-                        lastAttack = weapon.strongAttacks[i + 1];
-                        //Sets the damage colliders the weapons damage
-                        playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.strongAttackDamageMultiplier);
-                        //Play the following animation
-                        playerAnimatorManager.PlayTargetAnimation(lastAttack, true);
-                        break;
+                        //if player has any stamina
+                        if (playerStats.HasStamina())
+                        {
+                            //put the players stamina regen on cooldown
+                            playerStats.PutStaminaRegenOnCooldown();
+                            //Update the last attack
+                            lastAttack = weapon.strongAttacks[i + 1];
+                            //Sets the damage colliders the weapons damage
+                            playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.strongAttackDamageMultiplier);
+                            //Play the following animation
+                            playerAnimatorManager.PlayTargetAnimation(lastAttack, true);
+                            break;
+                        }
                     }
                 }
             }
@@ -104,12 +113,18 @@ public class PlayerCombatManager : MonoBehaviour
             playerStats.PutStaminaRegenOnCooldown();
             if (weapon != null)
             {
-                //Sets the damage colliders the weapons damage
-                playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.weakAttackDamageMultiplier);
-                //Play animation
-                playerAnimatorManager.PlayTargetAnimation(weapon.weakAttacks[0], true);
-                //Update the last attack
-                lastAttack = weapon.weakAttacks[0];
+                //only attack if there are available
+                if (weapon.weakAttacks.Count != 0)
+                {
+                    //Sets the damage colliders the weapons damage
+                    playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.weakAttackDamageMultiplier);
+                    //Play animation
+                    playerAnimatorManager.PlayTargetAnimation(weapon.weakAttacks[0], true);
+                    //Update the last attack
+                    lastAttack = weapon.weakAttacks[0];
+                }
+                else
+                    Debug.LogWarning("You are trying to attack with the weapon; " + weapon.name + " that does not have any attacks");
             }
         }
     }
@@ -145,7 +160,7 @@ public class PlayerCombatManager : MonoBehaviour
         if (playerManager.canDoCombo)
         {
             inputHandler.comboFlag = true;
-            HandleWeaponCombo(playerInventory.equippedWeapon);
+            HandleWeaponCombo(playerInventory.equippedWeapon,false);
             inputHandler.comboFlag = false;
         }
         //otherwise perform first attack
@@ -164,6 +179,8 @@ public class PlayerCombatManager : MonoBehaviour
     private void HandleParryAction()
     {
         //FOR FUTURE: check for other types, such as a bow aims instead, staff perhaps smth else
+        if (playerInventory.equippedWeapon==null)
+            return;
 
         if (playerInventory.equippedWeapon.canParry)
         {
@@ -182,7 +199,7 @@ public class PlayerCombatManager : MonoBehaviour
         if (playerManager.canDoCombo)
         {
             inputHandler.comboFlag = true;
-            HandleWeaponCombo(playerInventory.equippedWeapon);
+            HandleWeaponCombo(playerInventory.equippedWeapon,true);
             inputHandler.comboFlag = false;
         }
         //else, perform starting attack if possible
@@ -200,6 +217,12 @@ public class PlayerCombatManager : MonoBehaviour
 
     private void AttemptFinisher()
     {
+        if (playerAnimatorManager.animator.GetBool("isInteracting"))
+            return;
+
+        if (playerManager.finisherAttackRayCastStartPointTransform == null)
+            return;
+
         RaycastHit hit;
 
         if (Physics.Raycast(playerManager.finisherAttackRayCastStartPointTransform.position,
@@ -262,11 +285,11 @@ public class PlayerCombatManager : MonoBehaviour
         if (inputHandler.blockInput)
         {
             //Prevent blocking if is already performing another action
-            if (playerAnimatorManager.animator.GetBool("isInteracting"))
+            if (playerManager.isInteracting)
                 return;
 
             //Prevent blocking if is already blocking
-            if (playerAnimatorManager.animator.GetBool("isBlocking"))
+            if (playerManager.isBlocking)
                 return;
 
             //Set blocking to true
@@ -274,6 +297,8 @@ public class PlayerCombatManager : MonoBehaviour
 
             //Begin blocking
             playerAnimatorManager.animator.Play("BlockStart");
+
+            playerStats.OpenBlockingCollider(playerInventory);
         }
         else
         {

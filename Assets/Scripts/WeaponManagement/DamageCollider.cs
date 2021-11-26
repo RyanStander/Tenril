@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
@@ -37,8 +38,12 @@ public class DamageCollider : MonoBehaviour
         {
             CharacterStats characterStats = other.GetComponent<CharacterStats>();
             CharacterManager targetCharacterManager = other.GetComponent<CharacterManager>();
+            BlockingCollider blockingCollider = other.transform.GetComponentInChildren<BlockingCollider>();
 
-            if (targetCharacterManager!=null)
+            if (characterStats == null)
+                return;
+
+            if (targetCharacterManager != null)
             {
                 //check if the target is parrying
                 if (targetCharacterManager.isParrying)
@@ -51,10 +56,18 @@ public class DamageCollider : MonoBehaviour
 
                     return;
                 }
+                else if (blockingCollider != null && targetCharacterManager.isBlocking)
+                {
+                    LayerMask blockingLayer = 1 << 15;
+                    //Check if a the defender blocking is actually in line
+                    if (CharacterUtilityManager.CheckIfHitColliderOnLayer(characterManager.finisherAttackRayCastStartPointTransform.position, targetCharacterManager.lockOnTransform.position, blockingLayer))
+                    {
+                        float damageAfterBlock = CharacterUtilityManager.CalculateBlockingDamage(currentDamage, blockingCollider.blockingPhysicalDamageAbsorption);
+                        characterStats.TakeDamage(damageAfterBlock, true, "BlockGuard");
+                        return;
+                    }
+                }
             }
-
-            if (characterStats == null)
-                return;
             
             //check whether characterManager was assigned
             if (characterManager == null)

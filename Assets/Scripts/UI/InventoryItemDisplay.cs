@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,11 +9,19 @@ public class InventoryItemDisplay : MonoBehaviour
     public Image itemIcon;
     internal Item item;
     public string itemType;
+    public TMP_Text stackCountText;
 
-    internal void LoadValues(Item item)
+    internal void LoadValues(Item item,int stackCount)
     {
         this.item = item;
         itemIcon.sprite = item.itemIcon;
+
+        //if the item can be stacked higher than 1, display its count
+        if (item.amountPerStack > 1)
+            stackCountText.text = stackCount.ToString();
+        else
+            stackCountText.enabled = false;
+        
         //set the type of item
         if (item is WeaponItem)
             itemType = "weapon";

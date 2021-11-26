@@ -9,6 +9,12 @@ public class WeaponDisplayManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.UpdateWeaponDisplay, OnUpdateWeaponDisplay);
+        EventManager.currentManager.AddEvent(new RequestEquippedWeapons());
+    }
+
+    private void OnDisable()
+    {
+        EventManager.currentManager.Unsubscribe(EventType.UpdateWeaponDisplay, OnUpdateWeaponDisplay);
     }
 
     private void OnUpdateWeaponDisplay(EventData eventData)
@@ -16,22 +22,34 @@ public class WeaponDisplayManager : MonoBehaviour
         if (eventData is UpdateWeaponDisplay updateWeaponDisplay)
         {
             //inputs the new weapon data
-            primaryWeapon.SetValues(updateWeaponDisplay.primaryWeapon.itemIcon, updateWeaponDisplay.primaryWeapon.name);
-            secondaryWeapon.SetValues(updateWeaponDisplay.secondaryWeapon.itemIcon, updateWeaponDisplay.secondaryWeapon.name);
+            if (updateWeaponDisplay.primaryWeapon!=null)
+                primaryWeapon.SetValues(updateWeaponDisplay.primaryWeapon.itemIcon, updateWeaponDisplay.primaryWeapon.name);
+            //else
+                //Need to change value to something to display no weapon
+
+            if (updateWeaponDisplay.secondaryWeapon!=null)
+                secondaryWeapon.SetValues(updateWeaponDisplay.secondaryWeapon.itemIcon, updateWeaponDisplay.secondaryWeapon.name);
+            //else
+                //Need to change value to something to display no weapon
+
             //check what weapon is currently equipped
             if (updateWeaponDisplay.isWieldingPrimaryWeapon)
             {
                 //show primary as selected
-                primaryWeapon.SelectWeapon();
+                if (updateWeaponDisplay.primaryWeapon != null)
+                    primaryWeapon.SelectWeapon();
                 //show secondary as deselected
-                secondaryWeapon.DeselectWeapon();
+                if (updateWeaponDisplay.secondaryWeapon != null)
+                    secondaryWeapon.DeselectWeapon();
             }
             else
             {
                 //show secondary as selected
-                secondaryWeapon.SelectWeapon();
+                if (updateWeaponDisplay.secondaryWeapon != null)
+                    secondaryWeapon.SelectWeapon();
                 //show priamry as deselected
-                primaryWeapon.DeselectWeapon();
+                if (updateWeaponDisplay.primaryWeapon != null)
+                    primaryWeapon.DeselectWeapon();
             }
         }
     }
