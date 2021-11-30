@@ -10,18 +10,33 @@ public class EnemyStats : CharacterStats
     //TODO: Create traits that affect the behaviour of the AI
     //public List<Traits> enemyTraits = new List<Traits>();
 
-    
-    [Range(0, 1)] public float heavyAttackLikeliness = 0.25f; //The likeliness that an attack should be heavy
+    //The likeliness that an attack should be heavy
+    [Range(0, 1)] public float heavyAttackLikeliness = 0.25f; 
 
     [Header("Awareness Abilities")]
-    public int alertRadius = 10; //"Blind" vision range, accounts for the area around the enemy
-    //public int visionRange = 15; //Range at which the the AI can directly see
-    //[Range(0, 180)] public int fieldOfVision = 90; //Angle at which the AI can directly see
-    public float chaseRange = 15; //Range for creature chasing, should ideally be greater than the alert and vision radius
-    [Range(0, 2)] public float chaseSpeed = 1; //The chase speed of the AI
-    public float maximumAttackRange = 1.5f; //The range at which attacking should begin, should be replaced with preffered attacks
-    [Range(1,10)] public float rotationSpeed = 5; //The rotational speed for the AI
-    [Range(1, 10)] public float attackRotationSpeed = 2.5f; //The rotational speed for the AI while attacking, recommended to be lower
+    //"Blind" vision range, accounts for the area around the enemy
+    public int alertRadius = 10;
+
+    //Range for creature chasing, should ideally be greater than the alert and vision radius
+    public float chaseRange = 15;
+
+    //The chase speed of the AI
+    [Range(0, 2)] public float chaseSpeed = 1;
+
+    //Range for creature knowing where obstacles that can be hidden behind are
+    public float obstacleAwarenessRange = 15;
+
+    //The range at which attacking should begin, should be replaced with preffered attacks
+    public float maximumAttackRange = 1.5f;
+
+    //The height difference allowed for attacking
+    public float maximumAttackHeight = 0.5f;
+
+    //The rotational speed for the AI
+    [Range(1,10)] public float rotationSpeed = 5;
+
+    //The rotational speed for the AI while attacking, recommended to be lower
+    [Range(1, 10)] public float attackRotationSpeed = 2.5f;
 
     private EnemyAnimatorManager enemyAnimatorManager;
     [SerializeField] private SliderBarDisplayUI healthBar;
@@ -40,9 +55,6 @@ public class EnemyStats : CharacterStats
         //Return if already dead or invulnerable
         if (isDead || enemyAnimatorManager.animator.GetBool("isInvulnerable")) return;
 
-        if (isDead)
-            return;
-
         //change current health
         base.TakeDamage(damageAmount);
         
@@ -60,7 +72,7 @@ public class EnemyStats : CharacterStats
             currentHealth = 0;
 
             //Play the death animation
-            enemyAnimatorManager.PlayTargetAnimation("Death", true);
+            if (playAnimation) enemyAnimatorManager.animator.Play("Death");
 
             //Set to dead in stats & in animator controller
             isDead = true;

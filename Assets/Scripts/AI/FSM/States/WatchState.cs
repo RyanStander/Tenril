@@ -12,15 +12,11 @@ public class WatchState : AbstractStateFSM
     public LayerMask detectionBlockLayer = 1 << 9;
     public LayerMask characterLayer = 1 << 10;
 
-    //Head of the agent watching
-    public Transform agentHead;
-
-    //Bool for if a searchrate should be used
+    //Bool for if a search rate should be used
     public bool isUsingSearchRate;
 
     //Performance related rate at which the agent should cast search
-    [Range(0,1)]
-    public float searchRate = 0.5f;
+    [Range(0,1)] public float searchRate = 0.5f;
 
     //Helped bool for delayed searches
     private bool isWaitingToSearch = true;
@@ -94,6 +90,9 @@ public class WatchState : AbstractStateFSM
             //Check for the closest target (if any)
             CheckForClosestTarget();
         }
+
+        //Stop enemy movement in case of animation speed carry over
+        movementManager.StopMovement();
     }
 
     public override bool ExitState()
@@ -125,58 +124,8 @@ public class WatchState : AbstractStateFSM
 
     private void CheckForTarget()
     {
-        //Cast a sphere wrapping the head and check for characters within range
-        Collider[] hitColliders = Physics.OverlapSphere(agentHead.position, enemyManager.enemyStats.alertRadius, characterLayer);
-
-        //Clear the dictionary to free up space for new detected targets
-        targetsByDistance.Clear();
-
-        //Check each character for if it is within valid distance and for its faction
-        foreach (var hitCollider in hitColliders)
-        {
-            //If existing, get the vision point of the object, otherwise use hte hid collider
-            GameObject visionPoint = ExtensionMethods.FindChildWithTag(hitCollider.gameObject, "VisionTargetPoint");
-
-            //If no vision point was found, default to the hit collider
-            if(visionPoint == null)
-            {
-                visionPoint = hitCollider.gameObject;
-            }
-
-            //Raycast to first check if the target is valid (Performance friendly to raycast first)
-            if (Physics.Raycast(agentHead.position, visionPoint.transform.position - agentHead.position, out RaycastHit hit))
-            {
-                //Continue if the found object was not self
-                if(hitCollider.gameObject.transform.root != gameObject.transform.root)
-                {
-                    //If there are no objects blocking the way, move onto faction filtering
-                    if (detectionBlockLayer != (detectionBlockLayer | (1 << hit.transform.gameObject.layer)))
-                    {
-                        //DebugLogString("Colliding with character object!: " + hit.transform.gameObject);
-
-                        //Debug the line results
-                        Debug.DrawRay(agentHead.position, hit.point - agentHead.position, Color.green);
-
-                        //Check if character stats are attached, ignore otherwise
-                        if (hitCollider.gameObject.TryGetComponent(out CharacterStats stats))
-                        {
-                            //Check for enemy faction or no faction as well as for if the target is still alive
-                            //If valid, add to dictionary with unpathed & direct distance
-                            if (!stats.isDead && stats.assignedFaction != enemyManager.enemyStats.assignedFaction && stats.assignedFaction != Faction.NONE)
-                            {
-                                DebugLogString("Target Character Found: " + hitCollider.gameObject + "| Distance: " + Vector3.Distance(agentHead.position, hitCollider.gameObject.transform.position));
-                                targetsByDistance.Add(hitCollider.gameObject, Vector3.Distance(agentHead.position, hitCollider.gameObject.transform.position));
-                            }
-                        }
-                    }
-                    else
-                    {
-                        //Debug the line results
-                        Debug.DrawRay(agentHead.position, hit.point - agentHead.position, Color.red);
-                    }
-                }
-            }
-        }
+        //Fetches detectable characters and returns a list of enemies
+        targetsByDistance = enemyManager.visionManager.GetListOfVisibleEnemyTargets(visionManager.pointOfVision, enemyManager.enemyStats.alertRadius, characterLayer, detectionBlockLayer);
     }
 
     private void CheckForClosestTarget()
@@ -221,14 +170,14 @@ public class WatchState : AbstractStateFSM
     private void OnDrawGizmosSelected()
     {
         //Return if needed items are not available yet
-        if (enemyManager == null || enemyManager.enemyStats == null) return;
+        if (enemyManager == null || enemyManager.enemyStats == null || enemyManager.visionManager == null) return;
 
         //Debug the sphere of view
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(agentHead.position, enemyManager.enemyStats.alertRadius);
+        Gizmos.DrawWireSphere(visionManager.pointOfVision.position, enemyManager.enemyStats.alertRadius);
 
         //Debug the sphere of chasing
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(agentHead.position, enemyManager.enemyStats.chaseRange);
+        Gizmos.DrawWireSphere(visionManager.pointOfVision.position, enemyManager.enemyStats.chaseRange);
     }
 }

@@ -7,6 +7,6 @@ public enum StateTypeFSM
     EVALUATECOMBAT,
     ATTACK,
     DEFEND,
-    FLEE,
+    HIDE,
     DEAD
 }

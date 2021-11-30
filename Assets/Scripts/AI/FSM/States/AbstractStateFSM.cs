@@ -11,6 +11,7 @@ public abstract class AbstractStateFSM : MonoBehaviour
     protected EnemyFSM finiteStateMachine;
     protected EnemyAnimatorManager animatorManager;
     protected EnemyMovementManager movementManager;
+    protected EnemyVisionManager visionManager;
 
     //The current execution state of the state
     public ExecutionState executionState { get; protected set; }
@@ -87,6 +88,14 @@ public abstract class AbstractStateFSM : MonoBehaviour
         }
     }
 
+    public virtual void SetExecutingVisionManager(EnemyVisionManager givenManager)
+    {
+        if (givenManager != null)
+        {
+            visionManager = givenManager;
+        }
+    }
+
     public virtual void SetExecutingFSM(EnemyFSM givenFSM)
     {
         if (givenFSM != null)
@@ -96,13 +105,10 @@ public abstract class AbstractStateFSM : MonoBehaviour
     }
     #endregion End of Setters
 
-    protected private void DebugLogString(string log)
+    protected internal void DebugLogString(string log)
     {
         //Debug the log if debugging is enabled
-        if (finiteStateMachine.isDebuggingStates)
-        {
-            Debug.Log(log);
-        }
+        finiteStateMachine.DebugLogString(log);
     }
 
     public bool IsDeadLogicCheck()
@@ -110,8 +116,11 @@ public abstract class AbstractStateFSM : MonoBehaviour
         //Check that the creature is still alive, otherwise change to the death state
         if (enemyManager.enemyStats.isDead)
         {
-            //Change to dead state
-            finiteStateMachine.EnterState(StateTypeFSM.DEAD);
+            //Change to dead state unless already in the dead state
+            if(finiteStateMachine.GetCurrentState().stateType != StateTypeFSM.DEAD)
+            {
+                finiteStateMachine.EnterState(StateTypeFSM.DEAD);
+            }
             return true;
         }
         else

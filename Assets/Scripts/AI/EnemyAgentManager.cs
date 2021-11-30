@@ -32,6 +32,9 @@ public class EnemyAgentManager : CharacterManager
     //The movement manager for the NPC
     internal EnemyMovementManager movementManager;
 
+    //The vision manager for the NPC
+    internal EnemyVisionManager visionManager;
+
     //The status manager for the NPC
     internal StatusEffectManager statusManager;
 
@@ -56,6 +59,7 @@ public class EnemyAgentManager : CharacterManager
         inventory = GetComponentInChildren<EnemyInventory>();
         weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         movementManager = GetComponentInChildren<EnemyMovementManager>();
+        visionManager = GetComponentInChildren<EnemyVisionManager>();
         statusManager = GetComponentInChildren<StatusEffectManager>();
 
         //Nullcheck for missing, throw exception as this does not guarantee it will break the code, but is likely to
@@ -67,6 +71,7 @@ public class EnemyAgentManager : CharacterManager
         if (inventory == null) throw new MissingComponentException("Missing EnemyInventory on " + gameObject + "!");
         if (weaponSlotManager == null) throw new MissingComponentException("Missing WeaponSlotManager on " + gameObject + "!");
         if (movementManager == null) throw new MissingComponentException("Missing EnemyMovementManager on " + gameObject + "!");
+        if (visionManager == null) throw new MissingComponentException("Missing EnemyVisionManager on " + gameObject + "!");
         if (statusManager == null) throw new MissingComponentException("Missing StatusEffectManager on " + gameObject + "!");
     }
 
