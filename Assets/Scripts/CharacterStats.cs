@@ -14,15 +14,21 @@ public class CharacterStats : MonoBehaviour
     [SerializeField] protected float maxStamina, currentStamina;
     [SerializeField] protected float staminaRegenAmount=1,staminaRegenRate = 0.1f, staminaRegenCooldownTime = 2;
     protected float staminaCDTimeStamp, staminaRegenTimeStamp;
-    protected bool canRegen = true;
+    protected bool canRegenStamina = true;
 
     [Header("Biomancy")]
     [SerializeField] protected int MoonlightLevel = 10;
     [SerializeField] protected float maxStoredMoonlight, currentStoredMoonlight;
+    [SerializeField] protected float moonlightRegenAmount = 1, moonlightRegenRate = 0.1f, moonlightRegenCooldownTime = 2;
+    protected float moonlightCDTimeStamp, moonlightRegenTimeStamp;
+    protected bool canRegenMoonlight = true;
 
     [Header("Pyromancy")]
-    [SerializeField] protected int SunlightLevel = 10;
+    [SerializeField] protected int sunlightLevel = 10;
     [SerializeField] protected float maxStoredSunlight, currentStoredSunlight;
+    [SerializeField] protected float sunlightRegenAmount = 1, sunlightRegenRate = 0.1f, sunlightRegenCooldownTime = 2;
+    protected float sunlightCDTimeStamp, sunlightRegenTimeStamp;
+    protected bool canRegenSunlight = true;
 
     [Header("Extras")]
     public Faction assignedFaction = Faction.NONE;
@@ -90,7 +96,7 @@ public class CharacterStats : MonoBehaviour
     {
         //if the character is able to regenerate stamina and it is not at max already, restore stamina
         //uses cooldowns to manage how fast stamina regenerates
-        if (canRegen && currentStamina != maxStamina)
+        if (canRegenStamina && currentStamina != maxStamina)
         {
             if (currentStamina < maxStamina && staminaRegenTimeStamp <= Time.time)
             {
@@ -99,7 +105,7 @@ public class CharacterStats : MonoBehaviour
         }
 
         if (staminaCDTimeStamp <= Time.time)
-            canRegen = true;
+            canRegenStamina = true;
     }
 
     protected float SetMaxStaminaFromStaminaLevel()
@@ -123,7 +129,7 @@ public class CharacterStats : MonoBehaviour
     internal void PutStaminaRegenOnCooldown()
     {
         staminaCDTimeStamp = Time.time + staminaRegenCooldownTime;
-        canRegen = false;
+        canRegenStamina = false;
     }
 
     public void DrainStaminaWithCooldown(float staminaAmount)
@@ -158,10 +164,41 @@ public class CharacterStats : MonoBehaviour
         return MoonlightLevel * 10;
     }
 
+    internal void HandleMoonlightPoolRegeneration(float timeStrength)
+    {
+        //if the character is able to regenerate moonlight and it is not at max already, restore moonlight
+        //uses cooldowns to manage how fast moonlight regenerates
+        if (canRegenMoonlight && currentStoredMoonlight != maxStoredMoonlight)
+        {
+            if (currentStoredMoonlight < maxStoredMoonlight && moonlightRegenTimeStamp <= Time.time)
+            {
+                RegenerateMoonlight(timeStrength);
+            }
+        }
+
+        if (moonlightCDTimeStamp <= Time.time)
+            canRegenMoonlight = true;
+    }
+
+    protected virtual void RegenerateMoonlight(float timeStrength)
+    {
+        float amountToRegen = moonlightRegenAmount * timeStrength;
+        if (amountToRegen<0)
+            amountToRegen = 0;
+        currentStoredMoonlight += amountToRegen;
+        moonlightRegenTimeStamp = Time.time + moonlightRegenRate;
+    }
+
+    internal void PutMoonlightRegenOnCooldown()
+    {
+        moonlightCDTimeStamp = Time.time + moonlightRegenCooldownTime;
+        canRegenMoonlight = false;
+    }
+
     protected float SetMaxStoredSunlightFromSunlightLevel()
     {
         //calculates the players magicka based on magicka level
-        return SunlightLevel * 10;
+        return sunlightLevel * 10;
     }
 
     public virtual void ConsumeStoredMoonlight(float cost)
@@ -172,6 +209,37 @@ public class CharacterStats : MonoBehaviour
     public virtual void ConsumeStoredSunlight(float cost)
     {
         currentStoredSunlight -= cost;
+    }
+
+    internal void HandleSunlightPoolRegeneration(float timeStrength)
+    {
+        //if the character is able to regenerate sunlight and it is not at max already, restore sunlight
+        //uses cooldowns to manage how fast sunlight regenerates
+        if (canRegenSunlight && currentStoredSunlight != maxStoredSunlight)
+        {
+            if (currentStoredSunlight < maxStoredSunlight && sunlightRegenTimeStamp <= Time.time)
+            {
+                RegenerateSunlight(timeStrength);
+            }
+        }
+
+        if (sunlightCDTimeStamp <= Time.time)
+            canRegenSunlight = true;
+    }
+
+    protected virtual void RegenerateSunlight(float timeStrength)
+    {
+        float amountToRegen = sunlightRegenAmount * timeStrength;
+        if (amountToRegen < 0)
+            amountToRegen = 0;
+        currentStoredSunlight += amountToRegen;
+        sunlightRegenTimeStamp = Time.time + sunlightRegenRate;
+    }
+
+    internal void PutSunlightRegenOnCooldown()
+    {
+        sunlightCDTimeStamp = Time.time + sunlightRegenCooldownTime;
+        canRegenSunlight = false;
     }
 
     #endregion

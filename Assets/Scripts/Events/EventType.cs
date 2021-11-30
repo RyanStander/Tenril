@@ -47,5 +47,8 @@ public enum EventType
     SwapToMenuCamera,
     SwapToNPCCamera,
     SwapToLeftLockOnTarget,
-    SwapToRightLockOnTarget
+    SwapToRightLockOnTarget,
+
+    //Misc
+    SendTimeStrength
 }

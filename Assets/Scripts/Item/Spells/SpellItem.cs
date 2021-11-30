@@ -47,9 +47,11 @@ public class SpellItem : Item
         {
             case SpellType.biomancy:
                 characterStats.ConsumeStoredMoonlight(spellCost);
+                characterStats.PutMoonlightRegenOnCooldown();
                 break;
             case SpellType.pyromancy:
                 characterStats.ConsumeStoredSunlight(spellCost);
+                characterStats.PutSunlightRegenOnCooldown();
                 break;
         }
 

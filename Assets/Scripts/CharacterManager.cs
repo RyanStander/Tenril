@@ -17,4 +17,6 @@ public class CharacterManager : MonoBehaviour
     public float pendingFinisherDamage;
     [Tooltip("Finisher raycast position (raycasts a line out to check if it hits any finisherDamagerColliders) This should be placed a bit in front of the character's chest.")] 
     public Transform finisherAttackRayCastStartPointTransform;
+    //The value used for determinging how the magicka is regenerated
+    protected float timeStrength;
 }

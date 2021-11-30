@@ -102,6 +102,22 @@ public class PlayerStats : CharacterStats
         EventManager.currentManager.AddEvent(new UpdatePlayerStamina(maxStamina, currentStamina));
     }
 
+    protected override void RegenerateMoonlight(float timeStrength)
+    {
+        base.RegenerateMoonlight(timeStrength);
+
+        //update the current moonlight on the moonlight bar
+        EventManager.currentManager.AddEvent(new UpdatePlayerMoonlight(maxStoredMoonlight, currentStoredMoonlight));
+    }
+
+    protected override void RegenerateSunlight(float timeStrength)
+    {
+        base.RegenerateSunlight(timeStrength);
+
+        //update the current sunlight on the sunlight bar
+        EventManager.currentManager.AddEvent(new UpdatePlayerSunlight(maxStoredSunlight, currentStoredSunlight));
+    }
+
     #endregion
 
     #region Spellcasting
@@ -119,7 +135,7 @@ public class PlayerStats : CharacterStats
         base.ConsumeStoredSunlight(cost);
 
         //update the current sunlight on the sunlight bar
-        EventManager.currentManager.AddEvent(new UpdatePlayerHealth(maxStoredSunlight, currentStoredSunlight));
+        EventManager.currentManager.AddEvent(new UpdatePlayerSunlight(maxStoredSunlight, currentStoredSunlight));
     }
 
     #endregion

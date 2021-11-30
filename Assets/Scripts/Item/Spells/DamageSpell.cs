@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Spells/Damage Spell")]
+[CreateAssetMenu(menuName = "Items/Spells/Damage Spell")]
 public class DamageSpell : SpellItem
 {
     [Tooltip("The amount of damage done")]
