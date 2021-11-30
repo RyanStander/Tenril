@@ -350,3 +350,16 @@ public class SwapToRightLockOnTarget : EventData
     }
 }
 #endregion
+
+#region Misc
+
+public class SendTimeStrength : EventData
+{
+    public readonly float timeStrength;
+    public SendTimeStrength(float timeStrength) : base(EventType.SendTimeStrength)
+    {
+        this.timeStrength = timeStrength;
+    }
+}
+
+#endregion

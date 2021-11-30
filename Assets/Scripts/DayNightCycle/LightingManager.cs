@@ -9,8 +9,11 @@ public class LightingManager : MonoBehaviour
     [SerializeField]private Light directionalLight;
     [SerializeField] private LightingPreset preset;
     [SerializeField,Range(0,1)] private float dayNightSpeed=1;
+    [SerializeField, Range(-360, 360)] private float sunAngle = -170;
     [Header("References")]
     [SerializeField, Range(0,24)] private float timeOfDay;
+    [SerializeField,Tooltip("used to determine magic regeneration based on time percent")]
+    private AnimationCurve timeCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.5f, 1), new Keyframe(1,0));
 
     private void Update()
     {
@@ -32,15 +35,28 @@ public class LightingManager : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        EventManager.currentManager.AddEvent(new SendTimeStrength(timeCurve.Evaluate(timeOfDay / 24f)));
+    }
+
     private void UpdateLighting(float timePercent)
     {
         RenderSettings.ambientLight = preset.ambientColor.Evaluate(timePercent);
         RenderSettings.fogColor = preset.fogColor.Evaluate(timePercent);
-
         if (directionalLight!=null)
         {
             directionalLight.color = preset.directionalColor.Evaluate(timePercent);
-            directionalLight.transform.localRotation = Quaternion.Euler(new Vector3((timePercent*360)-90,-170,0));
+            //-90 to 0 should not rotate -180 to -90
+            float xRotation = (timePercent * 360)-90;
+            //if between 0 and -90
+            if (xRotation<0 && xRotation>=-90)
+                xRotation = 0;
+            //else if between -90 and -180
+            else if (xRotation<270 && xRotation>180)
+                xRotation = -180;
+            
+            directionalLight.transform.localRotation = Quaternion.Euler(new Vector3(xRotation, sunAngle, 0));
         }
     }
     private void OnValidate()

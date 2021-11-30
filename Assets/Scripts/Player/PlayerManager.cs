@@ -46,6 +46,7 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Subscribe(EventType.ShowWeapon, OnShowWeapon);
         EventManager.currentManager.Subscribe(EventType.DisplayQuickslotItem, OnDisplayQuickslotItem);
         EventManager.currentManager.Subscribe(EventType.HideQuickslotItem, OnHideQuickslotItem);
+        EventManager.currentManager.Subscribe(EventType.SendTimeStrength, OnReceiveTimeStrength);
     }
 
     private void OnDisable()
@@ -57,6 +58,7 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Unsubscribe(EventType.ShowWeapon, OnShowWeapon);
         EventManager.currentManager.Unsubscribe(EventType.DisplayQuickslotItem, OnDisplayQuickslotItem);
         EventManager.currentManager.Unsubscribe(EventType.HideQuickslotItem, OnHideQuickslotItem);
+        EventManager.currentManager.Unsubscribe(EventType.SendTimeStrength, OnReceiveTimeStrength);
     }
 
     void Awake()
@@ -125,6 +127,8 @@ public class PlayerManager : CharacterManager
         playerLocomotion.HandleLocomotion(delta);
 
         playerStats.HandleStaminaRegeneration();
+        playerStats.HandleSunlightPoolRegeneration(timeStrength);
+        playerStats.HandleMoonlightPoolRegeneration(-(timeStrength - 1));
     }
 
     private void LateUpdate()
@@ -305,6 +309,18 @@ public class PlayerManager : CharacterManager
         else
         {
             throw new System.Exception("Error: EventData class with EventType.ShowWeapon was received but is not of class ShowWeapon.");
+        }
+    }
+
+    private void OnReceiveTimeStrength(EventData eventData)
+    {
+        if (eventData is SendTimeStrength sendTimeStrength)
+        {
+            timeStrength = sendTimeStrength.timeStrength;
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.SendTimeStrength was received but is not of class SendTimeStrength.");
         }
     }
     #endregion
