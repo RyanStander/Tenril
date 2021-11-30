@@ -8,5 +8,6 @@ public enum StateTypeFSM
     ATTACK,
     DEFEND,
     HIDE,
+    HEALING,
     DEAD
 }
