@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterManager : MonoBehaviour
 {
     public Transform lockOnTransform;
-    protected WeaponSlotManager weaponSlotManager;
+    public WeaponSlotManager weaponSlotManager;
     
     public bool isParrying, canBeRiposted, isBlocking;
 

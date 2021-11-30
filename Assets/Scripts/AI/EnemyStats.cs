@@ -87,5 +87,8 @@ public class EnemyStats : CharacterStats
 
         //change current health
         base.RegainHealth(regainAmount);
+
+        //update health display on the healthbar
+        healthBar.SetCurrentValue(currentHealth);
     }
 }
