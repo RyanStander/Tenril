@@ -185,7 +185,7 @@ public class PlayerCombatManager : MonoBehaviour
         if (playerInventory.equippedWeapon.canParry)
         {
             //perform parry action
-            PerformParryAction();
+            ParryAction();
         }
     }
 
@@ -263,13 +263,32 @@ public class PlayerCombatManager : MonoBehaviour
 
     #region Defending
 
-    internal void HandleDefending()
+    /// <summary>
+    /// Manages special abilities such as blocking or aiming
+    /// </summary>
+    internal void HandleWeaponSpecificAbilities()
     {
         HandleParryAction();
-        BlockAction();
+
+        switch (playerInventory.equippedWeapon.weaponType)
+        {
+            case WeaponItem.WeaponType.meleeWeapon:
+                BlockAction();
+                break;
+            case WeaponItem.WeaponType.rangedWeapon:
+                AimAction();
+                break;
+            case WeaponItem.WeaponType.castingWeapon:
+                break;
+            default:
+                break;
+        }
+
+        
+
     }
 
-    private void PerformParryAction()
+    private void ParryAction()
     {
         if (inputHandler.parryInput)
         {
@@ -307,5 +326,24 @@ public class PlayerCombatManager : MonoBehaviour
         }
     }
 
+    private void AimAction()
+    {
+        if (inputHandler.blockInput)
+        {
+            //Prevent aiming if is already performing another action
+            if (playerManager.isInteracting)
+                return;
+
+            //Prevent aiming if is already aiming
+            if (playerManager.isAiming)
+                return;
+
+            playerAnimatorManager.animator.SetBool("isAiming", true);
+        }
+        else
+        {
+            playerAnimatorManager.animator.SetBool("isAiming", false);
+        }
+    }
     #endregion
 }

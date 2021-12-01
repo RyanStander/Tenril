@@ -56,7 +56,7 @@ public class WeaponHolderSlot : MonoBehaviour
         }
     }
 
-    public void LoadWeaponModel(WeaponItem weaponItem,bool isSecondaryWeapon)
+    public void LoadWeaponModel(WeaponItem weaponItem,bool isLeftWeapon)
     {
         //Destroy the previous weapon model
         UnloadWeaponAndDestroy();
@@ -70,15 +70,15 @@ public class WeaponHolderSlot : MonoBehaviour
 
         //Create a new weapon model
         GameObject model=null;
-        if (isSecondaryWeapon)
+        if (isLeftWeapon)
         {
-            if (weaponItem.secondaryWeaponModelPrefab != null)
-                model = Instantiate(weaponItem.secondaryWeaponModelPrefab);
+            if (weaponItem.leftWeaponModelPrefab != null)
+                model = Instantiate(weaponItem.leftWeaponModelPrefab);
         }
         else
         {
-            if (weaponItem.primaryWeaponModelPrefab!=null)
-                model = Instantiate(weaponItem.primaryWeaponModelPrefab);
+            if (weaponItem.rightWeaponModelPrefab!=null)
+                model = Instantiate(weaponItem.rightWeaponModelPrefab);
         }
         
         if (model != null)

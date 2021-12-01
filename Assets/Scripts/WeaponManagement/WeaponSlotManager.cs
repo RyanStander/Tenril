@@ -82,7 +82,7 @@ public class WeaponSlotManager : MonoBehaviour
             leftHandSlot.currentWeaponModel.SetActive(true);
     }
 
-    public void LoadWeaponOnSlot(WeaponItem weaponItem, bool hasSecondaryWeapon, WeaponItem unequippedWeapon = null)
+    public void LoadWeaponOnSlot(WeaponItem weaponItem, WeaponItem unequippedWeapon = null)
     {
         //remove all previous weapons and sheaths displayed
         if (leftHandSlot != null)
@@ -109,8 +109,8 @@ public class WeaponSlotManager : MonoBehaviour
             rightSideSlot.UnloadSheathAndDestroy();
         }
 
-        //Check if there is a secondary weapon, such as dual daggers to equip
-        if (hasSecondaryWeapon)
+        //Check if there is a left weapon, such as dual daggers to equip
+        if (weaponItem.leftWeaponModelPrefab!=null)
         {
             //set the current weapon in the left hand slot equal to the weapon item
             leftHandSlot.currentWeapon = weaponItem;
@@ -119,6 +119,17 @@ public class WeaponSlotManager : MonoBehaviour
             //if successful, load the damage collider
             if (leftHandSlot != null)
                 LoadLeftWeaponDamageCollider();
+        }
+
+        if (weaponItem.rightWeaponModelPrefab!=null)
+        {
+            //set the current weapon in the right hand slot equal to the weapon item
+            rightHandSlot.currentWeapon = weaponItem;
+            //load the primary weapon of the weapon item to the left hand slot
+            rightHandSlot.LoadWeaponModel(weaponItem, false);
+            //if successful, load the damage collider
+            if (rightHandSlot != null)
+                LoadRightWeaponDamageCollider();
         }
 
         #region Weapon Idle Anim           
@@ -138,14 +149,6 @@ public class WeaponSlotManager : MonoBehaviour
             return;
         }
         #endregion
-
-        //set the current weapon in the right hand slot equal to the weapon item
-        rightHandSlot.currentWeapon = weaponItem;
-        //load the primary weapon of the weapon item to the left hand slot
-        rightHandSlot.LoadWeaponModel(weaponItem, false);
-        //if successful, load the damage collider
-        if (rightHandSlot != null)
-            LoadRightWeaponDamageCollider();
 
         //loads the sheaths of the weapon currently wielded
         LoadWeaponSheath(weaponItem);
