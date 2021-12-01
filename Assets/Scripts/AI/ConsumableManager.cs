@@ -4,18 +4,16 @@ using UnityEngine;
 
 public abstract class ConsumableManager : MonoBehaviour
 {
-    protected AnimatorManager animatorManager;
-    protected WeaponSlotManager weaponManager;
+    protected CharacterManager characterManager;
 
     virtual internal void Awake()
     {
-        animatorManager = GetComponent<AnimatorManager>();
-        weaponManager = GetComponent<WeaponSlotManager>();
+        characterManager = GetComponent<CharacterManager>();
     }
 
-    public void DisplayItem(WeaponSlotManager weaponSlotManager, GameObject displayObject)
+    public void DisplayItem(GameObject displayObject)
     {
-        weaponSlotManager.DisplayObjectInHand(displayObject);
+        characterManager.weaponSlotManager.DisplayObjectInHand(displayObject);
     }
 
     internal void HideItem(WeaponSlotManager weaponSlotManager)

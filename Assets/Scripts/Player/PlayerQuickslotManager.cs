@@ -7,6 +7,7 @@ public class PlayerQuickslotManager : ConsumableManager
     private PlayerInventory playerInventory;
     private PlayerStats playerStats;
     private InputHandler inputHandler;
+    protected AnimatorManager animatorManager;
 
     override internal void Awake()
     {
@@ -16,6 +17,7 @@ public class PlayerQuickslotManager : ConsumableManager
         inputHandler = GetComponent<InputHandler>();
         playerInventory = GetComponent<PlayerInventory>();
         playerStats = GetComponent<PlayerStats>();
+        animatorManager = GetComponent<AnimatorManager>();
     }
 
     internal void HandleQuickslotInputs()
@@ -95,7 +97,7 @@ public class PlayerQuickslotManager : ConsumableManager
             playerInventory.consumableItemInUse = playerInventory.currentlySelectedQuickSlotItem;
 
             //attempt using the item
-            playerInventory.consumableItemInUse.AttemptToUseItem(animatorManager, weaponManager, this, playerStats);
+            playerInventory.consumableItemInUse.AttemptToUseItem(animatorManager, this, playerStats);
             EventManager.currentManager.AddEvent(new RemoveItemFromInventory(playerInventory.consumableItemInUse));
 
             //Update the ui display

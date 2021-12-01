@@ -21,7 +21,7 @@ public class ConsumableItem : Item
     public string quickslotItemDescription;
 
     protected GameObject instantiatedItemFX;
-    public virtual void AttemptToUseItem(AnimatorManager animatorManager, WeaponSlotManager weaponManager, ConsumableManager consumableManager, CharacterStats characterStats)
+    public virtual void AttemptToUseItem(AnimatorManager animatorManager, ConsumableManager consumableManager, CharacterStats characterStats)
     {
         Debug.Log("Attempting to use item!");
 
@@ -29,7 +29,7 @@ public class ConsumableItem : Item
         animatorManager.PlayTargetAnimation(quickslotUseAnimation, true);
 
         //Hide the current weapon and display the item
-        consumableManager.DisplayItem(weaponManager, consumablePrefab);
+        consumableManager.DisplayItem(consumablePrefab);
     }
 
     public virtual void SuccessfullyUsedItem(AnimatorManager animatorManager, CharacterStats characterStats)

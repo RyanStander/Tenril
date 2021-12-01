@@ -221,7 +221,7 @@ public class PlayerManager : CharacterManager
                 playerInventory.consumableItemInUse = quickslotItem;
 
                 //attempt using item
-                quickslotItem.AttemptToUseItem(playerAnimatorManager, weaponSlotManager, playerQuickslotManager, playerStats);
+                quickslotItem.AttemptToUseItem(playerAnimatorManager, playerQuickslotManager, playerStats);
             }
         }
         else
