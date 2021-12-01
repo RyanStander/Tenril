@@ -69,11 +69,17 @@ public class WeaponHolderSlot : MonoBehaviour
         }
 
         //Create a new weapon model
-        GameObject model;
+        GameObject model=null;
         if (isSecondaryWeapon)
-            model = Instantiate(weaponItem.secondaryWeaponModelPrefab);
+        {
+            if (weaponItem.secondaryWeaponModelPrefab != null)
+                model = Instantiate(weaponItem.secondaryWeaponModelPrefab);
+        }
         else
-            model = Instantiate(weaponItem.primaryWeaponModelPrefab);
+        {
+            if (weaponItem.primaryWeaponModelPrefab!=null)
+                model = Instantiate(weaponItem.primaryWeaponModelPrefab);
+        }
         
         if (model != null)
         {

@@ -174,9 +174,9 @@ public class WeaponSlotManager : MonoBehaviour
 
     private void LoadRightWeaponDamageCollider()
     {
-        //if there is no right hand slot and there is no currently instantiated
+        //if there is no right hand slot or there is no currently instantiated
         //right weapon, return
-        if (rightHandSlot == null && rightHandSlot.currentWeaponModel == null)
+        if (rightHandSlot == null || rightHandSlot.currentWeaponModel == null)
             return;
 
         //get the value of the damage collider
