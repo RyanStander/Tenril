@@ -6,9 +6,9 @@ using UnityEngine;
 public class CurePoisonPotion : PotionItem
 {
     [SerializeField] private StatusEffect poisonStatusEffect;
-    public override void AttemptToUseItem(AnimatorManager animatorManager, CharacterStats characterStats)
+    public override void AttemptToUseItem(AnimatorManager animatorManager, WeaponSlotManager weaponManager, ConsumableManager consumableManager, CharacterStats characterStats)
     {
-        base.AttemptToUseItem(animatorManager, characterStats);
+        base.AttemptToUseItem(animatorManager, weaponManager, consumableManager, characterStats);
     }
 
     public override void SuccessfullyUsedItem(AnimatorManager animatorManager, CharacterStats characterStats)

@@ -57,7 +57,7 @@ public class HealingState : AbstractStateFSM
         if (enemyManager.consumableManager.SelectHealingItem())
         {
             //Attempt to use the item
-            enemyManager.inventory.currentConsumable.AttemptToUseItem(enemyManager);
+            enemyManager.inventory.consumableItemInUse.AttemptToUseItem(enemyManager.animatorManager, enemyManager.weaponSlotManager, enemyManager.consumableManager, enemyManager.enemyStats);
         }
         else
         {

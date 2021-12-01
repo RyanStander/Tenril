@@ -25,7 +25,7 @@ public class InventoryItemDisplay : MonoBehaviour
         //set the type of item
         if (item is WeaponItem)
             itemType = "weapon";
-        if (item is QuickslotItem)
+        if (item is ConsumableItem)
             itemType = "quickslot";
     }
 
@@ -48,7 +48,7 @@ public class InventoryItemDisplay : MonoBehaviour
 
     public void AddQuickslotItem()
     {
-        if (item is QuickslotItem quickslotItem)
+        if (item is ConsumableItem quickslotItem)
             EventManager.currentManager.AddEvent(new AddQuickslotItem(quickslotItem));
         else
             Debug.LogWarning("Item is not a quickslot item");
@@ -56,7 +56,7 @@ public class InventoryItemDisplay : MonoBehaviour
 
     public void RemoveQuickslotItem()
     {
-        if (item is QuickslotItem quickslotItem)
+        if (item is ConsumableItem quickslotItem)
             EventManager.currentManager.AddEvent(new RemoveQuickslotItem(quickslotItem));
         else
             Debug.LogWarning("Item is not a quickslot item");

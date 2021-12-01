@@ -139,8 +139,8 @@ public class ShowWeapon : EventData
 //Event that informs subscribers of a quickslot is being added
 public class AddQuickslotItem : EventData
 {
-    public readonly QuickslotItem quickslotItem;
-    public AddQuickslotItem(QuickslotItem quickslotItem) : base(EventType.AddQuickslotItem)
+    public readonly ConsumableItem quickslotItem;
+    public AddQuickslotItem(ConsumableItem quickslotItem) : base(EventType.AddQuickslotItem)
     {
         this.quickslotItem = quickslotItem;
     }
@@ -149,8 +149,8 @@ public class AddQuickslotItem : EventData
 //Event that informs subscribers of a quickslot is being removed
 public class RemoveQuickslotItem : EventData
 {
-    public readonly QuickslotItem quickslotItem;
-    public RemoveQuickslotItem(QuickslotItem quickslotItem) : base(EventType.RemoveQuickslotItem)
+    public readonly ConsumableItem quickslotItem;
+    public RemoveQuickslotItem(ConsumableItem quickslotItem) : base(EventType.RemoveQuickslotItem)
     {
         this.quickslotItem = quickslotItem;
     }

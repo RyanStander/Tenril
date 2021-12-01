@@ -215,13 +215,13 @@ public class PlayerManager : CharacterManager
     {
         if (eventData is UseItem useItem)
         {
-            if (useItem.item is QuickslotItem quickslotItem)
+            if (useItem.item is ConsumableItem quickslotItem)
             {
                 //set item to the current quick slot
-                playerInventory.quickslotItemInUse = quickslotItem;
+                playerInventory.consumableItemInUse = quickslotItem;
 
                 //attempt using item
-                quickslotItem.AttemptToUseItem(playerAnimatorManager, playerStats);
+                quickslotItem.AttemptToUseItem(playerAnimatorManager, weaponSlotManager, playerQuickslotManager, playerStats);
             }
         }
         else

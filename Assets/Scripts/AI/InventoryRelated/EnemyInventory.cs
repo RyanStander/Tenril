@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class EnemyInventory : CharacterInventory
 {
-    //The current consumable selected by the enemy
-    public EnemyConsumable currentConsumable = null;
-
     public void LoadEquippedWeapons(WeaponSlotManager weaponSlotManager)
     {
         //if it has a secondary weapon

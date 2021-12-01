@@ -16,4 +16,7 @@ public class CharacterInventory : MonoBehaviour
 
     [Header("Backpack")]
     public List<ItemInventory> inventory = new List<ItemInventory>();
+
+    //this is the item referenced when actually using an item (for players this is the quickslot)
+    public ConsumableItem consumableItemInUse;
 }
