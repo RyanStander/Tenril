@@ -13,4 +13,7 @@ public class CharacterInventory : MonoBehaviour
 
     [Tooltip("The 2 weapons that a player can swap between")]
     public WeaponItem primaryWeapon, secondaryWeapon;
+
+    [Header("Backpack")]
+    public List<ItemInventory> inventory = new List<ItemInventory>();
 }

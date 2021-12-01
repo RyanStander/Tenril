@@ -17,9 +17,6 @@ public class PlayerInventory : CharacterInventory
     //this is the item referenced when actually using a quickslot item
     public QuickslotItem quickslotItemInUse;
 
-    [Header("Backpack")]
-    public List<ItemInventory> inventory= new List<ItemInventory>();
-
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.DropItem, OnDropItem);
@@ -460,16 +457,4 @@ public class PlayerInventory : CharacterInventory
 
     #endregion
 
-}
-[System.Serializable]
-public class ItemInventory
-{
-    /// <summary>
-    /// The item in the inventory slot
-    /// </summary>
-    public Item item;
-    /// <summary>
-    /// How many of the item is in the stack
-    /// </summary>
-    public int itemStackCount;
 }

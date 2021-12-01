@@ -53,12 +53,19 @@ public class HealingState : AbstractStateFSM
         //Return if already running an animation
         if (animatorManager.animator.GetBool("isInteracting")) return;
 
-        //TODO: Check for item availability, for now assume infinite charges
         //Check for available charges and return true if applicable
-        if (enemyManager.inventory.SelectHealingItem())
+        if (enemyManager.consumableManager.SelectHealingItem())
         {
             //Attempt to use the item
             enemyManager.inventory.currentConsumable.AttemptToUseItem(enemyManager);
+        }
+        else
+        {
+            //Mark healing as not possible
+            enemyManager.enemyStats.canHeal = false;
+
+            //Change states to evaluation to re-assess the situation
+            finiteStateMachine.EnterState(StateTypeFSM.EVALUATECOMBAT);
         }
 
         //TODO: Lower item availability

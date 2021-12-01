@@ -16,6 +16,7 @@ public class EnemyConsumable : Item
     public GameObject consumablePrefab;
 
     protected GameObject instantiatedItemFX;
+
     public virtual void AttemptToUseItem(EnemyAgentManager enemyManager)
     {
         Debug.Log("Attempting to use item!");

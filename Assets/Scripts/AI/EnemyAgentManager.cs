@@ -39,7 +39,7 @@ public class EnemyAgentManager : CharacterManager
     internal StatusEffectManager statusManager;
 
     //The consumable manager for the NPC
-    internal ConsumableManager consumableManager;
+    internal EnemyConsumableManager consumableManager;
 
     //Helper bool to prevent animations/actions from occuring until an animation is completed
     internal bool isInteracting;
@@ -64,7 +64,7 @@ public class EnemyAgentManager : CharacterManager
         movementManager = GetComponentInChildren<EnemyMovementManager>();
         visionManager = GetComponentInChildren<EnemyVisionManager>();
         statusManager = GetComponentInChildren<StatusEffectManager>();
-        consumableManager = GetComponentInChildren<ConsumableManager>();
+        consumableManager = GetComponentInChildren<EnemyConsumableManager>();
 
         //Nullcheck for missing, throw exception as this does not guarantee it will break the code, but is likely to
         if (enemyStats == null) throw new MissingComponentException("Missing EnemyStats on " + gameObject + "!");
