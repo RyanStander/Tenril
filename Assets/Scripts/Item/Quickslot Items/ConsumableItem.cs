@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ConsumableItem : Item
@@ -23,7 +21,7 @@ public class ConsumableItem : Item
     protected GameObject instantiatedItemFX;
     public virtual void AttemptToUseItem(AnimatorManager animatorManager, ConsumableManager consumableManager, CharacterStats characterStats)
     {
-        Debug.Log("Attempting to use item!");
+        //Debug.Log("Attempting to use item!");
 
         //Play the animation of using the item
         animatorManager.PlayTargetAnimation(quickslotUseAnimation, true);
@@ -34,7 +32,7 @@ public class ConsumableItem : Item
 
     public virtual void SuccessfullyUsedItem(AnimatorManager animatorManager, CharacterStats characterStats)
     {
-        Debug.Log("item used successfuly");
+        //Debug.Log("item used successfuly");
 
         //Create the successful item use effect
         if (itemUsedFX != null)

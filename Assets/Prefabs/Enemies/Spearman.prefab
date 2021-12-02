@@ -1319,7 +1319,8 @@ MonoBehaviour:
   isWieldingPrimaryWeapon: 1
   primaryWeapon: {fileID: 11400000, guid: 293718bd1735afa4f9986ddcccb93a41, type: 2}
   secondaryWeapon: {fileID: 11400000, guid: 293718bd1735afa4f9986ddcccb93a41, type: 2}
-  temporaryHealingPotion: {fileID: 0}
+  inventory: []
+  consumableItemInUse: {fileID: 0}
 --- !u!114 &6051805373545155770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1416,6 +1417,9 @@ MonoBehaviour:
   maximumAttackHeight: 0.5
   rotationSpeed: 2.5
   attackRotationSpeed: 2.5
+  healingThreshold: 0.5
+  canHeal: 1
+  healRange: 5
   healthBar: {fileID: 3712933954655172088}
 --- !u!195 &318429253
 NavMeshAgent:

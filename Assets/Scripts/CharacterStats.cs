@@ -74,6 +74,16 @@ public class CharacterStats : MonoBehaviour
 
     }
 
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
+    public float GetMaximumHealth()
+    {
+        return maxHealth;
+    }
+
     #endregion
 
     #region Stamina

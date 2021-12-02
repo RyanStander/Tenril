@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -117,6 +113,19 @@ public class EnemyAgentManager : CharacterManager
                     isInteracting = false;
                 }
             }
+        }
+    }
+
+    public bool ShouldTryHealing()
+    {
+        //Return true if health is below threshold
+        if (enemyStats.GetCurrentHealth() <= (enemyStats.GetMaximumHealth() * enemyStats.healingThreshold) && enemyStats.canHeal)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 //Script originally created by Ryan Stander
 //Adapted and built into the FSM by Jacques Venter
@@ -40,7 +37,7 @@ public class EnemyStats : CharacterStats
     [Range(1, 10)] public float attackRotationSpeed = 2.5f;
 
     //Health threshold at which an enemy will want to attempt to heal
-    public float healingThreshold = 0.1f;
+    public float healingThreshold = 0.15f;
 
     //Helper bool to track if healing is possible
     public bool canHeal = true;

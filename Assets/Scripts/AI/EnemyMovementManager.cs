@@ -1,10 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.Rendering;
 
 //Meant to help drive movement in an enemy
 public class EnemyMovementManager : MonoBehaviour

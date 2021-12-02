@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class HealingState : AbstractStateFSM
 {
     public override void OnEnable()
@@ -30,21 +26,7 @@ public class HealingState : AbstractStateFSM
         if (enteredState)
         {
             DebugLogString("UPDATING HEALING STATE");
-
-            if(animatorManager.animator.GetBool("isInteracting"))
-            {
-                Debug.Log("Im busy healing");
-            }
-            else
-            {
-                Debug.Log("I'm not busy healing");
-            }
-
-            //For now and for testing, wait on a key input
-            if (Input.GetKeyUp(KeyCode.Space))
-            {
-                HealingLogic();
-            }
+            HealingLogic();
         }
     }
 
@@ -53,8 +35,14 @@ public class HealingState : AbstractStateFSM
         //Return if already running an animation
         if (animatorManager.animator.GetBool("isInteracting")) return;
 
+        //Check if creature should stop healing
+        if(!enemyManager.ShouldTryHealing())
+        {
+            //Change states to evaluation to re-assess the situation
+            finiteStateMachine.EnterState(StateTypeFSM.EVALUATECOMBAT);
+        }
         //Check for available charges and return true if applicable
-        if (enemyManager.consumableManager.SelectHealingItem())
+        else if (enemyManager.consumableManager.SelectHealingItem())
         {
             //Attempt to use the item
             enemyManager.inventory.consumableItemInUse.AttemptToUseItem(enemyManager.animatorManager, enemyManager.consumableManager, enemyManager.enemyStats);
@@ -67,9 +55,6 @@ public class HealingState : AbstractStateFSM
             //Change states to evaluation to re-assess the situation
             finiteStateMachine.EnterState(StateTypeFSM.EVALUATECOMBAT);
         }
-
-        //TODO: Lower item availability
-        //Reduce the number of charges for the available healing item (if applicable)
     }
 
     public override bool ExitState()
