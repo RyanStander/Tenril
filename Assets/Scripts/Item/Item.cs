@@ -12,6 +12,7 @@ public class Item : ScriptableObject
     public string itemName;
     [Tooltip("The maximum amount of the item that can be carried")]
     public int amountPerStack=1;
+    public int ItemValue;
 
     //Create a UID if it does not already exist
     private void OnValidate()

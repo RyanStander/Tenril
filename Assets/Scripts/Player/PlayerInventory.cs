@@ -212,6 +212,20 @@ public class PlayerInventory : CharacterInventory
         return totalItemCount;
     }
 
+    /// <summary>
+    /// Checks if the equipped ammunition has any arrows left
+    /// </summary>
+    public bool HasAmmo()
+    {
+        if (equippedAmmo == null)
+            return false;
+
+        if (FindAllInstancesOfItemInInventory(equippedAmmo) != null)
+            return true;
+
+        return false;
+    }
+
     #endregion
 
     #region Weapon Management

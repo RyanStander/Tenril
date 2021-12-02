@@ -36,7 +36,7 @@ public class PlayerManager : CharacterManager
     [SerializeField] private CapsuleCollider characterCollider;
     [SerializeField] private CapsuleCollider characterCollisionBlocker;
 
-    public bool canDoCombo, isInteracting, isAiming;
+    public bool canDoCombo, isInteracting, isAiming,isHoldingArrow;
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.EquipWeapon, OnEquipWeapon);
@@ -187,6 +187,7 @@ public class PlayerManager : CharacterManager
         isInteracting = playerAnimatorManager.animator.GetBool("isInteracting");
         isBlocking = playerAnimatorManager.animator.GetBool("isBlocking");
         isAiming = playerAnimatorManager.animator.GetBool("isAiming");
+        isHoldingArrow = playerAnimatorManager.animator.GetBool("isHoldingArrow");
     }
 
     #region onEvents

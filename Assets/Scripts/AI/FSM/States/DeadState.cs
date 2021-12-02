@@ -38,8 +38,12 @@ public class DeadState : AbstractStateFSM
         }
 
         //Check if any of the death animations are playing, otherwise force the dead animation
-        if(!animatorManager.animator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Death") && !animatorManager.animator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Dead"))
+        if(!animatorManager.animator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Death") && !animatorManager.animator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Dead") && !animatorManager.animator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Riposted"))
         {
+            if (animatorManager.animator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Riposted"))
+                return;
+
+            Debug.Log("Going bye bye");
             //Play the death animation
             enemyManager.animatorManager.animator.Play("Dead");
         }
