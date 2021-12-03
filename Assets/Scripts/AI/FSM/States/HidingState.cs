@@ -30,20 +30,14 @@ public class HidingState : AbstractStateFSM
     //The frequency at which calculations should be made
     [Range(0.01f, 1f)] public float updateFrequency = 0.25f;
 
-    //List for colliders that are found as potential hiding targets
-    private List<Collider> validObstacles = new List<Collider>();
-
     //Courotine for movement logic
     private Coroutine hidingCourotine;
-
-    //Dictionary for obstacles by distance, kept in for documentation
-    private Dictionary<Collider, float> validObstaclesDistance = new Dictionary<Collider, float>();
 
     //Helper bool to prevent excessive running the hiding logic more than once
     private bool isRunningHidingLogic = false;
 
-    //Found colliders, limited in size for original prototype
-    private Collider[] foundColliders = new Collider[25];
+    //Found hideable colliders, limited in size for original prototype
+    private Collider[] foundHiddingColliders = new Collider[25];
 
     public override void OnEnable()
     {
@@ -83,7 +77,7 @@ public class HidingState : AbstractStateFSM
             {
                 //Run and close the loop
                 hidingCourotine = StartCoroutine(OriginalHidingLogic(currentTarget.transform));
-                //hidingCourotine = StartCoroutine(HidingLogic(currentTarget.transform));
+
                 isRunningHidingLogic = true;
             }
 
@@ -125,34 +119,34 @@ public class HidingState : AbstractStateFSM
         while (true)
         {
             //Clears out old information in case of dangling collider information
-            for (int i = 0; i < foundColliders.Length; i++)
+            for (int i = 0; i < foundHiddingColliders.Length; i++)
             {
-                foundColliders[i] = null;
+                foundHiddingColliders[i] = null;
             }
 
             //Gets the number of hits detected based on given parameters
-            int hits = Physics.OverlapSphereNonAlloc(navAgent.transform.position, enemyManager.enemyStats.obstacleAwarenessRange, foundColliders, hidableLayers);
+            int hits = Physics.OverlapSphereNonAlloc(navAgent.transform.position, enemyManager.enemyStats.obstacleAwarenessRange, foundHiddingColliders, hidableLayers);
 
             //Prioritize hiding spots that are farther away from the player by setting close by hiding points as null
             int hitReduction = 0;
             for (int i = 0; i < hits; i++)
             {
                 //If within min player distance oor obstacle height is not sufficient, set to null
-                if (Vector3.Distance(foundColliders[i].transform.position, Target.position) < minimumPlayerDistance || foundColliders[i].bounds.size.y < minimumObstacleHeight)
+                if (Vector3.Distance(foundHiddingColliders[i].transform.position, Target.position) < minimumPlayerDistance || foundHiddingColliders[i].bounds.size.y < minimumObstacleHeight)
                 {
-                    foundColliders[i] = null;
+                    foundHiddingColliders[i] = null;
                     hitReduction++;
                 }
             }
             hits -= hitReduction;
 
             //Sort the array of colliders, moving null objects to the end of the array
-            System.Array.Sort(foundColliders, ColliderArraySortComparer);
+            System.Array.Sort(foundHiddingColliders, ColliderArraySortComparer);
 
             for (int i = 0; i < hits; i++)
             {
                 //Sample each collider for potential positions to hide by
-                if (NavMesh.SamplePosition(foundColliders[i].transform.position, out NavMeshHit firstHit, 2f, navAgent.areaMask))
+                if (NavMesh.SamplePosition(foundHiddingColliders[i].transform.position, out NavMeshHit firstHit, 2f, navAgent.areaMask))
                 {
                     //Gets the closest edge that has a normal attached to it, this will be important in determining if the position points away or towards the target
                     if (!NavMesh.FindClosestEdge(firstHit.position, out firstHit, navAgent.areaMask))
@@ -170,7 +164,7 @@ public class HidingState : AbstractStateFSM
                     else
                     {
                         //As a result, attempt to sample the other side of the object and check for validity
-                        if (NavMesh.SamplePosition(foundColliders[i].transform.position - (Target.position - firstHit.position).normalized * 2, out NavMeshHit secondHit, 2f, navAgent.areaMask))
+                        if (NavMesh.SamplePosition(foundHiddingColliders[i].transform.position - (Target.position - firstHit.position).normalized * 2, out NavMeshHit secondHit, 2f, navAgent.areaMask))
                         {
                             //Gets the closest edge that has a normal attached to it
                             if (!NavMesh.FindClosestEdge(secondHit.position, out secondHit, navAgent.areaMask))
@@ -190,7 +184,7 @@ public class HidingState : AbstractStateFSM
                 else
                 {
                     //If no positions were found, debug the error as it means the value put into the sample position or scene setup is incorrect
-                    Debug.LogError($"Unable to find NavMesh near object {foundColliders[i].name} at {foundColliders[i].transform.position}");
+                    Debug.LogError($"Unable to find NavMesh near object {foundHiddingColliders[i].name} at {foundHiddingColliders[i].transform.position}");
                 }
             }
             yield return Wait;
@@ -240,113 +234,4 @@ public class HidingState : AbstractStateFSM
             Gizmos.DrawWireSphere(currentTarget.transform.position, minimumPlayerDistance);
         }
     }
-
-
-    #region Attempted adaptation
-    //Kept in for the current commit for documentation, to be removed in future
-    private IEnumerator HidingLogic(Transform Target)
-    {
-        WaitForSeconds waitTime = new WaitForSeconds(updateFrequency);
-
-        while (true)
-        {
-            //Clear old list of junk data
-            validObstacles.Clear();
-            validObstaclesDistance.Clear();
-
-            //If available, output a navmeshagent for the target
-            bool hasAgent = currentTarget.gameObject.TryGetComponent(out NavMeshAgent targetAgent);
-
-            //Get all nearby obstacles for a hide check
-            List<Collider> foundObstacles = Physics.OverlapSphere(navAgent.transform.position, enemyManager.enemyStats.obstacleAwarenessRange, hidableLayers).ToList();
-
-            //Prioritize hiding spots that are farther away from the player by setting close by hiding points as null
-            foreach (Collider obstacle in foundObstacles)
-            {
-                //Series of filters
-                //Is within height restriction
-                if (obstacle.bounds.size.y > minimumObstacleHeight)
-                {
-                    //Get distance to object from self
-                    float selfDistance = ExtensionMethods.GetPathDistance(navAgent, obstacle.transform);
-
-                    //Above minimum player distance, attempt to use NavMesh calculations first, otherwise use distance
-                    if (hasAgent)
-                    {
-                        //Get distance to object from target
-                        float targetDistance = ExtensionMethods.GetPathDistance(targetAgent, obstacle.transform);
-
-                        //If not within min player navigation distance, but within self range, add to valid obstacles
-                        if (targetDistance > minimumPlayerDistance && selfDistance < enemyManager.enemyStats.obstacleAwarenessRange)
-                        {
-                            validObstaclesDistance.Add(obstacle, selfDistance);
-                        }
-                    }
-                    else
-                    {
-                        //If not within min player distance, but within self range, add to valid obstacles
-                        if (Vector3.Distance(obstacle.transform.position, Target.position) > minimumPlayerDistance && selfDistance < enemyManager.enemyStats.obstacleAwarenessRange)
-                        {
-                            validObstaclesDistance.Add(obstacle, selfDistance);
-                        }
-                    }
-                }
-            }
-
-            //Sort dictionary by distance
-            validObstaclesDistance = validObstaclesDistance.OrderBy(key => key.Value).ToDictionary(t => t.Key, t => t.Value);
-            validObstacles = validObstaclesDistance.Keys.ToList();
-            validObstacles.Reverse();
-
-            //Iterate over each obstacle to look for a suitable hiding spot
-            //For now it selects the first one found to be valid
-            foreach (Collider obstacle in validObstacles)
-            {
-                //Sample each collider for potential positions to hide by
-                if (NavMesh.SamplePosition(obstacle.transform.position, out NavMeshHit firstHit, 2f, navAgent.areaMask))
-                {
-                    //Gets the closest edge that has a normal attached to it, this will be important in determining if the position points away or towards the target
-                    if (!NavMesh.FindClosestEdge(firstHit.position, out firstHit, navAgent.areaMask))
-                    {
-                        Debug.LogError($"Unable to find edge close to {firstHit.position}");
-                    }
-
-                    //If the hiding spot is within the hiding sensitivity, set destination
-                    if (Vector3.Dot(firstHit.normal, (Target.position - firstHit.position).normalized) < hideSensitivity)
-                    {
-                        navAgent.SetDestination(firstHit.position);
-                        break;
-                    }
-                    //However, if the DOT product was greater than the sensitivity, it means the hiding spot was facing the target
-                    else
-                    {
-                        //As a result, attempt to sample the other side of the object and check for validity
-                        if (NavMesh.SamplePosition(obstacle.transform.position - (Target.position - firstHit.position).normalized * 2, out NavMeshHit secondHit, 2f, navAgent.areaMask))
-                        {
-                            //Gets the closest edge that has a normal attached to it
-                            if (!NavMesh.FindClosestEdge(secondHit.position, out secondHit, navAgent.areaMask))
-                            {
-                                Debug.LogError($"Unable to find edge close to {secondHit.position} (second attempt)");
-                            }
-
-                            //If the direction appears valid and good according to the hide sensitivity, set the destination
-                            if (Vector3.Dot(secondHit.normal, (Target.position - secondHit.position).normalized) < hideSensitivity)
-                            {
-                                navAgent.SetDestination(secondHit.position);
-                                break;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    //If no positions were found, debug the error as it means the value put into the sample position or scene setup is incorrect
-                    Debug.LogError($"Unable to find NavMesh near object {obstacle.name} at {obstacle.transform.position}");
-                }
-            }
-
-            yield return waitTime;
-        }
-    }
-    #endregion
 }
