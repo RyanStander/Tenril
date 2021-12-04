@@ -37,13 +37,22 @@ public class EnemyStats : CharacterStats
     [Range(1, 10)] public float attackRotationSpeed = 2.5f;
 
     //Health threshold at which an enemy will want to attempt to heal
-    public float healingThreshold = 0.15f;
+    public float healingThreshold = 0.25f;
 
     //Helper bool to track if healing is possible
     public bool canHeal = true;
 
     //Range at which the enemy will consider healing as an option
     public float healRange = 5;
+
+    //Hiding health threshold at which an enemy will want to run away and hide
+    public float hidingThreshold = 0.15f;
+
+    //The time that an agent will wait between trying to hide again
+    public float hidingCooldownTime = 30;
+
+    //Helper bool to track if hiding is possible
+    public bool canHide = true;
 
     private EnemyAnimatorManager enemyAnimatorManager;
     [SerializeField] private SliderBarDisplayUI healthBar;

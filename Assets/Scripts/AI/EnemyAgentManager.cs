@@ -43,6 +43,9 @@ public class EnemyAgentManager : CharacterManager
     //Current time in animation recovery
     internal float currentRecoveryTime = 0;
 
+    //Current time in hiding recovery
+    internal float currentHidingTime = 0;
+
     //Collision detection related capsules
     [SerializeField] private CapsuleCollider characterCollider;
     [SerializeField] private CapsuleCollider characterCollisionBlocker;
@@ -88,6 +91,9 @@ public class EnemyAgentManager : CharacterManager
         //Handle timer for animation delays
         HandleRecoveryTimer();
 
+        //Handle timer for hiding delays
+        HandleHidingTimer();
+
         //Set interactin based on the current bool being played
         isInteracting = animatorManager.animator.GetBool("isInteracting");
         canBeRiposted = animatorManager.animator.GetBool("canBeRiposted");
@@ -116,10 +122,41 @@ public class EnemyAgentManager : CharacterManager
         }
     }
 
+    private void HandleHidingTimer()
+    {
+        //If recovery time is not 0
+        if (currentHidingTime > 0)
+        {
+            //Reduce by time
+            currentHidingTime -= Time.deltaTime;
+
+            //Mark as not able to hide yet
+            enemyStats.canHide = false;
+        }
+        else
+        {
+            //Mark as able to hide
+            enemyStats.canHide = true;
+        }
+    }
+
     public bool ShouldTryHealing()
     {
         //Return true if health is below threshold
         if (enemyStats.GetCurrentHealth() <= (enemyStats.GetMaximumHealth() * enemyStats.healingThreshold) && enemyStats.canHeal)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool ShouldTryHiding()
+    {
+        //Return true if health is below threshold
+        if (enemyStats.GetCurrentHealth() <= (enemyStats.GetMaximumHealth() * enemyStats.hidingThreshold) && enemyStats.canHide)
         {
             return true;
         }

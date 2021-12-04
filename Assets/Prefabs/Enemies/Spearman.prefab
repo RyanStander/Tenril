@@ -194,7 +194,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1042659295}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 878a3ec630cc22c4d99b88e5a140bfb0, type: 3}
   m_Name: 
@@ -205,11 +205,10 @@ MonoBehaviour:
   hidableLayers:
     serializedVersion: 2
     m_Bits: 262144
-  checkRate: 0.5
   currentTarget: {fileID: 0}
   hideSensitivity: -0.5
   minimumPlayerDistance: 5
-  minimumObstacleHeight: 1
+  minimumObstacleHeight: 0.5
   updateFrequency: 0.25
 --- !u!114 &3368056264274465628
 MonoBehaviour:
@@ -1420,6 +1419,9 @@ MonoBehaviour:
   healingThreshold: 0.5
   canHeal: 1
   healRange: 5
+  hidingThreshold: 0.15
+  hidingCooldownTime: 15
+  canHide: 1
   healthBar: {fileID: 3712933954655172088}
 --- !u!195 &318429253
 NavMeshAgent:

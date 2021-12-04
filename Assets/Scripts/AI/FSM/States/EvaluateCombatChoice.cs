@@ -59,8 +59,15 @@ public class EvaluateCombatChoice : AbstractStateFSM
         //Directly rotate towards the target
         movementManager.RotateTowardsTargetPosition(enemyManager.currentTarget.transform.position, enemyManager.enemyStats.rotationSpeed);
 
+        //Check if hiding should be done (if not on cooldown), takes priority over other actions
+        if (enemyManager.ShouldTryHiding())
+        {
+            //Attempt to hide
+            finiteStateMachine.EnterState(StateTypeFSM.HIDE);
+        }
+
         //Check if within attack range and has recovered since last animation
-        if (enemyManager.currentRecoveryTime <= 0 && IsDirectlyWithinRange(enemyManager.enemyStats.maximumAttackRange))
+        else if (enemyManager.currentRecoveryTime <= 0 && IsDirectlyWithinRange(enemyManager.enemyStats.maximumAttackRange))
         {
             //Change to attack state
             finiteStateMachine.EnterState(StateTypeFSM.ATTACK);

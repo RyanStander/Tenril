@@ -12,9 +12,6 @@ public class HidingState : AbstractStateFSM
     //The layers that are valid for hiding behind
     public LayerMask hidableLayers;
 
-    //Performance related rate at which the agent should cast a check
-    [Range(0, 1)] public float checkRate = 0.5f;
-
     //Current "anti" target
     public GameObject currentTarget;
 
@@ -60,6 +57,9 @@ public class HidingState : AbstractStateFSM
 
             //Reset bool
             isRunningHidingLogic = false;
+
+            //Set the hiding logic to cooldown in case of interruptions and other factors (avoids broken loops)
+            enemyManager.currentHidingTime = enemyManager.enemyStats.hidingCooldownTime;
         }
 
         return enteredState;
@@ -77,8 +77,6 @@ public class HidingState : AbstractStateFSM
             {
                 //Run and close the loop
                 hidingCourotine = StartCoroutine(OriginalHidingLogic(currentTarget.transform));
-
-                isRunningHidingLogic = true;
             }
 
             //If at destination, dont move
@@ -88,6 +86,16 @@ public class HidingState : AbstractStateFSM
                 {
                     //Move towards destination
                     movementManager.StopMovement(0.25f, Time.deltaTime);
+                    
+                    //Check if healing is possible
+                    if (enemyManager.ShouldTryHealing())
+                    {
+                        //Attempt to heal
+                        finiteStateMachine.EnterState(StateTypeFSM.HEALING);
+                    }
+
+                    //Return to evaluation state
+                    finiteStateMachine.EnterState(StateTypeFSM.EVALUATECOMBAT);
                 }
                 else
                 {
@@ -115,6 +123,13 @@ public class HidingState : AbstractStateFSM
     
     private IEnumerator OriginalHidingLogic(Transform Target)
     {
+        //Set the helper bool
+        isRunningHidingLogic = true;
+
+        //Set the hiding cooldown timer
+        enemyManager.currentHidingTime = enemyManager.enemyStats.hidingCooldownTime;
+
+        //Declare the wait time
         WaitForSeconds Wait = new WaitForSeconds(updateFrequency);
         while (true)
         {
