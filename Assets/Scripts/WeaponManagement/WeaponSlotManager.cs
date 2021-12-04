@@ -143,8 +143,11 @@ public class WeaponSlotManager : MonoBehaviour
             rightSideSlot.UnloadSheathAndDestroy();
         }
 
+        if (weaponItem == null)
+            return;
+
         //Check if there is a left weapon, such as dual daggers to equip
-        if (weaponItem.leftWeaponModelPrefab!=null)
+        if (weaponItem.leftWeaponModelPrefab != null)
         {
             //set the current weapon in the left hand slot equal to the weapon item
             leftHandSlot.currentWeapon = weaponItem;
@@ -155,7 +158,7 @@ public class WeaponSlotManager : MonoBehaviour
                 LoadLeftWeaponDamageCollider();
         }
 
-        if (weaponItem.rightWeaponModelPrefab!=null)
+        if (weaponItem.rightWeaponModelPrefab != null)
         {
             //set the current weapon in the right hand slot equal to the weapon item
             rightHandSlot.currentWeapon = weaponItem;
@@ -189,7 +192,7 @@ public class WeaponSlotManager : MonoBehaviour
 
         //loads the weapons taht are not being wielded
         LoadUnequippedWeapons(unequippedWeapon);
-        
+
     }
 
     #region Damage Colliders

@@ -151,6 +151,9 @@ public class PlayerCombatManager : MonoBehaviour
     #region Input Actions
     private void HandleWeakAttackAction()
     {
+        if (playerInventory.equippedWeapon == null)
+            return;
+
         switch (playerInventory.equippedWeapon.weaponType)
         {
             case WeaponItem.WeaponType.meleeWeapon:
@@ -259,6 +262,9 @@ public class PlayerCombatManager : MonoBehaviour
         playerAnimatorManager.PlayTargetAnimation("BowDrawArrow", true);
 
         weaponSlotManager.DisplayObjectInHand(playerInventory.equippedAmmo.loadedItemModel, false, false);
+
+        //Animate Bow
+        
     }
 
     private void AttemptFinisher()
@@ -315,6 +321,9 @@ public class PlayerCombatManager : MonoBehaviour
     internal void HandleWeaponSpecificAbilities()
     {
         HandleParryAction();
+
+        if (playerInventory.equippedWeapon == null)
+            return;
 
         switch (playerInventory.equippedWeapon.weaponType)
         {
