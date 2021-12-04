@@ -212,6 +212,20 @@ public class PlayerInventory : CharacterInventory
         return totalItemCount;
     }
 
+    /// <summary>
+    /// Checks if the equipped ammunition has any arrows left
+    /// </summary>
+    public bool HasAmmo()
+    {
+        if (equippedAmmo == null)
+            return false;
+
+        if (FindAllInstancesOfItemInInventory(equippedAmmo) != null)
+            return true;
+
+        return false;
+    }
+
     #endregion
 
     #region Weapon Management
@@ -236,18 +250,18 @@ public class PlayerInventory : CharacterInventory
             equippedWeapon = primaryWeapon;
             //load primary weapon in hand and secondary in sheath
             if(equippedWeapon!=null)
-                weaponSlotManager.LoadWeaponOnSlot(primaryWeapon, equippedWeapon.hasSecondaryWeapon, secondaryWeapon);
+                weaponSlotManager.LoadWeaponOnSlot(primaryWeapon, secondaryWeapon);
             else
-                weaponSlotManager.LoadWeaponOnSlot(primaryWeapon, false, secondaryWeapon);
+                weaponSlotManager.LoadWeaponOnSlot(primaryWeapon, secondaryWeapon);
         }
         else
         {
             equippedWeapon = secondaryWeapon;
             //load secondary weapon in hand and primary in sheath
             if (equippedWeapon != null)
-                weaponSlotManager.LoadWeaponOnSlot(secondaryWeapon, equippedWeapon.hasSecondaryWeapon, primaryWeapon);
+                weaponSlotManager.LoadWeaponOnSlot(secondaryWeapon, primaryWeapon);
             else
-                weaponSlotManager.LoadWeaponOnSlot(secondaryWeapon, false, primaryWeapon);
+                weaponSlotManager.LoadWeaponOnSlot(secondaryWeapon, primaryWeapon);
         }
 
         //send out event to update ui

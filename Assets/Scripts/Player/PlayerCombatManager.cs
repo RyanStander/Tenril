@@ -151,7 +151,20 @@ public class PlayerCombatManager : MonoBehaviour
     #region Input Actions
     private void HandleWeakAttackAction()
     {
-        PerformWeakMeleeAction();
+        if (playerInventory.equippedWeapon == null)
+            return;
+
+        switch (playerInventory.equippedWeapon.weaponType)
+        {
+            case WeaponItem.WeaponType.meleeWeapon:
+                PerformWeakMeleeAction();
+                break;
+            case WeaponItem.WeaponType.rangedWeapon:
+                PerformRangedAmmoCheck();
+                break;
+            case WeaponItem.WeaponType.castingWeapon:
+                break;
+        }
     }
 
     private void HandleStrongAttackAction()
@@ -185,7 +198,7 @@ public class PlayerCombatManager : MonoBehaviour
         if (playerInventory.equippedWeapon.canParry)
         {
             //perform parry action
-            PerformParryAction();
+            ParryAction();
         }
     }
 
@@ -213,6 +226,45 @@ public class PlayerCombatManager : MonoBehaviour
 
             HandleWeakAttack(playerInventory.equippedWeapon);
         }
+    }
+
+    private void PerformRangedAmmoCheck()
+    {
+        //if player has any stamina
+        if (playerStats.HasStamina())
+        {
+            //put the players stamina regen on cooldown
+            playerStats.PutStaminaRegenOnCooldown();
+
+            if (!playerManager.isHoldingArrow)
+            {
+                //Check if there is ammo
+                if (playerInventory.HasAmmo())
+                {
+                    //Draw arrow
+                    PerformBowDraw();
+                }
+                else
+                {
+                    Debug.Log("No ammo to fire");
+                }
+
+
+                //Fire arrow when released
+                //else indicate no ammo
+            }
+        }
+    }
+
+    private void PerformBowDraw()
+    {
+        playerAnimatorManager.animator.SetBool("isHoldingArrow", true);
+        playerAnimatorManager.PlayTargetAnimation("BowDrawArrow", true);
+
+        weaponSlotManager.DisplayObjectInHand(playerInventory.equippedAmmo.loadedItemModel, false, false);
+
+        //Animate Bow
+        
     }
 
     private void AttemptFinisher()
@@ -263,13 +315,35 @@ public class PlayerCombatManager : MonoBehaviour
 
     #region Defending
 
-    internal void HandleDefending()
+    /// <summary>
+    /// Manages special abilities such as blocking or aiming
+    /// </summary>
+    internal void HandleWeaponSpecificAbilities()
     {
         HandleParryAction();
-        BlockAction();
+
+        if (playerInventory.equippedWeapon == null)
+            return;
+
+        switch (playerInventory.equippedWeapon.weaponType)
+        {
+            case WeaponItem.WeaponType.meleeWeapon:
+                BlockAction();
+                break;
+            case WeaponItem.WeaponType.rangedWeapon:
+                AimAction();
+                break;
+            case WeaponItem.WeaponType.castingWeapon:
+                break;
+            default:
+                break;
+        }
+
+        
+
     }
 
-    private void PerformParryAction()
+    private void ParryAction()
     {
         if (inputHandler.parryInput)
         {
@@ -307,5 +381,24 @@ public class PlayerCombatManager : MonoBehaviour
         }
     }
 
+    private void AimAction()
+    {
+        if (inputHandler.blockInput)
+        {
+            //Prevent aiming if is already performing another action
+            if (playerManager.isInteracting)
+                return;
+
+            //Prevent aiming if is already aiming
+            if (playerManager.isAiming)
+                return;
+
+            playerAnimatorManager.animator.SetBool("isAiming", true);
+        }
+        else
+        {
+            playerAnimatorManager.animator.SetBool("isAiming", false);
+        }
+    }
     #endregion
 }

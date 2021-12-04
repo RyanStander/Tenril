@@ -13,4 +13,7 @@ public class CharacterInventory : MonoBehaviour
 
     [Tooltip("The 2 weapons that a player can swap between")]
     public WeaponItem primaryWeapon, secondaryWeapon;
+
+    [Tooltip("The Ammo that the player will try to draw when using a ranged weapon")]
+    public AmmunitionItem equippedAmmo;
 }

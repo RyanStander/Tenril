@@ -28,8 +28,6 @@ public class QuickslotItem : Item
         //Play the animation of using the item
         animatorManager.PlayTargetAnimation(quickslotUseAnimation, true);
 
-        //Send out event to hide the weapon
-        EventManager.currentManager.AddEvent(new DisplayQuickslotItem(consumablePrefab));
     }
 
     public virtual void SuccessfullyUsedItem(AnimatorManager animatorManager, CharacterStats characterStats)

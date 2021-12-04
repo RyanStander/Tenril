@@ -4150,10 +4150,12 @@ MonoBehaviour:
   riposteCollider: {fileID: 1492552727}
   pendingFinisherDamage: 0
   finisherAttackRayCastStartPointTransform: {fileID: 1979566824}
-  characterCollider: {fileID: 1702755804251437758}
-  characterCollisionBlocker: {fileID: 90925020}
+  characterCollider: {fileID: 0}
+  characterCollisionBlocker: {fileID: 0}
   canDoCombo: 0
   isInteracting: 0
+  isAiming: 0
+  isHoldingArrow: 0
 --- !u!114 &1455011013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4182,8 +4184,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   equippedWeapon: {fileID: 0}
   isWieldingPrimaryWeapon: 1
-  primaryWeapon: {fileID: 0}
-  secondaryWeapon: {fileID: 0}
+  primaryWeapon: {fileID: 11400000, guid: 379244ca9efcbe74a84fc791cb8b4127, type: 2}
+  secondaryWeapon: {fileID: 11400000, guid: d0fa351850862604ea051e1892936ee9, type: 2}
+  equippedAmmo: {fileID: 0}
   Gold: 250
   preparedSpells:
   - {fileID: 11400000, guid: 88f46b8b0cfc72a428db02eddaad133f, type: 2}
@@ -4201,13 +4204,18 @@ MonoBehaviour:
   currentlySelectedQuickSlotItem: {fileID: 0}
   quickslotItemInUse: {fileID: 0}
   inventory:
-  - {fileID: 11400000, guid: 379244ca9efcbe74a84fc791cb8b4127, type: 2}
-  - {fileID: 11400000, guid: 92735e3b99674a741ac327fbf4264d5f, type: 2}
-  - {fileID: 11400000, guid: b4227b60b1507304caa7f04341cb4a7b, type: 2}
-  - {fileID: 11400000, guid: 7d60350e21f1e024b9e723e45ca7fc27, type: 2}
-  - {fileID: 11400000, guid: b4227b60b1507304caa7f04341cb4a7b, type: 2}
-  - {fileID: 11400000, guid: 083a95e82826f2047b46d3bdd56921bb, type: 2}
-  weaponsInventory: []
+  - item: {fileID: 11400000, guid: 92735e3b99674a741ac327fbf4264d5f, type: 2}
+    itemStackCount: 1
+  - item: {fileID: 11400000, guid: 293718bd1735afa4f9986ddcccb93a41, type: 2}
+    itemStackCount: 1
+  - item: {fileID: 11400000, guid: 379244ca9efcbe74a84fc791cb8b4127, type: 2}
+    itemStackCount: 1
+  - item: {fileID: 11400000, guid: b4227b60b1507304caa7f04341cb4a7b, type: 2}
+    itemStackCount: 10
+  - item: {fileID: 11400000, guid: 7d60350e21f1e024b9e723e45ca7fc27, type: 2}
+    itemStackCount: 4
+  - item: {fileID: 11400000, guid: 083a95e82826f2047b46d3bdd56921bb, type: 2}
+    itemStackCount: 2
 --- !u!114 &1949516871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4220,7 +4228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 141c622c0341cb04d86b137fa3877208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthLevel: 10
+  healthLevel: 50
   maxHealth: 0
   currentHealth: 0
   isDead: 0
@@ -4233,9 +4241,15 @@ MonoBehaviour:
   MoonlightLevel: 10
   maxStoredMoonlight: 0
   currentStoredMoonlight: 0
-  SunlightLevel: 10
+  moonlightRegenAmount: 1
+  moonlightRegenRate: 0.1
+  moonlightRegenCooldownTime: 2
+  sunlightLevel: 10
   maxStoredSunlight: 0
   currentStoredSunlight: 0
+  sunlightRegenAmount: 1
+  sunlightRegenRate: 0.1
+  sunlightRegenCooldownTime: 2
   assignedFaction: 1
 --- !u!114 &6128329571030995905
 MonoBehaviour:
@@ -7124,16 +7138,27 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4851403877010954940, guid: a0654f02df05e094fa2e392d9b8e9915, type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4851403877010954940, guid: a0654f02df05e094fa2e392d9b8e9915, type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4851403877010954941, guid: a0654f02df05e094fa2e392d9b8e9915, type: 3}
+      propertyPath: m_Radius
+      value: 0.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 4851403877010954941, guid: a0654f02df05e094fa2e392d9b8e9915, type: 3}
+      propertyPath: m_Center.y
+      value: 0.88
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0654f02df05e094fa2e392d9b8e9915, type: 3}
 --- !u!4 &1158778856 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4851403875938873993, guid: a0654f02df05e094fa2e392d9b8e9915, type: 3}
-  m_PrefabInstance: {fileID: 4851403876929879393}
-  m_PrefabAsset: {fileID: 0}
---- !u!136 &90925020 stripped
-CapsuleCollider:
-  m_CorrespondingSourceObject: {fileID: 4851403877010954941, guid: a0654f02df05e094fa2e392d9b8e9915, type: 3}
   m_PrefabInstance: {fileID: 4851403876929879393}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1492552727 stripped

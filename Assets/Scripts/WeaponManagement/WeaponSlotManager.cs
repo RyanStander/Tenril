@@ -11,7 +11,7 @@ public class WeaponSlotManager : MonoBehaviour
 
     public DamageCollider leftHandDamageCollider, rightHandDamageCollider;
 
-    private GameObject displayObject;
+    private GameObject leftDisplayObject, rightDisplayObject;
 
     private Animator animator;
     private void Awake()
@@ -62,27 +62,61 @@ public class WeaponSlotManager : MonoBehaviour
             rightHandSlot.currentWeaponModel.SetActive(true);
     }
 
-    public void DisplayObjectInHand(GameObject objectToDisplay)
+    public void DisplayObjectInHand(GameObject objectToDisplay, bool isInLeftHandSlot = true, bool hideWeapon = true)
     {
-        if (leftHandSlot.currentWeaponModel != null)
-            leftHandSlot.currentWeaponModel.SetActive(false);
-        if (objectToDisplay != null)
+        if (isInLeftHandSlot)
         {
-            if (leftHandSlot.parentOverride != null)
-                displayObject = Instantiate(objectToDisplay, leftHandSlot.parentOverride);
-            else
-                displayObject = Instantiate(objectToDisplay, leftHandSlot.transform);
+            if (hideWeapon)
+            {
+                if (leftHandSlot.currentWeaponModel != null)
+                    leftHandSlot.currentWeaponModel.SetActive(false);
+            }
+            if (objectToDisplay != null)
+            {
+                if (leftHandSlot.parentOverride != null)
+                    leftDisplayObject = Instantiate(objectToDisplay, leftHandSlot.parentOverride);
+                else
+                    leftDisplayObject = Instantiate(objectToDisplay, leftHandSlot.transform);
+            }
+        }
+        else
+        {
+            if (hideWeapon)
+            {
+                if (rightHandSlot.currentWeaponModel != null)
+                    rightHandSlot.currentWeaponModel.SetActive(false);
+            }
+            if (objectToDisplay != null)
+            {
+                if (rightHandSlot.parentOverride != null)
+                    rightDisplayObject = Instantiate(objectToDisplay, rightHandSlot.parentOverride);
+                else
+                    rightDisplayObject = Instantiate(objectToDisplay, rightHandSlot.transform);
+            }
         }
     }
-    public void HideObjectInHand()
+    public void HideObjectInHand(bool hideLeftHandObject = true,bool showWeaponIfHidden=true)
     {
-        if(displayObject!=null)
-            Destroy(displayObject);
-        if (leftHandSlot.currentWeaponModel != null)
-            leftHandSlot.currentWeaponModel.SetActive(true);
+        if (hideLeftHandObject)
+        {
+            if (leftDisplayObject != null)
+                Destroy(leftDisplayObject);
+            if(showWeaponIfHidden)
+                if (leftHandSlot.currentWeaponModel != null)
+                    leftHandSlot.currentWeaponModel.SetActive(true);
+        }
+        else
+        {
+            if (rightDisplayObject != null)
+                Destroy(rightDisplayObject);
+            if (showWeaponIfHidden)
+                if (rightHandSlot.currentWeaponModel != null)
+                    rightHandSlot.currentWeaponModel.SetActive(true);
+        }
+
     }
 
-    public void LoadWeaponOnSlot(WeaponItem weaponItem, bool hasSecondaryWeapon, WeaponItem unequippedWeapon = null)
+    public void LoadWeaponOnSlot(WeaponItem weaponItem, WeaponItem unequippedWeapon = null)
     {
         //remove all previous weapons and sheaths displayed
         if (leftHandSlot != null)
@@ -109,8 +143,11 @@ public class WeaponSlotManager : MonoBehaviour
             rightSideSlot.UnloadSheathAndDestroy();
         }
 
-        //Check if there is a secondary weapon, such as dual daggers to equip
-        if (hasSecondaryWeapon)
+        if (weaponItem == null)
+            return;
+
+        //Check if there is a left weapon, such as dual daggers to equip
+        if (weaponItem.leftWeaponModelPrefab != null)
         {
             //set the current weapon in the left hand slot equal to the weapon item
             leftHandSlot.currentWeapon = weaponItem;
@@ -119,6 +156,17 @@ public class WeaponSlotManager : MonoBehaviour
             //if successful, load the damage collider
             if (leftHandSlot != null)
                 LoadLeftWeaponDamageCollider();
+        }
+
+        if (weaponItem.rightWeaponModelPrefab != null)
+        {
+            //set the current weapon in the right hand slot equal to the weapon item
+            rightHandSlot.currentWeapon = weaponItem;
+            //load the primary weapon of the weapon item to the left hand slot
+            rightHandSlot.LoadWeaponModel(weaponItem, false);
+            //if successful, load the damage collider
+            if (rightHandSlot != null)
+                LoadRightWeaponDamageCollider();
         }
 
         #region Weapon Idle Anim           
@@ -139,20 +187,12 @@ public class WeaponSlotManager : MonoBehaviour
         }
         #endregion
 
-        //set the current weapon in the right hand slot equal to the weapon item
-        rightHandSlot.currentWeapon = weaponItem;
-        //load the primary weapon of the weapon item to the left hand slot
-        rightHandSlot.LoadWeaponModel(weaponItem, false);
-        //if successful, load the damage collider
-        if (rightHandSlot != null)
-            LoadRightWeaponDamageCollider();
-
         //loads the sheaths of the weapon currently wielded
         LoadWeaponSheath(weaponItem);
 
         //loads the weapons taht are not being wielded
         LoadUnequippedWeapons(unequippedWeapon);
-        
+
     }
 
     #region Damage Colliders
@@ -174,9 +214,9 @@ public class WeaponSlotManager : MonoBehaviour
 
     private void LoadRightWeaponDamageCollider()
     {
-        //if there is no right hand slot and there is no currently instantiated
+        //if there is no right hand slot or there is no currently instantiated
         //right weapon, return
-        if (rightHandSlot == null && rightHandSlot.currentWeaponModel == null)
+        if (rightHandSlot == null || rightHandSlot.currentWeaponModel == null)
             return;
 
         //get the value of the damage collider

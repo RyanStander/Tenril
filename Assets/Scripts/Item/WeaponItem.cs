@@ -7,12 +7,10 @@ using UnityEngine.UIElements;
 public class WeaponItem : Item
 {
     [Header("Prefabs")]
-    [Tooltip("The model that is created on the weapon")]
-    public GameObject primaryWeaponModelPrefab;
-    [Tooltip("State wether there is a second weapon")]
-    public bool hasSecondaryWeapon;
-    [Tooltip("The secondary weapon, if there is one")]
-    public GameObject secondaryWeaponModelPrefab;
+    [Tooltip("The right model that is created on the weapon")]
+    public GameObject rightWeaponModelPrefab;
+    [Tooltip("The left model that is created on the weapon")]
+    public GameObject leftWeaponModelPrefab;
 
     public bool displaySecondaryWeaponWhenUnequipped;
     [Tooltip("The model displayed when your weapon is not being weilded")]
