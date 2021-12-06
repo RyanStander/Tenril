@@ -131,6 +131,8 @@ public class PlayerCombatManager : MonoBehaviour
 
     private void HandleStrongAttack(WeaponItem weapon)
     {
+        if (weapon.strongAttacks.Count==0)
+            return;
         //if player has any stamina
         if (playerStats.HasStamina())
         {
