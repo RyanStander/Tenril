@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//TO DO: make it so that weakattackletgoinput has a flag and only triggers when bow is being wielded
+
 public class PlayerCombatManager : MonoBehaviour
 {
     private PlayerAnimatorManager playerAnimatorManager;
@@ -33,6 +35,15 @@ public class PlayerCombatManager : MonoBehaviour
         if (inputHandler.weakAttackInput)
         {
             HandleWeakAttackAction();
+        }
+
+        //Player lets go of weak attack button
+        if (inputHandler.weakAttackLetGoInput)
+        {
+            if (playerManager.isHoldingArrow)
+            {
+                FireArrow();
+            }
         }
 
         //Player performing strong attack
@@ -131,6 +142,8 @@ public class PlayerCombatManager : MonoBehaviour
 
     private void HandleStrongAttack(WeaponItem weapon)
     {
+        if (weapon.strongAttacks.Count==0)
+            return;
         //if player has any stamina
         if (playerStats.HasStamina())
         {
@@ -261,10 +274,74 @@ public class PlayerCombatManager : MonoBehaviour
         playerAnimatorManager.animator.SetBool("isHoldingArrow", true);
         playerAnimatorManager.PlayTargetAnimation("BowDrawArrow", true);
 
+        //TO DO: get a working bow model for animation
+        //get animator of the bow
+        //set the bool of is drawn to true
+        //play the draw animation
+
         weaponSlotManager.DisplayObjectInHand(playerInventory.equippedAmmo.loadedItemModel, false, false);
 
         //Animate Bow
         
+    }
+
+    private void FireArrow()
+    {
+        if (playerManager.isInteracting)
+            return;
+
+        ArrowInstantiationLocation arrowInstantiationLocation=null;
+
+        //Get the bow depending on which hand it is instantiated in
+        if (playerInventory.equippedWeapon.rightWeaponModelPrefab!=null)
+            arrowInstantiationLocation = weaponSlotManager.rightHandSlot.GetComponentInChildren<ArrowInstantiationLocation>();
+        else if (playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
+            arrowInstantiationLocation = weaponSlotManager.leftHandSlot.GetComponentInChildren<ArrowInstantiationLocation>();
+        else
+            Debug.LogWarning("No bow prefab was found");
+
+        //Reset players holding arrow
+        playerAnimatorManager.PlayTargetAnimation("BowFire",true);
+        playerAnimatorManager.animator.SetBool("isHoldingArrow", false);
+
+        //TO DO: get a working bow model for animation
+        //get animator of the bow
+        //set the bool of is drawn to false
+        //play the fire animation
+
+        //Destroy previous loaded arrow
+        weaponSlotManager.HideObjectInHand(false, false);
+
+        //Create live arrow at specific location
+        //TO DO: possibly check to link the rotation up to the camera facing direction
+        GameObject liveArrow = Instantiate(playerInventory.equippedAmmo.liveAmmoModel, arrowInstantiationLocation.GetTransform().position, arrowInstantiationLocation.GetTransform().rotation);
+        //Get rigidbody and rangedprojectiledmgcollider for modifying
+        Rigidbody rigidbody = liveArrow.GetComponentInChildren<Rigidbody>();
+        RangedProjectileDamageCollider damageCollider = liveArrow.GetComponentInChildren<RangedProjectileDamageCollider>();
+
+        //if(camera has lock on target)
+        //While locked on we are always facing target, can copy our facing direction to our arrows facing direction
+        //Quaternion arrowRotation=Quaternion.LookRotation(transform.forward)
+        //liveArrow.transform.rotation=arrowRotation;
+        //else
+        //live
+
+        //Remove this when camera implementation exists
+        //Make the arrow face where the bow and player is facing (should change it so that it uses camera instead of bow)
+        liveArrow.transform.rotation = Quaternion.Euler(arrowInstantiationLocation.GetTransform().eulerAngles.x,playerManager.lockOnTransform.eulerAngles.y,0);
+
+        //give ammo rigidbody its values
+        rigidbody.AddForce(liveArrow.transform.forward * playerInventory.equippedAmmo.forwardVelocity);
+        rigidbody.AddForce(liveArrow.transform.up * playerInventory.equippedAmmo.upwardVelocity);
+        rigidbody.useGravity = playerInventory.equippedAmmo.useGravity;
+        rigidbody.mass = playerInventory.equippedAmmo.ammoMass;
+        liveArrow.transform.parent = null;
+
+        //set live arrow damage
+        damageCollider.characterManager = playerManager;
+        damageCollider.ammoItem = playerInventory.equippedAmmo;
+        damageCollider.currentDamage = playerInventory.equippedAmmo.physicalDamage;
+        //animate the bow firing the arrow
     }
 
     private void AttemptFinisher()

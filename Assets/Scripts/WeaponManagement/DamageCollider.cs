@@ -6,16 +6,21 @@ public class DamageCollider : MonoBehaviour
 {
     private Collider damageCollider;
     [HideInInspector]public CharacterManager characterManager = null;
+    [SerializeField] private bool enableDamageColliderOnStart = false;
 
     public float currentDamage = 10;
 
-    private bool hasInterrupt=true;
+    protected bool hasInterrupt=true;
     private void Awake()
     {
         damageCollider = GetComponent<Collider>();
         damageCollider.gameObject.SetActive(true);
         damageCollider.isTrigger = true;
-        damageCollider.enabled = false;
+
+        if (enableDamageColliderOnStart)
+            damageCollider.enabled = true;
+        else
+            damageCollider.enabled = false;
     }
 
     public void EnableDamageCollider(bool hasInterrupt=true)
@@ -30,7 +35,7 @@ public class DamageCollider : MonoBehaviour
         damageCollider.enabled = false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         //When the collider enters an character with one of these tags
         //make them take damage
