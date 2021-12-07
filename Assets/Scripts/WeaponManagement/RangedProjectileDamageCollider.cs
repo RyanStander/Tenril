@@ -1,41 +1,11 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
-public class DamageCollider : MonoBehaviour
+public class RangedProjectileDamageCollider : DamageCollider
 {
-    private Collider damageCollider;
-    [HideInInspector]public CharacterManager characterManager = null;
-    [SerializeField] private bool enableDamageColliderOnStart = false;
-
-    public float currentDamage = 10;
-
-    protected bool hasInterrupt=true;
-    private void Awake()
-    {
-        damageCollider = GetComponent<Collider>();
-        damageCollider.gameObject.SetActive(true);
-        damageCollider.isTrigger = true;
-
-        if (enableDamageColliderOnStart)
-            damageCollider.enabled = true;
-        else
-            damageCollider.enabled = false;
-    }
-
-    public void EnableDamageCollider(bool hasInterrupt=true)
-    {
-        this.hasInterrupt = hasInterrupt;
-
-        damageCollider.enabled = true;
-    }
-
-    public void DisableDamageCollider()
-    {
-        damageCollider.enabled = false;
-    }
-
-    protected virtual void OnTriggerEnter(Collider other)
+    public AmmunitionItem ammoItem;
+    protected bool hasAlreadyPenetratedASurface;
+    protected GameObject penetratedProjectile;
+    protected override void OnTriggerEnter(Collider other)
     {
         //When the collider enters an character with one of these tags
         //make them take damage
@@ -73,7 +43,7 @@ public class DamageCollider : MonoBehaviour
                     }
                 }
             }
-            
+
             //check whether characterManager was assigned
             if (characterManager == null)
             {
@@ -84,7 +54,7 @@ public class DamageCollider : MonoBehaviour
             else
             {
                 //make sure is not hitting self
-                if(targetCharacterManager != characterManager)
+                if (targetCharacterManager != characterManager)
                     characterStats.TakeDamage(currentDamage, hasInterrupt);
             }
 

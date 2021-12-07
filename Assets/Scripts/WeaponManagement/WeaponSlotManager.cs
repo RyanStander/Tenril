@@ -7,7 +7,7 @@ public class WeaponSlotManager : MonoBehaviour
     private CharacterStats chracterStats;
     private CharacterInventory characterInventory;
 
-    private WeaponHolderSlot leftHandSlot, rightHandSlot, rightSideSlot, leftSideSlot, backSlot;
+    [HideInInspector]public WeaponHolderSlot leftHandSlot, rightHandSlot, rightSideSlot, leftSideSlot, backSlot;
 
     public DamageCollider leftHandDamageCollider, rightHandDamageCollider;
 
