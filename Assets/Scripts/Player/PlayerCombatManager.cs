@@ -345,16 +345,16 @@ public class PlayerCombatManager : MonoBehaviour
         Rigidbody rigidbody = liveArrow.GetComponentInChildren<Rigidbody>();
         RangedProjectileDamageCollider damageCollider = liveArrow.GetComponentInChildren<RangedProjectileDamageCollider>();
 
-        //if(camera has lock on target)
-        //While locked on we are always facing target, can copy our facing direction to our arrows facing direction
-        //Quaternion arrowRotation=Quaternion.LookRotation(transform.forward)
-        //liveArrow.transform.rotation=arrowRotation;
-        //else
-        //live
-
-        //Remove this when camera implementation exists
-        //Make the arrow face where the bow and player is facing (should change it so that it uses camera instead of bow)
-        liveArrow.transform.rotation = Quaternion.Euler(arrowInstantiationLocation.GetTransform().eulerAngles.x,playerManager.lockOnTransform.eulerAngles.y,0);
+        if (inputHandler.lockOnFlag) 
+        {
+            //While locked on we are always facing target, can copy our facing direction to our arrows facing direction
+            Quaternion arrowRotation = Quaternion.LookRotation(transform.forward);
+            liveArrow.transform.rotation=arrowRotation;
+        }
+        else
+        {
+            liveArrow.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, playerManager.lockOnTransform.eulerAngles.y, 0);
+        }
 
         //give ammo rigidbody its values
         rigidbody.AddForce(liveArrow.transform.forward * playerInventory.equippedAmmo.forwardVelocity);
