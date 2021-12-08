@@ -46,9 +46,18 @@ public class UIManager : MonoBehaviour
         //checks if input handler was assigned
         if (inputHandler == null)
             return;
+
+        HandleMenuInput();
+
+        HandleInventoryInput();
+    }
+
+    private void HandleMenuInput()
+    {
         //if menu button has been pressed
         if (inputHandler.menuInput)
         {
+            //If menu button has been pressed in dialogue mode, exit out
             if (isInDialogueMode)
             {
                 EventManager.currentManager.AddEvent(new CeaseDialogue());
@@ -60,37 +69,77 @@ public class UIManager : MonoBehaviour
                 //activates respective action maps depending on current mode
                 if (isInMenuMode)
                 {
-                    //Disable gameplay inputs and enable menu inputs
-                    inputHandler.GetInputActions().CharacterControls.Disable();
+                    EnableMenuMode();
+
                     //swap to in menu screen
                     inGameGUI.SetActive(false);
                     mainMenu.SetActive(true);
-
-                    inputHandler.lockOnFlag = false;
-                    //send out event to swap to menu camera
-                    EventManager.currentManager.AddEvent(new SwapToMenuCamera());
                 }
                 else
                 {
-                    //Enable gameplay inputs and disable menu inputs
-                    inputHandler.GetInputActions().CharacterControls.Enable();
-                    //swap to in game screen
-                    inGameGUI.SetActive(true);
-                    mainMenu.SetActive(false);
-
-                    //Disable extra menus
-                    inventoryDisplay.SetActive(false);
-                    rebindingDisplay.SetActive(false);
-
-                    //destroy inventory option holders
-                    EventManager.currentManager.AddEvent(new DestroyInventoryOptionHolders());
-
-                    //send out event to swap to exploration camera
-                    EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
+                    DisableMenuMode();
                 }
             }
 
         }
+    }
+
+    private void HandleInventoryInput()
+    {
+        //If inventory button pressed
+        if (inputHandler.inventoryInput)
+        {
+            //Close dialogue if it is open
+            if (isInDialogueMode)
+                EventManager.currentManager.AddEvent(new CeaseDialogue());
+
+            //swap menu mode
+            isInMenuMode = !isInMenuMode;
+
+            if (isInMenuMode)
+            {
+                EnableMenuMode();
+
+                //Enable Invetory
+                inventoryDisplay.SetActive(true);
+            }
+            else
+            {
+                DisableMenuMode();
+            }
+
+
+        }
+    }
+
+    private void EnableMenuMode()
+    {
+        //Disable gameplay inputs and enable menu inputs
+        inputHandler.GetInputActions().CharacterControls.Disable();
+
+        inputHandler.lockOnFlag = false;
+        //send out event to swap to menu camera
+        EventManager.currentManager.AddEvent(new SwapToMenuCamera());
+    }
+
+    private void DisableMenuMode()
+    {
+        //Enable gameplay inputs and disable menu inputs
+        inputHandler.GetInputActions().CharacterControls.Enable();
+
+        //swap to in game screen
+        inGameGUI.SetActive(true);
+        mainMenu.SetActive(false);
+
+        //Disable extra menus
+        inventoryDisplay.SetActive(false);
+        rebindingDisplay.SetActive(false);
+
+        //destroy inventory option holders
+        EventManager.currentManager.AddEvent(new DestroyInventoryOptionHolders());
+
+        //send out event to swap to exploration camera
+        EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
     }
 
     #region onEvents
