@@ -274,14 +274,30 @@ public class PlayerCombatManager : MonoBehaviour
         playerAnimatorManager.animator.SetBool("isHoldingArrow", true);
         playerAnimatorManager.PlayTargetAnimation("BowDrawArrow", true);
 
-        //TO DO: get a working bow model for animation
-        //get animator of the bow
-        //set the bool of is drawn to true
-        //play the draw animation
+        Animator bowAnimator = null;
+
+        //Get the bow depending on which hand it is instantiated in
+        if (playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
+        {
+            bowAnimator = weaponSlotManager.rightHandSlot.GetComponentInChildren<Animator>();
+        }
+        else if (playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
+        {
+            bowAnimator = weaponSlotManager.leftHandSlot.GetComponentInChildren<Animator>();
+        }
+        else
+            Debug.LogWarning("No bow prefab was found");
+
+        if (bowAnimator != null)
+        {
+            //Animate Bow
+            //set the bool of is drawn to true
+            bowAnimator.SetBool("isDrawn", true);
+            //play the draw animation
+            bowAnimator.Play("Draw");
+        }
 
         weaponSlotManager.DisplayObjectInHand(playerInventory.equippedAmmo.loadedItemModel, false, false);
-
-        //Animate Bow
         
     }
 
@@ -291,12 +307,19 @@ public class PlayerCombatManager : MonoBehaviour
             return;
 
         ArrowInstantiationLocation arrowInstantiationLocation=null;
+        Animator bowAnimator = null;
 
         //Get the bow depending on which hand it is instantiated in
-        if (playerInventory.equippedWeapon.rightWeaponModelPrefab!=null)
+        if (playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
+        {
             arrowInstantiationLocation = weaponSlotManager.rightHandSlot.GetComponentInChildren<ArrowInstantiationLocation>();
+            bowAnimator = weaponSlotManager.rightHandSlot.GetComponentInChildren<Animator>();
+        }
         else if (playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
+        {
             arrowInstantiationLocation = weaponSlotManager.leftHandSlot.GetComponentInChildren<ArrowInstantiationLocation>();
+            bowAnimator = weaponSlotManager.leftHandSlot.GetComponentInChildren<Animator>();
+        }
         else
             Debug.LogWarning("No bow prefab was found");
 
@@ -304,10 +327,13 @@ public class PlayerCombatManager : MonoBehaviour
         playerAnimatorManager.PlayTargetAnimation("BowFire",true);
         playerAnimatorManager.animator.SetBool("isHoldingArrow", false);
 
-        //TO DO: get a working bow model for animation
-        //get animator of the bow
-        //set the bool of is drawn to false
-        //play the fire animation
+        if (bowAnimator!=null)
+        {
+            //set the bool of is drawn to false
+            bowAnimator.SetBool("isDrawn", false);
+            //play the fire animation
+            bowAnimator.Play("Fire");
+        }
 
         //Destroy previous loaded arrow
         weaponSlotManager.HideObjectInHand(false, false);
