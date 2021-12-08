@@ -295,7 +295,7 @@ public class CameraLockOn : MonoBehaviour
         {
             Gizmos.color = Color.red;
             //Use the same vars you use to draw your Overlap Sphere to draw your Wire Sphere.
-            Gizmos.DrawSphere(mainCameraTransform.position, 26);
+            Gizmos.DrawSphere(mainCameraTransform.position, maximumLockOnDistance);
         }
     }
 
