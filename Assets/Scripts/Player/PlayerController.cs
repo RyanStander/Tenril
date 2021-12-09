@@ -414,7 +414,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a0d1edb2-3460-4938-9431-a7934c9c395c"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -634,7 +634,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""bc1ab957-6231-49da-9050-57c14fb06ced"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",

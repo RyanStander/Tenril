@@ -10,6 +10,7 @@ public class InputHandler : MonoBehaviour
     private PlayerController inputActions;
 
     //Movement inputs
+    public Vector2 lookInput;
     private Vector2 movementInput;
     [HideInInspector] public bool dodgeInput, sprintInput, jumpInput;
     [HideInInspector] public float lockOnTargetInput;
@@ -95,6 +96,8 @@ public class InputHandler : MonoBehaviour
         //----------------------------------------------------------
         //                         Locomotion
         //----------------------------------------------------------
+        //Look
+        inputActions.CharacterControls.Look.performed += lookInputActions => lookInput = lookInputActions.ReadValue<Vector2>();
         //Movement
         inputActions.CharacterControls.Movement.performed += movementInputActions => movementInput = movementInputActions.ReadValue<Vector2>();
         //Sprint

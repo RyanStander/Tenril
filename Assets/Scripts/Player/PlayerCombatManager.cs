@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-//TO DO: make it so that weakattackletgoinput has a flag and only triggers when bow is being wielded
 
 public class PlayerCombatManager : MonoBehaviour
 {
@@ -497,10 +493,18 @@ public class PlayerCombatManager : MonoBehaviour
                 return;
 
             playerAnimatorManager.animator.SetBool("isAiming", true);
+
+            EventManager.currentManager.AddEvent(new SwapToAimCamera());
         }
         else
         {
+            //Prevent exiting aiming if not in aim mode
+            if (!playerManager.isAiming)
+                return;
+
             playerAnimatorManager.animator.SetBool("isAiming", false);
+
+            EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
         }
     }
     #endregion

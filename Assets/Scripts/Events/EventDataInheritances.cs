@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
 
@@ -316,6 +315,13 @@ public class SwapToExplorationCamera : EventData
     public SwapToExplorationCamera() : base(EventType.SwapToExplorationCamera)
     {
 
+    }
+}
+
+public class SwapToAimCamera : EventData
+{
+    public SwapToAimCamera() : base(EventType.SwapToAimCamera)
+    {
     }
 }
 
