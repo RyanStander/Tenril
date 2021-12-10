@@ -268,6 +268,10 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void AimRotation(float delta)
     {
+        //Debug.Log("current look angle: " + lookAngle+ " and current y rot: "+transform.rotation.eulerAngles.y);
+        lookAngle = transform.rotation.eulerAngles.y;
+
+
         lookAngle += inputHandler.lookInput.x * aimSensitivity / delta;
         pivotAngle -= inputHandler.lookInput.y * aimSensitivity / delta;
         pivotAngle = Mathf.Clamp(pivotAngle, minimumPivot, maximumPivot);
@@ -276,7 +280,7 @@ public class PlayerLocomotion : MonoBehaviour
         rotation.y = lookAngle;
         Quaternion targetRotation = Quaternion.Euler(rotation);
         transform.rotation = targetRotation;
-
+        //Debug.Log("target rotation " + targetRotation);
         rotation = Vector3.zero;
         rotation.x = pivotAngle;
 

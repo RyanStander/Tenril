@@ -58,12 +58,19 @@ public class CameraManager : MonoBehaviour
                 }
             }
         }
+        //setup the aim camera values
+        if (aimCamera != null)
+        {
+            CinemachineVirtualCamera cinemachineVirtualCamera = aimCamera.GetComponent<CinemachineVirtualCamera>();
+            if (cinemachineVirtualCamera.Follow == null)
+                cinemachineVirtualCamera.Follow = GameObject.FindGameObjectWithTag("CameraFollowTarget").transform;
+        }
     }
 
     private void DisableAllCameras()
     {
         explorationCamera.SetActive(false);
-        aimCamera.SetActive(false);
+        //aimCamera.SetActive(false);
         lockOnCamera.SetActive(false);
         menuCamera.SetActive(false);
         if (npcCamera != null)
