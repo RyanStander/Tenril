@@ -87,27 +87,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Draw/Sheath",
+                    "name": "WeaponSwap",
                     "type": "Button",
                     "id": "1f47c479-784c-4acd-a068-f1c742678285",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "OpenMenu",
-                    "type": "Button",
-                    "id": "420a0b25-c24e-4df2-8f11-812a4569ed42",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Open Map",
-                    "type": "Button",
-                    "id": "04ea4e08-8ea4-4564-9afe-e279ef19d146",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -256,6 +238,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Menu",
+                    "type": "Button",
+                    "id": "420a0b25-c24e-4df2-8f11-812a4569ed42",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Map",
+                    "type": "Button",
+                    "id": "04ea4e08-8ea4-4564-9afe-e279ef19d146",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Inventory",
+                    "type": "Button",
+                    "id": "88880c1c-f9f9-40b0-abbf-d477d485dc89",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -383,7 +392,7 @@
                 {
                     "name": "",
                     "id": "a0d1edb2-3460-4938-9431-a7934c9c395c",
-                    "path": "<Gamepad>/rightShoulder",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -552,7 +561,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
-                    "action": "Draw/Sheath",
+                    "action": "WeaponSwap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -560,54 +569,10 @@
                     "name": "",
                     "id": "4634a990-b3c7-469d-889a-9dab99a3d0ed",
                     "path": "<Gamepad>/dpad/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Draw/Sheath",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "96beef36-18f1-4646-8194-29099ec8c6a3",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "Tap",
-                    "processors": "",
-                    "groups": "Keyboard & Mouse",
-                    "action": "OpenMenu",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "b2facdac-a7f7-4226-b4f0-1057973a77ed",
-                    "path": "<Gamepad>/start",
                     "interactions": "Tap",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "OpenMenu",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2b50cff6-226b-4279-aee8-a2904b8a7690",
-                    "path": "<Keyboard>/m",
-                    "interactions": "Tap",
-                    "processors": "",
-                    "groups": "Keyboard & Mouse",
-                    "action": "Open Map",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "537392cd-22cc-43cd-a8f3-37b525ee9148",
-                    "path": "<DualShockGamepad>/touchpadButton",
-                    "interactions": "Tap",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Open Map",
+                    "action": "WeaponSwap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -647,7 +612,7 @@
                 {
                     "name": "",
                     "id": "bc1ab957-6231-49da-9050-57c14fb06ced",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -962,6 +927,72 @@
                     "action": "LockOnSwapTargetInput",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "24686bbf-c715-450e-a17e-1d411eaa8f26",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "36b45c15-1397-40bb-92d1-5ba547a0e1ec",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "96beef36-18f1-4646-8194-29099ec8c6a3",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b2facdac-a7f7-4226-b4f0-1057973a77ed",
+                    "path": "<Gamepad>/start",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2b50cff6-226b-4279-aee8-a2904b8a7690",
+                    "path": "<Keyboard>/m",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Map",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "537392cd-22cc-43cd-a8f3-37b525ee9148",
+                    "path": "<DualShockGamepad>/touchpadButton",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Map",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -970,9 +1001,27 @@
             "id": "8753d95b-9538-48bb-8f3a-3bbd6ea3ea6f",
             "actions": [
                 {
-                    "name": "Close Menus",
+                    "name": "Menu",
                     "type": "Button",
                     "id": "1c71a10b-970e-4be3-8b92-0775d3764b32",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Map",
+                    "type": "Button",
+                    "id": "4d9079a9-c346-4bdc-b64e-f941033e8cde",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Inventory",
+                    "type": "Button",
+                    "id": "f338e089-d7c8-4282-97c0-36efa3cd3f0a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -987,7 +1036,7 @@
                     "interactions": "Tap",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
-                    "action": "Close Menus",
+                    "action": "Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -998,7 +1047,51 @@
                     "interactions": "Tap",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Close Menus",
+                    "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "96b45f61-195a-4a59-9125-570e89e4de9d",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5e01d86e-0c61-43b6-add1-ba27d262420f",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fabf169e-46d3-4b53-84c5-e969d27dcbfc",
+                    "path": "<Keyboard>/m",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Map",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d1e3a13f-f0e9-4385-8c81-ef1503f07a31",
+                    "path": "<DualShockGamepad>/touchpadButton",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Map",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

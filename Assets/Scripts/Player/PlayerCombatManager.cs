@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-//TO DO: make it so that weakattackletgoinput has a flag and only triggers when bow is being wielded
 
 public class PlayerCombatManager : MonoBehaviour
 {
@@ -274,14 +270,30 @@ public class PlayerCombatManager : MonoBehaviour
         playerAnimatorManager.animator.SetBool("isHoldingArrow", true);
         playerAnimatorManager.PlayTargetAnimation("BowDrawArrow", true);
 
-        //TO DO: get a working bow model for animation
-        //get animator of the bow
-        //set the bool of is drawn to true
-        //play the draw animation
+        Animator bowAnimator = null;
+
+        //Get the bow depending on which hand it is instantiated in
+        if (playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
+        {
+            bowAnimator = weaponSlotManager.rightHandSlot.GetComponentInChildren<Animator>();
+        }
+        else if (playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
+        {
+            bowAnimator = weaponSlotManager.leftHandSlot.GetComponentInChildren<Animator>();
+        }
+        else
+            Debug.LogWarning("No bow prefab was found");
+
+        if (bowAnimator != null)
+        {
+            //Animate Bow
+            //set the bool of is drawn to true
+            bowAnimator.SetBool("isDrawn", true);
+            //play the draw animation
+            bowAnimator.Play("Draw");
+        }
 
         weaponSlotManager.DisplayObjectInHand(playerInventory.equippedAmmo.loadedItemModel, false, false);
-
-        //Animate Bow
         
     }
 
@@ -290,13 +302,24 @@ public class PlayerCombatManager : MonoBehaviour
         if (playerManager.isInteracting)
             return;
 
+        //If player does not have an arrow in their inventory, do not proceed
+        if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.equippedAmmo))
+            return;
+
         ArrowInstantiationLocation arrowInstantiationLocation=null;
+        Animator bowAnimator = null;
 
         //Get the bow depending on which hand it is instantiated in
-        if (playerInventory.equippedWeapon.rightWeaponModelPrefab!=null)
+        if (playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
+        {
             arrowInstantiationLocation = weaponSlotManager.rightHandSlot.GetComponentInChildren<ArrowInstantiationLocation>();
+            bowAnimator = weaponSlotManager.rightHandSlot.GetComponentInChildren<Animator>();
+        }
         else if (playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
+        {
             arrowInstantiationLocation = weaponSlotManager.leftHandSlot.GetComponentInChildren<ArrowInstantiationLocation>();
+            bowAnimator = weaponSlotManager.leftHandSlot.GetComponentInChildren<Animator>();
+        }
         else
             Debug.LogWarning("No bow prefab was found");
 
@@ -304,13 +327,19 @@ public class PlayerCombatManager : MonoBehaviour
         playerAnimatorManager.PlayTargetAnimation("BowFire",true);
         playerAnimatorManager.animator.SetBool("isHoldingArrow", false);
 
-        //TO DO: get a working bow model for animation
-        //get animator of the bow
-        //set the bool of is drawn to false
-        //play the fire animation
+        if (bowAnimator!=null)
+        {
+            //set the bool of is drawn to false
+            bowAnimator.SetBool("isDrawn", false);
+            //play the fire animation
+            bowAnimator.Play("Fire");
+        }
 
         //Destroy previous loaded arrow
         weaponSlotManager.HideObjectInHand(false, false);
+
+        //Remove an arrow from inventroy
+        playerInventory.RemoveItemFromInventory(playerInventory.equippedAmmo);
 
         //Create live arrow at specific location
         //TO DO: possibly check to link the rotation up to the camera facing direction
@@ -319,16 +348,16 @@ public class PlayerCombatManager : MonoBehaviour
         Rigidbody rigidbody = liveArrow.GetComponentInChildren<Rigidbody>();
         RangedProjectileDamageCollider damageCollider = liveArrow.GetComponentInChildren<RangedProjectileDamageCollider>();
 
-        //if(camera has lock on target)
-        //While locked on we are always facing target, can copy our facing direction to our arrows facing direction
-        //Quaternion arrowRotation=Quaternion.LookRotation(transform.forward)
-        //liveArrow.transform.rotation=arrowRotation;
-        //else
-        //live
-
-        //Remove this when camera implementation exists
-        //Make the arrow face where the bow and player is facing (should change it so that it uses camera instead of bow)
-        liveArrow.transform.rotation = Quaternion.Euler(arrowInstantiationLocation.GetTransform().eulerAngles.x,playerManager.lockOnTransform.eulerAngles.y,0);
+        if (inputHandler.lockOnFlag) 
+        {
+            //While locked on we are always facing target, can copy our facing direction to our arrows facing direction
+            Quaternion arrowRotation = Quaternion.LookRotation(transform.forward);
+            liveArrow.transform.rotation=arrowRotation;
+        }
+        else
+        {
+            liveArrow.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, playerManager.lockOnTransform.eulerAngles.y, 0);
+        }
 
         //give ammo rigidbody its values
         rigidbody.AddForce(liveArrow.transform.forward * playerInventory.equippedAmmo.forwardVelocity);
@@ -471,10 +500,18 @@ public class PlayerCombatManager : MonoBehaviour
                 return;
 
             playerAnimatorManager.animator.SetBool("isAiming", true);
+
+            EventManager.currentManager.AddEvent(new SwapToAimCamera());
         }
         else
         {
+            //Prevent exiting aiming if not in aim mode
+            if (!playerManager.isAiming)
+                return;
+
             playerAnimatorManager.animator.SetBool("isAiming", false);
+
+            EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
         }
     }
     #endregion

@@ -64,10 +64,8 @@ public class WeaponSlotManager : MonoBehaviour
 
     public void DisplayObjectInHand(GameObject objectToDisplay, bool isInLeftHandSlot = true, bool hideWeapon = true)
     {
-        Debug.Log("Displaying object");
         if (isInLeftHandSlot)
         {
-            Debug.Log("Show in left hand");
             if (hideWeapon)
             {
                 if (leftHandSlot.currentWeaponModel != null)
@@ -83,7 +81,6 @@ public class WeaponSlotManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Show in right hand");
             if (hideWeapon)
             {
                 if (rightHandSlot.currentWeaponModel != null)

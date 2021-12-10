@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
 {
+    private PlayerManager playerManager;
     public PlayerAnimatorManager playerAnimatorManager;
     private PlayerStats playerStats;
     private InputHandler inputHandler;
@@ -23,12 +22,17 @@ public class PlayerLocomotion : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float rotationSpeed = 10;
+    [SerializeField] private float aimSensitivity = 0.025f;
+    [SerializeField] private float minimumPivot = -35, maximumPivot = 35;
     [SerializeField] private float sprintStaminaCost = 0.1f;
     [SerializeField] private float dodgeStaminaCost = 5f;
+
+    private float lookAngle,pivotAngle;
 
     void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
+        playerManager = GetComponent<PlayerManager>();
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
         playerStats = GetComponent<PlayerStats>();
         cameraObject = Camera.main.transform;
@@ -66,75 +70,23 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleRotation(float delta)
     {
-        if (!playerAnimatorManager.canRotate)
-            return;
-
-        Vector3 targetDirection;
 
         if (inputHandler.lockOnFlag)
         {
-            //send out event to swap to lock on camera
-            //EventManager.currentManager.AddEvent(new SwapToLockOnCamera());
+            if (!playerAnimatorManager.canRotate)
+                return;
 
-            if (inputHandler.sprintFlag || inputHandler.dodgeInput)
-            {
-                targetDirection = cameraObject.forward * inputHandler.forward;
-                targetDirection += cameraObject.right * inputHandler.left;
-                targetDirection.Normalize();
-                targetDirection.y = 0;
-
-                if (targetDirection == Vector3.zero)
-                {
-                    targetDirection = transform.forward;
-                }
-
-                Quaternion tr = Quaternion.LookRotation(targetDirection);
-                Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
-
-                transform.rotation = targetRotation;
-            }
-            else
-            {
-                if (cameraLockOn.currentLockOnTarget!=null)
-                {
-                    Vector3 rotationDirection;
-                    rotationDirection = cameraLockOn.currentLockOnTarget.transform.position - transform.position;
-                    rotationDirection.y = 0;
-                    rotationDirection.Normalize();
-                    Quaternion tr = Quaternion.LookRotation(rotationDirection);
-                    Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
-                    transform.rotation = targetRotation;
-                }
-                
-
-                /*targetDirection = cameraObject.forward;
-
-                targetDirection.y = 0;
-
-                transform.rotation = Quaternion.LookRotation(targetDirection);*/
-            }
+            LockOnRotation();
+        }else if (playerManager.isAiming)
+        {
+            AimRotation(delta);
         }
         else
         {
-            //send out event to swap to exploration camera
-            //EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
+            if (!playerAnimatorManager.canRotate)
+                return;
 
-            //Sets direction in relation towards the camera
-            targetDirection = cameraObject.forward * inputHandler.forward;
-            targetDirection += cameraObject.right * inputHandler.left;
-
-            targetDirection.Normalize();
-            targetDirection.y = 0;
-
-            if (targetDirection == Vector3.zero)
-            {
-                targetDirection = transform.forward;
-            }
-
-            Quaternion tr = Quaternion.LookRotation(targetDirection);
-            Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * delta);
-
-            transform.rotation = targetRotation;
+            ExplorationRotation(delta);
         }
     }
 
@@ -259,7 +211,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void MovementType(bool isStrafeMovement)
     {
-        if (playerAnimatorManager.animator.GetBool("isInteracting"))
+        if (playerManager.isInteracting)
             return;
 
         //set the values for input
@@ -283,7 +235,7 @@ public class PlayerLocomotion : MonoBehaviour
         }
 
         //if player is strafing, use both left and forward
-        if (isStrafeMovement)
+        if (isStrafeMovement || playerManager.isAiming)
         {
             //Do not allow movement if the character is rooted
             if (statusEffectManager.GetIsRooted())
@@ -312,5 +264,94 @@ public class PlayerLocomotion : MonoBehaviour
                 playerAnimatorManager.animator.SetFloat("Left", 0, 0.1f, Time.deltaTime);
             }
         }   
+    }
+
+    private void AimRotation(float delta)
+    {
+        //Debug.Log("current look angle: " + lookAngle+ " and current y rot: "+transform.rotation.eulerAngles.y);
+        lookAngle = transform.rotation.eulerAngles.y;
+
+
+        lookAngle += inputHandler.lookInput.x * aimSensitivity / delta;
+        pivotAngle -= inputHandler.lookInput.y * aimSensitivity / delta;
+        pivotAngle = Mathf.Clamp(pivotAngle, minimumPivot, maximumPivot);
+
+        Vector3 rotation = Vector3.zero;
+        rotation.y = lookAngle;
+        Quaternion targetRotation = Quaternion.Euler(rotation);
+        transform.rotation = targetRotation;
+        //Debug.Log("target rotation " + targetRotation);
+        rotation = Vector3.zero;
+        rotation.x = pivotAngle;
+
+        targetRotation = Quaternion.Euler(rotation);
+        GameObject cameraFollowPoint = GameObject.FindGameObjectWithTag("CameraFollowTarget");
+        cameraFollowPoint.transform.localRotation = targetRotation;
+    }
+
+    private void LockOnRotation()
+    {
+        Vector3 targetDirection;
+        //if player is locked on perform the following movements
+        if (inputHandler.sprintFlag || inputHandler.dodgeInput)
+        {
+            targetDirection = cameraObject.forward * inputHandler.forward;
+            targetDirection += cameraObject.right * inputHandler.left;
+            targetDirection.Normalize();
+            targetDirection.y = 0;
+
+            if (targetDirection == Vector3.zero)
+            {
+                targetDirection = transform.forward;
+            }
+
+            Quaternion tr = Quaternion.LookRotation(targetDirection);
+            Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+
+            transform.rotation = targetRotation;
+        }
+        else
+        {
+            if (cameraLockOn.currentLockOnTarget != null)
+            {
+                Vector3 rotationDirection;
+                rotationDirection = cameraLockOn.currentLockOnTarget.transform.position - transform.position;
+                rotationDirection.y = 0;
+                rotationDirection.Normalize();
+                Quaternion tr = Quaternion.LookRotation(rotationDirection);
+                Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+                transform.rotation = targetRotation;
+            }
+
+
+            /*targetDirection = cameraObject.forward;
+
+            targetDirection.y = 0;
+
+            transform.rotation = Quaternion.LookRotation(targetDirection);*/
+        }
+    }
+
+    private void ExplorationRotation(float delta)
+    {
+        Vector3 targetDirection;
+        //If player is in exploration mode, perform following movement
+
+        //Sets direction in relation towards the camera
+        targetDirection = cameraObject.forward * inputHandler.forward;
+        targetDirection += cameraObject.right * inputHandler.left;
+
+        targetDirection.Normalize();
+        targetDirection.y = 0;
+
+        if (targetDirection == Vector3.zero)
+        {
+            targetDirection = transform.forward;
+        }
+
+        Quaternion tr = Quaternion.LookRotation(targetDirection);
+        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * delta);
+
+        transform.rotation = targetRotation;
     }
 }

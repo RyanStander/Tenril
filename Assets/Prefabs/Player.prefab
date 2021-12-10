@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &110039568
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 110039569}
+  m_Layer: 0
+  m_Name: CameraFollowTarget
+  m_TagString: CameraFollowTarget
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &110039569
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110039568}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.19, y: 1.521, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1834273280}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1384060955
 GameObject:
   m_ObjectHideFlags: 0
@@ -4073,7 +4103,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7803000388887419329}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e32349e5abecd984cb938447b604e95f, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.25
@@ -4111,13 +4141,17 @@ MonoBehaviour:
   left: 0
   forward: 0
   moveAmount: 0
+  lookInput: {x: 0, y: 0}
   dodgeInput: 0
   sprintInput: 0
   jumpInput: 0
   lockOnTargetInput: 0
   interactInput: 0
   menuInput: 0
+  mapInput: 0
+  inventoryInput: 0
   weakAttackInput: 0
+  weakAttackLetGoInput: 0
   strongAttackInput: 0
   drawSheathInput: 0
   blockInput: 0
@@ -4186,7 +4220,7 @@ MonoBehaviour:
   isWieldingPrimaryWeapon: 1
   primaryWeapon: {fileID: 11400000, guid: 379244ca9efcbe74a84fc791cb8b4127, type: 2}
   secondaryWeapon: {fileID: 11400000, guid: d0fa351850862604ea051e1892936ee9, type: 2}
-  equippedAmmo: {fileID: 0}
+  equippedAmmo: {fileID: 11400000, guid: 5594c94fc385d7447968ff1c35ad051d, type: 2}
   Gold: 250
   preparedSpells:
   - {fileID: 11400000, guid: 88f46b8b0cfc72a428db02eddaad133f, type: 2}
@@ -4216,6 +4250,8 @@ MonoBehaviour:
     itemStackCount: 4
   - item: {fileID: 11400000, guid: 083a95e82826f2047b46d3bdd56921bb, type: 2}
     itemStackCount: 2
+  - item: {fileID: 11400000, guid: 5594c94fc385d7447968ff1c35ad051d, type: 2}
+    itemStackCount: 69
 --- !u!114 &1949516871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4228,7 +4264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 141c622c0341cb04d86b137fa3877208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthLevel: 50
+  healthLevel: 10
   maxHealth: 0
   currentHealth: 0
   isDead: 0
@@ -4273,6 +4309,9 @@ MonoBehaviour:
   raycastOffset: {x: 0, y: 0, z: 0}
   groundCheckRadius: 0.3
   rotationSpeed: 10
+  aimSensitivity: 0.025
+  minimumPivot: -35
+  maximumPivot: 35
   sprintStaminaCost: 0.1
   dodgeStaminaCost: 5
 --- !u!114 &1949516872
@@ -4303,6 +4342,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ea56235252480c4cb51e33153ba6203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftHandSlot: {fileID: 0}
+  rightHandSlot: {fileID: 0}
+  rightSideSlot: {fileID: 0}
+  leftSideSlot: {fileID: 0}
+  backSlot: {fileID: 0}
   leftHandDamageCollider: {fileID: 0}
   rightHandDamageCollider: {fileID: 0}
 --- !u!114 &1704729951
@@ -7154,6 +7198,10 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 0.88
       objectReference: {fileID: 0}
+    - target: {fileID: 4851403877010954941, guid: a0654f02df05e094fa2e392d9b8e9915, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: e32349e5abecd984cb938447b604e95f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0654f02df05e094fa2e392d9b8e9915, type: 3}
 --- !u!4 &1158778856 stripped

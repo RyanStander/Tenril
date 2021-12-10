@@ -10,12 +10,13 @@ public class InputHandler : MonoBehaviour
     private PlayerController inputActions;
 
     //Movement inputs
+    public Vector2 lookInput;
     private Vector2 movementInput;
     [HideInInspector] public bool dodgeInput, sprintInput, jumpInput;
     [HideInInspector] public float lockOnTargetInput;
 
     //Other inputs
-    public bool interactInput, menuInput;
+    public bool interactInput, menuInput, mapInput,inventoryInput;
 
     //Combat Inputs
     public bool weakAttackInput, weakAttackLetGoInput, strongAttackInput,drawSheathInput, blockInput, parryInput, lockOnInput;
@@ -78,6 +79,8 @@ public class InputHandler : MonoBehaviour
         jumpInput = false;
         interactInput = false;
         menuInput = false;
+        inventoryInput = false;
+        mapInput = false;
 
         quickslotLeftInput = false;
         quickslotRightInput = false;
@@ -93,6 +96,8 @@ public class InputHandler : MonoBehaviour
         //----------------------------------------------------------
         //                         Locomotion
         //----------------------------------------------------------
+        //Look
+        inputActions.CharacterControls.Look.performed += lookInputActions => lookInput = lookInputActions.ReadValue<Vector2>();
         //Movement
         inputActions.CharacterControls.Movement.performed += movementInputActions => movementInput = movementInputActions.ReadValue<Vector2>();
         //Sprint
@@ -110,7 +115,7 @@ public class InputHandler : MonoBehaviour
         inputActions.CharacterControls.LockOn.performed += i => lockOnInput = true;
         inputActions.CharacterControls.LockOnSwapTargetInput.performed += lockOnTargetInputActions => lockOnTargetInput = lockOnTargetInputActions.ReadValue<float>();
         //Swap weapon
-        inputActions.CharacterControls.DrawSheath.performed += i => drawSheathInput = true;
+        inputActions.CharacterControls.WeaponSwap.performed += i => drawSheathInput = true;
         //Weak attack
         inputActions.CharacterControls.WeakAttack.performed += i => weakAttackInput = true;
         //Weak attack let go
@@ -159,9 +164,14 @@ public class InputHandler : MonoBehaviour
         //----------------------------------------------------------
         //Interact
         inputActions.CharacterControls.Interact.performed += i => interactInput = true;
-        //Open/Close Menu
-        inputActions.CharacterControls.OpenMenu.performed += i => menuInput = true;
-        inputActions.UIControls.CloseMenus.performed += i => menuInput = true;
+        //Menu
+        inputActions.CharacterControls.Menu.performed += i => menuInput = true;
+        inputActions.UIControls.Menu.performed += i => menuInput = true;
+        //UI interactions
+        inputActions.CharacterControls.Inventory.performed += i => inventoryInput = true;
+        inputActions.UIControls.Inventory.performed += i => inventoryInput = true;
+        inputActions.CharacterControls.Map.performed += i => mapInput = true;
+        inputActions.UIControls.Map.performed += i => mapInput = true;
     }
 
     #region Movement
