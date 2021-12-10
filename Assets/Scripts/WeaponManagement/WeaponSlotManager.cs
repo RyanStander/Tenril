@@ -6,17 +6,16 @@ public class WeaponSlotManager : MonoBehaviour
 {
     private CharacterStats chracterStats;
     private CharacterInventory characterInventory;
+    private AnimatorManager characterAnimatorManager;
 
     [HideInInspector]public WeaponHolderSlot leftHandSlot, rightHandSlot, rightSideSlot, leftSideSlot, backSlot;
 
     public DamageCollider leftHandDamageCollider, rightHandDamageCollider;
 
     private GameObject leftDisplayObject, rightDisplayObject;
-
-    private Animator animator;
     private void Awake()
     {
-        animator = GetComponent<Animator>();
+        characterAnimatorManager = GetComponent<AnimatorManager>();
         chracterStats = GetComponent<CharacterStats>();
         characterInventory = GetComponent<CharacterInventory>();
 
@@ -173,7 +172,8 @@ public class WeaponSlotManager : MonoBehaviour
 
         if (weaponItem != null)
         {
-            animator.CrossFade(weaponItem.idleAnimation, 0.1f);
+            characterAnimatorManager.animator.runtimeAnimatorController = weaponItem.weaponController;
+            characterAnimatorManager.PlayTargetAnimation(weaponItem.idleAnimation, false,false) ;
         }
         else
         {
@@ -181,7 +181,7 @@ public class WeaponSlotManager : MonoBehaviour
 
             //Set animation to unarmed stance 
             //(no animation for it currently, remember to rename to something else)
-            animator.CrossFade("UnarmedIdle", 0.2f);
+            //characterAnimatorManager.animator.CrossFade("UnarmedIdle", 0.2f);
 
             return;
         }

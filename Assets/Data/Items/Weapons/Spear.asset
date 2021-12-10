@@ -16,6 +16,7 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: c0280fafa88fc374899c40a7f7982b39, type: 3}
   itemName: Spear
   amountPerStack: 1
+  ItemValue: 0
   rightWeaponModelPrefab: {fileID: 4260048596949537076, guid: 8c581b8d067d8e64fa2233bb8b44dd8c, type: 3}
   leftWeaponModelPrefab: {fileID: 0}
   displaySecondaryWeaponWhenUnequipped: 0
@@ -23,6 +24,7 @@ MonoBehaviour:
   unequippedSecondaryWeaponModelPrefab: {fileID: 0}
   primarySheathPrefab: {fileID: 0}
   secondarySheathPrefab: {fileID: 0}
+  weaponController: {fileID: 22100000, guid: 0d144ee941147e442b144a428846ff90, type: 2}
   baseDamage: 35
   weakAttackDamageMultiplier: 1
   strongAttackDamageMultiplier: 2
@@ -31,19 +33,19 @@ MonoBehaviour:
   idleAnimation: PolearmIdle
   attackSet: {fileID: 11400000, guid: f3061d04fbfdb174d823fd029c0c4ac8, type: 2}
   weakAttacks:
-  - PoleCombo1
-  - PoleCombo2
-  - PoleCombo3
-  - PoleCombo4
-  - PoleCombo5
+  - WeakCombo1
+  - WeakCombo2
+  - WeakCombo3
+  - WeakCombo4
+  - WeakCombo5
   strongAttacks:
-  - PoleStrong1
-  - PoleStrong2
+  - StrongCombo1
+  - StrongCombo2
   parry: Parry
   baseStaminaCost: 15
   weakAttackCostMultiplier: 1
   strongAttackCostMultiplier: 2
-  weaponType: 0
+  weaponType: 1
   weaponSlotWhenNotWielded: 2
   canParry: 1
   isUnarmed: 0
