@@ -302,6 +302,10 @@ public class PlayerCombatManager : MonoBehaviour
         if (playerManager.isInteracting)
             return;
 
+        //If player does not have an arrow in their inventory, do not proceed
+        if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.equippedAmmo))
+            return;
+
         ArrowInstantiationLocation arrowInstantiationLocation=null;
         Animator bowAnimator = null;
 
@@ -333,6 +337,9 @@ public class PlayerCombatManager : MonoBehaviour
 
         //Destroy previous loaded arrow
         weaponSlotManager.HideObjectInHand(false, false);
+
+        //Remove an arrow from inventroy
+        playerInventory.RemoveItemFromInventory(playerInventory.equippedAmmo);
 
         //Create live arrow at specific location
         //TO DO: possibly check to link the rotation up to the camera facing direction
