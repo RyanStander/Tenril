@@ -73,6 +73,7 @@ public class PlayerManager : CharacterManager
         playerStats = GetComponent<PlayerStats>();
         playerInteraction = GetComponent<PlayerInteraction>();
         weaponSlotManager = GetComponent<WeaponSlotManager>();
+        ragdollManager = GetComponentInChildren<RagdollManager>();
 
 
         EventManager.currentManager.Subscribe(EventType.CeaseDialogue, OnCeaseDialogue);
@@ -188,6 +189,14 @@ public class PlayerManager : CharacterManager
         isBlocking = playerAnimatorManager.animator.GetBool("isBlocking");
         isAiming = playerAnimatorManager.animator.GetBool("isAiming");
         isHoldingArrow = playerAnimatorManager.animator.GetBool("isHoldingArrow");
+    }
+
+    public override void EnableRagdoll()
+    {
+        base.EnableRagdoll();
+        playerAnimatorManager.animator.enabled = false;
+        characterCollider.enabled = false;
+        characterCollisionBlocker.enabled = false;
     }
 
     #region onEvents

@@ -6,6 +6,7 @@ public class CharacterManager : MonoBehaviour
 {
     public Transform lockOnTransform;
     protected WeaponSlotManager weaponSlotManager;
+    protected RagdollManager ragdollManager;
     
     public bool isParrying, canBeRiposted, isBlocking;
 
@@ -19,4 +20,18 @@ public class CharacterManager : MonoBehaviour
     public Transform finisherAttackRayCastStartPointTransform;
     //The value used for determinging how the magicka is regenerated
     protected float timeStrength;
+
+    public virtual void EnableRagdoll()
+    {
+        if (ragdollManager != null)
+        {
+            ragdollManager.EnableRagdollComponents();
+        }
+        GetComponent<Rigidbody>().useGravity = false;
+
+        if (weaponSlotManager!=null)
+        {
+            weaponSlotManager.CloseDamageCollider();
+        }
+    }
 }
