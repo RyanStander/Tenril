@@ -204,7 +204,10 @@ public class PlayerManager : CharacterManager
 
             //remove weapon from inventory and and add weapon that is equipped
             playerInventory.RemoveItemFromInventory(equipWeapon.weaponItem);
-            playerInventory.AddItemToInventory(oldWeapon);
+            
+            //if there was previously no weapon in the slot, do not add it to the inventory
+            if (oldWeapon!=null)
+                playerInventory.AddItemToInventory(oldWeapon);
 
             //equip the new weapon
             playerInventory.EquipWeapon(weaponSlotManager, equipWeapon.weaponItem, equipWeapon.isPrimaryWeapon);

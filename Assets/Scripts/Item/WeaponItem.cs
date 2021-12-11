@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [CreateAssetMenu(menuName = "Items/Weapon")]
 public class WeaponItem : Item
@@ -33,8 +31,7 @@ public class WeaponItem : Item
     [Header("Damage Block")]
     [Range(0,100)]public float physicalDamageBlockPercentage;
 
-    [Header("Idle Animations")]
-    public string idleAnimation;
+    [HideInInspector]public string equipAnimation= "WeaponEquip";
 
     [Header("Attack Animations")]
     public AttackSet attackSet;

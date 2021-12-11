@@ -1484,7 +1484,7 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.25
+  - screenRelativeHeight: 0.06512244
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7789040284175443491}
@@ -4075,21 +4075,21 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.38804835
+  - screenRelativeHeight: 0.256319
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7900930561389018117}
     - renderer: {fileID: 7900729756277084333}
     - renderer: {fileID: 7900671171112456711}
     - renderer: {fileID: 7902539950830933431}
-  - screenRelativeHeight: 0.13679844
+  - screenRelativeHeight: 0.07423834
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7902441982616470591}
     - renderer: {fileID: 7902133567459998369}
     - renderer: {fileID: 7902669094206137655}
     - renderer: {fileID: 7902565116177877959}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.0098152375
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7900641922988322979}
@@ -4219,7 +4219,7 @@ MonoBehaviour:
   equippedWeapon: {fileID: 0}
   isWieldingPrimaryWeapon: 1
   primaryWeapon: {fileID: 11400000, guid: 379244ca9efcbe74a84fc791cb8b4127, type: 2}
-  secondaryWeapon: {fileID: 11400000, guid: 92735e3b99674a741ac327fbf4264d5f, type: 2}
+  secondaryWeapon: {fileID: 11400000, guid: d0fa351850862604ea051e1892936ee9, type: 2}
   equippedAmmo: {fileID: 11400000, guid: 5594c94fc385d7447968ff1c35ad051d, type: 2}
   Gold: 250
   preparedSpells:
@@ -4252,6 +4252,10 @@ MonoBehaviour:
     itemStackCount: 2
   - item: {fileID: 11400000, guid: 5594c94fc385d7447968ff1c35ad051d, type: 2}
     itemStackCount: 69
+  - item: {fileID: 11400000, guid: 919c8f6965eb9af4293271d0c86e39ff, type: 2}
+    itemStackCount: 1
+  - item: {fileID: 11400000, guid: d0fa351850862604ea051e1892936ee9, type: 2}
+    itemStackCount: 1
 --- !u!114 &1949516871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4342,6 +4346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ea56235252480c4cb51e33153ba6203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultAnimator: {fileID: 22100000, guid: da5b0e32b09e53d4cafc544fcddb8e32, type: 2}
   leftHandSlot: {fileID: 0}
   rightHandSlot: {fileID: 0}
   rightSideSlot: {fileID: 0}
