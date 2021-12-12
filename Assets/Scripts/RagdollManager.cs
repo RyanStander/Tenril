@@ -15,6 +15,7 @@ public class RagdollManager : MonoBehaviour
         foreach (Rigidbody rigidbody in rigidbodies)
         {
             rigidbody.isKinematic = state;
+            rigidbody.velocity = Vector3.zero;
         }
     }
 
