@@ -22,6 +22,9 @@ public class WeaponItem : Item
     [Header("Animator Replacer")]
     public AnimatorOverrideController weaponController;
 
+    [Header("Sound Data")]
+    public WeaponSoundEffects weaponSoundEffects;
+
     [Header("Damage")]
     public int baseDamage = 25;
     public float weakAttackDamageMultiplier = 1;

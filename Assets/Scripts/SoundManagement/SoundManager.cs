@@ -1,177 +1,212 @@
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
 public class SoundManager : MonoBehaviour
 {
-    private AudioSource audioSource;
+    private AudioSourceHolder audioSourceHolder;
+    private CharacterInventory characterInventory;
     private Animator animator;
     [SerializeField] private CharacterSoundEffects characterSoundEffectSet;
 
-
+    private float forwardValueLimitLeftFootstepSounds = 0.4f;
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        audioSourceHolder = GetComponentInChildren<AudioSourceHolder>();
         animator = GetComponent<Animator>();
+        characterInventory = GetComponent<CharacterInventory>();
     }
 
+    #region locomotion
     private void ForwardFootstepL(float forward)
     {
-        if (characterSoundEffectSet == null)
-        {
-            Debug.LogWarning("no sound effect set for the character, make sure you have set it");
+        if (isInteracting())
             return;
-        }
+
+        if (!HasSetCharacterSoundEffects())
+            return;
 
         float actualForward = animator.GetFloat("Forward");
 
         //if character sprinting forward
         if (forward==-2f || forward== 2f)
         {
-            PlaySelectedSoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.sprintingVolume);
+            PlayLocomotionSoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.sprintingVolume);
         }
         //if character running forward
         else if ((forward==1f&&actualForward<= 1f) ||(forward==-1f && actualForward >= -1f))
         {
-            PlaySelectedSoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.runningVolume);
+            PlayLocomotionSoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.runningVolume);
         }
         //if character walking forward
         else if ((forward == 0.5f &&actualForward<=0.5f) || (forward == -0.5f && actualForward >= -0.5f))
         {
-            PlaySelectedSoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.walkingVolume);
+            PlayLocomotionSoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.walkingVolume);
         }
     }
 
     private void LeftFootstepL(float left)
     {
-        Debug.Log("Performing left step");
-        if (characterSoundEffectSet == null)
-        {
-            Debug.LogWarning("no sound effect set for the character, make sure you have set it");
+        if (isInteracting())
             return;
-        }
+
+        if (!HasSetCharacterSoundEffects())
+            return;
 
         float actualLeft = animator.GetFloat("Left");
         float actualForward = animator.GetFloat("Forward");
 
-        if (!(actualForward <= 0.0001f && actualForward >= -0.0001f))
+        if (!CanPlayLeftFootstep(actualForward))
         {
             return;
         }
-        Debug.Log("step performed");
         //if character running left
         if ((left == 1 && actualLeft <= 1)||(left==-1&&actualLeft>=-1))
         {
-            PlaySelectedSoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.runningVolume);
+            PlayLocomotionSoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.runningVolume);
         }
         //if character walking left
         else if ((left == 0.5f && actualLeft <= 0.5f)|| (left == -0.5f && actualLeft >= -0.5f))
         {
-            PlaySelectedSoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.walkingVolume);
+            PlayLocomotionSoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.walkingVolume);
         }
     }
 
     private void ForwardFootstepR(float forward)
     {
-        if (characterSoundEffectSet == null)
-        {
-            Debug.LogWarning("no sound effect set for the character, make sure you have set it");
+        if (isInteracting())
             return;
-        }
+
+        if (!HasSetCharacterSoundEffects())
+            return;
 
         float actualForward = animator.GetFloat("Forward");
 
         //if character sprinting forward
         if (forward == -2 || forward == 2)
         {
-            PlaySelectedSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.sprintingVolume);
+            PlayLocomotionSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.sprintingVolume);
         }
         //if character running forward
         else if ((forward == 1 && actualForward <= 1) || (forward == -1 && actualForward >= -1))
         {
-            PlaySelectedSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.runningVolume);
+            PlayLocomotionSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.runningVolume);
         }
         //if character walking forward
         else if ((forward == 0.5f && actualForward <= 0.5f) || (forward == -0.5f && actualForward >= -0.5f))
         {
-            PlaySelectedSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.walkingVolume);
+            PlayLocomotionSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.walkingVolume);
         }
     }
 
     private void LeftFootstepR(float left)
     {
-        Debug.Log("Performing left step");
-        if (characterSoundEffectSet == null)
-        {
-            Debug.LogWarning("no sound effect set for the character, make sure you have set it");
+        if (isInteracting())
             return;
-        }
+
+        if (!HasSetCharacterSoundEffects())
+            return;
 
         float actualLeft = animator.GetFloat("Left");
         float actualForward = animator.GetFloat("Forward");
 
-        if (!(actualForward <= 0.0001f && actualForward >= -0.0001f))
+        if (!CanPlayLeftFootstep(actualForward))
         {
             return;
         }
-        Debug.Log("step performed");
         //if character running left
         if ((left == 1 && actualLeft <= 1) || (left == -1 && actualLeft >= -1))
         {
-            PlaySelectedSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.runningVolume);
+            PlayLocomotionSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.runningVolume);
         }
         //if character walking left
-        else if ((left == 1 && actualLeft <= 1) || (left == -1 && actualLeft >= -1))
+        else if ((left == 0.5f && actualLeft <= 0.5f) || (left == -0.5f && actualLeft >= -0.5f))
         {
-            PlaySelectedSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.walkingVolume);
+            PlayLocomotionSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.walkingVolume);
         }
     }
 
-    private void JumpStart(float volume = 1f)
+    private void PlayLocomotionSoundClip(AudioClip audioClip,float volume)
     {
-        audioSource.PlayOneShot((AudioClip)Resources.Load(""));
-        audioSource.volume = volume;
+        audioSourceHolder.locomotionSFX.PlayOneShot(audioClip);
+        audioSourceHolder.locomotionSFX.volume = volume;
+    }
+    #endregion
+
+    #region Weapon
+    private void DrawWeaponSound()
+    {
+        if (!CheckIfWeaponSFXIsSet())
+            return;
+
+        PlayWeaponSoundClip(characterInventory.equippedWeapon.weaponSoundEffects.weaponDrawSFX.audioClip, characterInventory.equippedWeapon.weaponSoundEffects.weaponDrawSFX.volume);
     }
 
-    private void JumpLand(float volume = 1f)
+    private void WeaponSwingSound()
     {
-        audioSource.PlayOneShot((AudioClip)Resources.Load(""));
-        audioSource.volume = volume;
+        if (!CheckIfWeaponSFXIsSet())
+            return;
+
+        PlayWeaponSoundClip(characterInventory.equippedWeapon.weaponSoundEffects.weaponSwingSFX.audioClip, characterInventory.equippedWeapon.weaponSoundEffects.weaponSwingSFX.volume);
     }
 
-    private void PlaySelectedSoundClip(AudioClip audioClip,float volume)
+    private void PlayWeaponSoundClip(AudioClip audioClip, float volume)
     {
-        audioSource.PlayOneShot(audioClip);
-        //audioSource.volume = volume;
+        audioSourceHolder.weaponSFX.PlayOneShot(audioClip);
+        audioSourceHolder.weaponSFX.volume = volume;
     }
+    #endregion
+
+
+    #region Checkers
+    private bool isInteracting()
+    {
+        return animator.GetBool("isInteracting");
+    }
+    private bool CanPlayLeftFootstep(float actualForward)
+    {
+        if (!(actualForward <= forwardValueLimitLeftFootstepSounds && actualForward >= -forwardValueLimitLeftFootstepSounds))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private bool HasSetCharacterSoundEffects()
+    {
+        if (characterSoundEffectSet == null)
+        {
+            Debug.LogWarning("no sound effect set for the character, make sure you have set it");
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private bool CheckIfWeaponSFXIsSet()
+    {
+        if (characterInventory == null)
+        {
+            Debug.LogWarning("Could not find character's inventroy");
+            return false;
+        }
+        else if (characterInventory.equippedWeapon==null)
+        {
+            Debug.LogWarning("Could not find equipped weapon");
+            return false;
+        }
+        else if (characterInventory.equippedWeapon.weaponSoundEffects==null)
+        {
+            Debug.LogWarning("Could not find weaponSoundEffects on equipped weapon");
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    #endregion
 }
-
-//private void FootstepR(float forward, float left, float volume = 1f)
-//{
-//    float actualForward = animator.GetFloat("Forward");
-//    float actualLeft = animator.GetFloat("Left");
-
-//    //if character sprinting forward
-//    if (forward > 1)
-//    {
-//        PlaySelectedSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, volume);
-//    }
-//    //if character running forward
-//    else if (forward > 0.5f && actualForward <= 1)
-//    {
-//        PlaySelectedSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, volume);
-//    }
-//    //if character walking forward
-//    else if (forward > 0 && actualForward <= 0.5f)
-//    {
-//        PlaySelectedSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, volume);
-//    }
-//    //if character running left
-//    else if (left > 0.5f && actualLeft <= 1)
-//    {
-//        PlaySelectedSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, volume);
-//    }
-//    else if (left > 0 && actualLeft <= 0.5f)
-//    {
-//        PlaySelectedSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, volume);
-//    }
-//}

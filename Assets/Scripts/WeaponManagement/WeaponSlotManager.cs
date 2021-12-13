@@ -120,33 +120,7 @@ public class WeaponSlotManager : MonoBehaviour
 
     public void LoadWeaponOnSlot(WeaponItem weaponItem, WeaponItem unequippedWeapon = null)
     {
-        //remove all previous weapons and sheaths displayed
-        if (leftHandSlot != null)
-        {
-            leftHandSlot.UnloadWeaponAndDestroy();
-        }
-        if (rightHandSlot != null)
-        {
-            rightHandSlot.UnloadWeaponAndDestroy();
-        }
-        if (backSlot != null)
-        {
-            backSlot.UnloadWeaponAndDestroy();
-            backSlot.UnloadSheathAndDestroy();
-        }
-        if (leftSideSlot != null)
-        {
-            leftSideSlot.UnloadWeaponAndDestroy();
-            leftSideSlot.UnloadSheathAndDestroy();
-        }
-        if (rightSideSlot != null)
-        {
-            rightSideSlot.UnloadWeaponAndDestroy();
-            rightSideSlot.UnloadSheathAndDestroy();
-        }
-
-        //if (weaponItem == null)
-        //    return;
+        UnloadAndDestroyAllWeapons();
 
         #region Weapon Idle Anim           
 
@@ -217,6 +191,8 @@ public class WeaponSlotManager : MonoBehaviour
         leftHandDamageCollider.currentDamage = characterInventory.equippedWeapon.baseDamage;
         //set the damage collider's character manager
         leftHandDamageCollider.characterManager = GetComponent<CharacterManager>();
+        //set the sfx of the weapon
+        leftHandDamageCollider.weaponSoundEffects = characterInventory.equippedWeapon.weaponSoundEffects;
     }
 
     private void LoadRightWeaponDamageCollider()
@@ -228,11 +204,13 @@ public class WeaponSlotManager : MonoBehaviour
 
         //get the value of the damage collider
         rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
-
         //set the damage of the collider equal to that of the right weapon
         rightHandDamageCollider.currentDamage = characterInventory.equippedWeapon.baseDamage;
         //set the damage collider's character manager
         rightHandDamageCollider.characterManager = GetComponent<CharacterManager>();
+        //set the sfx of the weapon
+        rightHandDamageCollider.weaponSoundEffects = characterInventory.equippedWeapon.weaponSoundEffects;
+
     }
 
     public void OpenDamageCollider()
@@ -327,6 +305,34 @@ public class WeaponSlotManager : MonoBehaviour
                     }
                     break;
             }
+    }
+
+    private void UnloadAndDestroyAllWeapons()
+    {
+        //remove all previous weapons and sheaths displayed
+        if (leftHandSlot != null)
+        {
+            leftHandSlot.UnloadWeaponAndDestroy();
+        }
+        if (rightHandSlot != null)
+        {
+            rightHandSlot.UnloadWeaponAndDestroy();
+        }
+        if (backSlot != null)
+        {
+            backSlot.UnloadWeaponAndDestroy();
+            backSlot.UnloadSheathAndDestroy();
+        }
+        if (leftSideSlot != null)
+        {
+            leftSideSlot.UnloadWeaponAndDestroy();
+            leftSideSlot.UnloadSheathAndDestroy();
+        }
+        if (rightSideSlot != null)
+        {
+            rightSideSlot.UnloadWeaponAndDestroy();
+            rightSideSlot.UnloadSheathAndDestroy();
+        }
     }
 
     public void DrainWeakStaminaAttack()

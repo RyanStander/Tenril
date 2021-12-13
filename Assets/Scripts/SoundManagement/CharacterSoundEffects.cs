@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Sounds/CharacterSoundEffects")]
 public class CharacterSoundEffects : ScriptableObject
 {
-    [SerializeField] public WalkingSFX leftFootstepSFX, rightFootstepSFX;
-    [SerializeField] public AudioClip jumpSFX,landSFX;
+    public WalkingSFX leftFootstepSFX, rightFootstepSFX;
+    public AudioClip jumpSFX,landSFX;
 }
 
 [System.Serializable]
