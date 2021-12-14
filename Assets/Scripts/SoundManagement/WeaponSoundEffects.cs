@@ -4,7 +4,7 @@ using UnityEngine;
 public class WeaponSoundEffects : ScriptableObject
 {
     public AudioClipData weaponDrawSFX, weaponSwingSFX;
-    public AudioClipData weaponHitFlesh, weaponHitStone, weaponHitWood, weaponHitMetal;
+    public AudioClipData weaponHitFlesh, weaponHitStone, weaponHitWood, weaponHitMetal, weaponBlockAttack;
     //add more when can think of em
 }
 

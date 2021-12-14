@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdfa1c8d629d2e64791f98534db8f52e, type: 3}
   m_Name: PlayerSoundData
   m_EditorClassIdentifier: 
+  Grunts: []
   leftFootstepSFX:
     audioClip: {fileID: 8300000, guid: 2a8bfdae0c5214c4ea2b01260d841c57, type: 3}
     walkingVolume: 0.5
@@ -22,5 +23,15 @@ MonoBehaviour:
     walkingVolume: 0.5
     runningVolume: 0.75
     sprintingVolume: 1
-  jumpSFX: {fileID: 0}
-  landSFX: {fileID: 0}
+  jumpSFX:
+    audioClip: {fileID: 0}
+    volume: 1
+  landSFX:
+    audioClip: {fileID: 8300000, guid: ec1f987470439bb42b6b6bcadaf759e2, type: 3}
+    volume: 1
+  dodgeSFX:
+    audioClip: {fileID: 8300000, guid: 02ef637063ce1f042bd84e7feac24bb1, type: 3}
+    volume: 1
+  rollSFX:
+    audioClip: {fileID: 8300000, guid: 02ef637063ce1f042bd84e7feac24bb1, type: 3}
+    volume: 1

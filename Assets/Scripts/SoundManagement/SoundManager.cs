@@ -29,17 +29,17 @@ public class SoundManager : MonoBehaviour
         //if character sprinting forward
         if (forward==-2f || forward== 2f)
         {
-            PlayLocomotionSoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.sprintingVolume);
+            PlaySoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.sprintingVolume);
         }
         //if character running forward
         else if ((forward==1f&&actualForward<= 1f) ||(forward==-1f && actualForward >= -1f))
         {
-            PlayLocomotionSoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.runningVolume);
+            PlaySoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.runningVolume);
         }
         //if character walking forward
         else if ((forward == 0.5f &&actualForward<=0.5f) || (forward == -0.5f && actualForward >= -0.5f))
         {
-            PlayLocomotionSoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.walkingVolume);
+            PlaySoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.walkingVolume);
         }
     }
 
@@ -61,12 +61,12 @@ public class SoundManager : MonoBehaviour
         //if character running left
         if ((left == 1 && actualLeft <= 1)||(left==-1&&actualLeft>=-1))
         {
-            PlayLocomotionSoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.runningVolume);
+            PlaySoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.runningVolume);
         }
         //if character walking left
         else if ((left == 0.5f && actualLeft <= 0.5f)|| (left == -0.5f && actualLeft >= -0.5f))
         {
-            PlayLocomotionSoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.walkingVolume);
+            PlaySoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.walkingVolume);
         }
     }
 
@@ -83,17 +83,17 @@ public class SoundManager : MonoBehaviour
         //if character sprinting forward
         if (forward == -2 || forward == 2)
         {
-            PlayLocomotionSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.sprintingVolume);
+            PlaySoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.sprintingVolume);
         }
         //if character running forward
         else if ((forward == 1 && actualForward <= 1) || (forward == -1 && actualForward >= -1))
         {
-            PlayLocomotionSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.runningVolume);
+            PlaySoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.runningVolume);
         }
         //if character walking forward
         else if ((forward == 0.5f && actualForward <= 0.5f) || (forward == -0.5f && actualForward >= -0.5f))
         {
-            PlayLocomotionSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.walkingVolume);
+            PlaySoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.walkingVolume);
         }
     }
 
@@ -115,16 +115,32 @@ public class SoundManager : MonoBehaviour
         //if character running left
         if ((left == 1 && actualLeft <= 1) || (left == -1 && actualLeft >= -1))
         {
-            PlayLocomotionSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.runningVolume);
+            PlaySoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.runningVolume);
         }
         //if character walking left
         else if ((left == 0.5f && actualLeft <= 0.5f) || (left == -0.5f && actualLeft >= -0.5f))
         {
-            PlayLocomotionSoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.walkingVolume);
+            PlaySoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.walkingVolume);
         }
     }
+    
+    private void RollSFX()
+    {
+        if (!HasSetCharacterSoundEffects())
+            return;
 
-    private void PlayLocomotionSoundClip(AudioClip audioClip,float volume)
+        PlaySoundClip(characterSoundEffectSet.dodgeSFX.audioClip, characterSoundEffectSet.dodgeSFX.volume);
+    }
+
+    private void LandSFX()
+    {
+        if (!HasSetCharacterSoundEffects())
+            return;
+
+        PlaySoundClip(characterSoundEffectSet.dodgeSFX.audioClip, characterSoundEffectSet.dodgeSFX.volume);
+    }
+
+    private void PlaySoundClip(AudioClip audioClip,float volume)
     {
         audioSourceHolder.locomotionSFX.PlayOneShot(audioClip);
         audioSourceHolder.locomotionSFX.volume = volume;
@@ -137,7 +153,7 @@ public class SoundManager : MonoBehaviour
         if (!CheckIfWeaponSFXIsSet())
             return;
 
-        PlayWeaponSoundClip(characterInventory.equippedWeapon.weaponSoundEffects.weaponDrawSFX.audioClip, characterInventory.equippedWeapon.weaponSoundEffects.weaponDrawSFX.volume);
+        PlaySoundClip(characterInventory.equippedWeapon.weaponSoundEffects.weaponDrawSFX.audioClip, characterInventory.equippedWeapon.weaponSoundEffects.weaponDrawSFX.volume);
     }
 
     private void WeaponSwingSound()
@@ -145,13 +161,29 @@ public class SoundManager : MonoBehaviour
         if (!CheckIfWeaponSFXIsSet())
             return;
 
-        PlayWeaponSoundClip(characterInventory.equippedWeapon.weaponSoundEffects.weaponSwingSFX.audioClip, characterInventory.equippedWeapon.weaponSoundEffects.weaponSwingSFX.volume);
+        PlaySoundClip(characterInventory.equippedWeapon.weaponSoundEffects.weaponSwingSFX.audioClip, characterInventory.equippedWeapon.weaponSoundEffects.weaponSwingSFX.volume);
     }
 
-    private void PlayWeaponSoundClip(AudioClip audioClip, float volume)
+    private void RangedLoadSound()
     {
-        audioSourceHolder.weaponSFX.PlayOneShot(audioClip);
-        audioSourceHolder.weaponSFX.volume = volume;
+        if (!CheckIfWeaponSFXIsSet())
+            return;
+
+        if (characterInventory.equippedWeapon.weaponSoundEffects is RangedWeaponSoundEffects rangedWeaponSoundEffects)
+        {
+            PlaySoundClip(rangedWeaponSoundEffects.loadSFX.audioClip, rangedWeaponSoundEffects.loadSFX.volume);
+        }
+    }
+
+    private void RangedFireSound()
+    {
+        if (!CheckIfWeaponSFXIsSet())
+            return;
+
+        if (characterInventory.equippedWeapon.weaponSoundEffects is RangedWeaponSoundEffects rangedWeaponSoundEffects)
+        {
+            PlaySoundClip(rangedWeaponSoundEffects.fireSFX.audioClip, rangedWeaponSoundEffects.fireSFX.volume);
+        }
     }
     #endregion
 

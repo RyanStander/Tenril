@@ -1,10 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Sounds/CharacterSoundEffects")]
 public class CharacterSoundEffects : ScriptableObject
 {
-    public WalkingSFX leftFootstepSFX, rightFootstepSFX;
-    public AudioClip jumpSFX,landSFX;
+    [Header("Voices")]
+    public List<AudioClipData> Grunts;
+    [Header("SFX")]
+    public WalkingSFX leftFootstepSFX;
+    public WalkingSFX rightFootstepSFX;
+    public AudioClipData jumpSFX,landSFX,dodgeSFX,rollSFX;
 }
 
 [System.Serializable]
