@@ -379,15 +379,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1884466008573971301, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0027889227
+      value: 0.0027889232
       objectReference: {fileID: 0}
     - target: {fileID: 1884466008573971301, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 2.877934e-10
+      value: -8.495696e-10
       objectReference: {fileID: 0}
     - target: {fileID: 1884466008573971301, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -8.026367e-13
+      value: 2.3693935e-12
       objectReference: {fileID: 0}
     - target: {fileID: 1884466008968980784, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_Lens.m_SensorSize.x
@@ -411,11 +411,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1884466008968980787, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 4.4342312e-16
+      value: 1.2785005e-15
       objectReference: {fileID: 0}
     - target: {fileID: 1884466008968980787, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -2.8247407e-17
+      value: -1.4003339e-16
       objectReference: {fileID: 0}
     - target: {fileID: 1884466009316583461, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_FollowOffset.y
@@ -753,7 +753,9 @@ GameObject:
   - component: {fileID: 294805184}
   - component: {fileID: 294805183}
   - component: {fileID: 294805182}
+  - component: {fileID: 294805180}
   - component: {fileID: 294805179}
+  - component: {fileID: 294805181}
   m_Layer: 0
   m_Name: RepositioningMinionDummy
   m_TagString: Untagged
@@ -819,6 +821,48 @@ MonoBehaviour:
   detectionBlockLayer:
     serializedVersion: 2
     m_Bits: 524800
+  navAgent: {fileID: 294805180}
+--- !u!195 &294805180
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 294805178}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 1
+  m_Speed: 2
+  m_Acceleration: 2
+  avoidancePriority: 50
+  m_AngularSpeed: 2
+  m_StoppingDistance: 1
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &294805181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 294805178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bcb6456538e9f84599ce13aea6c3387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  navAgent: {fileID: 294805180}
+  pathColor: {r: 0.9483243, g: 1, b: 0, a: 1}
+  nextPositionColor: {r: 0, g: 1, b: 0, a: 1}
+  offLinkPathColor: {r: 0, g: 1, b: 1, a: 1}
+  offLinkStartColor: {r: 1, g: 0, b: 1, a: 1}
+  offLinkEndColor: {r: 0, g: 0, b: 1, a: 1}
+  positionRadius: 0.15
 --- !u!136 &294805182
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1927,7 +1971,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 887469353}
-  m_LocalRotation: {x: 0.002788919, y: 9.652256e-10, z: 1.0866771e-12, w: 0.9999961}
+  m_LocalRotation: {x: 0.002788919, y: -9.640515e-10, z: 2.0501096e-12, w: 0.9999961}
   m_LocalPosition: {x: 0, y: 1.69, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []

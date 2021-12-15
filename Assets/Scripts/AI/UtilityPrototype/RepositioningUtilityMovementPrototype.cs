@@ -65,6 +65,17 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
     //Helper bool for LOS
     private bool hasLOS = false;
 
+    //Agent being used
+    public NavMeshAgent navAgent;
+
+    private void Start()
+    {
+        //Disable certain navAgent features
+        navAgent.isStopped = false; //Prevents agent from using any given speeds by accident
+        navAgent.updatePosition = false; //Disable agent forced position
+        navAgent.updateRotation = false; //Disable agent forced rotation
+    }
+
     #region Target Rotation
     internal void RotateTowardsTargetPosition(Vector3 target, float rotationSpeed)
     {
@@ -85,7 +96,7 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
     }
     #endregion
 
-    public void Update()
+    public void FixedUpdate()
     {
         //Establish the current distance to the target
         distanceToObjectOfInterest = DistanceToTarget();
@@ -96,27 +107,35 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
         //Check for direct obstruction
         hasLOS = IsTargetUnobstructed(objectOfInterest.transform, transform, detectionBlockLayer);
 
-        //Generate rays based on utility and information about target
-        GenerateUtilityRays();
+        //Set the destination to calculate from to the object of interest (this creates a reference point)
+        navAgent.SetDestination(objectOfInterest.transform.position);
 
-        //Get and set the current direction to strive for and follow
-        currentDirection = GetAverageUtilityDirection();
+        //Suspend movement logic until the path is completely calcualted
+        //Prevents problems with calculating remaining distance between the target and agent
+        if (!navAgent.pathPending)
+        {
+            //Generate rays based on utility and information about target
+            GenerateUtilityRays();
 
-        //Rotate towards target (always 'circling')
-        RotateTowardsObjectOfInterest();
+            //Get and set the current direction to strive for and follow
+            currentDirection = GetAverageUtilityDirection();
 
-        //Move towards the target direction
-        ApplyDirectionalMovement();
+            //Rotate towards target (always 'circling')
+            RotateTowardsObjectOfInterest();
 
-        //Visual of the average direction
-        Debug.DrawRay(transform.position, currentDirection * utilityRayRange, Color.white);
+            //Move towards the target direction
+            ApplyDirectionalMovement();
 
-        //Debug the looking direction
-        Debug.DrawRay(transform.position, transform.forward * utilityRayRange, Color.magenta);
+            //Visual of the average direction
+            Debug.DrawRay(transform.position, currentDirection * utilityRayRange, Color.magenta);
 
-        //Debug a direct ray to the object of interest
-        Vector3 rayOrigin = transform.position; rayOrigin.y *= 0.5f;
-        Debug.DrawRay(rayOrigin, (objectOfInterest.transform.position - transform.position), Color.yellow);
+            //Debug a direct ray to the object of interest
+            Vector3 rayOrigin = transform.position; rayOrigin.y *= 0.5f;
+            Debug.DrawRay(rayOrigin, (objectOfInterest.transform.position - transform.position), Color.yellow);
+
+            //Method sacrifices animation quality (increasing foot sliding) at the improvement of obstacle avoidance
+            CorrectAgentLocationPrecise();
+        }
     }
 
     private void ApplyDirectionalMovement()
@@ -125,7 +144,6 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
         //In future this should instead be a movement vector for the locomotion blend tree
         //transform.position += currentDirection * agentSpeed * Time.deltaTime;
         Vector3 target = transform.position + (currentDirection * agentSpeed);
-
         transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime);
     }
 
@@ -174,14 +192,15 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
         }
 
         //Calculate additional utility based on how small the angle is from the ray to the object of interest
-        float angleBetween = Vector3.Angle(objectOfInterest.transform.position - transform.position, rayDirection);
+        //float angleBetween = Vector3.Angle(objectOfInterest.transform.position - transform.position, rayDirection); //NavMesh separate
+        float angleBetween = Vector3.Angle(navAgent.nextPosition - transform.position, rayDirection);
 
         //Angle impact calculated and inverted so that the smaller angles results in higher favorability
         //By default this value implies moving towards the target as favorable
         float angleImpact = (1 - (angleBetween / 180)) * targetAngleWeight;
 
         //If intending on moving away from the target
-        if (distanceToObjectOfInterest <= desiredDistance && hasLOS)
+        if (distanceToObjectOfInterest <= desiredDistance)// && hasLOS)
         {
             //Invert the impact
             angleImpact *= -1;
@@ -291,5 +310,13 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
             Gizmos.color = point.Value;
             Gizmos.DrawSphere(point.Key, 0.1f);
         }
+    }
+
+
+    //Method sacrifices animation quality (increasing foot sliding) at the improvement of obstacle avoidance
+    internal void CorrectAgentLocationPrecise()
+    {
+        //Set the navAgents predicted position to be the root transform
+        navAgent.nextPosition = transform.root.position;
     }
 }
