@@ -95,4 +95,16 @@ public static class ExtensionMethods
         return null;
     }
     #endregion
+
+    public static float MapToNewRange(float oldMinimum, float oldMaximum, float newMinimum, float newMaximum, float oldValue)
+    {
+        //Calculate the old range
+        float oldRange = (oldMaximum - oldMinimum);
+
+        //Calculate the new range
+        float newRange = (newMaximum - newMinimum);
+
+        //Scale the old value to match the new value range
+        return (((oldValue - oldMinimum) * newRange) / oldRange) + newMinimum;
+    }
 }
