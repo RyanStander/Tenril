@@ -6,11 +6,10 @@ public class AnimatorManager : MonoBehaviour
 {
     [HideInInspector]public Animator animator;
     public bool canRotate;
-    internal void PlayTargetAnimation(string targetAnim, bool isInteracting)
+    internal void PlayTargetAnimation(string targetAnim, bool isInteracting=true,bool canRotate=false)
     {
         //Play a specific animation, if isInteracting is true, no other inputs can be performed during the animation
-        animator.applyRootMotion = isInteracting;
-        animator.SetBool("canRotate", false);
+        animator.SetBool("canRotate", canRotate);
         animator.SetBool("isInteracting", isInteracting);
         animator.CrossFade(targetAnim, 0.2f);
     }

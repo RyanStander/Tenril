@@ -70,7 +70,7 @@ public class CameraManager : MonoBehaviour
     private void DisableAllCameras()
     {
         explorationCamera.SetActive(false);
-        //aimCamera.SetActive(false);
+        aimCamera.SetActive(false);
         lockOnCamera.SetActive(false);
         menuCamera.SetActive(false);
         if (npcCamera != null)

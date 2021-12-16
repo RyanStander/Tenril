@@ -61,6 +61,7 @@ public class EnemyAgentManager : CharacterManager
         movementManager = GetComponentInChildren<EnemyMovementManager>();
         visionManager = GetComponentInChildren<EnemyVisionManager>();
         statusManager = GetComponentInChildren<StatusEffectManager>();
+        ragdollManager = GetComponentInChildren<RagdollManager>();
 
         //Nullcheck for missing, throw exception as this does not guarantee it will break the code, but is likely to
         if (enemyStats == null) throw new MissingComponentException("Missing EnemyStats on " + gameObject + "!");
@@ -113,5 +114,13 @@ public class EnemyAgentManager : CharacterManager
                 }
             }
         }
+    }
+
+    public override void EnableRagdoll()
+    {
+        base.EnableRagdoll();
+        animatorManager.animator.enabled = false;
+        characterCollider.enabled = false;
+        characterCollisionBlocker.enabled = false;
     }
 }

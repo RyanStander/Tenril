@@ -73,6 +73,7 @@ public class PlayerManager : CharacterManager
         playerStats = GetComponent<PlayerStats>();
         playerInteraction = GetComponent<PlayerInteraction>();
         weaponSlotManager = GetComponent<WeaponSlotManager>();
+        ragdollManager = GetComponentInChildren<RagdollManager>();
 
 
         EventManager.currentManager.Subscribe(EventType.CeaseDialogue, OnCeaseDialogue);
@@ -190,6 +191,14 @@ public class PlayerManager : CharacterManager
         isHoldingArrow = playerAnimatorManager.animator.GetBool("isHoldingArrow");
     }
 
+    public override void EnableRagdoll()
+    {
+        base.EnableRagdoll();
+        playerAnimatorManager.animator.enabled = false;
+        characterCollider.enabled = false;
+        characterCollisionBlocker.enabled = false;
+    }
+
     #region onEvents
     private void OnEquipWeapon(EventData eventData)
     {
@@ -204,7 +213,10 @@ public class PlayerManager : CharacterManager
 
             //remove weapon from inventory and and add weapon that is equipped
             playerInventory.RemoveItemFromInventory(equipWeapon.weaponItem);
-            playerInventory.AddItemToInventory(oldWeapon);
+            
+            //if there was previously no weapon in the slot, do not add it to the inventory
+            if (oldWeapon!=null)
+                playerInventory.AddItemToInventory(oldWeapon);
 
             //equip the new weapon
             playerInventory.EquipWeapon(weaponSlotManager, equipWeapon.weaponItem, equipWeapon.isPrimaryWeapon);

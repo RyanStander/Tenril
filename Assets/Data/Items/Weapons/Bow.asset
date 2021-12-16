@@ -16,6 +16,7 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: 46d0508deec9f47756a5e4c9249b7377, type: 3}
   itemName: Bow
   amountPerStack: 1
+  ItemValue: 0
   rightWeaponModelPrefab: {fileID: 0}
   leftWeaponModelPrefab: {fileID: 2090432018124415439, guid: a0bee58bbeb31b04f89783e39836d48e, type: 3}
   displaySecondaryWeaponWhenUnequipped: 0
@@ -23,12 +24,14 @@ MonoBehaviour:
   unequippedSecondaryWeaponModelPrefab: {fileID: 0}
   primarySheathPrefab: {fileID: 0}
   secondarySheathPrefab: {fileID: 0}
+  weaponController: {fileID: 22100000, guid: 34a7fccd680861d4b95673d59f47b04c, type: 2}
+  weaponSoundEffects: {fileID: 11400000, guid: ee3493f5d55d5564395c9892dea089d0, type: 2}
   baseDamage: 25
   weakAttackDamageMultiplier: 1
   strongAttackDamageMultiplier: 2
   finisherDamageMultiplier: 4
   physicalDamageBlockPercentage: 15
-  idleAnimation: BowEquip
+  equipAnimation: WeaponEquip
   attackSet: {fileID: 0}
   weakAttacks: []
   strongAttacks: []
@@ -36,7 +39,7 @@ MonoBehaviour:
   baseStaminaCost: 0
   weakAttackCostMultiplier: 1
   strongAttackCostMultiplier: 2
-  weaponType: 1
+  weaponType: 3
   weaponSlotWhenNotWielded: 2
   canParry: 0
   isUnarmed: 0

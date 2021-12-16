@@ -16,6 +16,7 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: d31aa8412a4d374458c912d11686642a, type: 3}
   itemName: Longsword
   amountPerStack: 1
+  ItemValue: 0
   rightWeaponModelPrefab: {fileID: 4260048596949537076, guid: 6ccd56731e9f99044a639429f790813d, type: 3}
   leftWeaponModelPrefab: {fileID: 0}
   displaySecondaryWeaponWhenUnequipped: 0
@@ -23,25 +24,27 @@ MonoBehaviour:
   unequippedSecondaryWeaponModelPrefab: {fileID: 0}
   primarySheathPrefab: {fileID: 4260048596949537076, guid: 76402bfa3a752fa43912086c866adef3, type: 3}
   secondarySheathPrefab: {fileID: 0}
+  weaponController: {fileID: 22100000, guid: e623b8db2eb647040950aaab0236b6c0, type: 2}
+  weaponSoundEffects: {fileID: 11400000, guid: 76fc25c603be27a43a97a32d6c22cd87, type: 2}
   baseDamage: 25
   weakAttackDamageMultiplier: 1
   strongAttackDamageMultiplier: 2
   finisherDamageMultiplier: 3
   physicalDamageBlockPercentage: 50
-  idleAnimation: LongswordEquip
+  equipAnimation: WeaponEquip
   attackSet: {fileID: 0}
   weakAttacks:
-  - LongsCombo1
-  - LongsCombo2
-  - LongsCombo3
-  - LongsCombo4
+  - WeakCombo1
+  - WeakCombo2
+  - WeakCombo3
+  - WeakCombo4
   strongAttacks:
-  - LongsStrong1
+  - StrongCombo1
   parry: Parry
   baseStaminaCost: 10
   weakAttackCostMultiplier: 1
   strongAttackCostMultiplier: 2
-  weaponType: 0
+  weaponType: 2
   weaponSlotWhenNotWielded: 3
   canParry: 1
   isUnarmed: 0

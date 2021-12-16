@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class WeaponSlotManager : MonoBehaviour
 {
+    [Tooltip("The animator that it swaps to when the character is not wielding weapons")]
+    public AnimatorOverrideController defaultAnimator;
+
     private CharacterStats chracterStats;
     private CharacterInventory characterInventory;
+    private AnimatorManager characterAnimatorManager;
 
     [HideInInspector]public WeaponHolderSlot leftHandSlot, rightHandSlot, rightSideSlot, leftSideSlot, backSlot;
 
     public DamageCollider leftHandDamageCollider, rightHandDamageCollider;
 
     private GameObject leftDisplayObject, rightDisplayObject;
-
-    private Animator animator;
     private void Awake()
     {
-        animator = GetComponent<Animator>();
+        characterAnimatorManager = GetComponent<AnimatorManager>();
         chracterStats = GetComponent<CharacterStats>();
         characterInventory = GetComponent<CharacterInventory>();
 
@@ -118,70 +120,49 @@ public class WeaponSlotManager : MonoBehaviour
 
     public void LoadWeaponOnSlot(WeaponItem weaponItem, WeaponItem unequippedWeapon = null)
     {
-        //remove all previous weapons and sheaths displayed
-        if (leftHandSlot != null)
-        {
-            leftHandSlot.UnloadWeaponAndDestroy();
-        }
-        if (rightHandSlot != null)
-        {
-            rightHandSlot.UnloadWeaponAndDestroy();
-        }
-        if (backSlot != null)
-        {
-            backSlot.UnloadWeaponAndDestroy();
-            backSlot.UnloadSheathAndDestroy();
-        }
-        if (leftSideSlot != null)
-        {
-            leftSideSlot.UnloadWeaponAndDestroy();
-            leftSideSlot.UnloadSheathAndDestroy();
-        }
-        if (rightSideSlot != null)
-        {
-            rightSideSlot.UnloadWeaponAndDestroy();
-            rightSideSlot.UnloadSheathAndDestroy();
-        }
-
-        if (weaponItem == null)
-            return;
-
-        //Check if there is a left weapon, such as dual daggers to equip
-        if (weaponItem.leftWeaponModelPrefab != null)
-        {
-            //set the current weapon in the left hand slot equal to the weapon item
-            leftHandSlot.currentWeapon = weaponItem;
-            //load the secondary weapon of the weapon item to the left hand slot
-            leftHandSlot.LoadWeaponModel(weaponItem, true);
-            //if successful, load the damage collider
-            if (leftHandSlot != null)
-                LoadLeftWeaponDamageCollider();
-        }
-
-        if (weaponItem.rightWeaponModelPrefab != null)
-        {
-            //set the current weapon in the right hand slot equal to the weapon item
-            rightHandSlot.currentWeapon = weaponItem;
-            //load the primary weapon of the weapon item to the left hand slot
-            rightHandSlot.LoadWeaponModel(weaponItem, false);
-            //if successful, load the damage collider
-            if (rightHandSlot != null)
-                LoadRightWeaponDamageCollider();
-        }
+        UnloadAndDestroyAllWeapons();
 
         #region Weapon Idle Anim           
 
         if (weaponItem != null)
         {
-            animator.CrossFade(weaponItem.idleAnimation, 0.1f);
+            //Check if there is a left weapon, such as dual daggers to equip
+            if (weaponItem.leftWeaponModelPrefab != null)
+            {
+                //set the current weapon in the left hand slot equal to the weapon item
+                leftHandSlot.currentWeapon = weaponItem;
+                //load the secondary weapon of the weapon item to the left hand slot
+                leftHandSlot.LoadWeaponModel(weaponItem, true);
+                //if successful, load the damage collider
+                if (leftHandSlot != null)
+                    LoadLeftWeaponDamageCollider();
+            }
+
+            if (weaponItem.rightWeaponModelPrefab != null)
+            {
+                //set the current weapon in the right hand slot equal to the weapon item
+                rightHandSlot.currentWeapon = weaponItem;
+                //load the primary weapon of the weapon item to the left hand slot
+                rightHandSlot.LoadWeaponModel(weaponItem, false);
+                //if successful, load the damage collider
+                if (rightHandSlot != null)
+                    LoadRightWeaponDamageCollider();
+            }
+
+            characterAnimatorManager.animator.runtimeAnimatorController = weaponItem.weaponController;
+            characterAnimatorManager.PlayTargetAnimation(weaponItem.equipAnimation, false,true) ;
         }
         else
         {
             //No weapon equiped
 
+            if (defaultAnimator!=null)
+            {
+                characterAnimatorManager.animator.runtimeAnimatorController = defaultAnimator;
+            }
             //Set animation to unarmed stance 
             //(no animation for it currently, remember to rename to something else)
-            animator.CrossFade("UnarmedIdle", 0.2f);
+            //characterAnimatorManager.animator.CrossFade("UnarmedIdle", 0.2f);
 
             return;
         }
@@ -210,6 +191,8 @@ public class WeaponSlotManager : MonoBehaviour
         leftHandDamageCollider.currentDamage = characterInventory.equippedWeapon.baseDamage;
         //set the damage collider's character manager
         leftHandDamageCollider.characterManager = GetComponent<CharacterManager>();
+        //set the sfx of the weapon
+        leftHandDamageCollider.weaponSoundEffects = characterInventory.equippedWeapon.weaponSoundEffects;
     }
 
     private void LoadRightWeaponDamageCollider()
@@ -221,11 +204,13 @@ public class WeaponSlotManager : MonoBehaviour
 
         //get the value of the damage collider
         rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
-
         //set the damage of the collider equal to that of the right weapon
         rightHandDamageCollider.currentDamage = characterInventory.equippedWeapon.baseDamage;
         //set the damage collider's character manager
         rightHandDamageCollider.characterManager = GetComponent<CharacterManager>();
+        //set the sfx of the weapon
+        rightHandDamageCollider.weaponSoundEffects = characterInventory.equippedWeapon.weaponSoundEffects;
+
     }
 
     public void OpenDamageCollider()
@@ -250,8 +235,6 @@ public class WeaponSlotManager : MonoBehaviour
 
         if (rightHandDamageCollider != null)
             rightHandDamageCollider.DisableDamageCollider();
-        else
-            Debug.Log("Damage collider not set");
     }
 
     #endregion
@@ -322,6 +305,34 @@ public class WeaponSlotManager : MonoBehaviour
                     }
                     break;
             }
+    }
+
+    private void UnloadAndDestroyAllWeapons()
+    {
+        //remove all previous weapons and sheaths displayed
+        if (leftHandSlot != null)
+        {
+            leftHandSlot.UnloadWeaponAndDestroy();
+        }
+        if (rightHandSlot != null)
+        {
+            rightHandSlot.UnloadWeaponAndDestroy();
+        }
+        if (backSlot != null)
+        {
+            backSlot.UnloadWeaponAndDestroy();
+            backSlot.UnloadSheathAndDestroy();
+        }
+        if (leftSideSlot != null)
+        {
+            leftSideSlot.UnloadWeaponAndDestroy();
+            leftSideSlot.UnloadSheathAndDestroy();
+        }
+        if (rightSideSlot != null)
+        {
+            rightSideSlot.UnloadWeaponAndDestroy();
+            rightSideSlot.UnloadSheathAndDestroy();
+        }
     }
 
     public void DrainWeakStaminaAttack()

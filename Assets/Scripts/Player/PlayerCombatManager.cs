@@ -165,13 +165,16 @@ public class PlayerCombatManager : MonoBehaviour
 
         switch (playerInventory.equippedWeapon.weaponType)
         {
-            case WeaponItem.WeaponType.meleeWeapon:
+            case WeaponType.TwoHandedSword:
                 PerformWeakMeleeAction();
                 break;
-            case WeaponItem.WeaponType.rangedWeapon:
+            case WeaponType.Polearm:
+                PerformWeakMeleeAction();
+                break;
+            case WeaponType.Bow:
                 PerformRangedAmmoCheck();
                 break;
-            case WeaponItem.WeaponType.castingWeapon:
+            case WeaponType.FlyingMage:
                 break;
         }
     }
@@ -433,13 +436,16 @@ public class PlayerCombatManager : MonoBehaviour
 
         switch (playerInventory.equippedWeapon.weaponType)
         {
-            case WeaponItem.WeaponType.meleeWeapon:
+            case WeaponType.TwoHandedSword:
                 BlockAction();
                 break;
-            case WeaponItem.WeaponType.rangedWeapon:
+            case WeaponType.Polearm:
+                BlockAction();
+                break;
+            case WeaponType.Bow:
                 AimAction();
                 break;
-            case WeaponItem.WeaponType.castingWeapon:
+            case WeaponType.FlyingMage:
                 break;
             default:
                 break;

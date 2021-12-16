@@ -1453,7 +1453,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7808316036190010271
 Transform:
   m_ObjectHideFlags: 0
@@ -1484,7 +1484,7 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.25
+  - screenRelativeHeight: 0.06512244
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7789040284175443491}
@@ -3332,14 +3332,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7802940597226675211}
-  m_LocalRotation: {x: -0.48505595, y: -0.000000055782476, z: 0.000000038289055, w: 0.87448317}
+  m_LocalRotation: {x: -0.0035301298, y: -0.000000014901161, z: 0.000000037252903, w: 0.9999938}
   m_LocalPosition: {x: -0, y: 0.014663273, z: 0.016156942}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7808563064487424445}
   m_Father: {fileID: 7800985015483885461}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -58.032, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.405, y: 0, z: 0}
 --- !u!33 &7798897264896102703
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4052,7 +4052,7 @@ Animator:
   m_GameObject: {fileID: 7803000388887419329}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 3aaf38176678e1d4994b710ba08065f2, type: 3}
-  m_Controller: {fileID: 9100000, guid: c08e397b1e9a7614fb61d03d877e1e7c, type: 2}
+  m_Controller: {fileID: 9100000, guid: 56fc989f836b8e8418b54beb63a30184, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 1
   m_ApplyRootMotion: 1
@@ -4075,21 +4075,21 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.38804835
+  - screenRelativeHeight: 0.256319
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7900930561389018117}
     - renderer: {fileID: 7900729756277084333}
     - renderer: {fileID: 7900671171112456711}
     - renderer: {fileID: 7902539950830933431}
-  - screenRelativeHeight: 0.13679844
+  - screenRelativeHeight: 0.07423834
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7902441982616470591}
     - renderer: {fileID: 7902133567459998369}
     - renderer: {fileID: 7902669094206137655}
     - renderer: {fileID: 7902565116177877959}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.0098152375
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7900641922988322979}
@@ -4252,6 +4252,10 @@ MonoBehaviour:
     itemStackCount: 2
   - item: {fileID: 11400000, guid: 5594c94fc385d7447968ff1c35ad051d, type: 2}
     itemStackCount: 69
+  - item: {fileID: 11400000, guid: 919c8f6965eb9af4293271d0c86e39ff, type: 2}
+    itemStackCount: 1
+  - item: {fileID: 11400000, guid: d0fa351850862604ea051e1892936ee9, type: 2}
+    itemStackCount: 1
 --- !u!114 &1949516871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4342,6 +4346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ea56235252480c4cb51e33153ba6203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultAnimator: {fileID: 22100000, guid: da5b0e32b09e53d4cafc544fcddb8e32, type: 2}
   leftHandSlot: {fileID: 0}
   rightHandSlot: {fileID: 0}
   rightSideSlot: {fileID: 0}
