@@ -15,6 +15,63 @@ public class SoundManager : MonoBehaviour
         characterInventory = GetComponent<CharacterInventory>();
     }
 
+    #region Voice
+
+    private void GruntVoiceSound()
+    {
+        if (!HasSetCharacterSoundEffects())
+            return;
+
+        int index = Random.Range(0, characterSoundEffectSet.gruntVoices.Count);
+        PlayVoiceClip(characterSoundEffectSet.gruntVoices[index].audioClip, characterSoundEffectSet.gruntVoices[index].volume);
+    }
+
+    private void HurtVoiceSound()
+    {
+        if (!HasSetCharacterSoundEffects())
+            return;
+
+        int index = Random.Range(0, characterSoundEffectSet.hurtVoices.Count);
+        PlayVoiceClip(characterSoundEffectSet.hurtVoices[index].audioClip, characterSoundEffectSet.hurtVoices[index].volume);
+    }
+
+    private void DieVoiceSound()
+    {
+        if (!HasSetCharacterSoundEffects())
+            return;
+
+        int index = Random.Range(0, characterSoundEffectSet.dieVoices.Count);
+        PlayVoiceClip(characterSoundEffectSet.dieVoices[index].audioClip, characterSoundEffectSet.dieVoices[index].volume);
+    }
+
+    private void JumpVoiceSound()
+    {
+        if (!HasSetCharacterSoundEffects())
+            return;
+
+        int index = Random.Range(0, characterSoundEffectSet.jumpVoices.Count);
+        PlayVoiceClip(characterSoundEffectSet.jumpVoices[index].audioClip, characterSoundEffectSet.jumpVoices[index].volume);
+    }
+
+    private void LandVoiceSound()
+    {
+        if (!HasSetCharacterSoundEffects())
+            return;
+
+        int index = Random.Range(0, characterSoundEffectSet.landVoices.Count);
+        PlayVoiceClip(characterSoundEffectSet.landVoices[index].audioClip, characterSoundEffectSet.landVoices[index].volume);
+    }
+
+    private void PlayVoiceClip(AudioClip audioClip, float volume)
+    {
+        audioSourceHolder.voiceSFX.PlayOneShot(audioClip);
+        audioSourceHolder.voiceSFX.volume = volume;
+    }
+
+    #endregion
+
+    #region SFX
+
     #region locomotion
     private void ForwardFootstepL(float forward)
     {
@@ -137,7 +194,7 @@ public class SoundManager : MonoBehaviour
         if (!HasSetCharacterSoundEffects())
             return;
 
-        PlaySoundClip(characterSoundEffectSet.dodgeSFX.audioClip, characterSoundEffectSet.dodgeSFX.volume);
+        PlaySoundClip(characterSoundEffectSet.landSFX.audioClip, characterSoundEffectSet.landSFX.volume);
     }
 
     private void PlaySoundClip(AudioClip audioClip,float volume)
@@ -187,6 +244,7 @@ public class SoundManager : MonoBehaviour
     }
     #endregion
 
+    #endregion
 
     #region Checkers
     private bool isInteracting()

@@ -5,7 +5,11 @@ using UnityEngine;
 public class CharacterSoundEffects : ScriptableObject
 {
     [Header("Voices")]
-    public List<AudioClipData> Grunts;
+    public List<AudioClipData> gruntVoices;
+    public List<AudioClipData> hurtVoices;
+    public List<AudioClipData> dieVoices;
+    public List<AudioClipData> jumpVoices;
+    public List<AudioClipData> landVoices;
     [Header("SFX")]
     public WalkingSFX leftFootstepSFX;
     public WalkingSFX rightFootstepSFX;

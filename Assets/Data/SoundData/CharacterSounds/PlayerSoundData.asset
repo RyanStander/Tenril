@@ -12,7 +12,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdfa1c8d629d2e64791f98534db8f52e, type: 3}
   m_Name: PlayerSoundData
   m_EditorClassIdentifier: 
-  Grunts: []
+  gruntVoices:
+  - audioClip: {fileID: 8300000, guid: 5b83ef57ff3b6b8469b05f19e609fad3, type: 3}
+    volume: 1
+  - audioClip: {fileID: 8300000, guid: fd026786df28449409ddca4e55d6c911, type: 3}
+    volume: 1
+  - audioClip: {fileID: 8300000, guid: 8b69222cfce8ec54790fbb9dbe64ff86, type: 3}
+    volume: 1
+  hurtVoices:
+  - audioClip: {fileID: 8300000, guid: aa8a21fc8c898b345a1ee4b093faccad, type: 3}
+    volume: 1
+  - audioClip: {fileID: 8300000, guid: b9d4c513f4d964e47be48036f7be2147, type: 3}
+    volume: 1
+  - audioClip: {fileID: 8300000, guid: 736ade16d3a8dd34486c8d5d8b948d4f, type: 3}
+    volume: 1
+  dieVoices:
+  - audioClip: {fileID: 8300000, guid: 5a6d37946f0c4ae48a06e628476a924d, type: 3}
+    volume: 1
+  - audioClip: {fileID: 8300000, guid: 5b4b772919c566d459388dfb17a0c79f, type: 3}
+    volume: 1
+  - audioClip: {fileID: 8300000, guid: 327134d264140024f99b0d1de17a1518, type: 3}
+    volume: 1
+  jumpVoices:
+  - audioClip: {fileID: 8300000, guid: 4ba98e199d6c44e4f94879f6bf7c0bc5, type: 3}
+    volume: 1
+  - audioClip: {fileID: 8300000, guid: 094c68e8f56189c4894f2c7305ebbc81, type: 3}
+    volume: 1
+  - audioClip: {fileID: 8300000, guid: 2d90f34dd0c503b4bad1a98f048afb69, type: 3}
+    volume: 1
+  landVoices:
+  - audioClip: {fileID: 8300000, guid: 094c68e8f56189c4894f2c7305ebbc81, type: 3}
+    volume: 1
+  - audioClip: {fileID: 8300000, guid: 76374534b85aee04ba0ffcada1e5c6d1, type: 3}
+    volume: 1
+  - audioClip: {fileID: 8300000, guid: 2d90f34dd0c503b4bad1a98f048afb69, type: 3}
+    volume: 1
   leftFootstepSFX:
     audioClip: {fileID: 8300000, guid: 2a8bfdae0c5214c4ea2b01260d841c57, type: 3}
     walkingVolume: 0.5
