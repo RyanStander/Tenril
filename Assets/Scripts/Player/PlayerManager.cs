@@ -197,6 +197,7 @@ public class PlayerManager : CharacterManager
         playerAnimatorManager.animator.enabled = false;
         characterCollider.enabled = false;
         characterCollisionBlocker.enabled = false;
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
     }
 
     #region onEvents
