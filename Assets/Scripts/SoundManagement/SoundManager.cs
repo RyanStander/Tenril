@@ -4,6 +4,7 @@ public class SoundManager : MonoBehaviour
 {
     private AudioSourceHolder audioSourceHolder;
     private CharacterInventory characterInventory;
+    private CharacterSpellcastingManager spellcastingManager;
     private Animator animator;
     [SerializeField] private CharacterSoundEffects characterSoundEffectSet;
 
@@ -13,6 +14,7 @@ public class SoundManager : MonoBehaviour
         audioSourceHolder = GetComponentInChildren<AudioSourceHolder>();
         animator = GetComponent<Animator>();
         characterInventory = GetComponent<CharacterInventory>();
+        spellcastingManager = GetComponent<CharacterSpellcastingManager>();
     }
 
     #region Voice
@@ -180,7 +182,29 @@ public class SoundManager : MonoBehaviour
             PlaySoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.walkingVolume);
         }
     }
-    
+
+    /// <summary>
+    /// Functions as a way to have footsteps ignore any restrictions on movements speed, used for animations that have walking but doesnt use forward/left movement values
+    /// </summary>
+    private void ForcedFootsetpL()
+    {
+        if (!HasSetCharacterSoundEffects())
+            return;
+
+        PlaySoundClip(characterSoundEffectSet.leftFootstepSFX.audioClip, characterSoundEffectSet.leftFootstepSFX.runningVolume);
+    }
+
+    /// <summary>
+    /// Functions as a way to have footsteps ignore any restrictions on movements speed, used for animations that have walking but doesnt use forward/left movement values
+    /// </summary>
+    private void ForcedFootsetpR()
+    {
+        if (!HasSetCharacterSoundEffects())
+            return;
+
+        PlaySoundClip(characterSoundEffectSet.rightFootstepSFX.audioClip, characterSoundEffectSet.rightFootstepSFX.runningVolume);
+    }
+
     private void RollSFX()
     {
         if (!HasSetCharacterSoundEffects())
@@ -244,6 +268,38 @@ public class SoundManager : MonoBehaviour
     }
     #endregion
 
+    #region Spellcasting
+
+    private void CastSpellSFX()
+    {
+        if (!CheckIfSpellSFXIsSet())
+            return;
+
+        if (spellcastingManager.spellBeingCast.castSFX.audioClip == null)
+            return;
+
+        PlaySpellSoundClip(spellcastingManager.spellBeingCast.castSFX.audioClip, spellcastingManager.spellBeingCast.castSFX.volume);
+    }
+
+    private void WindUpSpellSFX()
+    {
+        if (!CheckIfSpellSFXIsSet())
+            return;
+
+        if (spellcastingManager.spellBeingCast.windUPSFX.audioClip == null)
+            return;
+
+        PlaySpellSoundClip(spellcastingManager.spellBeingCast.windUPSFX.audioClip, spellcastingManager.spellBeingCast.windUPSFX.volume);
+    }
+
+    private void PlaySpellSoundClip(AudioClip audioClip, float volume)
+    {
+        audioSourceHolder.spellcastSFX.PlayOneShot(audioClip);
+        audioSourceHolder.spellcastSFX.volume = volume;
+    }
+
+    #endregion
+
     #endregion
 
     #region Checkers
@@ -291,6 +347,24 @@ public class SoundManager : MonoBehaviour
         else if (characterInventory.equippedWeapon.weaponSoundEffects==null)
         {
             Debug.LogWarning("Could not find weaponSoundEffects on equipped weapon");
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private bool CheckIfSpellSFXIsSet()
+    {
+        if (spellcastingManager == null)
+        {
+            Debug.LogWarning("Could not find character's spellcasting Manager");
+            return false;
+        }
+        else if (spellcastingManager.spellBeingCast == null)
+        {
+            Debug.LogWarning("Could not find equipped weapon");
             return false;
         }
         else

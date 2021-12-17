@@ -16,10 +16,17 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: 6bf5f42e01b3f44aebab8910d4de131e, type: 3}
   itemName: Earth Fissure
   amountPerStack: 0
+  ItemValue: 0
   spellWindUpFX: {fileID: 0}
   spellCastFX: {fileID: 183370, guid: f0d5fb29203647c45bfdec87d72480dd, type: 3}
   spellCastFXOffset: {x: 1, y: 1, z: 0}
   spellAnimation: ProjectileThrow
+  windUPSFX:
+    audioClip: {fileID: 8300000, guid: 125e9e3cdcab97747ae2bb027f7fdb07, type: 3}
+    volume: 1
+  castSFX:
+    audioClip: {fileID: 8300000, guid: 55c0c3feea64b584da394e28710333fb, type: 3}
+    volume: 1
   spellCost: 20
   spellType: 0
   spellDescription: Send out a fissure, anything it hits takes 50 damage.

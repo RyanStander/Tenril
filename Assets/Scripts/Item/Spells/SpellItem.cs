@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpellItem : Item
@@ -10,6 +8,9 @@ public class SpellItem : Item
     public GameObject spellCastFX;
     [SerializeField] private Vector3 spellCastFXOffset;
     public string spellAnimation;
+    
+    
+    public AudioClipData windUPSFX, castSFX;
 
     [Tooltip("Cost of the spell")]
     public int spellCost;
