@@ -47,6 +47,8 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Subscribe(EventType.DisplayQuickslotItem, OnDisplayQuickslotItem);
         EventManager.currentManager.Subscribe(EventType.HideQuickslotItem, OnHideQuickslotItem);
         EventManager.currentManager.Subscribe(EventType.SendTimeStrength, OnReceiveTimeStrength);
+        EventManager.currentManager.Subscribe(EventType.SaveData, OnSaveData);
+        EventManager.currentManager.Subscribe(EventType.LoadData, OnLoadData);
     }
 
     private void OnDisable()
@@ -59,6 +61,8 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Unsubscribe(EventType.DisplayQuickslotItem, OnDisplayQuickslotItem);
         EventManager.currentManager.Unsubscribe(EventType.HideQuickslotItem, OnHideQuickslotItem);
         EventManager.currentManager.Unsubscribe(EventType.SendTimeStrength, OnReceiveTimeStrength);
+        EventManager.currentManager.Unsubscribe(EventType.SaveData, OnSaveData);
+        EventManager.currentManager.Unsubscribe(EventType.LoadData, OnLoadData);
     }
 
     void Awake()
@@ -337,6 +341,24 @@ public class PlayerManager : CharacterManager
         {
             throw new System.Exception("Error: EventData class with EventType.SendTimeStrength was received but is not of class SendTimeStrength.");
         }
+    }
+
+    private void OnSaveData(EventData eventData)
+    {
+        SaveManager.SavePlayer(playerStats, playerInventory);
+    }
+
+    private void OnLoadData(EventData eventData)
+    {
+        PlayerData playerData= SaveManager.LoadPlayer();
+
+        playerStats.SetPlayerStats(playerData);
+
+        Vector3 position = new Vector3(playerData.position[0], playerData.position[1], playerData.position[2]);
+        Quaternion rotation = Quaternion.Euler(playerData.rotation[0], playerData.rotation[1], playerData.rotation[2]);
+
+        transform.position = position;
+        transform.rotation = rotation;
     }
     #endregion
 

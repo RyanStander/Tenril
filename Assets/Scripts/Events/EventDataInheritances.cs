@@ -13,6 +13,26 @@ public class SendDebugLog : EventData
     }
 }
 
+#region Save And Loading
+
+public class SaveData : EventData
+{
+    public SaveData() : base(EventType.SaveData)
+    {
+
+    }
+}
+
+public class LoadData : EventData
+{
+    public LoadData() : base(EventType.LoadData)
+    {
+
+    }
+}
+
+#endregion
+
 #region Player Stats Events
 
 public class UpdatePlayerStats : EventData

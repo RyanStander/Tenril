@@ -19,6 +19,31 @@ public class PlayerStats : CharacterStats
         EventManager.currentManager.AddEvent(new UpdatePlayerStats(maxHealth, currentHealth, maxStamina,currentStamina,maxStoredMoonlight,currentStoredMoonlight,maxStoredSunlight,currentStoredSunlight));
     }
 
+    public void SetPlayerStats(PlayerData playerData)
+    {
+        currentLevel = playerData.currentLevel;
+
+        healthLevel = playerData.healthLevel;
+        maxHealth = SetMaxHealthFromHealthLevel();
+        currentHealth = playerData.currentHealth;
+
+        staminaLevel = playerData.staminaLevel;
+        maxStamina = SetMaxStaminaFromStaminaLevel();
+        currentStamina = playerData.currentStamina;
+
+        MoonlightLevel = playerData.moonlightLevel;
+        maxStoredMoonlight = SetMaxStoredMoonlightFromMoonlightLevel();
+        currentStoredMoonlight = playerData.currentMoonlight;
+
+        sunlightLevel = playerData.sunglightLevel;
+        maxStoredSunlight = SetMaxStoredSunlightFromSunlightLevel();
+        currentStoredSunlight = playerData.currentMoonlight;
+
+        assignedFaction = (Faction)playerData.factionID;
+
+        EventManager.currentManager.AddEvent(new UpdatePlayerStats(maxHealth, currentHealth, maxStamina,currentStamina,maxStoredMoonlight,currentStoredMoonlight,maxStoredSunlight,currentStoredSunlight));
+    }
+
     public void OpenBlockingCollider(PlayerInventory playerInventory)
     {
         if (playerInventory==null)

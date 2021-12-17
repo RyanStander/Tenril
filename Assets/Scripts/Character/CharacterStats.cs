@@ -1,31 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
 {
+    [Header("Main Level")]
+    public int currentLevel=1;
+
     [Header("Health")]
-    [SerializeField] protected int healthLevel = 10;
-    [SerializeField] protected float maxHealth, currentHealth;
+    public int healthLevel = 10;
+    public float maxHealth, currentHealth;
     public bool isDead = false;
     
     [Header("Stamina")]
-    [SerializeField] protected int staminaLevel = 10;
-    [SerializeField] protected float maxStamina, currentStamina;
+    public int staminaLevel = 10;
+    public float maxStamina, currentStamina;
     [SerializeField] protected float staminaRegenAmount=1,staminaRegenRate = 0.1f, staminaRegenCooldownTime = 2;
     protected float staminaCDTimeStamp, staminaRegenTimeStamp;
     protected bool canRegenStamina = true;
 
     [Header("Biomancy")]
-    [SerializeField] protected int MoonlightLevel = 10;
-    [SerializeField] protected float maxStoredMoonlight, currentStoredMoonlight;
+    public int MoonlightLevel = 10;
+    public float maxStoredMoonlight, currentStoredMoonlight;
     [SerializeField] protected float moonlightRegenAmount = 1, moonlightRegenRate = 0.1f, moonlightRegenCooldownTime = 2;
     protected float moonlightCDTimeStamp, moonlightRegenTimeStamp;
     protected bool canRegenMoonlight = true;
 
     [Header("Pyromancy")]
-    [SerializeField] protected int sunlightLevel = 10;
-    [SerializeField] protected float maxStoredSunlight, currentStoredSunlight;
+    public int sunlightLevel = 10;
+    public float maxStoredSunlight, currentStoredSunlight;
     [SerializeField] protected float sunlightRegenAmount = 1, sunlightRegenRate = 0.1f, sunlightRegenCooldownTime = 2;
     protected float sunlightCDTimeStamp, sunlightRegenTimeStamp;
     protected bool canRegenSunlight = true;

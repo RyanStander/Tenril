@@ -8,6 +8,10 @@ public enum EventType
     ReceiveDebug,
     ClickedPlaceableGUI,
 
+    //Save and loading
+    SaveData,
+    LoadData,
+
     //Player Stats
     UpdatePlayerStats,
     UpdatePlayerHealth,
