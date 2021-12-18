@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 //Meant to help drive movement in an enemy
@@ -8,19 +9,31 @@ public class EnemyMovementManager : MonoBehaviour
     protected EnemyAgentManager enemyManager;
 
     [Header("General Movement")]
-    public bool hasPreciseAvoidance = true; //Bool to toggle between higher quality animations or better obstacle avoidance
-    public float movementDampeningTime = 0.1f; //The time it takes for movement to dampen when swapping states
+    //Bool to toggle between higher quality animations or better obstacle avoidance
+    public bool hasPreciseAvoidance = true;
+
+    //The default time it takes for movement to dampen when swapping states
+    public float movementDampeningTime = 0.1f;
 
     [Header("Ground & Air Detection")]
-    public float fallDurationToPerformLand = 0.5f; //The fall time needed to perform a landing
-    public LayerMask EnvironmentLayer; //The layer being checked
-    public Vector3 raycastOffset; //The offset 
-    public float groundCheckRadius = 0.25f; //The radius of the sphere check
+    //The fall time needed to perform a landing
+    public float fallDurationToPerformLand = 0.5f;
 
-    private float fallDuration = 0; //Duration of the current fall
+    //The layer being checked
+    public LayerMask EnvironmentLayer;
+
+    //The offset 
+    public Vector3 raycastOffset;
+
+    //The radius of the sphere check
+    public float groundCheckRadius = 0.25f;
+
+    //Duration of the current fall
+    private float fallDuration = 0; 
 
     //The default dampening speed for when velocities are changed
     [Range(0, 1)] protected private float defaultDamp = 0.5f;
+
 
     private void Awake()
     {
@@ -82,19 +95,49 @@ public class EnemyMovementManager : MonoBehaviour
                 //Handle the forward movement of the agent
                 SetForwardMovement(targetSpeed, defaultDamp, Time.deltaTime);
             }
-            
+
             //Correct the location of the NavmeshAgent with precise or estimated calculations
-            //Choice between precise or estimated
-            if (hasPreciseAvoidance)
+            CorrectAgentLocation();
+        }
+    }
+
+    //TODO: Modify into using a givent directional vector for movement
+    //Standard cycle of using a given directional vector for movement
+    internal void HandleDirectionalMovement(Vector3 givenDirection, float targetSpeed)
+    {
+        //Return and do not run any more methods until the current action/animation is completed
+        if (enemyManager.isInteracting)
+        {
+            //Set to minimal forward movement while still performing action
+            SetForwardMovement(0, defaultDamp, Time.deltaTime);
+            SetSidewardMovement(0, defaultDamp, Time.deltaTime);
+            return;
+        }
+
+        //Suspend movement logic until the path is completely calcualted
+        //Prevents problems with calculating remaining distance between the target and agent
+        if (!IsPathPending())
+        {
+            //Rotate towards the next position that is gotten from the agent
+            RotateTowardsTargetPosition();
+
+            //Set movement to 0 if rooted, otherwise continue
+            if (enemyManager.statusManager.GetIsRooted())
             {
-                //Method sacrifices animation quality (increasing foot sliding) at the improvement of obstacle avoidance
-                CorrectAgentLocationPrecise();
+                StopMovementImmediate();
             }
             else
             {
-                //Method preserves animation quality (reducing foot sliding) at the cost of obstacle avoidance
-                CorrectAgentLocationEstimated();
+                //Normalize the direction
+                Vector3 givenDirectionNormalized = givenDirection.normalized;
+
+                //Handle the forward movement of the agent
+                SetForwardMovement(givenDirectionNormalized.x * targetSpeed, defaultDamp, Time.deltaTime);
+                SetSidewardMovement(givenDirectionNormalized.z * targetSpeed, defaultDamp, Time.deltaTime);
             }
+
+            //Correct the location of the NavmeshAgent with precise or estimated calculations
+            CorrectAgentLocation();
         }
     }
 
@@ -117,6 +160,23 @@ public class EnemyMovementManager : MonoBehaviour
         //Update the transform rotation to match the root rotation of the animator
         Quaternion rotation = enemyManager.animatorManager.animator.rootRotation;
         transform.rotation = rotation;
+    }
+
+    //Method logic for choosing a location correction type
+    internal void CorrectAgentLocation()
+    {
+        //Correct the location of the NavmeshAgent with precise or estimated calculations
+        //Choice between precise or estimated
+        if (hasPreciseAvoidance)
+        {
+            //Method sacrifices animation quality (increasing foot sliding) at the improvement of obstacle avoidance
+            CorrectAgentLocationPrecise();
+        }
+        else
+        {
+            //Method preserves animation quality (reducing foot sliding) at the cost of obstacle avoidance
+            CorrectAgentLocationEstimated();
+        }
     }
 
     //Method sacrifices animation quality (increasing foot sliding) at the improvement of obstacle avoidance
@@ -165,6 +225,11 @@ public class EnemyMovementManager : MonoBehaviour
         //Simulates the agents next steer target
         RotateTowardsTargetPosition(enemyManager.navAgent.steeringTarget, enemyManager.enemyStats.rotationSpeed);
     }
+    internal void RotateTowardsTargetPosition()
+    {
+        //Simulates the agents next steer target
+        RotateTowardsTargetPosition(enemyManager.currentTarget.transform.position, enemyManager.enemyStats.rotationSpeed);
+    }
     #endregion
 
     internal bool IsPathPending()
@@ -176,6 +241,10 @@ public class EnemyMovementManager : MonoBehaviour
     internal void SetForwardMovement(float givenValue, float givenDampTime, float givenTime)
     {
         enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.forwardHash, givenValue, givenDampTime, givenTime);
+    }
+    internal void SetSidewardMovement(float givenValue, float givenDampTime, float givenTime)
+    {
+        enemyManager.animatorManager.animator.SetFloat(enemyManager.animatorManager.leftHash, givenValue, givenDampTime, givenTime);
     }
 
     internal IEnumerator StopMovementCourotine()

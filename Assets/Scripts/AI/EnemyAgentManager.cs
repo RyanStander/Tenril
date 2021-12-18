@@ -22,9 +22,6 @@ public class EnemyAgentManager : CharacterManager
     //The inventory of the enemy
     internal EnemyInventory inventory;
 
-    //The current target of the agent
-    internal GameObject currentTarget;
-
     //The movement manager for the NPC
     internal EnemyMovementManager movementManager;
 
@@ -46,9 +43,14 @@ public class EnemyAgentManager : CharacterManager
     //Current time in hiding recovery
     internal float currentHidingTime = 0;
 
+    [Header("Collision related colliders")]
     //Collision detection related capsules
-    [SerializeField] private CapsuleCollider characterCollider;
+    [SerializeField] private CapsuleCollider characterCollider;
     [SerializeField] private CapsuleCollider characterCollisionBlocker;
+
+    [Header("Relevant target to act around")]
+    //The current target of the agent
+    public GameObject currentTarget;
 
     private void Awake()
     {

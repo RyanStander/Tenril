@@ -1,16 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
-public class RepositioningUtilityMovementPrototype : MonoBehaviour
+public class RepositionState : AbstractStateFSM
 {
-    //The current object of interest to the agent
-    public GameObject objectOfInterest;
-
-    //The speed of the utility agent
-    public float agentSpeed = 1;
-    public float rotationSpeed = 2;
-
+    [Header("Repositioning Utility Movement")]
     //Number of rays that should be used when deciding on a direction
     [Range(3, 100)] public int utilityRayCount = 15;
 
@@ -25,10 +19,11 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
 
     //Weights that influence the decision making of encountered objects
     [Range(-1, 1)] public float obstacleWeight = -1;
+
     //[Range(-1, 1)] public float targetWeight = 1;
     [Range(-1, 1)] public float targetAngleWeight = 0.75f;
 
-    //Sensitivity affects navigation through the distance between the agent and other objects
+    //Sensitivity affects how important the distance between the agent and other objects is
     [Range(0, 1)] public float obstacleDistanceSensitivity = 1;
     [Range(0, 1)] public float targetDistanceSensitivity = 1;
 
@@ -45,10 +40,13 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
     private Vector3 currentDirection = Vector3.zero;
 
     //Bool to help with if the rays should be debugged
-    public bool isDebugging = true;
+    public bool isDebugging = true; //TO BE RENAMED
 
     //Masks for raycast blocking
     public LayerMask detectionBlockLayer = 1 << 9;
+
+    //The directional vector for velocity to be applied to the locomotion blend tree
+    private Vector2 speedDirection = Vector3.zero;
 
     //Saved distance to the object of interest
     private float distanceToObjectOfInterest;
@@ -56,89 +54,78 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
     //Helper list for debugging hits with obstacles
     private Dictionary<Vector3, Color> hitPoints = new Dictionary<Vector3, Color>();
 
-    //Helper bool for LOS
-    private bool hasLOS = false;
-
-    //Agent being used
-    public NavMeshAgent navAgent;
-
-    private void Start()
+    public override void OnEnable()
     {
-        //Disable certain navAgent features
-        navAgent.isStopped = false; //Prevents agent from using any given speeds by accident
-        navAgent.updatePosition = false; //Disable agent forced position
-        navAgent.updateRotation = false; //Disable agent forced rotation
+        base.OnEnable();
+        stateType = StateTypeFSM.REPOSITIONING;
     }
 
-    #region Target Rotation
-    internal void RotateTowardsTargetPosition(Vector3 target, float rotationSpeed)
+    public override bool EnterState()
     {
-        //Get the direction
-        Vector3 direction = (target - transform.position).normalized;
+        //Run based method
+        enteredState = base.EnterState();
 
-        //Calculate the look rotation
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-
-        //Slerp towards what the nav agent wants the target
-        transform.root.rotation = Quaternion.Lerp(transform.root.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-    }
-
-    internal void RotateTowardsObjectOfInterest()
-    {
-        //Simulates the agents next steer target
-        RotateTowardsTargetPosition(objectOfInterest.transform.position, rotationSpeed);
-    }
-    #endregion
-
-    public void FixedUpdate()
-    {
-        //Establish the current distance to the target
-        distanceToObjectOfInterest = DistanceToTarget();
-
-        //Establish the range of the rays
-        utilityRayRange = adittionalRayRange + desiredDistance;
-
-        //Check for direct obstruction
-        hasLOS = IsTargetUnobstructed(objectOfInterest.transform, transform, detectionBlockLayer);
-
-        //Set the destination to calculate from to the object of interest (this creates a reference point)
-        navAgent.SetDestination(objectOfInterest.transform.position);
-
-        //Suspend movement logic until the path is completely calcualted
-        //Prevents problems with calculating remaining distance between the target and agent
-        if (!navAgent.pathPending)
+        if (enteredState)
         {
-            //Generate rays based on utility and information about target
-            GenerateUtilityRays();
+            //Debug message
+            DebugLogString("ENTERED REPOSITIONING STATE");
+        }
 
-            //Get and set the current direction to strive for and follow
-            currentDirection = GetAverageUtilityDirection();
+        return enteredState;
+    }
 
-            //Rotate towards target (always 'circling')
-            RotateTowardsObjectOfInterest();
 
-            //Move towards the target direction
-            ApplyDirectionalMovement();
+    public override void UpdateState()
+    {
+        if (enteredState)
+        {
+            DebugLogString("UPDATING REPOSITIONING STATE");
+            
+            //Set the destination to calculate from to the object of interest (this creates a reference point)
+            navAgent.SetDestination(enemyManager.currentTarget.transform.position);
 
-            //Visual of the average direction
-            Debug.DrawRay(transform.position, currentDirection * utilityRayRange, Color.magenta);
+            //Establish the current distance to the target
+            distanceToObjectOfInterest = DistanceToTarget();
 
-            //Debug a direct ray to the object of interest
-            Vector3 rayOrigin = transform.position; rayOrigin.y *= 0.5f;
-            Debug.DrawRay(rayOrigin, (objectOfInterest.transform.position - transform.position), Color.yellow);
+            //Establish the range of the rays
+            utilityRayRange = adittionalRayRange + desiredDistance;
+
+            //Suspend movement logic until the path is completely calcualted
+            //Prevents problems with calculating remaining distance between the target and agent
+            if (!navAgent.pathPending)
+            {
+                //Generate rays based on utility and information about target
+                GenerateUtilityRays();
+
+                //Get and set the current direction to strive for and follow
+                currentDirection = GetAverageUtilityDirection();
+                
+                //Move towards the target direction by passing through information to the movement manager
+                enemyManager.movementManager.HandleDirectionalMovement(currentDirection, enemyManager.enemyStats.chaseSpeed);
+
+                //Visual of the average direction
+                Debug.DrawRay(transform.position, currentDirection * utilityRayRange, Color.magenta);
+
+                //Debug a direct ray to the object of interest
+                Vector3 rayOrigin = transform.position; rayOrigin.y += 0.5f;
+                Debug.DrawRay(rayOrigin, (enemyManager.currentTarget.transform.position - transform.position), Color.yellow);
+            }
 
             //Method sacrifices animation quality (increasing foot sliding) at the improvement of obstacle avoidance
             CorrectAgentLocationPrecise();
         }
     }
 
-    private void ApplyDirectionalMovement()
+    public override bool ExitState()
     {
-        //For now we're just making a direct translation
-        //In future this should instead be a movement vector for the locomotion blend tree
-        //transform.position += currentDirection * agentSpeed * Time.deltaTime;
-        Vector3 target = transform.position + (currentDirection * agentSpeed);
-        transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime);
+        //Run based method
+        base.ExitState();
+
+        //Debug message
+        DebugLogString("EXITED REPOSITIONING STATE");
+
+        //Return true
+        return true;
     }
 
     private void GenerateUtilityRays()
@@ -207,7 +194,7 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
         Color utilityColor = utilityGradient.Evaluate(utility);
 
         //Save the hit point for debugging later (if any detected)
-        if (hit.collider != null &&  !hitPoints.ContainsKey(hit.point))
+        if (hit.collider != null && !hitPoints.ContainsKey(hit.point))
         {
             hitPoints.Add(hit.point, utilityColor);
         }
@@ -264,41 +251,20 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
         return bestRay;
     }
 
+    //Consider using distance to target with NavAgent
     internal float DistanceToTarget()
     {
         //Gets the direct distance to the target
-        return Vector3.Distance(transform.position, objectOfInterest.transform.position);
+        return Vector3.Distance(transform.position, enemyManager.currentTarget.transform.position);
     }
     #endregion
-
-    //Checks for line of sight
-    internal bool IsTargetUnobstructed(Transform targetPoint, Transform originPoint, LayerMask detectionBlockLayer)
-    {
-        //Raycast to first check if the target is valid (Performance friendly to raycast first), checks if any objects are in the way
-        if (!Physics.Raycast(originPoint.position, targetPoint.transform.position - originPoint.position, out RaycastHit hit, Vector3.Distance(targetPoint.transform.position, originPoint.position), detectionBlockLayer))
-        {
-            //Debug the line results
-            Debug.DrawRay(originPoint.position, targetPoint.transform.position - originPoint.position, Color.green);
-
-            //Return as unobstructed
-            return true;
-        }
-        else
-        {
-            //Debug the line results
-            Debug.DrawRay(originPoint.position, hit.point - originPoint.position, Color.red);
-
-            //Return as obstructed
-            return false;
-        }
-    }
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, desiredDistance);
 
         //Iterate over each point of impact for debugging
-        foreach(KeyValuePair<Vector3, Color> point in hitPoints)
+        foreach (KeyValuePair<Vector3, Color> point in hitPoints)
         {
             //Debug the points of impact
             Gizmos.color = point.Value;
