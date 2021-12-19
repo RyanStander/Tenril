@@ -507,6 +507,9 @@ public class PlayerCombatManager : MonoBehaviour
 
             playerAnimatorManager.animator.SetBool("isAiming", true);
 
+            //disable lock on
+            inputHandler.lockOnFlag = false;
+
             EventManager.currentManager.AddEvent(new SwapToAimCamera());
         }
         else

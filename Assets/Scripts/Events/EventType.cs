@@ -8,6 +8,11 @@ public enum EventType
     ReceiveDebug,
     ClickedPlaceableGUI,
 
+    //Save and loading
+    SaveData,
+    LoadData,
+    LoadPlayerCharacterData,
+
     //Player Stats
     UpdatePlayerStats,
     UpdatePlayerHealth,
@@ -51,5 +56,7 @@ public enum EventType
     SwapToRightLockOnTarget,
 
     //Misc
-    SendTimeStrength
+    SendTimeStrength,
+    AwardPlayerXP,
+    PlayerLevelUp,
 }

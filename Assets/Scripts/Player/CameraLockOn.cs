@@ -92,7 +92,15 @@ public class CameraLockOn : MonoBehaviour
             //lock on camera should never be on if flag is off, if for some reason it is, swap to exploration camera
             if (lockOnCamera.activeSelf)
             {
-                EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
+                if (playerManager.GetComponent<PlayerAnimatorManager>().animator.GetBool("isAiming"))
+                {
+                    EventManager.currentManager.AddEvent(new SwapToAimCamera());
+                }
+                else
+                {
+                    EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
+                }
+
             }
             currentLockOnTarget = null;
         }

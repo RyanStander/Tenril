@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PlayerStats : CharacterStats
 {
+    [Header("Main Level")]
+    public int currentLevel = 1;
+    public int currentXP = 0;
+    public LevelData levelData;
+
     private PlayerAnimatorManager playerAnimatorManager;
     private BlockingCollider blockingCollider;
 
@@ -15,6 +20,31 @@ public class PlayerStats : CharacterStats
     private void Start()
     {
         SetupStats();
+
+        EventManager.currentManager.AddEvent(new UpdatePlayerStats(maxHealth, currentHealth, maxStamina,currentStamina,maxStoredMoonlight,currentStoredMoonlight,maxStoredSunlight,currentStoredSunlight));
+    }
+
+    public void SetPlayerStats(PlayerData playerData)
+    {
+        currentLevel = playerData.currentLevel;
+
+        healthLevel = playerData.healthLevel;
+        maxHealth = SetMaxHealthFromHealthLevel();
+        currentHealth = playerData.currentHealth;
+
+        staminaLevel = playerData.staminaLevel;
+        maxStamina = SetMaxStaminaFromStaminaLevel();
+        currentStamina = playerData.currentStamina;
+
+        MoonlightLevel = playerData.moonlightLevel;
+        maxStoredMoonlight = SetMaxStoredMoonlightFromMoonlightLevel();
+        currentStoredMoonlight = playerData.currentMoonlight;
+
+        sunlightLevel = playerData.sunglightLevel;
+        maxStoredSunlight = SetMaxStoredSunlightFromSunlightLevel();
+        currentStoredSunlight = playerData.currentMoonlight;
+
+        assignedFaction = (Faction)playerData.factionID;
 
         EventManager.currentManager.AddEvent(new UpdatePlayerStats(maxHealth, currentHealth, maxStamina,currentStamina,maxStoredMoonlight,currentStoredMoonlight,maxStoredSunlight,currentStoredSunlight));
     }
@@ -137,6 +167,20 @@ public class PlayerStats : CharacterStats
         //update the current sunlight on the sunlight bar
         EventManager.currentManager.AddEvent(new UpdatePlayerSunlight(maxStoredSunlight, currentStoredSunlight));
     }
+
+    #endregion
+
+    #region Leveling
+
+    internal void IncreaseLevel(int levelsGained)
+    {
+        currentLevel += levelsGained;
+    }
+
+    internal void IncreaseXP(int xpGained)
+    {
+        currentXP += xpGained;
+    } 
 
     #endregion
 

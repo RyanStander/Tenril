@@ -13,6 +13,35 @@ public class SendDebugLog : EventData
     }
 }
 
+#region Save And Loading
+
+public class SaveData : EventData
+{
+    public SaveData() : base(EventType.SaveData)
+    {
+
+    }
+}
+
+public class LoadData : EventData
+{
+    public LoadData() : base(EventType.LoadData)
+    {
+
+    }
+}
+
+public class LoadPlayerCharacterData : EventData
+{
+    public readonly PlayerData playerData;
+    public LoadPlayerCharacterData(PlayerData playerData) : base(EventType.LoadPlayerCharacterData)
+    {
+        this.playerData = playerData;
+    }
+}
+
+#endregion
+
 #region Player Stats Events
 
 public class UpdatePlayerStats : EventData
@@ -365,6 +394,24 @@ public class SendTimeStrength : EventData
     public SendTimeStrength(float timeStrength) : base(EventType.SendTimeStrength)
     {
         this.timeStrength = timeStrength;
+    }
+}
+
+public class AwardPlayerXP : EventData
+{
+    public readonly int xpAmount;
+    public AwardPlayerXP(int xpAmount) : base(EventType.AwardPlayerXP)
+    {
+        this.xpAmount = xpAmount;
+    }
+}
+
+public class PlayerLevelUp : EventData
+{
+    public readonly int amountOfLevelsGained;
+    public PlayerLevelUp(int amountOfLevelsGained) : base(EventType.PlayerLevelUp)
+    {
+        this.amountOfLevelsGained = amountOfLevelsGained;
     }
 }
 

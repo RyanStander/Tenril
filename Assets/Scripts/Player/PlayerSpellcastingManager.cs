@@ -1,15 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSpellcastingManager : MonoBehaviour
+public class PlayerSpellcastingManager : CharacterSpellcastingManager
 {
     private PlayerInventory playerInventory;
     private PlayerAnimatorManager playerAnimatorManager;
     private PlayerStats playerStats;
     private PlayerManager playerManager;
     private InputHandler inputHandler;
-    private SpellItem spellBeingCast;
 
     private void Awake()
     {
@@ -37,7 +34,7 @@ public class PlayerSpellcastingManager : MonoBehaviour
         {
             if (playerInventory.preparedSpells[spellNumber]==null)
             {
-                Debug.Log("There is not spell prepared on this slot");
+                Debug.Log("There is no spell prepared on this slot");
                 return;
             }
             //Check the type of spell being cast

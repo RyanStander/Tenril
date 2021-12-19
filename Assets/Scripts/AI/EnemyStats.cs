@@ -10,6 +10,8 @@ public class EnemyStats : CharacterStats
     //TODO: Create traits that affect the behaviour of the AI
     //public List<Traits> enemyTraits = new List<Traits>();
 
+    public int xpToAwardOnDeath = 100;
+
     //The likeliness that an attack should be heavy
     [Range(0, 1)] public float heavyAttackLikeliness = 0.25f; 
 

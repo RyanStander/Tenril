@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -36,6 +34,8 @@ public class PlayerManager : CharacterManager
     [SerializeField] private CapsuleCollider characterCollider;
     [SerializeField] private CapsuleCollider characterCollisionBlocker;
 
+    private float timeTillRestart = 3, restartTimeStamp;
+
     public bool canDoCombo, isInteracting, isAiming,isHoldingArrow;
     private void OnEnable()
     {
@@ -47,6 +47,9 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Subscribe(EventType.DisplayQuickslotItem, OnDisplayQuickslotItem);
         EventManager.currentManager.Subscribe(EventType.HideQuickslotItem, OnHideQuickslotItem);
         EventManager.currentManager.Subscribe(EventType.SendTimeStrength, OnReceiveTimeStrength);
+        EventManager.currentManager.Subscribe(EventType.LoadPlayerCharacterData, OnLoadPlayerCharacterData);
+        EventManager.currentManager.Subscribe(EventType.PlayerLevelUp, OnPlayerLevelUp);
+        EventManager.currentManager.Subscribe(EventType.AwardPlayerXP, OnAwardPlayerXP);
     }
 
     private void OnDisable()
@@ -59,6 +62,10 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Unsubscribe(EventType.DisplayQuickslotItem, OnDisplayQuickslotItem);
         EventManager.currentManager.Unsubscribe(EventType.HideQuickslotItem, OnHideQuickslotItem);
         EventManager.currentManager.Unsubscribe(EventType.SendTimeStrength, OnReceiveTimeStrength);
+        EventManager.currentManager.Unsubscribe(EventType.LoadPlayerCharacterData, OnLoadPlayerCharacterData);
+        EventManager.currentManager.Unsubscribe(EventType.PlayerLevelUp, OnPlayerLevelUp);
+        EventManager.currentManager.Unsubscribe(EventType.AwardPlayerXP, OnAwardPlayerXP);
+
     }
 
     void Awake()
@@ -117,6 +124,17 @@ public class PlayerManager : CharacterManager
             {
                 playerAnimatorManager.animator.Play("Death");
             }
+
+            if (restartTimeStamp==0)
+            {
+                restartTimeStamp = Time.time + timeTillRestart;
+            }
+
+            if (restartTimeStamp<=Time.time)
+            {
+                EventManager.currentManager.AddEvent(new LoadData());
+            }
+
         }
     }
 
@@ -197,6 +215,7 @@ public class PlayerManager : CharacterManager
         playerAnimatorManager.animator.enabled = false;
         characterCollider.enabled = false;
         characterCollisionBlocker.enabled = false;
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
     }
 
     #region onEvents
@@ -335,6 +354,53 @@ public class PlayerManager : CharacterManager
         else
         {
             throw new System.Exception("Error: EventData class with EventType.SendTimeStrength was received but is not of class SendTimeStrength.");
+        }
+    }
+
+    private void OnLoadPlayerCharacterData(EventData eventData)
+    {
+        if (eventData is LoadPlayerCharacterData loadPlayerCharacterData)
+        {
+            PlayerData playerData = loadPlayerCharacterData.playerData;
+
+            playerStats.SetPlayerStats(playerData);
+
+            Vector3 position = new Vector3(playerData.position[0], playerData.position[1], playerData.position[2]);
+            Quaternion rotation = Quaternion.Euler(playerData.rotation[0], playerData.rotation[1], playerData.rotation[2]);
+
+            transform.position = position;
+            transform.rotation = rotation;
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.LoadPlayerCharacterData was received but is not of class LoadPlayerCharacterData.");
+        }
+    }
+
+    private void OnAwardPlayerXP(EventData eventData)
+    {
+        if (eventData is AwardPlayerXP awardPlayerXP)
+        {
+            //Calculate if the player will recieve any level ups
+            LevelSystem.DetermineLevelGain(playerStats.levelData, playerStats.currentXP, playerStats.currentLevel, awardPlayerXP.xpAmount);
+            //Add xp gain
+            playerStats.IncreaseXP(awardPlayerXP.xpAmount);
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.AwardPlayerXP was received but is not of class AwardPlayerXP.");
+        }
+    }
+
+    private void OnPlayerLevelUp(EventData eventData)
+    {
+        if (eventData is PlayerLevelUp playerLevelUp)
+        {
+            playerStats.IncreaseLevel(playerLevelUp.amountOfLevelsGained);
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.PlayerLevelUp was received but is not of class PlayerLevelUp.");
         }
     }
     #endregion

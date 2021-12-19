@@ -2,6 +2,6 @@ using UnityEngine;
 
 public class AudioSourceHolder : MonoBehaviour
 {
-    public AudioSource locomotionSFX, weaponSFX,hitSFX,voiceSFX;
+    public AudioSource locomotionSFX, weaponSFX,hitSFX,voiceSFX,spellcastSFX;
 }
  
