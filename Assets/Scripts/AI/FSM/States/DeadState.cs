@@ -23,6 +23,9 @@ public class DeadState : AbstractStateFSM
             DebugLogString("ENTERED DEAD STATE");
         }
 
+        //Send out event to award player XP
+        EventManager.currentManager.AddEvent(new AwardPlayerXP(enemyManager.enemyStats.xpToAwardOnDeath));
+
         return enteredState;
     }
 

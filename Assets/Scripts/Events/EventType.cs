@@ -56,5 +56,7 @@ public enum EventType
     SwapToRightLockOnTarget,
 
     //Misc
-    SendTimeStrength
+    SendTimeStrength,
+    AwardPlayerXP,
+    PlayerLevelUp,
 }

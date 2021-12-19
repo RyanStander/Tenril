@@ -48,7 +48,8 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Subscribe(EventType.HideQuickslotItem, OnHideQuickslotItem);
         EventManager.currentManager.Subscribe(EventType.SendTimeStrength, OnReceiveTimeStrength);
         EventManager.currentManager.Subscribe(EventType.LoadPlayerCharacterData, OnLoadPlayerCharacterData);
-
+        EventManager.currentManager.Subscribe(EventType.PlayerLevelUp, OnPlayerLevelUp);
+        EventManager.currentManager.Subscribe(EventType.AwardPlayerXP, OnAwardPlayerXP);
     }
 
     private void OnDisable()
@@ -62,6 +63,8 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Unsubscribe(EventType.HideQuickslotItem, OnHideQuickslotItem);
         EventManager.currentManager.Unsubscribe(EventType.SendTimeStrength, OnReceiveTimeStrength);
         EventManager.currentManager.Unsubscribe(EventType.LoadPlayerCharacterData, OnLoadPlayerCharacterData);
+        EventManager.currentManager.Unsubscribe(EventType.PlayerLevelUp, OnPlayerLevelUp);
+        EventManager.currentManager.Unsubscribe(EventType.AwardPlayerXP, OnAwardPlayerXP);
 
     }
 
@@ -371,6 +374,33 @@ public class PlayerManager : CharacterManager
         else
         {
             throw new System.Exception("Error: EventData class with EventType.LoadPlayerCharacterData was received but is not of class LoadPlayerCharacterData.");
+        }
+    }
+
+    private void OnAwardPlayerXP(EventData eventData)
+    {
+        if (eventData is AwardPlayerXP awardPlayerXP)
+        {
+            //Calculate if the player will recieve any level ups
+            LevelSystem.DetermineLevelGain(playerStats.levelData, playerStats.currentXP, playerStats.currentLevel, awardPlayerXP.xpAmount);
+            //Add xp gain
+            playerStats.IncreaseXP(awardPlayerXP.xpAmount);
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.AwardPlayerXP was received but is not of class AwardPlayerXP.");
+        }
+    }
+
+    private void OnPlayerLevelUp(EventData eventData)
+    {
+        if (eventData is PlayerLevelUp playerLevelUp)
+        {
+            playerStats.IncreaseLevel(playerLevelUp.amountOfLevelsGained);
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.PlayerLevelUp was received but is not of class PlayerLevelUp.");
         }
     }
     #endregion

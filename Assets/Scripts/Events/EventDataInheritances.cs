@@ -397,4 +397,22 @@ public class SendTimeStrength : EventData
     }
 }
 
+public class AwardPlayerXP : EventData
+{
+    public readonly int xpAmount;
+    public AwardPlayerXP(int xpAmount) : base(EventType.AwardPlayerXP)
+    {
+        this.xpAmount = xpAmount;
+    }
+}
+
+public class PlayerLevelUp : EventData
+{
+    public readonly int amountOfLevelsGained;
+    public PlayerLevelUp(int amountOfLevelsGained) : base(EventType.PlayerLevelUp)
+    {
+        this.amountOfLevelsGained = amountOfLevelsGained;
+    }
+}
+
 #endregion

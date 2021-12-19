@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
 {
-    [Header("Main Level")]
-    public int currentLevel=1;
-
     [Header("Health")]
     public int healthLevel = 10;
     public float maxHealth, currentHealth;
