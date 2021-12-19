@@ -185,6 +185,21 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
             utility = objectDistanceImpact * obstacleDistanceSensitivity * obstacleWeight;
         }
 
+        //Sample the position at a quarter the ray distance to avoid non-walkable areas for the NavMesh agent
+        if (NavMesh.SamplePosition(baseRay.GetPoint(utilityRayRange / 4), out NavMeshHit NavHit, 0.75f, navAgent.areaMask))
+        {
+            if(!hitPoints.ContainsKey(NavHit.position))
+            {
+                //Add a visual point
+                hitPoints.Add(NavHit.position, Color.cyan);
+            }
+        }
+        else
+        {
+            //Reduce viability of path
+            utility -= 1;
+        }
+
         //Calculate additional utility based on how small the angle is from the ray to the object of interest
         //float angleBetween = Vector3.Angle(objectOfInterest.transform.position - transform.position, rayDirection); //NavMesh separate
         float angleBetween = Vector3.Angle(navAgent.nextPosition - transform.position, rayDirection);
