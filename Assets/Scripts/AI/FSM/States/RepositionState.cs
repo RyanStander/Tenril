@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class RepositionState : AbstractStateFSM
 {
@@ -170,6 +171,36 @@ public class RepositionState : AbstractStateFSM
 
             //Calculate utility based on what is being found at current distance impactfulness
             utility = objectDistanceImpact * obstacleDistanceSensitivity * obstacleWeight;
+        }
+
+        //Point to sample
+        Vector3 sampledPosition = baseRay.GetPoint(utilityRayRange / 3);
+
+        //Sample the position at a third the ray distance to avoid non-walkable areas for the NavMesh agent
+        if (NavMesh.SamplePosition(sampledPosition, out NavMeshHit NavHit, 1, navAgent.areaMask))
+        {
+            //Check if the exact point (excluding height) was found
+            if(NavHit.position.x != sampledPosition.x || NavHit.position.z != sampledPosition.z)
+            {
+                //Reduce viability of path
+                utility -= 0.5f;
+
+                if (!hitPoints.ContainsKey(NavHit.position))
+                {
+                    //Add a visual point
+                    hitPoints.Add(NavHit.position, Color.red);
+                }
+            }
+            else if (!hitPoints.ContainsKey(NavHit.position))
+            {
+                //Add a visual point
+                hitPoints.Add(NavHit.position, Color.cyan);
+            }
+        }
+        else
+        {
+            //Reduce viability of path
+            utility -= 1;
         }
 
         //Calculate additional utility based on how small the angle is from the ray to the object of interest

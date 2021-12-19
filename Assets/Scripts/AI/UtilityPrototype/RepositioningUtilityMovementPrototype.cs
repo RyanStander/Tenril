@@ -185,10 +185,25 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
             utility = objectDistanceImpact * obstacleDistanceSensitivity * obstacleWeight;
         }
 
-        //Sample the position at a quarter the ray distance to avoid non-walkable areas for the NavMesh agent
-        if (NavMesh.SamplePosition(baseRay.GetPoint(utilityRayRange / 4), out NavMeshHit NavHit, 0.75f, navAgent.areaMask))
+        //Point to sample
+        Vector3 sampledPosition = baseRay.GetPoint(utilityRayRange / 3);
+
+        //Sample the position at a third the ray distance to avoid non-walkable areas for the NavMesh agent
+        if (NavMesh.SamplePosition(sampledPosition, out NavMeshHit NavHit, 1, navAgent.areaMask))
         {
-            if(!hitPoints.ContainsKey(NavHit.position))
+            //Check if the exact point (excluding height) was found
+            if (NavHit.position.x != sampledPosition.x || NavHit.position.z != sampledPosition.z)
+            {
+                //Reduce viability of path
+                utility -= 0.5f;
+
+                if(!hitPoints.ContainsKey(NavHit.position))
+                {
+                    //Add a visual point
+                    hitPoints.Add(NavHit.position, Color.cyan);
+                }
+            }
+            else if (!hitPoints.ContainsKey(NavHit.position))
             {
                 //Add a visual point
                 hitPoints.Add(NavHit.position, Color.cyan);
