@@ -31,6 +31,15 @@ public class LoadData : EventData
     }
 }
 
+public class LoadPlayerCharacterData : EventData
+{
+    public readonly PlayerData playerData;
+    public LoadPlayerCharacterData(PlayerData playerData) : base(EventType.LoadPlayerCharacterData)
+    {
+        this.playerData = playerData;
+    }
+}
+
 #endregion
 
 #region Player Stats Events

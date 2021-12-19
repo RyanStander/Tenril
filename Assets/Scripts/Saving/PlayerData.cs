@@ -1,9 +1,7 @@
-using JetBrains.Annotations;
-
 [System.Serializable]
 public class PlayerData
 {
-
+    #region Player Character Data
     #region Stats
     public int currentLevel;
 
@@ -31,7 +29,6 @@ public class PlayerData
 
     //faction
     public int factionID;
-
     #endregion
 
     #region Inventory
@@ -49,11 +46,19 @@ public class PlayerData
     //items in inventory
 
     #endregion
+    #endregion
 
-    public PlayerData(PlayerStats playerStats,PlayerInventory playerInventory)
+    #region Game Data
+
+    public string currentScene;
+
+    #endregion
+
+    public PlayerData(PlayerStats playerStats,PlayerInventory playerInventory,string currentSceneName)
     {
+        #region PlayerCharacterData
         #region Stats
-        
+
         currentLevel = playerStats.currentLevel;
 
         healthLevel = playerStats.healthLevel;
@@ -81,6 +86,13 @@ public class PlayerData
         rotation[2] = playerStats.transform.rotation.z;
 
         factionID = (int)playerStats.assignedFaction;
+
+        #endregion
+        #endregion
+
+        #region Game Data
+
+        currentScene = currentSceneName;
 
         #endregion
     }

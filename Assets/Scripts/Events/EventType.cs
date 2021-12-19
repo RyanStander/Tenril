@@ -11,6 +11,7 @@ public enum EventType
     //Save and loading
     SaveData,
     LoadData,
+    LoadPlayerCharacterData,
 
     //Player Stats
     UpdatePlayerStats,

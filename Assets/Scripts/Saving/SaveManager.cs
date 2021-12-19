@@ -4,14 +4,14 @@ using UnityEngine;
 
 public static class SaveManager
 {
-    public static void SavePlayer(PlayerStats playerStats,PlayerInventory playerInventory)
+    public static void SavePlayer(PlayerStats playerStats,PlayerInventory playerInventory,string currentSceneName)
     {
         BinaryFormatter formatter = new BinaryFormatter();
 
         string path = Application.persistentDataPath + "/player.tenril";
         FileStream stream = new FileStream(path, FileMode.Create);
 
-        PlayerData data = new PlayerData(playerStats,playerInventory);
+        PlayerData data = new PlayerData(playerStats,playerInventory, currentSceneName);
 
         formatter.Serialize(stream, data);
         stream.Close();
