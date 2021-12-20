@@ -1,16 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Holds the stats for the player, performs functions to do with their stats as well as leveling and xp. A few combat functions as well.
+/// </summary>
 public class PlayerStats : CharacterStats
 {
     [Header("Main Level")]
     public int currentLevel = 1;
     public int currentXP = 0;
     public LevelData levelData;
+    public int skillPoints = 0;
 
     private PlayerAnimatorManager playerAnimatorManager;
     private BlockingCollider blockingCollider;
+
+    private void OnEnable()
+    {
+        EventManager.currentManager.Subscribe(EventType.PlayerGainSkill, OnSpendSkillPoint);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.currentManager.Unsubscribe(EventType.PlayerGainSkill, OnSpendSkillPoint);
+    }
 
     private void Awake()
     {
@@ -175,12 +187,109 @@ public class PlayerStats : CharacterStats
     internal void IncreaseLevel(int levelsGained)
     {
         currentLevel += levelsGained;
+        skillPoints += levelsGained;
     }
 
     internal void IncreaseXP(int xpGained)
     {
         currentXP += xpGained;
-    } 
+    }
+
+    #endregion
+
+    #region Skill Spending
+
+    private void SpendSkillPoint(Skill skill)
+    {
+        switch (skill)
+        {
+            case Skill.Health:
+                //Increase stat level
+                healthLevel++;
+                //Get previous max
+                float previousMaxHP = maxHealth;
+                //Set max to new level
+                maxHealth = SetMaxHealthFromHealthLevel();
+                //get the precentage increase of state
+                float healthPercentileIncrease = 1-(previousMaxHP / maxHealth);
+                //get the amount of current stat to increase by
+                float currentHealthToIncrease = maxHealth * healthPercentileIncrease;
+                //increase current stat
+                currentHealth += currentHealthToIncrease;
+                break;
+            case Skill.Stamina:
+                //Increase stat level
+                staminaLevel++;
+                //Get previous max
+                float previousMaxStamina = maxStamina;
+                //Set max to new level
+                maxStamina=SetMaxStaminaFromStaminaLevel();
+                //get the precentage increase of state
+                float staminaPercentileIncrease = 1 - (previousMaxStamina / maxStamina);
+                //get the amount of current stat to increase by
+                float currentStaminaToIncrease = maxStamina * staminaPercentileIncrease;
+                //increase current stat
+                currentStamina += currentStaminaToIncrease;
+                break;
+            case Skill.Moonlight:
+                //Increase stat level
+                MoonlightLevel++;
+                //Get previous max
+                float previousMaxMoonlight = maxStoredMoonlight;
+                //Set max to new level
+                maxStoredMoonlight=SetMaxStoredMoonlightFromMoonlightLevel();
+                //get the precentage increase of state
+                float moonlightPercentileIncrease = 1 - (previousMaxMoonlight / maxStoredMoonlight);
+                //get the amount of current stat to increase by
+                float currentMoonlightToIncrease = maxStoredMoonlight * moonlightPercentileIncrease;
+                //increase current stat
+                currentStoredMoonlight += currentMoonlightToIncrease;
+                break;
+            case Skill.Sunlight:
+                //Increase stat level
+                sunlightLevel++;
+                //Get previous max
+                float previousMaxSunlight = maxStoredSunlight;
+                //Set max to new level
+                maxStoredSunlight=SetMaxStoredSunlightFromSunlightLevel();
+                //get the precentage increase of state
+                float sunlightPercentileIncrease = 1 - (previousMaxSunlight / maxStoredSunlight);
+                //get the amount of current stat to increase by
+                float currentSunlightToIncrease = maxStoredSunlight * sunlightPercentileIncrease;
+                //increase current stat
+                currentStoredSunlight += currentSunlightToIncrease;
+                break;
+        }
+    }
+
+    #endregion
+
+    #region On Events
+
+    private void OnSpendSkillPoint(EventData eventData)
+    {
+        if (eventData is PlayerGainSkill gainSkill)
+        {
+            //Check if skill points are to be deducted
+            if (gainSkill.consumeSkillPoint)
+            {
+                //if there are no skill points, exit
+                if (skillPoints==0)
+                {
+                    Debug.Log("Attempting to increase skill, but there was no skill points to spend");
+                    return;
+                }
+                //else deduct skill points
+                else
+                {
+                    skillPoints--;
+                }
+            }
+
+            SpendSkillPoint(gainSkill.skillToGain);
+        }
+
+    }
 
     #endregion
 

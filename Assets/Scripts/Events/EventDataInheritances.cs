@@ -415,4 +415,15 @@ public class PlayerLevelUp : EventData
     }
 }
 
+public class PlayerGainSkill : EventData
+{
+    public readonly Skill skillToGain;
+    public readonly bool consumeSkillPoint;
+    public PlayerGainSkill(Skill skillToGain, bool consumeSkillPoint=true) : base(EventType.PlayerGainSkill)
+    {
+        this.skillToGain = skillToGain;
+        this.consumeSkillPoint = consumeSkillPoint;
+    }
+}
+
 #endregion
