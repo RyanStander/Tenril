@@ -30,7 +30,7 @@ namespace MagicalFX
 			}
 			if (DestoyOnHit) {
 			
-				GameObject.Destroy (this.gameObject, LifeTimeAfterHit);
+				GameObject.Destroy (gameObject.transform.root.gameObject, LifeTimeAfterHit);
 				if (this.gameObject.GetComponent<Collider>())
 					this.gameObject.GetComponent<Collider>().enabled = false;
 

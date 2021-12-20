@@ -39,6 +39,8 @@ public class PlayerStats : CharacterStats
     public void SetPlayerStats(PlayerData playerData)
     {
         currentLevel = playerData.currentLevel;
+        currentXP = playerData.currentXP;
+        skillPoints = playerData.skillPoints;
 
         healthLevel = playerData.healthLevel;
         maxHealth = SetMaxHealthFromHealthLevel();
@@ -216,6 +218,8 @@ public class PlayerStats : CharacterStats
                 float currentHealthToIncrease = maxHealth * healthPercentileIncrease;
                 //increase current stat
                 currentHealth += currentHealthToIncrease;
+
+                EventManager.currentManager.AddEvent(new UpdatePlayerHealth(maxHealth,currentHealth));
                 break;
             case Skill.Stamina:
                 //Increase stat level
@@ -230,6 +234,8 @@ public class PlayerStats : CharacterStats
                 float currentStaminaToIncrease = maxStamina * staminaPercentileIncrease;
                 //increase current stat
                 currentStamina += currentStaminaToIncrease;
+
+                EventManager.currentManager.AddEvent(new UpdatePlayerStamina(maxStamina, currentStamina));
                 break;
             case Skill.Moonlight:
                 //Increase stat level
@@ -244,6 +250,8 @@ public class PlayerStats : CharacterStats
                 float currentMoonlightToIncrease = maxStoredMoonlight * moonlightPercentileIncrease;
                 //increase current stat
                 currentStoredMoonlight += currentMoonlightToIncrease;
+
+                EventManager.currentManager.AddEvent(new UpdatePlayerMoonlight(maxStoredMoonlight, currentStoredMoonlight));
                 break;
             case Skill.Sunlight:
                 //Increase stat level
@@ -258,6 +266,8 @@ public class PlayerStats : CharacterStats
                 float currentSunlightToIncrease = maxStoredSunlight * sunlightPercentileIncrease;
                 //increase current stat
                 currentStoredSunlight += currentSunlightToIncrease;
+
+                EventManager.currentManager.AddEvent(new UpdatePlayerSunlight(maxStoredSunlight, currentStoredSunlight));
                 break;
         }
     }

@@ -28,3 +28,10 @@ public enum Skill
     Moonlight=2,
     Sunlight=3,
 }
+
+public enum SpellType
+{
+    none=0,
+    biomancy=1,
+    pyromancy=2,
+}

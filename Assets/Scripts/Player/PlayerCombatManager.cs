@@ -175,6 +175,7 @@ public class PlayerCombatManager : MonoBehaviour
                 PerformRangedAmmoCheck();
                 break;
             case WeaponType.FlyingMage:
+                FireMagic();
                 break;
         }
     }
@@ -327,7 +328,7 @@ public class PlayerCombatManager : MonoBehaviour
             Debug.LogWarning("No bow prefab was found");
 
         //Reset players holding arrow
-        playerAnimatorManager.PlayTargetAnimation("BowFire",true);
+        playerAnimatorManager.PlayTargetAnimation("Fire",true);
         playerAnimatorManager.animator.SetBool("isHoldingArrow", false);
 
         if (bowAnimator!=null)
@@ -376,6 +377,88 @@ public class PlayerCombatManager : MonoBehaviour
         //animate the bow firing the arrow
     }
 
+    private void FireMagic()
+    {
+        if (playerManager.isInteracting)
+            return;
+
+        //If player does not have an arrow in their inventory, do not proceed
+        if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.equippedAmmo))
+            return;
+
+        if (playerInventory.equippedWeapon is SpellcasterWeaponItem spellcasterWeapon)
+        {
+            switch (spellcasterWeapon.magicWeaponCostType)
+            {
+                case SpellType.none:
+                    break;
+                case SpellType.biomancy:
+                    if (playerStats.HasEnoughMoonlight(spellcasterWeapon.magicAttackCost))
+                    {
+                        playerStats.ConsumeStoredMoonlight(spellcasterWeapon.magicAttackCost);
+                    }
+                    else
+                        return;
+                    break;
+                case SpellType.pyromancy:
+                    if (playerStats.HasEnoughSunlight(spellcasterWeapon.magicAttackCost))
+                    {
+                        playerStats.ConsumeStoredSunlight(spellcasterWeapon.magicAttackCost);
+                    }
+                    else
+                        return;
+                    break;
+            }
+
+            ArrowInstantiationLocation spellInstantiationLocation = null;
+
+            //Get the spell weapon depending on which hand it is instantiated in
+            if (playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
+            {
+                spellInstantiationLocation = weaponSlotManager.rightHandSlot.GetComponentInChildren<ArrowInstantiationLocation>();
+            }
+            else if (playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
+            {
+                spellInstantiationLocation = weaponSlotManager.leftHandSlot.GetComponentInChildren<ArrowInstantiationLocation>();
+            }
+            else
+                Debug.LogWarning("No projectile prefab was found");
+
+            playerAnimatorManager.PlayTargetAnimation("Fire", true);
+            
+            //Create live arrow at specific location
+            //TO DO: possibly check to link the rotation up to the camera facing direction
+            GameObject spellParticle = Instantiate(spellcasterWeapon.attackData.liveProjectileModel, spellInstantiationLocation.GetTransform().position, spellInstantiationLocation.GetTransform().rotation);
+            //Get rigidbody and rangedprojectiledmgcollider for modifying
+            Rigidbody rigidbody = spellParticle.GetComponentInChildren<Rigidbody>();
+            RangedProjectileDamageCollider damageCollider = spellParticle.GetComponentInChildren<RangedProjectileDamageCollider>();
+
+            if (inputHandler.lockOnFlag)
+            {
+                //While locked on we are always facing target, can copy our facing direction to our arrows facing direction
+                Quaternion arrowRotation = Quaternion.LookRotation(transform.forward);
+                spellParticle.transform.rotation = arrowRotation;
+            }
+            else
+            {
+                spellParticle.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, playerManager.lockOnTransform.eulerAngles.y, 0);
+            }
+
+            //give ammo rigidbody its values
+            rigidbody.AddForce(spellParticle.transform.forward * spellcasterWeapon.attackData.forwardVelocity);
+            rigidbody.AddForce(spellParticle.transform.up * spellcasterWeapon.attackData.upwardVelocity);
+            rigidbody.useGravity = spellcasterWeapon.attackData.useGravity;
+            rigidbody.mass = spellcasterWeapon.attackData.projectileMass;
+            spellParticle.transform.parent = null;
+
+            //set live arrow damage
+            damageCollider.characterManager = playerManager;
+            damageCollider.ammoItem = playerInventory.equippedAmmo;
+            damageCollider.currentDamage = spellcasterWeapon.baseDamage;
+            //animate the bow firing the arrow
+        }
+    }
+
     private void AttemptFinisher()
     {
         if (playerAnimatorManager.animator.GetBool("isInteracting"))
@@ -422,7 +505,7 @@ public class PlayerCombatManager : MonoBehaviour
 
     #endregion
 
-    #region Defending
+    #region Special Actions
 
     /// <summary>
     /// Manages special abilities such as blocking or aiming
@@ -446,6 +529,7 @@ public class PlayerCombatManager : MonoBehaviour
                 AimAction();
                 break;
             case WeaponType.FlyingMage:
+                AimAction();
                 break;
             default:
                 break;

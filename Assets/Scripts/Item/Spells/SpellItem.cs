@@ -69,9 +69,4 @@ public class SpellItem : Item
              instantiatedSpellFX = Instantiate(spellCastFX, position, animatorManager.transform.rotation);
         }
     }
-    public enum SpellType
-    {
-        biomancy,
-        pyromancy
-    }
 }

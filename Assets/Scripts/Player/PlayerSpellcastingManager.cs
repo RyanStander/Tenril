@@ -41,7 +41,7 @@ public class PlayerSpellcastingManager : CharacterSpellcastingManager
             //if the player does not have enough magic to cast the spell, they wont.
             switch (playerInventory.preparedSpells[spellNumber].spellType)
             {
-                case SpellItem.SpellType.biomancy:
+                case SpellType.biomancy:
                     if (!playerStats.HasEnoughMoonlight(playerInventory.preparedSpells[spellNumber].spellCost))
                     {
                         //Play failed cast animation
@@ -50,7 +50,7 @@ public class PlayerSpellcastingManager : CharacterSpellcastingManager
                         return;
                     }
                     break;
-                case SpellItem.SpellType.pyromancy:
+                case SpellType.pyromancy:
                     if (!playerStats.HasEnoughSunlight(playerInventory.preparedSpells[spellNumber].spellCost))
                     {
                         //Play failed cast animation
