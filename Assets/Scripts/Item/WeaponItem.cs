@@ -44,7 +44,7 @@ public class WeaponItem : Item
     [Header("Parry Animation")]
     public string parry= "Parry";
 
-    [Header("Stamina Costs")]
+    [Header("Attack Costs")]
     public int baseStaminaCost;
     public float weakAttackCostMultiplier=1;
     public float strongAttackCostMultiplier=2;

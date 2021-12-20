@@ -59,4 +59,5 @@ public enum EventType
     SendTimeStrength,
     AwardPlayerXP,
     PlayerLevelUp,
+    PlayerGainSkill,
 }

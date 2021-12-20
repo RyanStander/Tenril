@@ -4,6 +4,8 @@ public class PlayerData
     #region Player Character Data
     #region Stats
     public int currentLevel;
+    public int currentXP;
+    public int skillPoints;
 
     //Health
     public int healthLevel;
@@ -60,6 +62,8 @@ public class PlayerData
         #region Stats
 
         currentLevel = playerStats.currentLevel;
+        currentXP = playerStats.currentXP;
+        skillPoints = playerStats.skillPoints;
 
         healthLevel = playerStats.healthLevel;
         currentHealth = playerStats.currentHealth;
