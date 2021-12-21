@@ -14,6 +14,9 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
     //Number of rays that should be used when deciding on a direction
     [Range(3, 100)] public int utilityRayCount = 15;
 
+    //The ratio (out of the number of rays) for how impactful the best ray should be when 
+    [Range(0, 1)] public float bestRayImpactRatio = 0.25f;
+
     //The additional range at which the utility ray should operate within
     public float adittionalRayRange = 1;
 
@@ -26,7 +29,7 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
     //Weights that influence the decision making of encountered objects
     [Range(-1, 1)] public float obstacleWeight = -1;
     //[Range(-1, 1)] public float targetWeight = 1;
-    [Range(-1, 1)] public float targetAngleWeight = 0.75f;
+    [Range(-1, 1)] public float targetAngleWeight = 0.5f;
 
     //Sensitivity affects navigation through the distance between the agent and other objects
     [Range(0, 1)] public float obstacleDistanceSensitivity = 1;
@@ -112,7 +115,7 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
             GenerateUtilityRays();
 
             //Get and set the current direction to strive for and follow
-            currentDirection = GetAverageUtilityDirection();
+            currentDirection = GetAverageUtilityDirectionWithPreference();
 
             //Rotate towards target (always 'circling')
             RotateTowardsObjectOfInterest();
@@ -137,7 +140,7 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
         //For now we're just making a direct translation
         //In future this should instead be a movement vector for the locomotion blend tree
         //transform.position += currentDirection * agentSpeed * Time.deltaTime;
-        Vector3 target = transform.position + (currentDirection * agentSpeed);
+        Vector3 target = transform.position + (currentDirection.normalized * agentSpeed);
         transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime);
     }
 
@@ -226,8 +229,8 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
         //If intending on moving away from the target
         if (distanceToObjectOfInterest <= desiredDistance)// && hasLOS)
         {
-            //Invert the impact
-            angleImpact *= -1;
+            //Invert the impact scale
+            angleImpact = -(angleImpact - 1);
         }
 
         //Calculate additional utility based on the smallest angles and divide by 2 so that it returns to a 0 to 1 scale
@@ -237,7 +240,7 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
         Color utilityColor = utilityGradient.Evaluate(utility);
 
         //Save the hit point for debugging later (if any detected)
-        if (hit.collider != null &&  !hitPoints.ContainsKey(hit.point))
+        if (hit.collider != null && !hitPoints.ContainsKey(hit.point))
         {
             hitPoints.Add(hit.point, utilityColor);
         }
@@ -266,6 +269,37 @@ public class RepositioningUtilityMovementPrototype : MonoBehaviour
         {
             //Map the ray utility to get a correctly fractioned direction
             averageDirection += utilityRay.baseRay.direction.normalized * Mathf.InverseLerp(-1, 1, utilityRay.rayUtility);
+        }
+
+        //Return the average desired direction
+        return averageDirection;
+    }
+
+    private Vector3 GetAverageUtilityDirectionWithPreference()
+    {
+        //Return zero if no rays exist
+        if (utilityRays == null || utilityRays.Count == 0) return Vector3.zero;
+
+        //Get the best ray, which would serve 
+        UtilityRay bestRay = GetBestUtilityRay();
+
+        //Temporary vector to track the average direction
+        Vector3 averageDirection = Vector3.zero;
+
+        //Iterate over each ray and add their direction based on utility
+        foreach (UtilityRay utilityRay in utilityRays)
+        {
+            //Check if the ray is the best utility ray, if so enchance the impact twicefold
+            if (utilityRay == bestRay)
+            {
+                //Map the ray utility to get a correctly fractioned direction
+                averageDirection += utilityRay.baseRay.direction.normalized * Mathf.InverseLerp(-1, 1, utilityRay.rayUtility) * (bestRayImpactRatio * utilityRayCount);
+            }
+            else
+            {
+                //Map the ray utility to get a correctly fractioned direction
+                averageDirection += utilityRay.baseRay.direction.normalized * Mathf.InverseLerp(-1, 1, utilityRay.rayUtility);
+            }
         }
 
         //Return the average desired direction

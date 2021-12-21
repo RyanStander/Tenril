@@ -21,6 +21,9 @@ public class EnemyStats : CharacterStats
     //The chase speed of the AI
     [Range(0, 2)] public float chaseSpeed = 1;
 
+    //Reposition speed of the AI
+    [Range(0, 2)] public float repositionSpeed = 0.75f;
+
     //Range for creature knowing where obstacles that can be hidden behind are
     public float obstacleAwarenessRange = 15;
 

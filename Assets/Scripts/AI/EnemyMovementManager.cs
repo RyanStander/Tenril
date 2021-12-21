@@ -128,17 +128,22 @@ public class EnemyMovementManager : MonoBehaviour
             }
             else
             {
-                //Normalize the direction
-                Vector3 givenDirectionNormalized = givenDirection.normalized;
+                //Convert the direction into a local perspective
+                Vector3 newDirection = transform.InverseTransformDirection(givenDirection.normalized);
 
-                //Handle the forward movement of the agent
-                SetForwardMovement(givenDirectionNormalized.x * targetSpeed, defaultDamp, Time.deltaTime);
-                SetSidewardMovement(givenDirectionNormalized.z * targetSpeed, defaultDamp, Time.deltaTime);
+                //Create a locomotion speed vector (this is for ease of debugging)
+                Vector2 locomotionSpeed = new Vector2(newDirection.z, newDirection.x * -1); //Side direction inverted due to locomotion using a left perspective
+                //Debug.Log("Locomotion Speed: " + locomotionSpeed);
+
+                //Handle the forward and leftward movement of the agent
+                //TODO: Smooth out this movement so that it does not stutter when transitioning between forward/backwards or leftward/rightward
+                SetForwardMovement(locomotionSpeed.x * targetSpeed, defaultDamp, Time.deltaTime);
+                SetSidewardMovement(locomotionSpeed.y * targetSpeed, defaultDamp, Time.deltaTime);
             }
-
-            //Correct the location of the NavmeshAgent with precise or estimated calculations
-            CorrectAgentLocation();
         }
+
+        //Correct the location of the NavmeshAgent with precise or estimated calculations
+        CorrectAgentLocation();
     }
 
     private void OnAnimatorMove()

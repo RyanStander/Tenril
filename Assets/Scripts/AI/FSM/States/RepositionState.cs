@@ -9,6 +9,9 @@ public class RepositionState : AbstractStateFSM
     //Number of rays that should be used when deciding on a direction
     [Range(3, 100)] public int utilityRayCount = 15;
 
+    //The ratio (out of the number of rays) for how impactful the best ray should be when 
+    [Range(0, 1)] public float bestRayImpactRatio = 0.25f;
+
     //The additional range at which the utility ray should operate within
     public float adittionalRayRange = 1;
 
@@ -88,6 +91,8 @@ public class RepositionState : AbstractStateFSM
             //Establish the current distance to the target
             distanceToObjectOfInterest = DistanceToTarget();
 
+            Debug.Log(distanceToObjectOfInterest);
+
             //Establish the range of the rays
             utilityRayRange = adittionalRayRange + desiredDistance;
 
@@ -99,21 +104,22 @@ public class RepositionState : AbstractStateFSM
                 GenerateUtilityRays();
 
                 //Get and set the current direction to strive for and follow
-                currentDirection = GetAverageUtilityDirection();
-                
-                //Move towards the target direction by passing through information to the movement manager
-                enemyManager.movementManager.HandleDirectionalMovement(currentDirection, enemyManager.enemyStats.chaseSpeed);
+                currentDirection = GetAverageUtilityDirectionWithPreference();
 
-                //Visual of the average direction
-                Debug.DrawRay(transform.position, currentDirection * utilityRayRange, Color.magenta);
+                //Move towards the target direction by passing through information to the movement manager
+                enemyManager.movementManager.HandleDirectionalMovement(currentDirection, enemyManager.enemyStats.repositionSpeed);
 
                 //Debug a direct ray to the object of interest
-                Vector3 rayOrigin = transform.position; rayOrigin.y += 0.5f;
-                Debug.DrawRay(rayOrigin, (enemyManager.currentTarget.transform.position - transform.position), Color.yellow);
-            }
+                Vector3 rayOrigin = transform.root.position; rayOrigin.y += 0.5f;
+                Debug.DrawRay(rayOrigin, (enemyManager.currentTarget.transform.position - transform.root.position), Color.yellow);
 
-            //Method sacrifices animation quality (increasing foot sliding) at the improvement of obstacle avoidance
-            CorrectAgentLocationPrecise();
+                //Visual of the average direction
+                Debug.DrawRay(rayOrigin, currentDirection * utilityRayRange, Color.magenta);
+            }
+            else
+            {
+                enemyManager.movementManager.StopMovement();
+            }
         }
     }
 
@@ -147,15 +153,15 @@ public class RepositionState : AbstractStateFSM
     private UtilityRay CalculateUtilityRay(int rayNumber)
     {
         //Origin of the ray
-        Vector3 rayOrigin = transform.position;
-        rayOrigin.y *= 0.5f;
+        Vector3 rayOrigin = transform.root.position;
+        rayOrigin.y += 0.5f;
 
         //Target angle of the ray based on the current number, converted from radians to angles
         float rayAngle = (2 * Mathf.PI * ((float)rayNumber / (float)utilityRayCount)) * Mathf.Rad2Deg;
         //if(isDebugging) Debug.Log(rayNumber + " | " + rayAngle);
 
         //Calculate the direction of the ray based on the angle
-        Vector3 rayDirection = Quaternion.AngleAxis(rayAngle, transform.up) * transform.forward;
+        Vector3 rayDirection = Quaternion.AngleAxis(rayAngle, transform.root.up) * transform.root.forward;
 
         //Create a ray of this origin and direction
         Ray baseRay = new Ray(rayOrigin, rayDirection);
@@ -205,7 +211,7 @@ public class RepositionState : AbstractStateFSM
 
         //Calculate additional utility based on how small the angle is from the ray to the object of interest
         //float angleBetween = Vector3.Angle(objectOfInterest.transform.position - transform.position, rayDirection); //NavMesh separate
-        float angleBetween = Vector3.Angle(navAgent.nextPosition - transform.position, rayDirection);
+        float angleBetween = Vector3.Angle(navAgent.nextPosition - transform.root.position, rayDirection);
 
         //Angle impact calculated and inverted so that the smaller angles results in higher favorability
         //By default this value implies moving towards the target as favorable
@@ -214,8 +220,8 @@ public class RepositionState : AbstractStateFSM
         //If intending on moving away from the target
         if (distanceToObjectOfInterest <= desiredDistance)// && hasLOS)
         {
-            //Invert the impact
-            angleImpact *= -1;
+            //Invert the impact scale
+            angleImpact = -(angleImpact - 1);
         }
 
         //Calculate additional utility based on the smallest angles and divide by 2 so that it returns to a 0 to 1 scale
@@ -260,6 +266,27 @@ public class RepositionState : AbstractStateFSM
         return averageDirection;
     }
 
+    private Vector3 GetAverageUtilityDirectionWithPreference()
+    {
+        //Return zero if no rays exist
+        if (utilityRays == null || utilityRays.Count == 0) return Vector3.zero;
+
+        //Temporary vector to track the average direction
+        Vector3 averageDirection = GetAverageUtilityDirection();
+
+        //Get the best ray
+        UtilityRay bestRay = GetBestUtilityRay();
+
+        //Subtract from the average direction
+        averageDirection -= bestRay.baseRay.direction;
+
+        //Re-add the best direction with the impact ratio
+        averageDirection += bestRay.baseRay.direction.normalized * Mathf.InverseLerp(-1, 1, bestRay.rayUtility) * (bestRayImpactRatio * utilityRayCount);
+
+        //Return the average desired direction
+        return averageDirection;
+    }
+
     private UtilityRay GetBestUtilityRay()
     {
         //Return null if no rays exist
@@ -286,13 +313,13 @@ public class RepositionState : AbstractStateFSM
     internal float DistanceToTarget()
     {
         //Gets the direct distance to the target
-        return Vector3.Distance(transform.position, enemyManager.currentTarget.transform.position);
+        return Vector3.Distance(transform.root.position, enemyManager.currentTarget.transform.position);
     }
     #endregion
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, desiredDistance);
+        Gizmos.DrawWireSphere(transform.root.position, desiredDistance);
 
         //Iterate over each point of impact for debugging
         foreach (KeyValuePair<Vector3, Color> point in hitPoints)
@@ -301,13 +328,5 @@ public class RepositionState : AbstractStateFSM
             Gizmos.color = point.Value;
             Gizmos.DrawSphere(point.Key, 0.1f);
         }
-    }
-
-
-    //Method sacrifices animation quality (increasing foot sliding) at the improvement of obstacle avoidance
-    internal void CorrectAgentLocationPrecise()
-    {
-        //Set the navAgents predicted position to be the root transform
-        navAgent.nextPosition = transform.root.position;
     }
 }
