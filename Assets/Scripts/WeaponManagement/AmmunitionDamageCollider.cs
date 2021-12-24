@@ -16,7 +16,7 @@ public class AmmunitionDamageCollider : ProjectileDamageCollider
                 if (characterManager == other.GetComponentInParent<CharacterManager>())
                     return;
 
-                Debug.Log(other.gameObject.layer + other.name);
+                //Debug.Log(other.gameObject.layer + other.name);
                 //create a projectile
                 GameObject penetratedProjectile = Instantiate(ammoItem.penetratedModel, transform.position - transform.forward, transform.rotation);
                 penetratedProjectile.transform.parent = other.transform;
