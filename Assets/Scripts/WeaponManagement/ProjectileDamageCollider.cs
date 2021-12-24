@@ -1,10 +1,7 @@
 using UnityEngine;
 
-public class RangedProjectileDamageCollider : DamageCollider
+public class ProjectileDamageCollider : DamageCollider
 {
-    public AmmunitionItem ammoItem;
-    protected bool hasAlreadyPenetratedASurface;
-    protected GameObject penetratedProjectile;
     protected override void OnTriggerEnter(Collider other)
     {
         //When the collider enters an character with one of these tags

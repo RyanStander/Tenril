@@ -1,15 +1,14 @@
 using UnityEngine;
-
 /// <summary>
-/// holds the data for the spawning of live arrows, which is to say, the arrow that you will see when released and fired in the aimed direction
+/// Attach to a location you wish to instantiate a projectile on firing. Alternatively setting an override will allow you to place a seperate object for instantiation
 /// </summary>
-public class ArrowInstantiationLocation : MonoBehaviour
+
+public class ProjectileInstantiationLocation : MonoBehaviour
 {
     [Tooltip("If true it will use the override transform, if false it will use the transform the the script is attached to")]
     public bool hasOverride;
     [Tooltip("If you wish to override the location of the instantiation, set the override transform here")]
     public Transform transformOverrideLocation;
-
     public Transform GetTransform()
     {
         if (hasOverride)

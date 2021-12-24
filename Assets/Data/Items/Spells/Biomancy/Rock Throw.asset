@@ -16,11 +16,18 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: 406984ac0d0fc2c4bbaf906048f7c43e, type: 3}
   itemName: Rock Throw
   amountPerStack: 1
+  ItemValue: 0
   spellWindUpFX: {fileID: 0}
   spellCastFX: {fileID: 4221566559489095599, guid: 495f19e8b42ff794e9a5f3c26f72de13, type: 3}
   spellCastFXOffset: {x: 1, y: 1, z: 0}
   spellAnimation: ProjectileThrow
+  windUPSFX:
+    audioClip: {fileID: 0}
+    volume: 1
+  castSFX:
+    audioClip: {fileID: 0}
+    volume: 1
   spellCost: 20
-  spellType: 0
+  spellType: 1
   spellDescription: Hurl a boulder in a direction, anything it hits takes 20 damage.
   damageAmount: 20
