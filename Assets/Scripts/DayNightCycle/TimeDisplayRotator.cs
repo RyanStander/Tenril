@@ -24,26 +24,18 @@ public class TimeDisplayRotator : MonoBehaviour
         {
             rotationValue = 180+(180 * timeStrength);
             if (timeStrength >0.99999f)
-            {
                 approachingDaytime = false;
-            }
 
         }
         else
         {
             rotationValue = 180 - (180 * timeStrength);
             if (timeStrength <0.00001f)
-            {
                 approachingDaytime = true;
-            }
         }
-        Debug.Log(rotationValue);
+        //Debug.Log(rotationValue);
         objectToRotate.rotation=Quaternion.Euler(0,0, rotationValue);
 
-        //0 str=180 rotation
-        //1 str=360 rotation
-        //0-1 = 180-360
-        //1-0= 0-180
     }
 
     private void OnReceiveTimeStrength(EventData eventData)

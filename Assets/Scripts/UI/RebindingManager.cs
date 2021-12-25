@@ -6,14 +6,15 @@ using System.IO;
 
 public class RebindingManager : MonoBehaviour
 {
-    [Tooltip("Input handler from the player")]
-    public InputHandler inputHandler;
+    //Input handler from the player
+    [HideInInspector]public InputHandler inputHandler;
     [Tooltip("The prefab for the key rebind")]
     [SerializeField] private GameObject keyRebindPrefab;
     [SerializeField] private GameObject rebindContentObject;
 
     private void OnEnable()
     {
+        inputHandler = FindObjectOfType<InputHandler>();
         CreateKeybindingDisplay();
     }
 
