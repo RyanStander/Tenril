@@ -271,6 +271,10 @@ public class PlayerCombatManager : MonoBehaviour
 
     private void PerformBowDraw()
     {
+        //If player does not have an arrow in their inventory, do not proceed
+        if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.equippedAmmo))
+            return;
+
         playerAnimatorManager.animator.SetBool("isHoldingArrow", true);
         playerAnimatorManager.PlayTargetAnimation("BowDrawArrow", true);
 

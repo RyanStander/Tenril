@@ -5,9 +5,9 @@ using UnityEngine;
 public class PlayerInteraction : MonoBehaviour
 {
     private InteractableUI interactableUI;
-    public GameObject interactionPopUp;
     public GameObject itemPopUp;
     public GameObject dialoguePopUp;
+    [SerializeField] private GameObject interactableDataHolderPrefab;
 
     [Header("OverlapBox setup")]
     [SerializeField] private Vector3 overlapBoxOffset;
@@ -17,6 +17,8 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private bool showGizmo;
 
     private InputHandler inputHandler;
+
+    private int currentlySelectedInteractableIndex = 0;
 
     private void Awake()
     {
@@ -31,6 +33,12 @@ public class PlayerInteraction : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapBox(transform.forward * overlapBoxDistance + transform.position +overlapBoxOffset, boxSize,Quaternion.identity,targetLayers);
         int i = 0;
 
+        //destroy all previously displayed objects
+        foreach (RectTransform child in interactableUI.interactionPopUpsContent.GetComponent<RectTransform>())
+        {
+            Destroy(child.gameObject);
+        }
+
         //Check when there is a new collider coming into contact with the box
         while (i < hitColliders.Length)
         {
@@ -42,24 +50,31 @@ public class PlayerInteraction : MonoBehaviour
                 //if there is an interactable object
                 if (interactableObject != null)
                 {
-                    //Assign text to the interactable object
-                    string interactableText = interactableObject.interactableText;
-                    interactableUI.interactableText.text = interactableText;
+                    GameObject createdGameObject = Instantiate(interactableDataHolderPrefab, interactableUI.interactionPopUpsContent.transform);
+                    if (createdGameObject.TryGetComponent(out InteractableDataHolder interactableDataHolder))
+                    {
+                        interactableDataHolder.interactableNameText.text = interactableObject.interactableText;
 
-                    //Display it
-                    interactionPopUp.SetActive(true);
+                        //if the interactable is an item pickup
+                        if (interactableObject is ItemPickup itemPickup)
+                        {
+                            interactableDataHolder.interactableIconImage.sprite = itemPickup.item.itemIcon;
+                            interactableDataHolder.interactableNameText.text = itemPickup.item.itemName;
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Couldnt find interactableDataHolder on the created prefab for interaction");
+                    }
+
+                   
 
                     //if interact button is pressed while the option is available
                     if (inputHandler.interactInput)
                     {
                         //call the interaction
-                        hitColliders[i].GetComponent<Interactable>().Interact(GetComponent<PlayerManager>());
+                        hitColliders[currentlySelectedInteractableIndex].GetComponent<Interactable>().Interact(GetComponent<PlayerManager>());
 
-                        //hide the interactable ui and reset
-                        if (interactionPopUp != null)
-                        {
-                            interactionPopUp.SetActive(false);
-                        }
                     }
                 }
             }
@@ -72,10 +87,6 @@ public class PlayerInteraction : MonoBehaviour
         if (0 == hitColliders.Length)
         {
             //hide the interactable ui and reset
-            if (interactionPopUp != null)
-            {
-                interactionPopUp.SetActive(false);
-            }
 
             if (itemPopUp != null && inputHandler.interactInput)
             {
