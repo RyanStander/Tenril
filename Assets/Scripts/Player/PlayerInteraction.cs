@@ -1,11 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Used to check for interactable objects and allowing player to interact with them
+/// </summary>
 public class PlayerInteraction : MonoBehaviour
 {
     private InteractableUI interactableUI;
-    public GameObject itemPopUp;
     public GameObject dialoguePopUp;
     [SerializeField] private GameObject interactableDataHolderPrefab;
 
@@ -18,6 +19,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private InputHandler inputHandler;
 
+    private List<Interactable> interactables=new List<Interactable>();
     private int currentlySelectedInteractableIndex = 0;
 
     private void Awake()
@@ -30,7 +32,80 @@ public class PlayerInteraction : MonoBehaviour
 
     internal void CheckForInteractableObject()
     {
-        Collider[] hitColliders = Physics.OverlapBox(transform.forward * overlapBoxDistance + transform.position +overlapBoxOffset, boxSize,Quaternion.identity,targetLayers);
+        if (inputHandler.alternateInteraction)
+            currentlySelectedInteractableIndex++;
+
+        FindInteractables();
+
+        List<Interactable> temporaryInteractables = new List<Interactable>();
+        temporaryInteractables.AddRange(interactables);
+
+        //Reset the selected interactable if the top item is
+        if (currentlySelectedInteractableIndex >= interactables.Count)
+            currentlySelectedInteractableIndex = 0;
+
+        List<Interactable> interacablesToRemove= new List<Interactable>();
+
+        //Start from chosen index val
+        for (int i = currentlySelectedInteractableIndex; i < temporaryInteractables.Count; i++)
+        {
+            //if the selected index is too large, exit out of the function
+            if (currentlySelectedInteractableIndex<= temporaryInteractables.Count)
+            {
+                DisplayInteractableOption(temporaryInteractables[i]);
+
+                interacablesToRemove.Add(temporaryInteractables[i]);
+            }
+            else
+            {
+                Debug.Log("interactable index is too small for for loop, please help.");
+                break;
+            }
+        }
+
+        foreach (Interactable interactable in interacablesToRemove)
+        {
+            if (temporaryInteractables.Contains(interactable))
+                temporaryInteractables.Remove(interactable);
+        }
+        foreach (Interactable interactable in temporaryInteractables)
+        {
+            DisplayInteractableOption(interactable);
+        }
+
+        //Interact with the selected object
+        if (inputHandler.interactInput&&interactables.Count>0)
+        {
+            interactables[currentlySelectedInteractableIndex].Interact(GetComponent<PlayerManager>());
+        }
+
+        //Empty list
+        interactables = new List<Interactable>();
+    }  
+
+    private void DisplayInteractableOption(Interactable interactableObject)
+    {
+        GameObject createdGameObject = Instantiate(interactableDataHolderPrefab, interactableUI.interactionPopUpsContent.transform);
+        if (createdGameObject.TryGetComponent(out InteractableDataHolder interactableDataHolder))
+        {
+            interactableDataHolder.interactableNameText.text = interactableObject.interactableText;
+
+            //if the interactable is an item pickup
+            if (interactableObject is ItemPickup itemPickup)
+            {
+                interactableDataHolder.interactableIconImage.sprite = itemPickup.item.itemIcon;
+                interactableDataHolder.interactableNameText.text = itemPickup.item.itemName;
+            }
+        }
+        else
+        {
+            Debug.Log("Couldnt find interactableDataHolder on the created prefab for interaction");
+        }
+    }
+
+    private void FindInteractables()
+    {
+        Collider[] hitColliders = Physics.OverlapBox(transform.forward * overlapBoxDistance + transform.position + overlapBoxOffset, boxSize, Quaternion.identity, targetLayers);
         int i = 0;
 
         //destroy all previously displayed objects
@@ -45,53 +120,14 @@ public class PlayerInteraction : MonoBehaviour
             //check if it has the tag of an interactable
             if (hitColliders[i].tag == "Interactable")
             {
-                Interactable interactableObject = hitColliders[i].GetComponent<Interactable>();
-
-                //if there is an interactable object
-                if (interactableObject != null)
+                if (hitColliders[i].TryGetComponent(out Interactable interactable))
                 {
-                    GameObject createdGameObject = Instantiate(interactableDataHolderPrefab, interactableUI.interactionPopUpsContent.transform);
-                    if (createdGameObject.TryGetComponent(out InteractableDataHolder interactableDataHolder))
-                    {
-                        interactableDataHolder.interactableNameText.text = interactableObject.interactableText;
-
-                        //if the interactable is an item pickup
-                        if (interactableObject is ItemPickup itemPickup)
-                        {
-                            interactableDataHolder.interactableIconImage.sprite = itemPickup.item.itemIcon;
-                            interactableDataHolder.interactableNameText.text = itemPickup.item.itemName;
-                        }
-                    }
-                    else
-                    {
-                        Debug.Log("Couldnt find interactableDataHolder on the created prefab for interaction");
-                    }
-
-                   
-
-                    //if interact button is pressed while the option is available
-                    if (inputHandler.interactInput)
-                    {
-                        //call the interaction
-                        hitColliders[currentlySelectedInteractableIndex].GetComponent<Interactable>().Interact(GetComponent<PlayerManager>());
-
-                    }
+                    interactables.Add(interactable);
                 }
             }
 
             //go to next collider
             i++;
-        }
-
-        //if there are no coliders
-        if (0 == hitColliders.Length)
-        {
-            //hide the interactable ui and reset
-
-            if (itemPopUp != null && inputHandler.interactInput)
-            {
-                itemPopUp.SetActive(false);
-            }
         }
     }
     private void OnDrawGizmos()

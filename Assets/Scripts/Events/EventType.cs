@@ -60,4 +60,5 @@ public enum EventType
     AwardPlayerXP,
     PlayerLevelUp,
     PlayerGainSkill,
+    PlayerObtainedItem,
 }

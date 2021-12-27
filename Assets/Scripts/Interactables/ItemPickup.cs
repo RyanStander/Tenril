@@ -31,12 +31,10 @@ public class ItemPickup : Interactable
         //Add Item to inventory
         playerInventory.AddItemToInventory(item);
 
-        //Notify player of obtaining item
-        playerInteraction.itemPopUp.GetComponentInChildren<TextMeshProUGUI>().text = "You obtained " + item.itemName + "!";
-        //Set the weapon icon to display item
-        playerInteraction.itemPopUp.GetComponentInChildren<RawImage>().texture = item.itemIcon.texture;
+        EventManager.currentManager.AddEvent(new PlayerObtainedItem(item));
+
         //Enable the game object
-        playerInteraction.itemPopUp.SetActive(true);
+        //playerInteraction.itemPopUp.SetActive(true);
 
         //Destroy the interactable after pick up
         Destroy(gameObject);

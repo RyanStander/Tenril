@@ -426,4 +426,17 @@ public class PlayerGainSkill : EventData
     }
 }
 
+/// <summary>
+/// used for when the player has obained an item to display in the item log
+/// </summary>
+public class PlayerObtainedItem : EventData
+{
+    public readonly Item itemObtained;
+
+    public PlayerObtainedItem(Item itemObtained) : base(EventType.PlayerObtainedItem)
+    {
+        this.itemObtained = itemObtained;
+    }
+}
+
 #endregion
