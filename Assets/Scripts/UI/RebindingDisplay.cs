@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
@@ -51,6 +49,8 @@ public class RebindingDisplay : MonoBehaviour
             keybindText.text = action.name;
             keyboardStartRebindButtonText.text = InputControlPath.ToHumanReadableString(action.bindings[0].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
             controllerStartRebindButtonText.text = InputControlPath.ToHumanReadableString(action.bindings[1].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
+            Debug.Log(action.bindings[compositeSpecificBindingController].effectivePath);
+            Debug.Log(action.name);
         }
     }
 

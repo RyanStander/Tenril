@@ -61,4 +61,5 @@ public enum EventType
     PlayerLevelUp,
     PlayerGainSkill,
     PlayerObtainedItem,
+    PlayerKeybindsUpdates,
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// Used to check for interactable objects and allowing player to interact with them
@@ -22,12 +23,27 @@ public class PlayerInteraction : MonoBehaviour
     private List<Interactable> interactables=new List<Interactable>();
     private int currentlySelectedInteractableIndex = 0;
 
+    private void OnEnable()
+    {
+        EventManager.currentManager.Subscribe(EventType.PlayerKeybindsUpdates,OnPlayerKeybindsUpdates);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.currentManager.Unsubscribe(EventType.PlayerKeybindsUpdates, OnPlayerKeybindsUpdates);
+    }
+
     private void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
 
 
         interactableUI = FindObjectOfType<InteractableUI>();
+    }
+
+    private void Start()
+    {
+        EventManager.currentManager.AddEvent(new PlayerKeybindsUpdate());
     }
 
     internal void CheckForInteractableObject()
@@ -62,6 +78,11 @@ public class PlayerInteraction : MonoBehaviour
                 break;
             }
         }
+
+        if (interactables.Count > 0)
+            interactableUI.keybindToPress.gameObject.SetActive(true);
+        else
+            interactableUI.keybindToPress.gameObject.SetActive(false);
 
         foreach (Interactable interactable in interacablesToRemove)
         {
@@ -130,6 +151,66 @@ public class PlayerInteraction : MonoBehaviour
             i++;
         }
     }
+
+    private void DisplayKeybindForInteract()
+    {
+        string bindingPath = inputHandler.GetInputActions().CharacterControls.Interact.bindings[1].effectivePath;
+        FindKeybindIconForController(bindingPath);
+    }
+
+    private void FindKeybindIconForController(string bindingPath)
+    {
+        if (inputHandler.deviceDisplayConfigurator.deviceSets[1].deviceDisplaySettings is DeviceDisplaySettingsController controllerIcons)
+        {
+            switch (bindingPath)
+            {
+                #region Buttons
+                case "<Gamepad>/buttonNorth":
+                        interactableUI.keybindToPress.sprite = controllerIcons.buttonNorthIcon;
+                    break;
+                case "<Gamepad>/buttonSouth":
+                        interactableUI.keybindToPress.sprite = controllerIcons.buttonSouthIcon;
+                    break;
+                case "<Gamepad>/buttonWest":
+                        interactableUI.keybindToPress.sprite = controllerIcons.buttonWestIcon;
+                    break;
+                case "<Gamepad>/buttonEast":
+                    interactableUI.keybindToPress.sprite = controllerIcons.buttonEastIcon;
+                    break;
+                #endregion
+                #region Shoulder Buttons
+                case "<Gamepad>/leftShoulder":
+                    interactableUI.keybindToPress.sprite = controllerIcons.leftShoulder;
+                    break;
+                case "<Gamepad>/leftTrigger":
+                    interactableUI.keybindToPress.sprite = controllerIcons.leftTrigger;
+                    break;
+                case "<Gamepad>/rightShoulder":
+                    interactableUI.keybindToPress.sprite = controllerIcons.rightShoulder;
+                    break;
+                case "<Gamepad>/rightTrigger":
+                    interactableUI.keybindToPress.sprite = controllerIcons.rightShoulder;
+                    break;
+                #endregion
+                #region d-Pad
+                    //This is where i put my dpad buttons IF I HAD ANY
+                #endregion
+                #region Analog Sticks
+                //This is where i put my analog stick keybinds IF I HAD ANY
+                #endregion
+                #region Option Buttons
+                case "<Gamepad>/select":
+                    interactableUI.keybindToPress.sprite = controllerIcons.select;
+                    break;
+                case "<Gamepad>/start":
+                    interactableUI.keybindToPress.sprite = controllerIcons.start;
+                    break;
+                #endregion
+                default:
+                    break;
+            }
+        }
+    }
     private void OnDrawGizmos()
     {
         if (showGizmo)
@@ -137,6 +218,18 @@ public class PlayerInteraction : MonoBehaviour
             Gizmos.color = Color.grey;
             //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
             Gizmos.DrawWireCube(transform.forward * overlapBoxDistance + transform.position + overlapBoxOffset, boxSize);
+        }
+    }
+
+    private void OnPlayerKeybindsUpdates(EventData eventData)
+    {
+        if (eventData is PlayerKeybindsUpdate)
+        {
+            DisplayKeybindForInteract();
+        }
+        else
+        {
+            Debug.LogWarning("The event of PlayerKeybindsUpdates was not matching of event type PlayerKeybindsUpdates");
         }
     }
 }

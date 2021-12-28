@@ -439,4 +439,10 @@ public class PlayerObtainedItem : EventData
     }
 }
 
+public class PlayerKeybindsUpdate : EventData
+{
+    public PlayerKeybindsUpdate() : base(EventType.PlayerKeybindsUpdates)
+    {
+    }
+}
 #endregion

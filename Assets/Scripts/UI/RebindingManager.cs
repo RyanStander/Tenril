@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.IO;
 
 public class RebindingManager : MonoBehaviour
 {
@@ -25,6 +22,7 @@ public class RebindingManager : MonoBehaviour
 
         PlayerPrefs.SetString("keybindings", rebinds);
 
+        EventManager.currentManager.AddEvent(new PlayerKeybindsUpdate());
     }
 
     public void ResetKeybindings()

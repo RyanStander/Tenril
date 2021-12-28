@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +6,8 @@ public class InputHandler : MonoBehaviour
     public float left, forward, moveAmount;
 
     private PlayerController inputActions;
+
+    public DeviceDisplayConfigurator deviceDisplayConfigurator;
 
     //Movement inputs
     public Vector2 lookInput;

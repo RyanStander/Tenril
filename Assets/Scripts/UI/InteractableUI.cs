@@ -12,10 +12,7 @@ public class InteractableUI : MonoBehaviour
     [Tooltip("The prefabs that will be shown when player obtains an item")]
     [SerializeField] private GameObject itemPopUpPrefab;
 
-    [Tooltip("Text displayed when picking up the item")]
-    public TextMeshProUGUI itemText;
-    [Tooltip("Image of the item displayed after pick up")]
-    public RawImage itemImage;
+    public Image keybindToPress;
 
     private void OnEnable()
     {

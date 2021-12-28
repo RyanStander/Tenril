@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +7,8 @@ public class SpellSlotUIManager : MonoBehaviour
     [SerializeField] private PlayerInventory playerInventory;
 
     [SerializeField] private Image[] spellSlotImages = new Image[8];
+    [SerializeField] private Image[] spellSlotKeybindImages = new Image[8];
+    [SerializeField] private Image spellcastingModeKeybindImage;
 
     private void Start()
     {
@@ -24,6 +24,8 @@ public class SpellSlotUIManager : MonoBehaviour
             LoadSpells();
         else
             Debug.LogWarning("Could not find PlayerInventory script in scene, make sure it exists");
+
+        spellcastingModeKeybindImage.preserveAspect = true;
     }
 
     private void LoadSpells()
@@ -37,5 +39,15 @@ public class SpellSlotUIManager : MonoBehaviour
             if (playerInventory.preparedSpells[i]!=null)
             spellSlotImages[i].sprite = playerInventory.preparedSpells[i].itemIcon;
         }
+    }
+
+    public void UpdateKeybinds(Sprite spellcastingModeSprite,Sprite[] spellslotKeybindSprites)
+    {
+        for (int i = 0; i < spellSlotImages.Length; i++)
+        {
+            spellSlotKeybindImages[i].sprite = spellslotKeybindSprites[i];
+        }
+
+        spellcastingModeKeybindImage.sprite = spellcastingModeSprite;
     }
 }
