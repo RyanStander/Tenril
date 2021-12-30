@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -21,6 +22,7 @@ public class PlayerInteraction : MonoBehaviour
     private InputHandler inputHandler;
 
     private List<Interactable> interactables=new List<Interactable>();
+    private List<GameObject> createdInteractableObjects = new List<GameObject>();
     private int currentlySelectedInteractableIndex = 0;
 
     private void OnEnable()
@@ -48,50 +50,33 @@ public class PlayerInteraction : MonoBehaviour
 
     internal void CheckForInteractableObject()
     {
+        createdInteractableObjects = new List<GameObject>();
+
         if (inputHandler.alternateInteraction)
             currentlySelectedInteractableIndex++;
 
         FindInteractables();
 
-        List<Interactable> temporaryInteractables = new List<Interactable>();
-        temporaryInteractables.AddRange(interactables);
-
         //Reset the selected interactable if the top item is
         if (currentlySelectedInteractableIndex >= interactables.Count)
             currentlySelectedInteractableIndex = 0;
 
-        List<Interactable> interacablesToRemove= new List<Interactable>();
-
-        //Start from chosen index val
-        for (int i = currentlySelectedInteractableIndex; i < temporaryInteractables.Count; i++)
+        foreach (Interactable interactable in interactables)
         {
-            //if the selected index is too large, exit out of the function
-            if (currentlySelectedInteractableIndex<= temporaryInteractables.Count)
-            {
-                DisplayInteractableOption(temporaryInteractables[i]);
-
-                interacablesToRemove.Add(temporaryInteractables[i]);
-            }
-            else
-            {
-                Debug.Log("interactable index is too small for for loop, please help.");
-                break;
-            }
+            DisplayInteractableOption(interactable);
         }
 
         if (interactables.Count > 0)
-            interactableUI.keybindToPress.gameObject.SetActive(true);
-        else
-            interactableUI.keybindToPress.gameObject.SetActive(false);
-
-        foreach (Interactable interactable in interacablesToRemove)
         {
-            if (temporaryInteractables.Contains(interactable))
-                temporaryInteractables.Remove(interactable);
+            //interactableUI.selectedItemOutline.gameObject.SetActive(true);
+            //Vector3 position = createdInteractableObjects[currentlySelectedInteractableIndex].transform.position;
+            //interactableUI.selectedItemOutline.transform.position = position;
+            interactableUI.selectedItemOutline.gameObject.SetActive(true);
+            StartCoroutine(AdjustTransInTheEndOfFrame(interactableUI.selectedItemOutline));
         }
-        foreach (Interactable interactable in temporaryInteractables)
+        else
         {
-            DisplayInteractableOption(interactable);
+            interactableUI.selectedItemOutline.gameObject.SetActive(false);
         }
 
         //Interact with the selected object
@@ -107,6 +92,8 @@ public class PlayerInteraction : MonoBehaviour
     private void DisplayInteractableOption(Interactable interactableObject)
     {
         GameObject createdGameObject = Instantiate(interactableDataHolderPrefab, interactableUI.interactionPopUpsContent.transform);
+        //Add the created interacatables to a lst for further use
+        createdInteractableObjects.Add(createdGameObject);
         if (createdGameObject.TryGetComponent(out InteractableDataHolder interactableDataHolder))
         {
             interactableDataHolder.interactableNameText.text = interactableObject.interactableText;
@@ -210,6 +197,14 @@ public class PlayerInteraction : MonoBehaviour
                     break;
             }
         }
+    }
+
+    private IEnumerator AdjustTransInTheEndOfFrame(Transform obj)
+    {
+        yield return new WaitForEndOfFrame();
+        Vector3 position = createdInteractableObjects[currentlySelectedInteractableIndex].transform.position;
+        obj.position = position;
+        obj.gameObject.SetActive(true);
     }
     private void OnDrawGizmos()
     {

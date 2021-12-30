@@ -485,7 +485,6 @@ public class PlayerManager : CharacterManager
 
     private Sprite FindKeybindIconForController(string bindingPath)
     {
-        Debug.Log(bindingPath);
         if (inputHandler.deviceDisplayConfigurator.deviceSets[1].deviceDisplaySettings is DeviceDisplaySettingsController controllerIcons)
         {
             switch (bindingPath)

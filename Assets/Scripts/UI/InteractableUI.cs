@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class InteractableUI : MonoBehaviour
 {
@@ -12,6 +11,8 @@ public class InteractableUI : MonoBehaviour
     [Tooltip("The prefabs that will be shown when player obtains an item")]
     [SerializeField] private GameObject itemPopUpPrefab;
 
+    [Tooltip("Displays the object that overlays the selected item")]
+    public RectTransform selectedItemOutline;
     public Image keybindToPress;
 
     private void OnEnable()

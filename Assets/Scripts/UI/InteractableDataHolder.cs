@@ -7,6 +7,6 @@ using UnityEngine.UI;
 
 public class InteractableDataHolder : MonoBehaviour
 {
-    public Image interactableIconImage, keybindToPressImage;
-    public TMP_Text interactableNameText,kebindToPressText;
+    public Image interactableIconImage;
+    public TMP_Text interactableNameText;
 }
