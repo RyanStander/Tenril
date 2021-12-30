@@ -37,6 +37,7 @@ public class PlayerManager : CharacterManager
     private float timeTillRestart = 3, restartTimeStamp;
 
     public bool canDoCombo, isInteracting, isAiming,isHoldingArrow;
+    private bool enteredSpellcastingMode=true;
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.EquipWeapon, OnEquipWeapon);
@@ -105,10 +106,20 @@ public class PlayerManager : CharacterManager
             //Player is unable to perform certain actions whilst in spellcasting mode
             if (inputHandler.spellcastingModeInput)
             {
+                if (!enteredSpellcastingMode)
+                {
+                    enteredSpellcastingMode = true;
+                    EventManager.currentManager.AddEvent(new PlayerToggleSpellcastingMode(enteredSpellcastingMode));
+                }
                 playerSpellcastingManager.HandleSpellcasting();
             }
             else
             {
+                if (enteredSpellcastingMode)
+                {
+                    enteredSpellcastingMode = false;
+                    EventManager.currentManager.AddEvent(new PlayerToggleSpellcastingMode(enteredSpellcastingMode));
+                }
                 playerLocomotion.HandleDodgeAndJumping();
                 playerCombatManager.HandleAttacks();
                 playerCombatManager.HandleWeaponSpecificAbilities();
@@ -474,6 +485,7 @@ public class PlayerManager : CharacterManager
 
     private Sprite FindKeybindIconForController(string bindingPath)
     {
+        Debug.Log(bindingPath);
         if (inputHandler.deviceDisplayConfigurator.deviceSets[1].deviceDisplaySettings is DeviceDisplaySettingsController controllerIcons)
         {
             switch (bindingPath)
@@ -504,10 +516,20 @@ public class PlayerManager : CharacterManager
                     
                 case "<Gamepad>/rightTrigger":
                     return controllerIcons.rightShoulder;
-                    
+
                 #endregion
                 #region d-Pad
-                //This is where i put my dpad buttons IF I HAD ANY
+                case "<Gamepad>/dpad/down":
+                    return controllerIcons.dPadDown;
+
+                case "<Gamepad>/dpad/up":
+                    return controllerIcons.dPadUp;
+
+                case "<Gamepad>/dpad/left":
+                    return controllerIcons.dPadLeft;
+
+                case "<Gamepad>/dpad/right":
+                    return controllerIcons.dPadRight;
                 #endregion
                 #region Analog Sticks
                 //This is where i put my analog stick keybinds IF I HAD ANY

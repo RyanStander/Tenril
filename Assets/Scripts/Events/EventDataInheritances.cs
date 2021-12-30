@@ -445,4 +445,13 @@ public class PlayerKeybindsUpdate : EventData
     {
     }
 }
+
+public class PlayerToggleSpellcastingMode : EventData
+{
+    public bool enteredSpellcastingMode;
+    public PlayerToggleSpellcastingMode(bool enteredSpellcastingMode) : base(EventType.PlayerToggleSpellcastingMode)
+    {
+        this.enteredSpellcastingMode = enteredSpellcastingMode;
+    }
+}
 #endregion

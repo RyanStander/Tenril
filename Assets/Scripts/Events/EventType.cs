@@ -62,4 +62,5 @@ public enum EventType
     PlayerGainSkill,
     PlayerObtainedItem,
     PlayerKeybindsUpdates,
+    PlayerToggleSpellcastingMode,
 }
