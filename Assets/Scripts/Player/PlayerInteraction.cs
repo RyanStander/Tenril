@@ -102,7 +102,7 @@ public class PlayerInteraction : MonoBehaviour
             if (interactableObject is ItemPickup itemPickup)
             {
                 interactableDataHolder.interactableIconImage.sprite = itemPickup.item.itemIcon;
-                interactableDataHolder.interactableNameText.text = itemPickup.item.itemName;
+                interactableDataHolder.interactableNameText.text = itemPickup.item.itemName+" x " + itemPickup.amountOfItem;
             }
         }
         else
@@ -210,7 +210,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (showGizmo)
         {
-            Gizmos.color = Color.grey;
+            Gizmos.color = Color.red;
             //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
             Gizmos.DrawWireCube(transform.forward * overlapBoxDistance + transform.position + overlapBoxOffset, boxSize);
         }

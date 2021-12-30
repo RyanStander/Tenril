@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class ItemPickup : Interactable
 {
     public Item item;
+    public int amountOfItem=1;
     protected PlayerInventory playerInventory;
 
     public override void Interact(PlayerManager playerManager)
@@ -29,9 +30,9 @@ public class ItemPickup : Interactable
         playerAnimatorManager.PlayTargetAnimation("PickUp", true);
 
         //Add Item to inventory
-        playerInventory.AddItemToInventory(item);
+        playerInventory.AddItemToInventory(item,amountOfItem);
 
-        EventManager.currentManager.AddEvent(new PlayerObtainedItem(item));
+        EventManager.currentManager.AddEvent(new PlayerObtainedItem(item,amountOfItem));
 
         //Enable the game object
         //playerInteraction.itemPopUp.SetActive(true);

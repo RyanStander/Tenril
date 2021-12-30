@@ -35,6 +35,8 @@ public enum EventType
     RemoveItemFromInventory,
     UseItem,
     DropItem,
+    InitiateDropStack,
+    CompleteDropStack,
     DestroyInventoryOptionHolders,
     RequestEquippedWeapons,
 
@@ -63,4 +65,5 @@ public enum EventType
     PlayerObtainedItem,
     PlayerKeybindsUpdates,
     PlayerToggleSpellcastingMode,
+    PlayerHasDroppedItem,
 }

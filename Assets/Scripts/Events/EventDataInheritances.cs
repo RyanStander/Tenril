@@ -222,6 +222,39 @@ public class DropItem : EventData
     }
 }
 
+public class InitiateDropStack : EventData
+{
+    public readonly Item item;
+    public readonly int amountThatCanBeDropped;
+    public InitiateDropStack(Item item, int amountThatCanBeDropped) : base(EventType.InitiateDropStack)
+    {
+        this.item = item;
+        this.amountThatCanBeDropped = amountThatCanBeDropped;
+    }
+}
+
+public class CompleteDropStack : EventData
+{
+    public readonly Item item;
+    public readonly int amountToDrop;
+    public CompleteDropStack(Item item, int amountToDrop) : base(EventType.CompleteDropStack)
+    {
+        this.item = item;
+        this.amountToDrop = amountToDrop;
+    }
+}
+
+public class PlayerHasDroppedItem : EventData
+{
+    public readonly Item item;
+    public readonly int amountToDrop;
+    public PlayerHasDroppedItem(Item item, int amountToDrop) : base(EventType.PlayerHasDroppedItem)
+    {
+        this.item = item;
+        this.amountToDrop = amountToDrop;
+    }
+}
+
 //Event that informs subscribers of an item being used
 public class UseItem : EventData
 {
@@ -432,10 +465,12 @@ public class PlayerGainSkill : EventData
 public class PlayerObtainedItem : EventData
 {
     public readonly Item itemObtained;
+    public readonly int amountObtained;
 
-    public PlayerObtainedItem(Item itemObtained) : base(EventType.PlayerObtainedItem)
+    public PlayerObtainedItem(Item itemObtained, int amountObtained=1) : base(EventType.PlayerObtainedItem)
     {
         this.itemObtained = itemObtained;
+        this.amountObtained = amountObtained;
     }
 }
 

@@ -34,9 +34,7 @@ public class InteractableUI : MonoBehaviour
             if (itemPopUp.TryGetComponent(out ItemObtainedDisplay itemObtained))
             {
                 itemObtained.itemImage.sprite = obtainedItem.itemObtained.itemIcon;
-                itemObtained.itemNameText.text = obtainedItem.itemObtained.itemName;
-
-                //TO DO, display count obtained
+                itemObtained.itemNameText.text = obtainedItem.itemObtained.itemName + " x " + obtainedItem.amountObtained;
             }
             else
             {
