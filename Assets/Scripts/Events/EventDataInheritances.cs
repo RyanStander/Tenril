@@ -489,4 +489,11 @@ public class PlayerToggleSpellcastingMode : EventData
         this.enteredSpellcastingMode = enteredSpellcastingMode;
     }
 }
+
+public class PlayInteractSound : EventData
+{
+    public PlayInteractSound() : base(EventType.PlayInteractSound)
+    {
+    }
+}
 #endregion

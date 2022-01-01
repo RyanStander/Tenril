@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+public class CharacterSoundManager : MonoBehaviour
 {
     private AudioSourceHolder audioSourceHolder;
     private CharacterInventory characterInventory;

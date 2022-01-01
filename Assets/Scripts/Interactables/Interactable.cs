@@ -16,5 +16,7 @@ public class Interactable : MonoBehaviour
     public virtual void Interact(PlayerManager playerManager)
     {
         //Called when player Interacts
+
+        EventManager.currentManager.AddEvent(new PlayInteractSound());
     }
 }
