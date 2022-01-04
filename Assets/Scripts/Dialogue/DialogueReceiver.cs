@@ -83,4 +83,9 @@ public class DialogueReceiver : MonoBehaviour
             throw new System.Exception("Error: EventData class with EventType.SendDialogueOptions was received but is not of class SendDialogueOptions.");
         }
     }
+
+    public void ShowNextSentence()
+    {
+        EventManager.currentManager.AddEvent(new ShowNextSentence());
+    }
 }

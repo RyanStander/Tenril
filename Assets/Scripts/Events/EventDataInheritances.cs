@@ -317,6 +317,14 @@ public class CeaseDialogue : EventData
     }
 }
 
+public class ShowNextSentence : EventData
+{
+    public ShowNextSentence() : base(EventType.ShowNextSentence)
+    {
+
+    }
+}
+
 //sends a list of dialogue for a specific interaction
 public class SendDialogueData : EventData
 {
