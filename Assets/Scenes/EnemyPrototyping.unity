@@ -379,15 +379,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1884466008573971301, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0027889265
+      value: 0.0027889232
       objectReference: {fileID: 0}
     - target: {fileID: 1884466008573971301, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 3.373295e-17
+      value: 8.495697e-10
       objectReference: {fileID: 0}
     - target: {fileID: 1884466008573971301, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -1.1830709e-19
+      value: -2.3693937e-12
       objectReference: {fileID: 0}
     - target: {fileID: 1884466008968980784, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_Lens.m_SensorSize.x
@@ -411,15 +411,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1884466008968980787, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.031619173
+      value: 0.03161917
       objectReference: {fileID: 0}
     - target: {fileID: 1884466008968980787, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000030019237
+      value: -4.4342312e-16
       objectReference: {fileID: 0}
     - target: {fileID: 1884466008968980787, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 9.496581e-10
+      value: 2.8247407e-17
       objectReference: {fileID: 0}
     - target: {fileID: 1884466009316583461, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_FollowOffset.y
@@ -789,7 +789,7 @@ MonoBehaviour:
   utilityRayCount: 50
   bestRayImpactRatio: 0.15
   adittionalRayRange: 0.5
-  desiredDistance: 2.5
+  desiredDistance: 3
   obstacleWeight: -1
   targetAngleWeight: 0.75
   obstacleDistanceSensitivity: 1
@@ -1101,7 +1101,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6051805372053224953, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.37
+      value: -0.82
       objectReference: {fileID: 0}
     - target: {fileID: 6051805372053224953, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1109,7 +1109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6051805372053224953, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.14
+      value: 5.67
       objectReference: {fileID: 0}
     - target: {fileID: 6051805372053224953, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1153,65 +1153,17 @@ PrefabInstance:
       objectReference: {fileID: 547626667}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
---- !u!1 &374310245 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1042659295, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
+--- !u!114 &374310246 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5573328792370176711, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
   m_PrefabInstance: {fileID: 374310244}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &374310246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 374310245}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7fc78a66538641e4280c9778ff87d201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  utilityRayCount: 50
-  bestRayImpactRatio: 0.15
-  adittionalRayRange: 1
-  desiredDistance: 3
-  obstacleWeight: -1
-  targetAngleWeight: 0.75
-  obstacleDistanceSensitivity: 1
-  targetDistanceSensitivity: 1
-  heightMultiplier: 0.5
-  utilityGradient:
-    serializedVersion: 2
-    key0: {r: 1, g: 0, b: 0, a: 1}
-    key1: {r: 1, g: 0.39596945, b: 0, a: 1}
-    key2: {r: 0, g: 1, b: 0, a: 0}
-    key3: {r: 0, g: 1, b: 1, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 9830
-    ctime2: 32768
-    ctime3: 65535
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 4
-    m_NumAlphaKeys: 2
-  isDebugging: 1
-  detectionBlockLayer:
-    serializedVersion: 2
-    m_Bits: 524800
 --- !u!1 &547626667 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7803000388887419329, guid: 333e83dcfecb7f141955a51d535a27e6, type: 3}
@@ -2147,7 +2099,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 887469353}
-  m_LocalRotation: {x: 0.002788921, y: 3.213999e-10, z: 8.9636247e-13, w: 0.9999961}
+  m_LocalRotation: {x: 0.002788919, y: 9.640516e-10, z: -2.0501099e-12, w: 0.9999961}
   m_LocalPosition: {x: 0, y: 1.69, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []

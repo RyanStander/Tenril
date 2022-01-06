@@ -34,6 +34,9 @@ public class EnemyMovementManager : MonoBehaviour
     //The default dampening speed for when velocities are changed
     [Range(0, 1)] protected private float defaultDamp = 0.5f;
 
+    //The default dampening speed for when velocities are changed, but for abrupt and swift
+    [Range(0, 1)] protected private float swiftDamp = 0.1f;
+
 
     private void Awake()
     {
@@ -103,7 +106,7 @@ public class EnemyMovementManager : MonoBehaviour
 
     //TODO: Modify into using a givent directional vector for movement
     //Standard cycle of using a given directional vector for movement
-    internal void HandleDirectionalMovement(Vector3 givenDirection, float targetSpeed)
+    internal void HandleGlobalDirectionalMovement(Vector3 givenDirection, float targetSpeed, bool withinStoppingOffset)
     {
         //Return and do not run any more methods until the current action/animation is completed
         if (enemyManager.isInteracting)
@@ -136,8 +139,15 @@ public class EnemyMovementManager : MonoBehaviour
                 //Debug.Log("Locomotion Speed: " + locomotionSpeed);
 
                 //Handle the forward and leftward movement of the agent
-                //TODO: Smooth out this movement so that it does not stutter when transitioning between forward/backwards or leftward/rightward
-                SetForwardMovement(locomotionSpeed.x * targetSpeed, defaultDamp, Time.deltaTime);
+                if(withinStoppingOffset)
+                {
+                    //Stop forward movement if within the desired offset
+                    SetForwardMovement(0, swiftDamp, Time.deltaTime);
+                }
+                else
+                {
+                    SetForwardMovement(locomotionSpeed.x * targetSpeed, defaultDamp, Time.deltaTime);
+                }
                 SetSidewardMovement(locomotionSpeed.y * targetSpeed, defaultDamp, Time.deltaTime);
             }
         }

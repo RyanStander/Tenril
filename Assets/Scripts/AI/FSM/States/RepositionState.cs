@@ -12,6 +12,9 @@ public class RepositionState : AbstractStateFSM
     //The ratio (out of the number of rays) for how impactful the best ray should be when 
     [Range(0, 1)] public float bestRayImpactRatio = 0.25f;
 
+    //The offset amount at which the object is considered to have reached its target
+    [Range(0, 0.5f)] public float repositioningOffset = 0.1f;
+
     //The additional range at which the utility ray should operate within
     public float adittionalRayRange = 1;
 
@@ -88,13 +91,11 @@ public class RepositionState : AbstractStateFSM
             //Set the destination to calculate from to the object of interest (this creates a reference point)
             navAgent.SetDestination(enemyManager.currentTarget.transform.position);
 
-            //Establish the current distance to the target
-            distanceToObjectOfInterest = DistanceToTarget();
-
-            Debug.Log(distanceToObjectOfInterest);
-
             //Establish the range of the rays
             utilityRayRange = adittionalRayRange + desiredDistance;
+
+            //Save the distance to the object of interest to prevent repeating distance calculations
+            distanceToObjectOfInterest = NavigatedDistanceToTarget();
 
             //Suspend movement logic until the path is completely calcualted
             //Prevents problems with calculating remaining distance between the target and agent
@@ -107,7 +108,7 @@ public class RepositionState : AbstractStateFSM
                 currentDirection = GetAverageUtilityDirectionWithPreference();
 
                 //Move towards the target direction by passing through information to the movement manager
-                enemyManager.movementManager.HandleDirectionalMovement(currentDirection, enemyManager.enemyStats.repositionSpeed);
+                enemyManager.movementManager.HandleGlobalDirectionalMovement(currentDirection, enemyManager.enemyStats.repositionSpeed, isWithinDesiredOffset());
 
                 //Debug a direct ray to the object of interest
                 Vector3 rayOrigin = transform.root.position; rayOrigin.y += 0.5f;
@@ -315,6 +316,31 @@ public class RepositionState : AbstractStateFSM
         //Gets the direct distance to the target
         return Vector3.Distance(transform.root.position, enemyManager.currentTarget.transform.position);
     }
+
+    internal float NavigatedDistanceToTarget()
+    {
+        //Gets the navigated distance to the target
+        return ExtensionMethods.GetRemainingPathDistance(enemyManager.navAgent);
+    }
+
+    internal bool isWithinDesiredOffset()
+    {
+        //Temporarilly store the distance
+        float distanceToTarget = NavigatedDistanceToTarget();
+
+        Debug.Log(distanceToTarget);
+
+        //Check if within upper and lower bounds of the offset (assuming path is calculated)
+        if (distanceToTarget > desiredDistance - repositioningOffset && distanceToTarget < desiredDistance + repositioningOffset)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     #endregion
 
     private void OnDrawGizmos()

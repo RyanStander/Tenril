@@ -62,4 +62,9 @@ public class EnemyAnimatorManager : AnimatorManager
         GetComponent<EnemyStats>().TakeDamage(enemyAgentManager.pendingFinisherDamage, false);
         enemyAgentManager.pendingFinisherDamage = 0;
     }
+
+    public Vector2 getCurrentSpeed()
+    {
+        return new Vector2(animator.GetFloat(forwardHash), animator.GetFloat(leftHash));
+    }
 }
