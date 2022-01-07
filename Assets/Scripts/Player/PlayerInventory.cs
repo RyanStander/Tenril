@@ -96,9 +96,10 @@ public class PlayerInventory : CharacterInventory
         FilterInventory();
     }
 
-    public void RemoveItemFromInventory(Item item, int amountToBeRemoved = 1)
+    public void RemoveItemFromInventory(Item item, int amountToBeRemoved = 1,bool dropItem=false)
     {
-        EventManager.currentManager.AddEvent(new PlayerHasDroppedItem(item, amountToBeRemoved));
+        if(dropItem)
+            EventManager.currentManager.AddEvent(new PlayerHasDroppedItem(item, amountToBeRemoved));
         //find all items of the specified type
         List<ItemInventory> foundItems = FindAllInstancesOfItemInInventory(item);
         if (foundItems.Count > 0)
@@ -398,7 +399,7 @@ public class PlayerInventory : CharacterInventory
             if (dropItem.item.amountPerStack == 1)
             {
                 //remove item from inventory
-                RemoveItemFromInventory(dropItem.item);
+                RemoveItemFromInventory(dropItem.item,1,true);
                 //update the inventory display
                 EventManager.currentManager.AddEvent(new UpdateInventoryDisplay());
             }
@@ -417,7 +418,7 @@ public class PlayerInventory : CharacterInventory
     {
         if (eventData is CompleteDropStack dropStack)
         {
-            RemoveItemFromInventory(dropStack.item, dropStack.amountToDrop);
+            RemoveItemFromInventory(dropStack.item, dropStack.amountToDrop,true);
             EventManager.currentManager.AddEvent(new UpdateInventoryDisplay());
         }
         else
