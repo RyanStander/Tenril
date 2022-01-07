@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// This scriptable object is in charge of holding the data for specific attacks that AI can use
+/// </summary>
 [CreateAssetMenu(menuName = "Enemy AI/Attack Data")]
 public class AttackData : ScriptableObject
 {
@@ -18,4 +21,7 @@ public class AttackData : ScriptableObject
     //The minimum and maximum distance needed in order to attack
     public float minimumDistanceNeededToAttack = 0;
     public float maximumDistanceNeededToAttack = 3;
+
+    //Ideal distance for the attack (used in repositioning)
+    public float mostDesirableDistance = 1.5f;
 }

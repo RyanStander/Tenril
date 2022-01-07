@@ -1,8 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// State is in charge of handling the repositioning logic of an AI
+/// This means an AI will be able to maintain a desired distance from a given target, while continuing to look at them
+/// Intended to function with the movement manager by feeding it a given global direction to travel towards
+/// </summary>
 public class RepositionState : AbstractStateFSM
 {
     [Header("Repositioning Utility Movement")]
@@ -52,9 +56,6 @@ public class RepositionState : AbstractStateFSM
     //Masks for raycast blocking
     public LayerMask detectionBlockLayer = 1 << 9;
 
-    //The directional vector for velocity to be applied to the locomotion blend tree
-    private Vector2 speedDirection = Vector3.zero;
-
     //Saved distance to the object of interest
     private float distanceToObjectOfInterest;
 
@@ -95,7 +96,7 @@ public class RepositionState : AbstractStateFSM
             utilityRayRange = adittionalRayRange + desiredDistance;
 
             //Save the distance to the object of interest to prevent repeating distance calculations
-            distanceToObjectOfInterest = NavigatedDistanceToTarget();
+            distanceToObjectOfInterest = ExtensionMethods.GetRemainingPathDistance(enemyManager.navAgent);
 
             //Suspend movement logic until the path is completely calcualted
             //Prevents problems with calculating remaining distance between the target and agent
@@ -310,25 +311,10 @@ public class RepositionState : AbstractStateFSM
         return bestRay;
     }
 
-    //Consider using distance to target with NavAgent
-    internal float DistanceToTarget()
-    {
-        //Gets the direct distance to the target
-        return Vector3.Distance(transform.root.position, enemyManager.currentTarget.transform.position);
-    }
-
-    internal float NavigatedDistanceToTarget()
-    {
-        //Gets the navigated distance to the target
-        return ExtensionMethods.GetRemainingPathDistance(enemyManager.navAgent);
-    }
-
     internal bool isWithinDesiredOffset()
     {
         //Temporarilly store the distance
-        float distanceToTarget = NavigatedDistanceToTarget();
-
-        Debug.Log(distanceToTarget);
+        float distanceToTarget = ExtensionMethods.GetRemainingPathDistance(enemyManager.navAgent);
 
         //Check if within upper and lower bounds of the offset (assuming path is calculated)
         if (distanceToTarget > desiredDistance - repositioningOffset && distanceToTarget < desiredDistance + repositioningOffset)

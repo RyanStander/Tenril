@@ -1,7 +1,11 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-//Helps manage and link together pieces of an enemy agent
+/// <summary>
+/// Serves as the uppermost connecting point of all managers and their controlled components
+/// The purpose of this is to grant accesss to other managers through one centralized spot
+/// This should ideally duplicate components from being used and makes for quick debugging on missing components 
+/// </summary>
 public class EnemyAgentManager : CharacterManager
 {
     //Enemy stats to manage
@@ -33,6 +37,9 @@ public class EnemyAgentManager : CharacterManager
 
     //The consumable manager for the NPC
     internal EnemyConsumableManager consumableManager;
+
+    //The attack manager for the NPC
+    internal EnemyAttackManager attackManager;
 
     //Helper bool to prevent animations/actions from occuring until an animation is completed
     internal bool isInteracting;
@@ -66,6 +73,7 @@ public class EnemyAgentManager : CharacterManager
         visionManager = GetComponentInChildren<EnemyVisionManager>();
         statusManager = GetComponentInChildren<StatusEffectManager>();
         consumableManager = GetComponentInChildren<EnemyConsumableManager>();
+        attackManager = GetComponentInChildren<EnemyAttackManager>();
 
         //Nullcheck for missing, throw exception as this does not guarantee it will break the code, but is likely to
         if (enemyStats == null) throw new MissingComponentException("Missing EnemyStats on " + gameObject + "!");
@@ -78,7 +86,8 @@ public class EnemyAgentManager : CharacterManager
         if (movementManager == null) throw new MissingComponentException("Missing EnemyMovementManager on " + gameObject + "!");
         if (visionManager == null) throw new MissingComponentException("Missing EnemyVisionManager on " + gameObject + "!");
         if (statusManager == null) throw new MissingComponentException("Missing StatusEffectManager on " + gameObject + "!");
-        if (consumableManager == null) throw new MissingComponentException("Missing ConsumableManager on " + gameObject + "!");
+        if (consumableManager == null) throw new MissingComponentException("Missing EnemyConsumableManager on " + gameObject + "!");
+        if (attackManager == null) throw new MissingComponentException("Missing EnemyAttackManager on " + gameObject + "!");
     }
 
     private void Start()

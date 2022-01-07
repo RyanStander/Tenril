@@ -1,8 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 //Meant to help drive movement in an enemy
+/// <summary>
+/// Manages all methods related to animation driven movement for the AI
+/// Ideally has its methods called from other classes (states)
+/// </summary>
 public class EnemyMovementManager : MonoBehaviour
 {
     //Relevant attached manager
