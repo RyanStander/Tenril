@@ -239,7 +239,6 @@ MonoBehaviour:
   bestRayImpactRatio: 0.15
   repositioningOffset: 0.1
   adittionalRayRange: 1
-  desiredDistance: 3
   obstacleWeight: -1
   targetAngleWeight: 0.75
   obstacleDistanceSensitivity: 1
@@ -1435,6 +1434,7 @@ MonoBehaviour:
   - {fileID: 761708098142108532}
   - {fileID: 368452058314960232}
   - {fileID: 3368056264274465628}
+  - {fileID: 5573328792370176711}
   isDebuggingStates: 0
 --- !u!114 &318429251
 MonoBehaviour:
@@ -1468,8 +1468,8 @@ MonoBehaviour:
   heavyAttackLikeliness: 0.25
   alertRadius: 7
   chaseRange: 14
-  chaseSpeed: 1.25
-  repositionSpeed: 0.75
+  chaseSpeed: 2
+  repositionSpeed: 1
   obstacleAwarenessRange: 15
   maximumAttackRange: 3
   maximumAttackHeight: 0.5
@@ -1478,7 +1478,7 @@ MonoBehaviour:
   healingThreshold: 0.5
   canHeal: 1
   healRange: 5
-  hidingThreshold: 0.15
+  hidingThreshold: 0
   hidingCooldownTime: 15
   canHide: 1
   healthBar: {fileID: 3712933954655172088}
@@ -1612,7 +1612,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeoutTime: 5
   hasTimedOut: 1
-  desiredAttack: {fileID: 0}
+  shouldExecuteAttack: 0
+  currentAttack: {fileID: 0}
   desiredDistance: 0
   distanceBoundaries: {x: 0, y: 0}
   repositioningOffset: 0.1

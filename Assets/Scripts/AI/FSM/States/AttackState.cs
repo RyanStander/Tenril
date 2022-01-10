@@ -141,15 +141,14 @@ public class AttackState : AbstractStateFSM
 
         //Decide on if attempting a strong or weak attack
         //If less than or equal the heavy likeliness, then get a heavy attack
-        //This portion of the code is kept just in case it is wanted later on
         if (isHeavyAttack)
         {
             //Try and get a heavy attack
-            //potentialAttack = GetHeavyAttack();
+            potentialAttack = GetHeavyAttack();
         }
         else
         {
-            //potentialAttack = GetLightAttack();
+            potentialAttack = GetLightAttack();
         }
 
         //If attack is still unsuccesfull, get a random one to reposition to
