@@ -113,6 +113,7 @@ public class AttackState : AbstractStateFSM
         {
             //Debug the attack being performed
             DebugLogString("Attack being performed: " + givenAttack.attackAnimation);
+            Debug.Log("Attack being performed: " + givenAttack.attackAnimation);
 
             //Stop locomotion velocity incase any is happening
             movementManager.StopMovementImmediate();
@@ -137,7 +138,7 @@ public class AttackState : AbstractStateFSM
         AttackData potentialAttack = null;
 
         //Temporary helper bool
-        bool isHeavyAttack = Random.Range(0, 1) < enemyManager.enemyStats.heavyAttackLikeliness;
+        bool isHeavyAttack = Random.Range(0f, 1) < enemyManager.enemyStats.heavyAttackLikeliness;
 
         //Decide on if attempting a strong or weak attack
         //If less than or equal the heavy likeliness, then get a heavy attack
