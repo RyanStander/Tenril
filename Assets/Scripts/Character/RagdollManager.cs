@@ -6,7 +6,7 @@ public class RagdollManager : MonoBehaviour
     private void Start()
     {
         setRigidbodyState(true);
-        setColliderState(false);
+        setColliderState(true);
     }
     private void setRigidbodyState(bool state)
     {

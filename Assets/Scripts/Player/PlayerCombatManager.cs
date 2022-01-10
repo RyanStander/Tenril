@@ -271,6 +271,10 @@ public class PlayerCombatManager : MonoBehaviour
 
     private void PerformBowDraw()
     {
+        //If player does not have an arrow in their inventory, do not proceed
+        if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.equippedAmmo))
+            return;
+
         playerAnimatorManager.animator.SetBool("isHoldingArrow", true);
         playerAnimatorManager.PlayTargetAnimation("BowDrawArrow", true);
 
@@ -310,18 +314,18 @@ public class PlayerCombatManager : MonoBehaviour
         if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.equippedAmmo))
             return;
 
-        ArrowInstantiationLocation arrowInstantiationLocation=null;
+        ProjectileInstantiationLocation arrowInstantiationLocation =null;
         Animator bowAnimator = null;
 
         //Get the bow depending on which hand it is instantiated in
         if (playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
         {
-            arrowInstantiationLocation = weaponSlotManager.rightHandSlot.GetComponentInChildren<ArrowInstantiationLocation>();
+            arrowInstantiationLocation = weaponSlotManager.rightHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
             bowAnimator = weaponSlotManager.rightHandSlot.GetComponentInChildren<Animator>();
         }
         else if (playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
         {
-            arrowInstantiationLocation = weaponSlotManager.leftHandSlot.GetComponentInChildren<ArrowInstantiationLocation>();
+            arrowInstantiationLocation = weaponSlotManager.leftHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
             bowAnimator = weaponSlotManager.leftHandSlot.GetComponentInChildren<Animator>();
         }
         else
@@ -350,7 +354,7 @@ public class PlayerCombatManager : MonoBehaviour
         GameObject liveArrow = Instantiate(playerInventory.equippedAmmo.liveAmmoModel, arrowInstantiationLocation.GetTransform().position, arrowInstantiationLocation.GetTransform().rotation);
         //Get rigidbody and rangedprojectiledmgcollider for modifying
         Rigidbody rigidbody = liveArrow.GetComponentInChildren<Rigidbody>();
-        RangedProjectileDamageCollider damageCollider = liveArrow.GetComponentInChildren<RangedProjectileDamageCollider>();
+        AmmunitionDamageCollider damageCollider = liveArrow.GetComponentInChildren<AmmunitionDamageCollider>();
 
         if (inputHandler.lockOnFlag) 
         {
@@ -410,16 +414,16 @@ public class PlayerCombatManager : MonoBehaviour
                     break;
             }
 
-            ArrowInstantiationLocation spellInstantiationLocation = null;
+            ProjectileInstantiationLocation spellInstantiationLocation = null;
 
             //Get the spell weapon depending on which hand it is instantiated in
             if (playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
             {
-                spellInstantiationLocation = weaponSlotManager.rightHandSlot.GetComponentInChildren<ArrowInstantiationLocation>();
+                spellInstantiationLocation = weaponSlotManager.rightHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
             }
             else if (playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
             {
-                spellInstantiationLocation = weaponSlotManager.leftHandSlot.GetComponentInChildren<ArrowInstantiationLocation>();
+                spellInstantiationLocation = weaponSlotManager.leftHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
             }
             else
                 Debug.LogWarning("No projectile prefab was found");
@@ -431,7 +435,7 @@ public class PlayerCombatManager : MonoBehaviour
             GameObject spellParticle = Instantiate(spellcasterWeapon.attackData.liveProjectileModel, spellInstantiationLocation.GetTransform().position, spellInstantiationLocation.GetTransform().rotation);
             //Get rigidbody and rangedprojectiledmgcollider for modifying
             Rigidbody rigidbody = spellParticle.GetComponentInChildren<Rigidbody>();
-            RangedProjectileDamageCollider damageCollider = spellParticle.GetComponentInChildren<RangedProjectileDamageCollider>();
+            ProjectileDamageCollider damageCollider = spellParticle.GetComponentInChildren<ProjectileDamageCollider>();
 
             if (inputHandler.lockOnFlag)
             {
@@ -451,9 +455,8 @@ public class PlayerCombatManager : MonoBehaviour
             rigidbody.mass = spellcasterWeapon.attackData.projectileMass;
             spellParticle.transform.parent = null;
 
-            //set live arrow damage
+            //set projectile damage collider
             damageCollider.characterManager = playerManager;
-            damageCollider.ammoItem = playerInventory.equippedAmmo;
             damageCollider.currentDamage = spellcasterWeapon.baseDamage;
             //animate the bow firing the arrow
         }

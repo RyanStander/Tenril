@@ -25,6 +25,7 @@ public class PlayerInventory : CharacterInventory
         EventManager.currentManager.Subscribe(EventType.AddQuickslotItem, OnAddQuickslot);
         EventManager.currentManager.Subscribe(EventType.RemoveQuickslotItem, OnRemoveQuickslot);
         EventManager.currentManager.Subscribe(EventType.RequestEquippedWeapons, OnRequestEquippedWeapons);
+        EventManager.currentManager.Subscribe(EventType.CompleteDropStack, OnCompleteDropStack);
     }
 
     private void OnDisable()
@@ -33,6 +34,7 @@ public class PlayerInventory : CharacterInventory
         EventManager.currentManager.Unsubscribe(EventType.AddQuickslotItem, OnAddQuickslot);
         EventManager.currentManager.Unsubscribe(EventType.RemoveQuickslotItem, OnRemoveQuickslot);
         EventManager.currentManager.Unsubscribe(EventType.RequestEquippedWeapons, OnRequestEquippedWeapons);
+        EventManager.currentManager.Unsubscribe(EventType.CompleteDropStack, OnCompleteDropStack);
     }
 
     private void Awake()
@@ -50,69 +52,81 @@ public class PlayerInventory : CharacterInventory
 
     #region Inventory Management
 
-    public void AddItemToInventory(Item item)
+    public void AddItemToInventory(Item item,int amountToAdd=1)
     {
         //find all items of the specified type
         List<ItemInventory> foundItems = FindAllInstancesOfItemInInventory(item);
 
         bool itemAdded = false;
         //check if any items of the matching type were found
-        if (foundItems.Count>0)
+        while (amountToAdd > 0)
         {
-            foreach (ItemInventory itemInventory in foundItems)
+            if (foundItems.Count > 0)
             {
-                //if there is space in the current itemInventory
-                if (itemInventory.item.amountPerStack>itemInventory.itemStackCount)
+                foreach (ItemInventory itemInventory in foundItems)
                 {
-                    //find the index value
-                    int indexVal = inventory.IndexOf(itemInventory);
-                    //increase the stack count
-                    inventory[indexVal].itemStackCount++;
-                 
-                    itemAdded = true;
-                    //exit out of foreach
-                    break;
+                    //if there is space in the current itemInventory
+                    if (itemInventory.item.amountPerStack > itemInventory.itemStackCount)
+                    {
+                        //find the index value
+                        int indexVal = inventory.IndexOf(itemInventory);
+                        //increase the stack count
+                        inventory[indexVal].itemStackCount++;
+
+                        itemAdded = true;
+                        //exit out of foreach
+                        break;
+                    }
                 }
             }
+            //if no item was added
+            if (!itemAdded)
+            {
+                //create a new one and set its stack count to 1
+                ItemInventory newItem = new ItemInventory();
+                newItem.item = item;
+                newItem.itemStackCount = 1;
+                inventory.Add(newItem);
+                foundItems.Add(newItem);
+            }
+            amountToAdd--;
+            itemAdded = false;
         }
-        //if no item was added
-        if (!itemAdded)
-        {
-            //create a new one and set its stack count to 1
-            ItemInventory newItem = new ItemInventory();
-            newItem.item = item;
-            newItem.itemStackCount = 1;
-            inventory.Add(newItem);
-        }
-
         EventManager.currentManager.AddEvent(new UpdateInventoryDisplay());
         FilterInventory();
     }
 
-    public void RemoveItemFromInventory(Item item, int amountToBeRemove=1)
+    public void RemoveItemFromInventory(Item item, int amountToBeRemoved = 1,bool dropItem=false)
     {
-        //TO DO: currently does not make use of the amount to be removed, needs functionality
+        if(dropItem)
+            EventManager.currentManager.AddEvent(new PlayerHasDroppedItem(item, amountToBeRemoved));
         //find all items of the specified type
         List<ItemInventory> foundItems = FindAllInstancesOfItemInInventory(item);
-
-        //check if any items of the matching type were found
         if (foundItems.Count > 0)
         {
-            foreach (ItemInventory itemInventory in foundItems)
+            while (amountToBeRemoved > 0)
             {
-                //find the index value
-                int indexVal = inventory.IndexOf(itemInventory);
+                //check if any items of the matching type were found
 
-                if (inventory[indexVal].itemStackCount > 1)
-                    //decrease the stack count
-                    inventory[indexVal].itemStackCount--;
-                else
-                    inventory.RemoveAt(indexVal);
+                foreach (ItemInventory itemInventory in foundItems)
+                {
+                    //find the index value
+                    int indexVal = inventory.IndexOf(itemInventory);
 
-                //exit out of foreach
-                break;
+                    if (inventory[indexVal].itemStackCount > 1)
+                        //decrease the stack count
+                        inventory[indexVal].itemStackCount--;
+                    else
+                    {
+                        inventory.RemoveAt(indexVal);
+                        foundItems.Remove(itemInventory);
+                    }
+
+                    //exit out of foreach
+                    break;
+                }
+                amountToBeRemoved--;
             }
-
             FilterInventory();
         }
         else
@@ -381,14 +395,35 @@ public class PlayerInventory : CharacterInventory
     {
         if (eventData is DropItem dropItem)
         {
-            //remove item from inventory
-            RemoveItemFromInventory(dropItem.item);
-            //update the inventory display
-            EventManager.currentManager.AddEvent(new UpdateInventoryDisplay());
+            //If the item is limited to 1 per stack, drop it, otherwise ask how many to be dropped
+            if (dropItem.item.amountPerStack == 1)
+            {
+                //remove item from inventory
+                RemoveItemFromInventory(dropItem.item,1,true);
+                //update the inventory display
+                EventManager.currentManager.AddEvent(new UpdateInventoryDisplay());
+            }
+            else
+            {
+                EventManager.currentManager.AddEvent(new InitiateDropStack(dropItem.item, GetItemStackCount(dropItem.item)));
+            }
         }
         else
         {
             throw new System.Exception("Error: EventData class with EventType.EquipWeapon was received but is not of class EquipWeapon.");
+        }
+    }
+
+    private void OnCompleteDropStack(EventData eventData)
+    {
+        if (eventData is CompleteDropStack dropStack)
+        {
+            RemoveItemFromInventory(dropStack.item, dropStack.amountToDrop,true);
+            EventManager.currentManager.AddEvent(new UpdateInventoryDisplay());
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.CompleteDropStack was received but is not of class CompleteDropStack.");
         }
     }
 

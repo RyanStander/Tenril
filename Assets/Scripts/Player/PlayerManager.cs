@@ -37,6 +37,7 @@ public class PlayerManager : CharacterManager
     private float timeTillRestart = 3, restartTimeStamp;
 
     public bool canDoCombo, isInteracting, isAiming,isHoldingArrow;
+    private bool enteredSpellcastingMode=true;
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.EquipWeapon, OnEquipWeapon);
@@ -50,6 +51,7 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Subscribe(EventType.LoadPlayerCharacterData, OnLoadPlayerCharacterData);
         EventManager.currentManager.Subscribe(EventType.PlayerLevelUp, OnPlayerLevelUp);
         EventManager.currentManager.Subscribe(EventType.AwardPlayerXP, OnAwardPlayerXP);
+        EventManager.currentManager.Subscribe(EventType.PlayerKeybindsUpdates, OnPlayerKeybindsUpdates);
     }
 
     private void OnDisable()
@@ -65,7 +67,7 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Unsubscribe(EventType.LoadPlayerCharacterData, OnLoadPlayerCharacterData);
         EventManager.currentManager.Unsubscribe(EventType.PlayerLevelUp, OnPlayerLevelUp);
         EventManager.currentManager.Unsubscribe(EventType.AwardPlayerXP, OnAwardPlayerXP);
-
+        EventManager.currentManager.Unsubscribe(EventType.PlayerKeybindsUpdates, OnPlayerKeybindsUpdates);
     }
 
     void Awake()
@@ -104,10 +106,20 @@ public class PlayerManager : CharacterManager
             //Player is unable to perform certain actions whilst in spellcasting mode
             if (inputHandler.spellcastingModeInput)
             {
+                if (!enteredSpellcastingMode)
+                {
+                    enteredSpellcastingMode = true;
+                    EventManager.currentManager.AddEvent(new PlayerToggleSpellcastingMode(enteredSpellcastingMode));
+                }
                 playerSpellcastingManager.HandleSpellcasting();
             }
             else
             {
+                if (enteredSpellcastingMode)
+                {
+                    enteredSpellcastingMode = false;
+                    EventManager.currentManager.AddEvent(new PlayerToggleSpellcastingMode(enteredSpellcastingMode));
+                }
                 playerLocomotion.HandleDodgeAndJumping();
                 playerCombatManager.HandleAttacks();
                 playerCombatManager.HandleWeaponSpecificAbilities();
@@ -403,6 +415,59 @@ public class PlayerManager : CharacterManager
             throw new System.Exception("Error: EventData class with EventType.PlayerLevelUp was received but is not of class PlayerLevelUp.");
         }
     }
+
+    private void OnPlayerKeybindsUpdates(EventData eventData)
+    {
+        if (eventData is PlayerKeybindsUpdate)
+        {
+            SpellSlotUIManager spellSlotUIManager = FindObjectOfType<SpellSlotUIManager>();
+            if (spellSlotUIManager != null)
+            {
+                string bindingPath;
+
+                //Spellcasting Mode icon
+                Sprite spellcastingModeSprite;
+                bindingPath = inputHandler.GetInputActions().CharacterControls.SpellcastingMode.bindings[1].effectivePath;
+                spellcastingModeSprite = FindKeybindIconForController(bindingPath);
+
+                //Spell slots
+                Sprite[] spellSlotKeybindSprites = new Sprite[8];
+
+                #region Spells
+                //Spell 1
+                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell1.bindings[1].effectivePath;
+                spellSlotKeybindSprites[0] = FindKeybindIconForController(bindingPath);
+                //Spell 2
+                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell2.bindings[1].effectivePath;
+                spellSlotKeybindSprites[1] = FindKeybindIconForController(bindingPath);
+                //Spell 3
+                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell3.bindings[1].effectivePath;
+                spellSlotKeybindSprites[2] = FindKeybindIconForController(bindingPath);
+                //Spell 4
+                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell4.bindings[1].effectivePath;
+                spellSlotKeybindSprites[3] = FindKeybindIconForController(bindingPath);
+                //Spell 5
+                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell5.bindings[1].effectivePath;
+                spellSlotKeybindSprites[4] = FindKeybindIconForController(bindingPath);
+                //Spell 6
+                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell6.bindings[1].effectivePath;
+                spellSlotKeybindSprites[5] = FindKeybindIconForController(bindingPath);
+                //Spell 7
+                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell7.bindings[1].effectivePath;
+                spellSlotKeybindSprites[6] = FindKeybindIconForController(bindingPath);
+                //Spell 8
+                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell8.bindings[1].effectivePath;
+                spellSlotKeybindSprites[7] = FindKeybindIconForController(bindingPath);
+                #endregion
+
+                spellSlotUIManager.UpdateKeybinds(spellcastingModeSprite, spellSlotKeybindSprites);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("The event of PlayerKeybindsUpdates was not matching of event type PlayerKeybindsUpdates");
+        }
+    }
     #endregion
 
     #region Getters & Setters
@@ -417,4 +482,74 @@ public class PlayerManager : CharacterManager
     }
 
     #endregion
+
+    private Sprite FindKeybindIconForController(string bindingPath)
+    {
+        if (inputHandler.deviceDisplayConfigurator.deviceSets[1].deviceDisplaySettings is DeviceDisplaySettingsController controllerIcons)
+        {
+            switch (bindingPath)
+            {
+                #region Buttons
+                case "<Gamepad>/buttonNorth":
+                    return controllerIcons.buttonNorthIcon;
+                    
+                case "<Gamepad>/buttonSouth":
+                    return controllerIcons.buttonSouthIcon;
+                    
+                case "<Gamepad>/buttonWest":
+                    return controllerIcons.buttonWestIcon;
+                    
+                case "<Gamepad>/buttonEast":
+                    return controllerIcons.buttonEastIcon;
+                    
+                #endregion
+                #region Shoulder Buttons
+                case "<Gamepad>/leftShoulder":
+                    return controllerIcons.leftShoulder;
+                    
+                case "<Gamepad>/leftTrigger":
+                    return controllerIcons.leftTrigger;
+                    
+                case "<Gamepad>/rightShoulder":
+                    return controllerIcons.rightShoulder;
+                    
+                case "<Gamepad>/rightTrigger":
+                    return controllerIcons.rightShoulder;
+
+                #endregion
+                #region d-Pad
+                case "<Gamepad>/dpad/down":
+                    return controllerIcons.dPadDown;
+
+                case "<Gamepad>/dpad/up":
+                    return controllerIcons.dPadUp;
+
+                case "<Gamepad>/dpad/left":
+                    return controllerIcons.dPadLeft;
+
+                case "<Gamepad>/dpad/right":
+                    return controllerIcons.dPadRight;
+                #endregion
+                #region Analog Sticks
+                //This is where i put my analog stick keybinds IF I HAD ANY
+                #endregion
+                #region Option Buttons
+                case "<Gamepad>/select":
+                    return controllerIcons.select;
+                    
+                case "<Gamepad>/start":
+                    return controllerIcons.start;
+                    
+                #endregion
+                default:
+                    Debug.LogWarning("Couldnt find matching gamepade selection");
+                    return null;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Couldnt find matching gamepade selection");
+            return null;
+        }
+    }
 }

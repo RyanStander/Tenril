@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class ItemPickup : Interactable
 {
     public Item item;
+    public int amountOfItem=1;
     protected PlayerInventory playerInventory;
 
     public override void Interact(PlayerManager playerManager)
@@ -29,14 +30,12 @@ public class ItemPickup : Interactable
         playerAnimatorManager.PlayTargetAnimation("PickUp", true);
 
         //Add Item to inventory
-        playerInventory.AddItemToInventory(item);
+        playerInventory.AddItemToInventory(item,amountOfItem);
 
-        //Notify player of obtaining item
-        playerInteraction.itemPopUp.GetComponentInChildren<TextMeshProUGUI>().text = "You obtained " + item.itemName + "!";
-        //Set the weapon icon to display item
-        playerInteraction.itemPopUp.GetComponentInChildren<RawImage>().texture = item.itemIcon.texture;
+        EventManager.currentManager.AddEvent(new PlayerObtainedItem(item,amountOfItem));
+
         //Enable the game object
-        playerInteraction.itemPopUp.SetActive(true);
+        //playerInteraction.itemPopUp.SetActive(true);
 
         //Destroy the interactable after pick up
         Destroy(gameObject);

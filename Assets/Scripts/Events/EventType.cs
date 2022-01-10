@@ -35,6 +35,8 @@ public enum EventType
     RemoveItemFromInventory,
     UseItem,
     DropItem,
+    InitiateDropStack,
+    CompleteDropStack,
     DestroyInventoryOptionHolders,
     RequestEquippedWeapons,
 
@@ -45,6 +47,7 @@ public enum EventType
     SendDialogueSentence,
     SendDialogueOptions,
     SendStartingStringTableForDialogue,
+    ShowNextSentence,
 
     //Camera
     SwapToLockOnCamera,
@@ -60,4 +63,9 @@ public enum EventType
     AwardPlayerXP,
     PlayerLevelUp,
     PlayerGainSkill,
+    PlayerObtainedItem,
+    PlayerKeybindsUpdates,
+    PlayerToggleSpellcastingMode,
+    PlayerHasDroppedItem,
+    PlayInteractSound,
 }

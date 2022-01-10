@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Cinemachine;
+using UnityEngine.EventSystems;
 
 public class UIManager : MonoBehaviour
 {
@@ -15,6 +13,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject inGameGUI;
     [SerializeField] private GameObject mainMenu,inventoryDisplay,rebindingDisplay;
     [SerializeField] private GameObject dialoguePopUp;
+
+    [Header("UI controller selections")]
+    [SerializeField] private GameObject mainMenuFirstButton;
+    [SerializeField] private GameObject inventroyFirstButton, rebindingDisplayFirstButton,dialoguePopUpFirstButton;
 
     private bool isInMenuMode;
     private bool isInDialogueMode;
@@ -74,6 +76,8 @@ public class UIManager : MonoBehaviour
                     //swap to in menu screen
                     inGameGUI.SetActive(false);
                     mainMenu.SetActive(true);
+
+                    SetMenuFirstButton();
                 }
                 else
                 {
@@ -102,6 +106,8 @@ public class UIManager : MonoBehaviour
 
                 //Enable Invetory
                 inventoryDisplay.SetActive(true);
+
+                SetInventoryButton();
             }
             else
             {
@@ -142,6 +148,48 @@ public class UIManager : MonoBehaviour
         EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
     }
 
+    #region Button functions
+
+    public void ResumeGame()
+    {
+        DisableMenuMode();
+    }
+
+    //These buttons handle setting the first selected option for easier controller menu interaction
+    public void SetInventoryButton()
+    {
+        //clear selected object
+        EventSystem.current.SetSelectedGameObject(null);
+        //set a new selected object
+        EventSystem.current.SetSelectedGameObject(inventroyFirstButton);
+    }
+
+    public void SetMenuFirstButton()
+    {
+        //clear selected object
+        EventSystem.current.SetSelectedGameObject(null);
+        //set a new selected object
+        EventSystem.current.SetSelectedGameObject(mainMenuFirstButton);
+    }
+
+    public void SetDialogueFirstButton()
+    {
+        //clear selected object
+        EventSystem.current.SetSelectedGameObject(null);
+        //set a new selected object
+        EventSystem.current.SetSelectedGameObject(dialoguePopUpFirstButton);
+    }
+
+    public void SetRebindingFirstButton()
+    {
+        //clear selected object
+        EventSystem.current.SetSelectedGameObject(null);
+        //set a new selected object
+        EventSystem.current.SetSelectedGameObject(rebindingDisplayFirstButton);
+    }
+
+    #endregion
+
     #region onEvents
 
     private void OnInitiateDialogue(EventData eventData)
@@ -151,6 +199,8 @@ public class UIManager : MonoBehaviour
             inGameGUI.SetActive(false);
 
             dialoguePopUp.SetActive(true);
+
+            SetDialogueFirstButton();
 
             isInDialogueMode = true;
         }

@@ -61,9 +61,11 @@ public class CameraManager : MonoBehaviour
         //setup the aim camera values
         if (aimCamera != null)
         {
-            CinemachineVirtualCamera cinemachineVirtualCamera = aimCamera.GetComponent<CinemachineVirtualCamera>();
-            if (cinemachineVirtualCamera.Follow == null)
+            if (aimCamera.TryGetComponent(out CinemachineVirtualCamera cinemachineVirtualCamera))
                 cinemachineVirtualCamera.Follow = GameObject.FindGameObjectWithTag("CameraFollowTarget").transform;
+
+            if (aimCamera.TryGetComponent(out CrosshairAimAdjustment crosshair))
+                crosshair.AimTargetReticle = GameObject.FindGameObjectWithTag("Crosshair").GetComponent<RectTransform>();
         }
     }
 

@@ -287,6 +287,15 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AlternateInteraction"",
+                    ""type"": ""Button"",
+                    ""id"": ""f0a6f7d3-a14c-4c81-9f86-a830e6844b2f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -612,8 +621,8 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""5530c4a1-fb82-4da1-ada7-c96c86c99e03"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Strong Attack"",
@@ -1015,6 +1024,28 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""action"": ""Map"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5d38bc35-944e-4b77-a9fb-d8ce96461410"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""AlternateInteraction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e6cf1e03-628d-4a43-a0e8-a286a7050d31"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""AlternateInteraction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1176,6 +1207,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         m_CharacterControls_Menu = m_CharacterControls.FindAction("Menu", throwIfNotFound: true);
         m_CharacterControls_Map = m_CharacterControls.FindAction("Map", throwIfNotFound: true);
         m_CharacterControls_Inventory = m_CharacterControls.FindAction("Inventory", throwIfNotFound: true);
+        m_CharacterControls_AlternateInteraction = m_CharacterControls.FindAction("AlternateInteraction", throwIfNotFound: true);
         // UIControls
         m_UIControls = asset.FindActionMap("UIControls", throwIfNotFound: true);
         m_UIControls_Menu = m_UIControls.FindAction("Menu", throwIfNotFound: true);
@@ -1269,6 +1301,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Menu;
     private readonly InputAction m_CharacterControls_Map;
     private readonly InputAction m_CharacterControls_Inventory;
+    private readonly InputAction m_CharacterControls_AlternateInteraction;
     public struct CharacterControlsActions
     {
         private @PlayerController m_Wrapper;
@@ -1302,6 +1335,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         public InputAction @Menu => m_Wrapper.m_CharacterControls_Menu;
         public InputAction @Map => m_Wrapper.m_CharacterControls_Map;
         public InputAction @Inventory => m_Wrapper.m_CharacterControls_Inventory;
+        public InputAction @AlternateInteraction => m_Wrapper.m_CharacterControls_AlternateInteraction;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1398,6 +1432,9 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 @Inventory.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnInventory;
                 @Inventory.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnInventory;
                 @Inventory.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnInventory;
+                @AlternateInteraction.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAlternateInteraction;
+                @AlternateInteraction.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAlternateInteraction;
+                @AlternateInteraction.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAlternateInteraction;
             }
             m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -1489,6 +1526,9 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 @Inventory.started += instance.OnInventory;
                 @Inventory.performed += instance.OnInventory;
                 @Inventory.canceled += instance.OnInventory;
+                @AlternateInteraction.started += instance.OnAlternateInteraction;
+                @AlternateInteraction.performed += instance.OnAlternateInteraction;
+                @AlternateInteraction.canceled += instance.OnAlternateInteraction;
             }
         }
     }
@@ -1591,6 +1631,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         void OnMenu(InputAction.CallbackContext context);
         void OnMap(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
+        void OnAlternateInteraction(InputAction.CallbackContext context);
     }
     public interface IUIControlsActions
     {

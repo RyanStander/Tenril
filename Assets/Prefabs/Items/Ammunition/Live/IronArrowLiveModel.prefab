@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3248483503486242918}
   - component: {fileID: 5735849354066678481}
-  - component: {fileID: 5498945825789594238}
+  - component: {fileID: 2147342781151100574}
   m_Layer: 0
   m_Name: DamageCollider
   m_TagString: Untagged
@@ -40,13 +40,13 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1830340226634418559}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.23470761
-  m_Height: 3.3996062
+  m_Height: 4.101845
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0.5251968}
---- !u!114 &5498945825789594238
+  m_Center: {x: 0, y: 0, z: 0.8259736}
+--- !u!114 &2147342781151100574
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -55,7 +55,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1830340226634418559}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 014e9fd438df3d240a37b3092315e0d6, type: 3}
+  m_Script: {fileID: 11500000, guid: 2bfba91ae9fe647499d81e2cda281500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   characterManager: {fileID: 0}
@@ -63,6 +63,9 @@ MonoBehaviour:
   currentDamage: 10
   weaponSoundEffects: {fileID: 0}
   ammoItem: {fileID: 0}
+  ignoreLayers:
+    serializedVersion: 2
+    m_Bits: 54272
 --- !u!1 &4377392746361531956
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,22 +142,8 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!136 &702546377662934585
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8241675224114146947}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.15
-  m_Height: 3.4778376
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: -0.16108131}
+  m_Constraints: 112
+  m_CollisionDetection: 1
 --- !u!1001 &8241675224114240027
 PrefabInstance:
   m_ObjectHideFlags: 0
