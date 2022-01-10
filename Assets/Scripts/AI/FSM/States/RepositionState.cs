@@ -23,7 +23,7 @@ public class RepositionState : AbstractStateFSM
     public float adittionalRayRange = 1;
 
     //The current desired distance to achieve, this gets applied to the utility ray range
-    public float desiredDistance = 2;
+    private float desiredDistance = 2;
 
     //Range at which the utility ray should operate within
     private float utilityRayRange;
@@ -92,6 +92,9 @@ public class RepositionState : AbstractStateFSM
             //Set the destination to calculate from to the object of interest (this creates a reference point)
             navAgent.SetDestination(enemyManager.currentTarget.transform.position);
 
+            //Set the desired distance to the current attack managers desired distance
+            desiredDistance = enemyManager.attackManager.desiredDistance;
+
             //Establish the range of the rays
             utilityRayRange = adittionalRayRange + desiredDistance;
 
@@ -122,6 +125,32 @@ public class RepositionState : AbstractStateFSM
             {
                 enemyManager.movementManager.StopMovement();
             }
+
+            //If the desired position is reached, execute the attack
+            if (isWithinDesiredOffset())
+            {
+                //Mark as completed repositioning and execute the attack
+                enemyManager.attackManager.shouldExecuteAttack = true;
+                finiteStateMachine.EnterState(StateTypeFSM.ATTACK);
+            }
+
+            //If attempts to reach the desired distance for an attack timed out
+            if (enemyManager.attackManager.hasTimedOut)
+            {
+                //Check if the attack is still possible from this position
+                if (enemyManager.attackManager.IsCurrentAttackValid())
+                {
+                    //Mark as completed repositioning and execute the attack
+                    enemyManager.attackManager.shouldExecuteAttack = true;
+                    finiteStateMachine.EnterState(StateTypeFSM.ATTACK);
+                }
+                //Otherwise return to evaluation
+                else
+                {
+                    enemyManager.attackManager.shouldExecuteAttack = false;
+                    finiteStateMachine.EnterState(StateTypeFSM.EVALUATECOMBAT);
+                }
+            }
         }
     }
 
@@ -132,6 +161,8 @@ public class RepositionState : AbstractStateFSM
 
         //Debug message
         DebugLogString("EXITED REPOSITIONING STATE");
+
+        hitPoints.Clear();
 
         //Return true
         return true;
