@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 7800946917412916593}
   - component: {fileID: 1827853754}
   - component: {fileID: 1827853755}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Hips
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1077,7 +1077,7 @@ GameObject:
   - component: {fileID: 209470364}
   - component: {fileID: 209470366}
   - component: {fileID: 209470365}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: RightUpLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3349,7 +3349,7 @@ GameObject:
   - component: {fileID: 219701364}
   - component: {fileID: 219701365}
   - component: {fileID: 219701363}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3695,7 +3695,7 @@ GameObject:
   - component: {fileID: 110435888}
   - component: {fileID: 110435890}
   - component: {fileID: 110435889}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: LeftUpLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3838,7 +3838,7 @@ GameObject:
   - component: {fileID: 2025070413}
   - component: {fileID: 2025070415}
   - component: {fileID: 2025070414}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Spine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4471,6 +4471,7 @@ MonoBehaviour:
   left: 0
   forward: 0
   moveAmount: 0
+  deviceDisplayConfigurator: {fileID: 11400000, guid: c9f374510ba5c3d43bf580208403dbb0, type: 2}
   lookInput: {x: 0, y: 0}
   dodgeInput: 0
   sprintInput: 0
@@ -4480,6 +4481,7 @@ MonoBehaviour:
   menuInput: 0
   mapInput: 0
   inventoryInput: 0
+  alternateInteraction: 0
   weakAttackInput: 0
   weakAttackLetGoInput: 0
   strongAttackInput: 0
@@ -4548,7 +4550,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   equippedWeapon: {fileID: 0}
   isWieldingPrimaryWeapon: 1
-  primaryWeapon: {fileID: 11400000, guid: 2eb62f1d420de524eadc8a6d7e4e1db9, type: 2}
+  primaryWeapon: {fileID: 11400000, guid: 379244ca9efcbe74a84fc791cb8b4127, type: 2}
   secondaryWeapon: {fileID: 11400000, guid: d0fa351850862604ea051e1892936ee9, type: 2}
   equippedAmmo: {fileID: 11400000, guid: 5594c94fc385d7447968ff1c35ad051d, type: 2}
   Gold: 250
@@ -4741,12 +4743,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a44211bfa7957449a15efd67b32b6a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPopUp: {fileID: 0}
-  itemPopUp: {fileID: 0}
   dialoguePopUp: {fileID: 0}
+  interactableDataHolderPrefab: {fileID: 6237896221201794681, guid: 599ac1d456a729c4ca95e8dc83cab5b4, type: 3}
   overlapBoxOffset: {x: 0, y: 1, z: 0}
-  overlapBoxDistance: 0.7
-  boxSize: {x: 0.6, y: 1.8, z: 0.76}
+  overlapBoxDistance: 0
+  boxSize: {x: 2, y: 1.8, z: 2}
   targetLayers:
     serializedVersion: 2
     m_Bits: 2048
@@ -5170,7 +5171,7 @@ GameObject:
   - component: {fileID: 1800297643}
   - component: {fileID: 1800297644}
   - component: {fileID: 1800297642}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: LeftLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5647,7 +5648,7 @@ GameObject:
   - component: {fileID: 137220769}
   - component: {fileID: 137220770}
   - component: {fileID: 137220768}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: RightLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6528,7 +6529,7 @@ GameObject:
   - component: {fileID: 1437900477}
   - component: {fileID: 1437900479}
   - component: {fileID: 1437900478}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: LeftArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7228,7 +7229,7 @@ GameObject:
   - component: {fileID: 1180750420}
   - component: {fileID: 1180750421}
   - component: {fileID: 1180750419}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: RightForeArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7483,7 +7484,7 @@ GameObject:
   - component: {fileID: 90066352}
   - component: {fileID: 90066353}
   - component: {fileID: 90066351}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: LeftForeArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7655,7 +7656,7 @@ GameObject:
   - component: {fileID: 1373839865}
   - component: {fileID: 1373839867}
   - component: {fileID: 1373839866}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: RightArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
