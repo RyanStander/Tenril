@@ -80,6 +80,10 @@ public class EnemyAttackManager : MonoBehaviour
         //Update the distance boundaries
         distanceBoundaries = new Vector2(givenAttack.minimumDistanceNeededToAttack, givenAttack.maximumDistanceNeededToAttack);
 
+        //Reset the timeout timer and boolean
+        timeoutTimer = timeoutTime;
+        hasTimedOut = false;
+
         //Reset the validity of the current attack
         shouldExecuteAttack = true;
     }

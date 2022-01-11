@@ -28,8 +28,14 @@ public class RepositionState : AbstractStateFSM
     //Range at which the utility ray should operate within
     private float utilityRayRange;
 
+    //Obstacles that should be filtered out when detecting an object to weigh
+    public ObstacleType filteredObstacles = ObstacleType.stair | ObstacleType.floor | ObstacleType.terrain;
+
     //Weights that influence the decision making of encountered objects
     [Range(-1, 1)] public float obstacleWeight = -1;
+
+    //Weights that influence the decision making of encountered other characters
+    [Range(-1, 1)] public float characterWeight = -0.5f;
 
     //[Range(-1, 1)] public float targetWeight = 1;
     [Range(-1, 1)] public float targetAngleWeight = 0.75f;
@@ -142,14 +148,19 @@ public class RepositionState : AbstractStateFSM
                 {
                     //Mark as completed repositioning and execute the attack
                     enemyManager.attackManager.shouldExecuteAttack = true;
+
+                    //Return to the evaluation state
                     finiteStateMachine.EnterState(StateTypeFSM.ATTACK);
                 }
                 //Otherwise return to evaluation
                 else
                 {
                     enemyManager.attackManager.shouldExecuteAttack = false;
+
+                    //Return to the evaluation state
                     finiteStateMachine.EnterState(StateTypeFSM.EVALUATECOMBAT);
                 }
+
             }
         }
     }
@@ -205,11 +216,36 @@ public class RepositionState : AbstractStateFSM
         //Calculate the utility based on if it hits any obstacles
         if (Physics.Raycast(baseRay, out RaycastHit hit, utilityRayRange, detectionBlockLayer))
         {
+            //Declare the weight
+            float temporaryWeight = 0;
+
+            //Check if the object should be filtered out because its a character
+            if (hit.transform.TryGetComponent(out CharacterStats stats))
+            {
+                //Apply utility calculation based on 
+                temporaryWeight = characterWeight;
+            }
+            //Check if the object should be filtered out based on obstacle data
+            else if (hit.transform.TryGetComponent(out ObstacleData data))
+            {
+                //If it should not be filtered, apply impact
+                if(!filteredObstacles.HasFlag(data.obstacleType))
+                {
+                    temporaryWeight = obstacleWeight;
+                }
+            }
+            //Otherwise assume it should impact anyways
+            else
+            {
+                temporaryWeight = obstacleWeight;
+            }
+
             //Calculate a normalized distance between the object and the origin (0 to 1 inverted), the closer to (1) the object the more impactful it is
             float objectDistanceImpact = 1 - (hit.distance / utilityRayRange);
-
+            
             //Calculate utility based on what is being found at current distance impactfulness
-            utility = objectDistanceImpact * obstacleDistanceSensitivity * obstacleWeight;
+            utility = objectDistanceImpact * obstacleDistanceSensitivity * temporaryWeight;
+            
         }
 
         //Point to sample

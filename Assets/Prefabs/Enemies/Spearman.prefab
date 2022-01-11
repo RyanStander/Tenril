@@ -235,11 +235,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fc78a66538641e4280c9778ff87d201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  utilityRayCount: 50
+  utilityRayCount: 75
   bestRayImpactRatio: 0.15
   repositioningOffset: 0.1
   adittionalRayRange: 1
+  filteredObstacles: 38
   obstacleWeight: -1
+  characterWeight: -0.75
   targetAngleWeight: 0.75
   obstacleDistanceSensitivity: 1
   targetDistanceSensitivity: 1
@@ -276,7 +278,7 @@ MonoBehaviour:
   isDebugging: 1
   detectionBlockLayer:
     serializedVersion: 2
-    m_Bits: 524800
+    m_Bits: 525824
 --- !u!1 &764050060109176514
 GameObject:
   m_ObjectHideFlags: 0

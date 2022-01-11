@@ -1,7 +1,8 @@
 using UnityEngine;
 
-//Script originally created by Ryan Stander
-//Adapted and built into the FSM by Jacques Venter
+/// <summary>
+/// Is meant to hold information and data relating to an enemy character
+/// </summary>
 public class EnemyStats : CharacterStats
 {
     //[Header("Behaviour Traits")]

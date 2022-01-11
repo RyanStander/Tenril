@@ -76,7 +76,7 @@ public class AttackState : AbstractStateFSM
             //Request a new attack
             needsNewAttack = true;
         }
-        else if(needsNewAttack)
+        else if(needsNewAttack || enemyManager.attackManager.hasTimedOut)
         {
             //Set a new intended attack
             SetNewAttack();
@@ -113,7 +113,7 @@ public class AttackState : AbstractStateFSM
         {
             //Debug the attack being performed
             DebugLogString("Attack being performed: " + givenAttack.attackAnimation);
-            Debug.Log("Attack being performed: " + givenAttack.attackAnimation);
+            //Debug.Log("Attack being performed: " + givenAttack.attackAnimation);
 
             //Stop locomotion velocity incase any is happening
             movementManager.StopMovementImmediate();
@@ -135,7 +135,7 @@ public class AttackState : AbstractStateFSM
     private void SetNewAttack()
     {
         //Temporary value
-        AttackData potentialAttack = null;
+        AttackData potentialAttack;
 
         //Temporary helper bool
         bool isHeavyAttack = Random.Range(0f, 1) < enemyManager.enemyStats.heavyAttackLikeliness;
@@ -166,11 +166,13 @@ public class AttackState : AbstractStateFSM
 
             //Track the attack
             enemyManager.attackManager.TrackAttackData(potentialAttack);
+            //Debug.Log("Tracking " + potentialAttack.attackAnimation);
         }
         else
         {
             //Set current
             enemyManager.attackManager.SaveAttackData(potentialAttack);
+            //Debug.Log("Saving " + potentialAttack.attackAnimation);
         }
     }
 

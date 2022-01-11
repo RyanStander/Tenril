@@ -1,7 +1,9 @@
 using UnityEngine;
 
-//The purpose of this class is to serve as the framework for future states that may need preconditions
-//Currently it only serves as a bridge from chasing and directly attacking
+/// <summary>
+/// The purpose of this class is to serve as the framework for future states that may need preconditions
+/// It is currently a central hub for all combat related choices that an AI may be able to make
+/// </summary>
 public class EvaluateCombatChoice : AbstractStateFSM
 {
     public override void OnEnable()
