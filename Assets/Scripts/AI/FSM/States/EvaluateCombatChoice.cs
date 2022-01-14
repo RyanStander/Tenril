@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-//The purpose of this class is to serve as the framework for future states that may need preconditions
-//Currently it only serves as a bridge from chasing and directly attacking
+/// <summary>
+/// The purpose of this class is to serve as the framework for future states that may need preconditions
+/// It is currently a central hub for all combat related choices that an AI may be able to make
+/// </summary>
 public class EvaluateCombatChoice : AbstractStateFSM
 {
     public override void OnEnable()
@@ -61,17 +61,31 @@ public class EvaluateCombatChoice : AbstractStateFSM
         //Directly rotate towards the target
         movementManager.RotateTowardsTargetPosition(enemyManager.currentTarget.transform.position, enemyManager.enemyStats.rotationSpeed);
 
+        //Check if hiding should be done (if not on cooldown), takes priority over other actions
+        if (enemyManager.ShouldTryHiding())
+        {
+            //Attempt to hide
+            finiteStateMachine.EnterState(StateTypeFSM.HIDE);
+        }
+
         //Check if within attack range and has recovered since last animation
-        if (enemyManager.currentRecoveryTime <= 0 && IsDirectlyWithinAttackRange())
+        else if (enemyManager.currentRecoveryTime <= 0 && IsDirectlyWithinRange(enemyManager.enemyStats.maximumAttackRange))
         {
             //Change to attack state
             finiteStateMachine.EnterState(StateTypeFSM.ATTACK);
         }
 
-        //If the target is out of attack range, return to chasing
-        else if (!IsDirectlyWithinAttackRange())
+        //Check if healing is possible
+        else if(enemyManager.ShouldTryHealing() && !IsDirectlyWithinRange(enemyManager.enemyStats.healRange))
         {
-            //Change to chase state
+            //Attempt to heal
+            finiteStateMachine.EnterState(StateTypeFSM.HEALING);
+        }
+
+        //If the target is out of attack range
+        else if (!IsDirectlyWithinRange(enemyManager.enemyStats.maximumAttackRange))
+        {
+            //Return to chase state
             finiteStateMachine.EnterState(StateTypeFSM.CHASETARGET);
         }
 
@@ -91,10 +105,10 @@ public class EvaluateCombatChoice : AbstractStateFSM
         return true;
     }
 
-    private bool IsDirectlyWithinAttackRange()
+    private bool IsDirectlyWithinRange(float givenRange)
     {
         //If within attack range based on direct & unpathed distance, return true
-        if (Vector3.Distance(enemyManager.currentTarget.transform.position, transform.root.position) <= enemyManager.enemyStats.maximumAttackRange)
+        if (Vector3.Distance(enemyManager.currentTarget.transform.position, transform.root.position) <= givenRange)
         {
             return true;
         }

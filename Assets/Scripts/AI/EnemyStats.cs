@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-//Script originally created by Ryan Stander
-//Adapted and built into the FSM by Jacques Venter
+/// <summary>
+/// Is meant to hold information and data relating to an enemy character
+/// </summary>
 public class EnemyStats : CharacterStats
 {
     //[Header("Behaviour Traits")]
@@ -25,11 +24,14 @@ public class EnemyStats : CharacterStats
     //The chase speed of the AI
     [Range(0, 2)] public float chaseSpeed = 1;
 
+    //Reposition speed of the AI
+    [Range(0, 2)] public float repositionSpeed = 0.75f;
+
     //Range for creature knowing where obstacles that can be hidden behind are
     public float obstacleAwarenessRange = 15;
 
     //The range at which attacking should begin, should be replaced with preffered attacks
-    public float maximumAttackRange = 1.5f;
+    public float maximumAttackRange = 3.5f;
 
     //The height difference allowed for attacking
     public float maximumAttackHeight = 0.5f;
@@ -39,6 +41,24 @@ public class EnemyStats : CharacterStats
 
     //The rotational speed for the AI while attacking, recommended to be lower
     [Range(1, 10)] public float attackRotationSpeed = 2.5f;
+
+    //Health threshold at which an enemy will want to attempt to heal
+    public float healingThreshold = 0.25f;
+
+    //Helper bool to track if healing is possible
+    public bool canHeal = true;
+
+    //Range at which the enemy will consider healing as an option
+    public float healRange = 5;
+
+    //Hiding health threshold at which an enemy will want to run away and hide
+    public float hidingThreshold = 0.15f;
+
+    //The time that an agent will wait between trying to hide again
+    public float hidingCooldownTime = 30;
+
+    //Helper bool to track if hiding is possible
+    public bool canHide = true;
 
     private EnemyAnimatorManager enemyAnimatorManager;
     [SerializeField] private SliderBarDisplayUI healthBar;
@@ -89,5 +109,8 @@ public class EnemyStats : CharacterStats
 
         //change current health
         base.RegainHealth(regainAmount);
+
+        //update health display on the healthbar
+        healthBar.SetCurrentValue(currentHealth);
     }
 }

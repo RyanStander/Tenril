@@ -1,9 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
-
 public class DeadState : AbstractStateFSM
 {
     public override void OnEnable()
@@ -46,7 +40,6 @@ public class DeadState : AbstractStateFSM
             if (animatorManager.animator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Riposted"))
                 return;
 
-            Debug.Log("Going bye bye");
             //Play the death animation
             enemyManager.animatorManager.animator.Play("Dead");
         }

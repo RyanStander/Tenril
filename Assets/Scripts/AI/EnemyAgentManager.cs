@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
 
-//Helps manage and link together pieces of an enemy agent
+/// <summary>
+/// Serves as the uppermost connecting point of all managers and their controlled components
+/// The purpose of this is to grant accesss to other managers through one centralized spot
+/// This should ideally duplicate components from being used and makes for quick debugging on missing components 
+/// </summary>
 public class EnemyAgentManager : CharacterManager
 {
     //Enemy stats to manage
@@ -26,9 +26,6 @@ public class EnemyAgentManager : CharacterManager
     //The inventory of the enemy
     internal EnemyInventory inventory;
 
-    //The current target of the agent
-    internal GameObject currentTarget;
-
     //The movement manager for the NPC
     internal EnemyMovementManager movementManager;
 
@@ -38,15 +35,29 @@ public class EnemyAgentManager : CharacterManager
     //The status manager for the NPC
     internal StatusEffectManager statusManager;
 
+    //The consumable manager for the NPC
+    internal EnemyConsumableManager consumableManager;
+
+    //The attack manager for the NPC
+    internal EnemyAttackManager attackManager;
+
     //Helper bool to prevent animations/actions from occuring until an animation is completed
     internal bool isInteracting;
 
     //Current time in animation recovery
     internal float currentRecoveryTime = 0;
 
+    //Current time in hiding recovery
+    internal float currentHidingTime = 0;
+
+    [Header("Collision related colliders")]
     //Collision detection related capsules
-    [SerializeField] private CapsuleCollider characterCollider;
+    [SerializeField] private CapsuleCollider characterCollider;
     [SerializeField] private CapsuleCollider characterCollisionBlocker;
+
+    [Header("Relevant target to act around")]
+    //The current target of the agent
+    public GameObject currentTarget;
 
     private void Awake()
     {
@@ -61,6 +72,8 @@ public class EnemyAgentManager : CharacterManager
         movementManager = GetComponentInChildren<EnemyMovementManager>();
         visionManager = GetComponentInChildren<EnemyVisionManager>();
         statusManager = GetComponentInChildren<StatusEffectManager>();
+        consumableManager = GetComponentInChildren<EnemyConsumableManager>();
+        attackManager = GetComponentInChildren<EnemyAttackManager>();
         ragdollManager = GetComponentInChildren<RagdollManager>();
 
         //Nullcheck for missing, throw exception as this does not guarantee it will break the code, but is likely to
@@ -74,6 +87,8 @@ public class EnemyAgentManager : CharacterManager
         if (movementManager == null) throw new MissingComponentException("Missing EnemyMovementManager on " + gameObject + "!");
         if (visionManager == null) throw new MissingComponentException("Missing EnemyVisionManager on " + gameObject + "!");
         if (statusManager == null) throw new MissingComponentException("Missing StatusEffectManager on " + gameObject + "!");
+        if (consumableManager == null) throw new MissingComponentException("Missing EnemyConsumableManager on " + gameObject + "!");
+        if (attackManager == null) throw new MissingComponentException("Missing EnemyAttackManager on " + gameObject + "!");
     }
 
     private void Start()
@@ -87,6 +102,9 @@ public class EnemyAgentManager : CharacterManager
     {
         //Handle timer for animation delays
         HandleRecoveryTimer();
+
+        //Handle timer for hiding delays
+        HandleHidingTimer();
 
         //Set interactin based on the current bool being played
         isInteracting = animatorManager.animator.GetBool("isInteracting");
@@ -122,5 +140,49 @@ public class EnemyAgentManager : CharacterManager
         animatorManager.animator.enabled = false;
         characterCollider.enabled = false;
         characterCollisionBlocker.enabled = false;
+    }
+
+    private void HandleHidingTimer()
+    {
+        //If recovery time is not 0
+        if (currentHidingTime > 0)
+        {
+            //Reduce by time
+            currentHidingTime -= Time.deltaTime;
+
+            //Mark as not able to hide yet
+            enemyStats.canHide = false;
+        }
+        else
+        {
+            //Mark as able to hide
+            enemyStats.canHide = true;
+        }
+    }
+
+    public bool ShouldTryHealing()
+    {
+        //Return true if health is below threshold
+        if (enemyStats.currentHealth <= (enemyStats.maxHealth * enemyStats.healingThreshold) && enemyStats.canHeal)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool ShouldTryHiding()
+    {
+        //Return true if health is below threshold
+        if (enemyStats.currentHealth <= (enemyStats.maxHealth * enemyStats.hidingThreshold) && enemyStats.canHide)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

@@ -2,19 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerQuickslotManager : MonoBehaviour
+public class PlayerQuickslotManager : ConsumableManager
 {
     private PlayerInventory playerInventory;
-    private PlayerAnimatorManager playerAnimatorManager;
     private PlayerStats playerStats;
     private InputHandler inputHandler;
+    protected AnimatorManager animatorManager;
 
-    private void Awake()
+    override internal void Awake()
     {
+        //Run base getters
+        base.Awake();
+
         inputHandler = GetComponent<InputHandler>();
         playerInventory = GetComponent<PlayerInventory>();
         playerStats = GetComponent<PlayerStats>();
-        playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+        animatorManager = GetComponent<AnimatorManager>();
     }
 
     internal void HandleQuickslotInputs()
@@ -81,32 +84,34 @@ public class PlayerQuickslotManager : MonoBehaviour
         //use selected quickslot if pressed
         if (inputHandler.quickslotUseInput)
         {
-            if (playerInventory.quickslotItemInUse == null)
+            if (playerInventory.consumableItemInUse == null)
                 return;
 
-            if (playerAnimatorManager.animator.GetBool("isInteracting"))
+            if (animatorManager.animator.GetBool("isInteracting"))
                 return;
 
             if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.currentlySelectedQuickSlotItem))
                 return;
 
             //sets the item in us to the currently selected item
-            playerInventory.quickslotItemInUse = playerInventory.currentlySelectedQuickSlotItem;
+            playerInventory.consumableItemInUse = playerInventory.currentlySelectedQuickSlotItem;
 
             //attempt using the item
-            playerInventory.quickslotItemInUse.AttemptToUseItem(playerAnimatorManager, playerStats);
-            EventManager.currentManager.AddEvent(new RemoveItemFromInventory(playerInventory.quickslotItemInUse));
-
+            playerInventory.consumableItemInUse.AttemptToUseItem(animatorManager, this, playerStats);
+            EventManager.currentManager.AddEvent(new RemoveItemFromInventory(playerInventory.consumableItemInUse));
 
             //Update the ui display
             EventManager.currentManager.AddEvent(new UpdateQuickslotDisplay());
         }
     }
 
-    public void SuccessfulyUsedItem()
+
+    internal override void SuccessfulyUsedItem()
     {
-        //perform success item
-        playerInventory.quickslotItemInUse.SuccessfullyUsedItem(playerAnimatorManager, playerStats);
+        //Perform success item
+        playerInventory.consumableItemInUse.SuccessfullyUsedItem(animatorManager, playerStats);
+
+        //NOTE FOR RYAN: You probably don't need this event any more, you can directly call "HideItem(weaponManager);"
         EventManager.currentManager.AddEvent(new HideQuickslotItem());
     }
 }

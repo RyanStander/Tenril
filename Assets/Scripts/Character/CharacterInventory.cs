@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterInventory : MonoBehaviour
@@ -14,4 +15,10 @@ public class CharacterInventory : MonoBehaviour
 
     [Tooltip("The Ammo that the player will try to draw when using a ranged weapon")]
     public AmmunitionItem equippedAmmo;
+
+    [Header("Backpack")]
+    public List<ItemInventory> inventory = new List<ItemInventory>();
+
+    //this is the item referenced when actually using an item (for players this is the quickslot)
+    public ConsumableItem consumableItemInUse;
 }

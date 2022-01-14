@@ -10,14 +10,9 @@ public class PlayerInventory : CharacterInventory
     [Tooltip("The spells that the player can currently cast")]
     public SpellItem[] preparedSpells = new SpellItem[8];
     [Tooltip("The quickslot items that the player has selected")]
-    public List<QuickslotItem> quickslotItems;
+    public List<ConsumableItem> quickslotItems;
     [Tooltip("The currently selected quickslot item")]
-    public QuickslotItem currentlySelectedQuickSlotItem;
-    //this is the item referenced when actually using a quickslot item
-    public QuickslotItem quickslotItemInUse;
-
-    [Header("Backpack")]
-    public List<ItemInventory> inventory= new List<ItemInventory>();
+    public ConsumableItem currentlySelectedQuickSlotItem;
 
     private void OnEnable()
     {
@@ -46,7 +41,7 @@ public class PlayerInventory : CharacterInventory
         if (currentlySelectedQuickSlotItem == null && quickslotItems.Count != 0)
         {
             currentlySelectedQuickSlotItem = quickslotItems[0];
-            quickslotItemInUse = currentlySelectedQuickSlotItem;
+            consumableItemInUse = currentlySelectedQuickSlotItem;
         }
     }
 
@@ -508,16 +503,4 @@ public class PlayerInventory : CharacterInventory
 
     #endregion
 
-}
-[System.Serializable]
-public class ItemInventory
-{
-    /// <summary>
-    /// The item in the inventory slot
-    /// </summary>
-    public Item item;
-    /// <summary>
-    /// How many of the item is in the stack
-    /// </summary>
-    public int itemStackCount;
 }
