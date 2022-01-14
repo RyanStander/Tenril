@@ -121,7 +121,7 @@ public class InventoryDisplayManager : MonoBehaviour
         foreach (ItemInventory item in playerInventory.inventory)
         {
             //check if the item is a weapon item
-            if (item.item is QuickslotItem consumable)
+            if (item.item is ConsumableItem consumable)
             {
                 //create inventory item
                 GameObject createdInventoryItemPrefab = Instantiate(inventoryItemDisplayPrefab, inventoryContentObject.transform);

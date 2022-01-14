@@ -31,3 +31,16 @@ public static class CharacterUtilityManager
         return false;
     }
 }
+
+[System.Serializable]
+public class ItemInventory
+{
+    /// <summary>
+    /// The item in the inventory slot
+    /// </summary>
+    public Item item;
+    /// <summary>
+    /// How many of the item is in the stack
+    /// </summary>
+    public int itemStackCount;
+}

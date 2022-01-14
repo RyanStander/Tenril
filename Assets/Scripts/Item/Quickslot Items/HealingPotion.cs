@@ -8,9 +8,9 @@ public class HealingPotion : PotionItem
     [Tooltip("The amount of health restored")]
     public int healAmount;
 
-    public override void AttemptToUseItem(AnimatorManager animatorManager, CharacterStats characterStats)
+    public override void AttemptToUseItem(AnimatorManager animatorManager, ConsumableManager consumableManager, CharacterStats characterStats)
     {
-        base.AttemptToUseItem(animatorManager, characterStats);
+        base.AttemptToUseItem(animatorManager, consumableManager, characterStats);
     }
 
     public override void SuccessfullyUsedItem(AnimatorManager animatorManager, CharacterStats characterStats)

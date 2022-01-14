@@ -69,7 +69,7 @@ public class UtilityMovement : MonoBehaviour
         if (!IsPathPending())
         {
             //Set the current direction being followed
-            currentDirection = GetAverageDirectionExponential().normalized;
+            currentDirection = GetAverageUtilityDirection().normalized;
 
             //Movement
             Movement(currentDirection);
@@ -210,6 +210,25 @@ public class UtilityMovement : MonoBehaviour
         foreach (UtilityRay utilityRay in utilityRays)
         {
             averageDirection += utilityRay.baseRay.direction.normalized * Mathf.Pow(utilityRay.rayUtility, 5);
+        }
+
+        //Return the average desired direction
+        return averageDirection;
+    }
+
+    private Vector3 GetAverageUtilityDirection()
+    {
+        //Return zero if no rays exist
+        if (utilityRays == null || utilityRays.Count == 0) return Vector3.zero;
+
+        //Temporary vector to track the average direction
+        Vector3 averageDirection = Vector3.zero;
+
+        //Iterate over each ray and add their direction based on utility
+        foreach (UtilityRay utilityRay in utilityRays)
+        {
+            //Map the ray utility to get a correctly fractioned direction
+            averageDirection += utilityRay.baseRay.direction.normalized * Mathf.InverseLerp(-1, 1, utilityRay.rayUtility);
         }
 
         //Return the average desired direction

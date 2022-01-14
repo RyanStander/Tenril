@@ -91,6 +91,13 @@ public class WatchState : AbstractStateFSM
             CheckForClosestTarget();
         }
 
+        //Check for if healing should be done
+        if (enemyManager.ShouldTryHealing())
+        {
+            //Attempt to heal
+            finiteStateMachine.EnterState(StateTypeFSM.HEALING);
+        }
+
         //Stop enemy movement in case of animation speed carry over
         movementManager.StopMovement();
     }
