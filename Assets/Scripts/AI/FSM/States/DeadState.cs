@@ -40,7 +40,6 @@ public class DeadState : AbstractStateFSM
             if (animatorManager.animator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Riposted"))
                 return;
 
-            Debug.Log("Going bye bye");
             //Play the death animation
             enemyManager.animatorManager.animator.Play("Dead");
         }

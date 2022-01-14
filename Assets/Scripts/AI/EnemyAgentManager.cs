@@ -163,7 +163,7 @@ public class EnemyAgentManager : CharacterManager
     public bool ShouldTryHealing()
     {
         //Return true if health is below threshold
-        if (enemyStats.GetCurrentHealth() <= (enemyStats.GetMaximumHealth() * enemyStats.healingThreshold) && enemyStats.canHeal)
+        if (enemyStats.currentHealth <= (enemyStats.maxHealth * enemyStats.healingThreshold) && enemyStats.canHeal)
         {
             return true;
         }
@@ -176,7 +176,7 @@ public class EnemyAgentManager : CharacterManager
     public bool ShouldTryHiding()
     {
         //Return true if health is below threshold
-        if (enemyStats.GetCurrentHealth() <= (enemyStats.GetMaximumHealth() * enemyStats.hidingThreshold) && enemyStats.canHide)
+        if (enemyStats.currentHealth <= (enemyStats.maxHealth * enemyStats.hidingThreshold) && enemyStats.canHide)
         {
             return true;
         }
