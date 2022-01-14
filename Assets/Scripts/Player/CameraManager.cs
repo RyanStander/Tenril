@@ -1,13 +1,9 @@
 using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    [SerializeField] private GameObject explorationCamera;
-    [SerializeField] private GameObject menuCamera;
-    [SerializeField] private GameObject lockOnCamera;
+    [SerializeField] private GameObject explorationCamera, menuCamera, lockOnCamera,aimCamera;
 
     private CinemachineInputProvider explorationCameraInputProvider;
     private GameObject npcCamera;
@@ -16,6 +12,7 @@ public class CameraManager : MonoBehaviour
     {
         EventManager.currentManager.Subscribe(EventType.SwapToExplorationCamera, OnSwapToExplorationCamera);
         EventManager.currentManager.Subscribe(EventType.SwapToLockOnCamera, OnSwapToLockOnCamera);
+        EventManager.currentManager.Subscribe(EventType.SwapToAimCamera, OnSwapToAimCamera);
         EventManager.currentManager.Subscribe(EventType.SwapToMenuCamera, OnSwapToMenuCamera);
         EventManager.currentManager.Subscribe(EventType.SwapToNPCCamera, OnSwapToNPCCamera);
     }
@@ -61,6 +58,28 @@ public class CameraManager : MonoBehaviour
                 }
             }
         }
+        //setup the aim camera values
+        if (aimCamera != null)
+        {
+            if (aimCamera.TryGetComponent(out CinemachineVirtualCamera cinemachineVirtualCamera))
+                cinemachineVirtualCamera.Follow = GameObject.FindGameObjectWithTag("CameraFollowTarget").transform;
+
+            if (aimCamera.TryGetComponent(out CrosshairAimAdjustment crosshair))
+                crosshair.AimTargetReticle = GameObject.FindGameObjectWithTag("Crosshair").GetComponent<RectTransform>();
+        }
+    }
+
+    private void DisableAllCameras()
+    {
+        explorationCamera.SetActive(false);
+        aimCamera.SetActive(false);
+        lockOnCamera.SetActive(false);
+        menuCamera.SetActive(false);
+        if (npcCamera != null)
+        {
+            npcCamera.SetActive(false);
+            npcCamera = null;
+        }
     }
 
     #region onEvents
@@ -69,17 +88,24 @@ public class CameraManager : MonoBehaviour
     {
         if (eventData is SwapToExplorationCamera)
         {
+            DisableAllCameras();
+
             //Enable explorationCamera
             explorationCamera.SetActive(true);
             explorationCameraInputProvider.enabled = true;
-            //disable all other cameras
-            menuCamera.SetActive(false);
-            lockOnCamera.SetActive(false);
-            if (npcCamera != null)
-            {
-                npcCamera.SetActive(false);
-                npcCamera = null;
-            }
+        }
+        else
+            throw new System.Exception("Error: EventData class with EventType.SwapToExplorationCamera was received but is not of class SwapToExplorationCamera.");
+    }
+
+    private void OnSwapToAimCamera(EventData eventData)
+    {
+        if (eventData is SwapToAimCamera)
+        {
+            DisableAllCameras();
+
+            //Enable explorationCamera
+            aimCamera.SetActive(true);
         }
         else
             throw new System.Exception("Error: EventData class with EventType.SwapToExplorationCamera was received but is not of class SwapToExplorationCamera.");
@@ -89,17 +115,10 @@ public class CameraManager : MonoBehaviour
     {
         if (eventData is SwapToLockOnCamera)
         {
+            DisableAllCameras();
+
             //Enable lockOnCamera
             lockOnCamera.SetActive(true);
-            //disable all other cameras
-            menuCamera.SetActive(false);
-            explorationCamera.SetActive(false);
-            explorationCameraInputProvider.enabled = false;
-            if (npcCamera != null)
-            {
-                npcCamera.SetActive(false);
-                npcCamera = null;
-            }
         }
         else
             throw new System.Exception("Error: EventData class with EventType.SwapToLockOnCamera was received but is not of class SwapToLockOnCamera.");
@@ -109,17 +128,10 @@ public class CameraManager : MonoBehaviour
     {
         if (eventData is SwapToMenuCamera)
         {
+            DisableAllCameras();
+
             //Enable lockOnCamera
             menuCamera.SetActive(true);
-            //disable all other cameras
-            lockOnCamera.SetActive(false);
-            explorationCamera.SetActive(false);
-            explorationCameraInputProvider.enabled = false;
-            if (npcCamera != null)
-            {
-                npcCamera.SetActive(false);
-                npcCamera = null;
-            }
         }
         else
             throw new System.Exception("Error: EventData class with EventType.SwapToMenuCamera was received but is not of class SwapToMenuCamera.");
@@ -129,16 +141,13 @@ public class CameraManager : MonoBehaviour
     {
         if (eventData is SwapToNPCCamera swapToNPCCamera)
         {
+            DisableAllCameras();
+
             //set npcCamera
-            npcCamera=swapToNPCCamera.npcCamera;
+            npcCamera = swapToNPCCamera.npcCamera;
 
             //Enable lockOnCamera
             npcCamera.SetActive(true);
-            //disable all other cameras
-            menuCamera.SetActive(false);
-            explorationCamera.SetActive(false);
-            explorationCameraInputProvider.enabled = false;
-            lockOnCamera.SetActive(false);
         }
         else
             throw new System.Exception("Error: EventData class with EventType.SwapToMenuCamera was received but is not of class SwapToMenuCamera.");

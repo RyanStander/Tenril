@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpellItem : Item
@@ -10,6 +8,9 @@ public class SpellItem : Item
     public GameObject spellCastFX;
     [SerializeField] private Vector3 spellCastFXOffset;
     public string spellAnimation;
+    
+    
+    public AudioClipData windUPSFX, castSFX;
 
     [Tooltip("Cost of the spell")]
     public int spellCost;
@@ -47,9 +48,11 @@ public class SpellItem : Item
         {
             case SpellType.biomancy:
                 characterStats.ConsumeStoredMoonlight(spellCost);
+                characterStats.PutMoonlightRegenOnCooldown();
                 break;
             case SpellType.pyromancy:
                 characterStats.ConsumeStoredSunlight(spellCost);
+                characterStats.PutSunlightRegenOnCooldown();
                 break;
         }
 
@@ -65,10 +68,5 @@ public class SpellItem : Item
             //Create spell effect
              instantiatedSpellFX = Instantiate(spellCastFX, position, animatorManager.transform.rotation);
         }
-    }
-    public enum SpellType
-    {
-        biomancy,
-        pyromancy
     }
 }

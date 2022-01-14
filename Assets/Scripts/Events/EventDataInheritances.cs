@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
 
@@ -13,6 +12,35 @@ public class SendDebugLog : EventData
         debuglog = givenLog;
     }
 }
+
+#region Save And Loading
+
+public class SaveData : EventData
+{
+    public SaveData() : base(EventType.SaveData)
+    {
+
+    }
+}
+
+public class LoadData : EventData
+{
+    public LoadData() : base(EventType.LoadData)
+    {
+
+    }
+}
+
+public class LoadPlayerCharacterData : EventData
+{
+    public readonly PlayerData playerData;
+    public LoadPlayerCharacterData(PlayerData playerData) : base(EventType.LoadPlayerCharacterData)
+    {
+        this.playerData = playerData;
+    }
+}
+
+#endregion
 
 #region Player Stats Events
 
@@ -194,6 +222,39 @@ public class DropItem : EventData
     }
 }
 
+public class InitiateDropStack : EventData
+{
+    public readonly Item item;
+    public readonly int amountThatCanBeDropped;
+    public InitiateDropStack(Item item, int amountThatCanBeDropped) : base(EventType.InitiateDropStack)
+    {
+        this.item = item;
+        this.amountThatCanBeDropped = amountThatCanBeDropped;
+    }
+}
+
+public class CompleteDropStack : EventData
+{
+    public readonly Item item;
+    public readonly int amountToDrop;
+    public CompleteDropStack(Item item, int amountToDrop) : base(EventType.CompleteDropStack)
+    {
+        this.item = item;
+        this.amountToDrop = amountToDrop;
+    }
+}
+
+public class PlayerHasDroppedItem : EventData
+{
+    public readonly Item item;
+    public readonly int amountToDrop;
+    public PlayerHasDroppedItem(Item item, int amountToDrop) : base(EventType.PlayerHasDroppedItem)
+    {
+        this.item = item;
+        this.amountToDrop = amountToDrop;
+    }
+}
+
 //Event that informs subscribers of an item being used
 public class UseItem : EventData
 {
@@ -251,6 +312,14 @@ public class InitiateDialogue : EventData
 public class CeaseDialogue : EventData
 {
     public CeaseDialogue() : base(EventType.CeaseDialogue)
+    {
+
+    }
+}
+
+public class ShowNextSentence : EventData
+{
+    public ShowNextSentence() : base(EventType.ShowNextSentence)
     {
 
     }
@@ -319,6 +388,13 @@ public class SwapToExplorationCamera : EventData
     }
 }
 
+public class SwapToAimCamera : EventData
+{
+    public SwapToAimCamera() : base(EventType.SwapToAimCamera)
+    {
+    }
+}
+
 public class SwapToMenuCamera : EventData
 {
     public SwapToMenuCamera() : base(EventType.SwapToMenuCamera)
@@ -346,6 +422,85 @@ public class SwapToLeftLockOnTarget : EventData
 public class SwapToRightLockOnTarget : EventData
 {
     public SwapToRightLockOnTarget() : base(EventType.SwapToRightLockOnTarget)
+    {
+    }
+}
+#endregion
+
+#region Misc
+
+public class SendTimeStrength : EventData
+{
+    public readonly float timeStrength;
+    public SendTimeStrength(float timeStrength) : base(EventType.SendTimeStrength)
+    {
+        this.timeStrength = timeStrength;
+    }
+}
+
+public class AwardPlayerXP : EventData
+{
+    public readonly int xpAmount;
+    public AwardPlayerXP(int xpAmount) : base(EventType.AwardPlayerXP)
+    {
+        this.xpAmount = xpAmount;
+    }
+}
+
+public class PlayerLevelUp : EventData
+{
+    public readonly int amountOfLevelsGained;
+    public PlayerLevelUp(int amountOfLevelsGained) : base(EventType.PlayerLevelUp)
+    {
+        this.amountOfLevelsGained = amountOfLevelsGained;
+    }
+}
+
+public class PlayerGainSkill : EventData
+{
+    public readonly Skill skillToGain;
+    public readonly bool consumeSkillPoint;
+    public PlayerGainSkill(Skill skillToGain, bool consumeSkillPoint=true) : base(EventType.PlayerGainSkill)
+    {
+        this.skillToGain = skillToGain;
+        this.consumeSkillPoint = consumeSkillPoint;
+    }
+}
+
+/// <summary>
+/// used for when the player has obained an item to display in the item log
+/// </summary>
+public class PlayerObtainedItem : EventData
+{
+    public readonly Item itemObtained;
+    public readonly int amountObtained;
+
+    public PlayerObtainedItem(Item itemObtained, int amountObtained=1) : base(EventType.PlayerObtainedItem)
+    {
+        this.itemObtained = itemObtained;
+        this.amountObtained = amountObtained;
+    }
+}
+
+public class PlayerKeybindsUpdate : EventData
+{
+    public PlayerKeybindsUpdate() : base(EventType.PlayerKeybindsUpdates)
+    {
+    }
+}
+
+public class PlayerToggleSpellcastingMode : EventData
+{
+    public bool enteredSpellcastingMode;
+    public PlayerToggleSpellcastingMode(bool enteredSpellcastingMode) : base(EventType.PlayerToggleSpellcastingMode)
+    {
+        this.enteredSpellcastingMode = enteredSpellcastingMode;
+    }
+}
+
+public class PlayInteractSound : EventData
+{
+    public PlayInteractSound() : base(EventType.PlayInteractSound)
     {
     }
 }

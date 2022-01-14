@@ -8,6 +8,11 @@ public enum EventType
     ReceiveDebug,
     ClickedPlaceableGUI,
 
+    //Save and loading
+    SaveData,
+    LoadData,
+    LoadPlayerCharacterData,
+
     //Player Stats
     UpdatePlayerStats,
     UpdatePlayerHealth,
@@ -30,6 +35,8 @@ public enum EventType
     RemoveItemFromInventory,
     UseItem,
     DropItem,
+    InitiateDropStack,
+    CompleteDropStack,
     DestroyInventoryOptionHolders,
     RequestEquippedWeapons,
 
@@ -40,12 +47,25 @@ public enum EventType
     SendDialogueSentence,
     SendDialogueOptions,
     SendStartingStringTableForDialogue,
+    ShowNextSentence,
 
     //Camera
     SwapToLockOnCamera,
     SwapToExplorationCamera,
+    SwapToAimCamera,
     SwapToMenuCamera,
     SwapToNPCCamera,
     SwapToLeftLockOnTarget,
-    SwapToRightLockOnTarget
+    SwapToRightLockOnTarget,
+
+    //Misc
+    SendTimeStrength,
+    AwardPlayerXP,
+    PlayerLevelUp,
+    PlayerGainSkill,
+    PlayerObtainedItem,
+    PlayerKeybindsUpdates,
+    PlayerToggleSpellcastingMode,
+    PlayerHasDroppedItem,
+    PlayInteractSound,
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -36,7 +34,10 @@ public class PlayerManager : CharacterManager
     [SerializeField] private CapsuleCollider characterCollider;
     [SerializeField] private CapsuleCollider characterCollisionBlocker;
 
-    public bool canDoCombo, isInteracting;
+    private float timeTillRestart = 3, restartTimeStamp;
+
+    public bool canDoCombo, isInteracting, isAiming,isHoldingArrow;
+    private bool enteredSpellcastingMode=true;
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.EquipWeapon, OnEquipWeapon);
@@ -46,6 +47,11 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Subscribe(EventType.ShowWeapon, OnShowWeapon);
         EventManager.currentManager.Subscribe(EventType.DisplayQuickslotItem, OnDisplayQuickslotItem);
         EventManager.currentManager.Subscribe(EventType.HideQuickslotItem, OnHideQuickslotItem);
+        EventManager.currentManager.Subscribe(EventType.SendTimeStrength, OnReceiveTimeStrength);
+        EventManager.currentManager.Subscribe(EventType.LoadPlayerCharacterData, OnLoadPlayerCharacterData);
+        EventManager.currentManager.Subscribe(EventType.PlayerLevelUp, OnPlayerLevelUp);
+        EventManager.currentManager.Subscribe(EventType.AwardPlayerXP, OnAwardPlayerXP);
+        EventManager.currentManager.Subscribe(EventType.PlayerKeybindsUpdates, OnPlayerKeybindsUpdates);
     }
 
     private void OnDisable()
@@ -57,6 +63,11 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Unsubscribe(EventType.ShowWeapon, OnShowWeapon);
         EventManager.currentManager.Unsubscribe(EventType.DisplayQuickslotItem, OnDisplayQuickslotItem);
         EventManager.currentManager.Unsubscribe(EventType.HideQuickslotItem, OnHideQuickslotItem);
+        EventManager.currentManager.Unsubscribe(EventType.SendTimeStrength, OnReceiveTimeStrength);
+        EventManager.currentManager.Unsubscribe(EventType.LoadPlayerCharacterData, OnLoadPlayerCharacterData);
+        EventManager.currentManager.Unsubscribe(EventType.PlayerLevelUp, OnPlayerLevelUp);
+        EventManager.currentManager.Unsubscribe(EventType.AwardPlayerXP, OnAwardPlayerXP);
+        EventManager.currentManager.Unsubscribe(EventType.PlayerKeybindsUpdates, OnPlayerKeybindsUpdates);
     }
 
     void Awake()
@@ -71,6 +82,7 @@ public class PlayerManager : CharacterManager
         playerStats = GetComponent<PlayerStats>();
         playerInteraction = GetComponent<PlayerInteraction>();
         weaponSlotManager = GetComponent<WeaponSlotManager>();
+        ragdollManager = GetComponentInChildren<RagdollManager>();
 
 
         EventManager.currentManager.Subscribe(EventType.CeaseDialogue, OnCeaseDialogue);
@@ -94,13 +106,23 @@ public class PlayerManager : CharacterManager
             //Player is unable to perform certain actions whilst in spellcasting mode
             if (inputHandler.spellcastingModeInput)
             {
+                if (!enteredSpellcastingMode)
+                {
+                    enteredSpellcastingMode = true;
+                    EventManager.currentManager.AddEvent(new PlayerToggleSpellcastingMode(enteredSpellcastingMode));
+                }
                 playerSpellcastingManager.HandleSpellcasting();
             }
             else
             {
+                if (enteredSpellcastingMode)
+                {
+                    enteredSpellcastingMode = false;
+                    EventManager.currentManager.AddEvent(new PlayerToggleSpellcastingMode(enteredSpellcastingMode));
+                }
                 playerLocomotion.HandleDodgeAndJumping();
                 playerCombatManager.HandleAttacks();
-                playerCombatManager.HandleDefending();
+                playerCombatManager.HandleWeaponSpecificAbilities();
                 playerInventory.SwapWeapon(weaponSlotManager);
                 playerQuickslotManager.HandleQuickslotInputs();
             }
@@ -114,6 +136,17 @@ public class PlayerManager : CharacterManager
             {
                 playerAnimatorManager.animator.Play("Death");
             }
+
+            if (restartTimeStamp==0)
+            {
+                restartTimeStamp = Time.time + timeTillRestart;
+            }
+
+            if (restartTimeStamp<=Time.time)
+            {
+                EventManager.currentManager.AddEvent(new LoadData());
+            }
+
         }
     }
 
@@ -125,6 +158,8 @@ public class PlayerManager : CharacterManager
         playerLocomotion.HandleLocomotion(delta);
 
         playerStats.HandleStaminaRegeneration();
+        playerStats.HandleSunlightPoolRegeneration(timeStrength);
+        playerStats.HandleMoonlightPoolRegeneration(-(timeStrength - 1));
     }
 
     private void LateUpdate()
@@ -182,6 +217,17 @@ public class PlayerManager : CharacterManager
         isParrying = playerAnimatorManager.animator.GetBool("isParrying");
         isInteracting = playerAnimatorManager.animator.GetBool("isInteracting");
         isBlocking = playerAnimatorManager.animator.GetBool("isBlocking");
+        isAiming = playerAnimatorManager.animator.GetBool("isAiming");
+        isHoldingArrow = playerAnimatorManager.animator.GetBool("isHoldingArrow");
+    }
+
+    public override void EnableRagdoll()
+    {
+        base.EnableRagdoll();
+        playerAnimatorManager.animator.enabled = false;
+        characterCollider.enabled = false;
+        characterCollisionBlocker.enabled = false;
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
     }
 
     #region onEvents
@@ -198,7 +244,10 @@ public class PlayerManager : CharacterManager
 
             //remove weapon from inventory and and add weapon that is equipped
             playerInventory.RemoveItemFromInventory(equipWeapon.weaponItem);
-            playerInventory.AddItemToInventory(oldWeapon);
+            
+            //if there was previously no weapon in the slot, do not add it to the inventory
+            if (oldWeapon!=null)
+                playerInventory.AddItemToInventory(oldWeapon);
 
             //equip the new weapon
             playerInventory.EquipWeapon(weaponSlotManager, equipWeapon.weaponItem, equipWeapon.isPrimaryWeapon);
@@ -307,6 +356,118 @@ public class PlayerManager : CharacterManager
             throw new System.Exception("Error: EventData class with EventType.ShowWeapon was received but is not of class ShowWeapon.");
         }
     }
+
+    private void OnReceiveTimeStrength(EventData eventData)
+    {
+        if (eventData is SendTimeStrength sendTimeStrength)
+        {
+            timeStrength = sendTimeStrength.timeStrength;
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.SendTimeStrength was received but is not of class SendTimeStrength.");
+        }
+    }
+
+    private void OnLoadPlayerCharacterData(EventData eventData)
+    {
+        if (eventData is LoadPlayerCharacterData loadPlayerCharacterData)
+        {
+            PlayerData playerData = loadPlayerCharacterData.playerData;
+
+            playerStats.SetPlayerStats(playerData);
+
+            Vector3 position = new Vector3(playerData.position[0], playerData.position[1], playerData.position[2]);
+            Quaternion rotation = Quaternion.Euler(playerData.rotation[0], playerData.rotation[1], playerData.rotation[2]);
+
+            transform.position = position;
+            transform.rotation = rotation;
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.LoadPlayerCharacterData was received but is not of class LoadPlayerCharacterData.");
+        }
+    }
+
+    private void OnAwardPlayerXP(EventData eventData)
+    {
+        if (eventData is AwardPlayerXP awardPlayerXP)
+        {
+            //Calculate if the player will recieve any level ups
+            LevelSystem.DetermineLevelGain(playerStats.levelData, playerStats.currentXP, playerStats.currentLevel, awardPlayerXP.xpAmount);
+            //Add xp gain
+            playerStats.IncreaseXP(awardPlayerXP.xpAmount);
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.AwardPlayerXP was received but is not of class AwardPlayerXP.");
+        }
+    }
+
+    private void OnPlayerLevelUp(EventData eventData)
+    {
+        if (eventData is PlayerLevelUp playerLevelUp)
+        {
+            playerStats.IncreaseLevel(playerLevelUp.amountOfLevelsGained);
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.PlayerLevelUp was received but is not of class PlayerLevelUp.");
+        }
+    }
+
+    private void OnPlayerKeybindsUpdates(EventData eventData)
+    {
+        if (eventData is PlayerKeybindsUpdate)
+        {
+            SpellSlotUIManager spellSlotUIManager = FindObjectOfType<SpellSlotUIManager>();
+            if (spellSlotUIManager != null)
+            {
+                string bindingPath;
+
+                //Spellcasting Mode icon
+                Sprite spellcastingModeSprite;
+                bindingPath = inputHandler.GetInputActions().CharacterControls.SpellcastingMode.bindings[1].effectivePath;
+                spellcastingModeSprite = FindKeybindIconForController(bindingPath);
+
+                //Spell slots
+                Sprite[] spellSlotKeybindSprites = new Sprite[8];
+
+                #region Spells
+                //Spell 1
+                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell1.bindings[1].effectivePath;
+                spellSlotKeybindSprites[0] = FindKeybindIconForController(bindingPath);
+                //Spell 2
+                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell2.bindings[1].effectivePath;
+                spellSlotKeybindSprites[1] = FindKeybindIconForController(bindingPath);
+                //Spell 3
+                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell3.bindings[1].effectivePath;
+                spellSlotKeybindSprites[2] = FindKeybindIconForController(bindingPath);
+                //Spell 4
+                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell4.bindings[1].effectivePath;
+                spellSlotKeybindSprites[3] = FindKeybindIconForController(bindingPath);
+                //Spell 5
+                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell5.bindings[1].effectivePath;
+                spellSlotKeybindSprites[4] = FindKeybindIconForController(bindingPath);
+                //Spell 6
+                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell6.bindings[1].effectivePath;
+                spellSlotKeybindSprites[5] = FindKeybindIconForController(bindingPath);
+                //Spell 7
+                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell7.bindings[1].effectivePath;
+                spellSlotKeybindSprites[6] = FindKeybindIconForController(bindingPath);
+                //Spell 8
+                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell8.bindings[1].effectivePath;
+                spellSlotKeybindSprites[7] = FindKeybindIconForController(bindingPath);
+                #endregion
+
+                spellSlotUIManager.UpdateKeybinds(spellcastingModeSprite, spellSlotKeybindSprites);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("The event of PlayerKeybindsUpdates was not matching of event type PlayerKeybindsUpdates");
+        }
+    }
     #endregion
 
     #region Getters & Setters
@@ -321,4 +482,74 @@ public class PlayerManager : CharacterManager
     }
 
     #endregion
+
+    private Sprite FindKeybindIconForController(string bindingPath)
+    {
+        if (inputHandler.deviceDisplayConfigurator.deviceSets[1].deviceDisplaySettings is DeviceDisplaySettingsController controllerIcons)
+        {
+            switch (bindingPath)
+            {
+                #region Buttons
+                case "<Gamepad>/buttonNorth":
+                    return controllerIcons.buttonNorthIcon;
+                    
+                case "<Gamepad>/buttonSouth":
+                    return controllerIcons.buttonSouthIcon;
+                    
+                case "<Gamepad>/buttonWest":
+                    return controllerIcons.buttonWestIcon;
+                    
+                case "<Gamepad>/buttonEast":
+                    return controllerIcons.buttonEastIcon;
+                    
+                #endregion
+                #region Shoulder Buttons
+                case "<Gamepad>/leftShoulder":
+                    return controllerIcons.leftShoulder;
+                    
+                case "<Gamepad>/leftTrigger":
+                    return controllerIcons.leftTrigger;
+                    
+                case "<Gamepad>/rightShoulder":
+                    return controllerIcons.rightShoulder;
+                    
+                case "<Gamepad>/rightTrigger":
+                    return controllerIcons.rightShoulder;
+
+                #endregion
+                #region d-Pad
+                case "<Gamepad>/dpad/down":
+                    return controllerIcons.dPadDown;
+
+                case "<Gamepad>/dpad/up":
+                    return controllerIcons.dPadUp;
+
+                case "<Gamepad>/dpad/left":
+                    return controllerIcons.dPadLeft;
+
+                case "<Gamepad>/dpad/right":
+                    return controllerIcons.dPadRight;
+                #endregion
+                #region Analog Sticks
+                //This is where i put my analog stick keybinds IF I HAD ANY
+                #endregion
+                #region Option Buttons
+                case "<Gamepad>/select":
+                    return controllerIcons.select;
+                    
+                case "<Gamepad>/start":
+                    return controllerIcons.start;
+                    
+                #endregion
+                default:
+                    Debug.LogWarning("Couldnt find matching gamepade selection");
+                    return null;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Couldnt find matching gamepade selection");
+            return null;
+        }
+    }
 }

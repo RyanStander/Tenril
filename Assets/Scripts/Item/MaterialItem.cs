@@ -6,5 +6,4 @@ using UnityEngine;
 
 public class MaterialItem : Item
 {
-    public int ItemValue;
 }

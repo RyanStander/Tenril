@@ -21,12 +21,14 @@ public class DialogueManager : MonoBehaviour
     {
         EventManager.currentManager.Subscribe(EventType.SendDialogueData, OnSendDialogueDataReceived);
         EventManager.currentManager.Subscribe(EventType.SendStartingStringTableForDialogue, OnSendStartingStringTableForDialogueReceived);
+        EventManager.currentManager.Subscribe(EventType.ShowNextSentence, OnShowNextSentence);
     }
 
     private void OnDisable()
     {
         EventManager.currentManager.Unsubscribe(EventType.SendDialogueData, OnSendDialogueDataReceived);
         EventManager.currentManager.Unsubscribe(EventType.SendStartingStringTableForDialogue, OnSendStartingStringTableForDialogueReceived);
+        EventManager.currentManager.Unsubscribe(EventType.ShowNextSentence, OnShowNextSentence);
     }
 
     // Start is called before the first frame update
@@ -35,6 +37,7 @@ public class DialogueManager : MonoBehaviour
         sentences = new Queue<string>();
     }
 
+    #region On Events
     private void OnSendDialogueDataReceived(EventData eventData)
     {
         if (eventData is SendDialogueData sendDialogueData)
@@ -73,6 +76,20 @@ public class DialogueManager : MonoBehaviour
             throw new System.Exception("Error: EventData class with EventType.SendStartingStringTableForDialogue was received but is not of class SendStartingStringTableForDialogue.");
         }
     }
+
+    private void OnShowNextSentence(EventData eventData)
+    {
+        if (eventData is ShowNextSentence )
+        {
+            DisplayNextSentence();
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.ShowNextSentence was received but is not of class ShowNextSentence.");
+        }
+    }
+
+    #endregion
 
     public void DisplayNextSentence()
     {

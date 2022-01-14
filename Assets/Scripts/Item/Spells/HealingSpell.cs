@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Spells/Healing Spell")]
+[CreateAssetMenu(menuName = "Items/Spells/Healing Spell")]
 public class HealingSpell : SpellItem
 {
     [Tooltip("The amount of health restored")]

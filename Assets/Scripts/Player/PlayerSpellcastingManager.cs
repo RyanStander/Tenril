@@ -1,15 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSpellcastingManager : MonoBehaviour
+public class PlayerSpellcastingManager : CharacterSpellcastingManager
 {
     private PlayerInventory playerInventory;
     private PlayerAnimatorManager playerAnimatorManager;
     private PlayerStats playerStats;
     private PlayerManager playerManager;
     private InputHandler inputHandler;
-    private SpellItem spellBeingCast;
 
     private void Awake()
     {
@@ -37,14 +34,14 @@ public class PlayerSpellcastingManager : MonoBehaviour
         {
             if (playerInventory.preparedSpells[spellNumber]==null)
             {
-                Debug.Log("There is not spell prepared on this slot");
+                Debug.Log("There is no spell prepared on this slot");
                 return;
             }
             //Check the type of spell being cast
             //if the player does not have enough magic to cast the spell, they wont.
             switch (playerInventory.preparedSpells[spellNumber].spellType)
             {
-                case SpellItem.SpellType.biomancy:
+                case SpellType.biomancy:
                     if (!playerStats.HasEnoughMoonlight(playerInventory.preparedSpells[spellNumber].spellCost))
                     {
                         //Play failed cast animation
@@ -53,7 +50,7 @@ public class PlayerSpellcastingManager : MonoBehaviour
                         return;
                     }
                     break;
-                case SpellItem.SpellType.pyromancy:
+                case SpellType.pyromancy:
                     if (!playerStats.HasEnoughSunlight(playerInventory.preparedSpells[spellNumber].spellCost))
                     {
                         //Play failed cast animation

@@ -16,11 +16,18 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: 9f69b220176e6964fbd87f5f158d45e3, type: 3}
   itemName: Fireburst
   amountPerStack: 0
+  ItemValue: 0
   spellWindUpFX: {fileID: 0}
   spellCastFX: {fileID: 7117666245843546412, guid: 2c5842549831d194ab8aabf9f831b6b5, type: 3}
   spellCastFXOffset: {x: 1, y: 1, z: 0}
   spellAnimation: Buff
+  windUPSFX:
+    audioClip: {fileID: 8300000, guid: 8472e1e914d61664ba785f0ee7346b7e, type: 3}
+    volume: 1
+  castSFX:
+    audioClip: {fileID: 8300000, guid: d4336ebfc89f27046aed92d5a81a0238, type: 3}
+    volume: 1
   spellCost: 15
-  spellType: 1
+  spellType: 2
   spellDescription: Unleach a bolt of flame from within, dealing massive damage
   damageAmount: 50

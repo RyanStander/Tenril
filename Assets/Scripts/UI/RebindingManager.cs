@@ -1,19 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.IO;
 
 public class RebindingManager : MonoBehaviour
 {
-    [Tooltip("Input handler from the player")]
-    public InputHandler inputHandler;
+    //Input handler from the player
+    [HideInInspector]public InputHandler inputHandler;
     [Tooltip("The prefab for the key rebind")]
     [SerializeField] private GameObject keyRebindPrefab;
     [SerializeField] private GameObject rebindContentObject;
 
     private void OnEnable()
     {
+        inputHandler = FindObjectOfType<InputHandler>();
         CreateKeybindingDisplay();
     }
 
@@ -24,6 +22,7 @@ public class RebindingManager : MonoBehaviour
 
         PlayerPrefs.SetString("keybindings", rebinds);
 
+        EventManager.currentManager.AddEvent(new PlayerKeybindsUpdate());
     }
 
     public void ResetKeybindings()

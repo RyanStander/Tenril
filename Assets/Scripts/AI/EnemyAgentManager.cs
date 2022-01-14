@@ -74,6 +74,7 @@ public class EnemyAgentManager : CharacterManager
         statusManager = GetComponentInChildren<StatusEffectManager>();
         consumableManager = GetComponentInChildren<EnemyConsumableManager>();
         attackManager = GetComponentInChildren<EnemyAttackManager>();
+        ragdollManager = GetComponentInChildren<RagdollManager>();
 
         //Nullcheck for missing, throw exception as this does not guarantee it will break the code, but is likely to
         if (enemyStats == null) throw new MissingComponentException("Missing EnemyStats on " + gameObject + "!");
@@ -133,6 +134,14 @@ public class EnemyAgentManager : CharacterManager
         }
     }
 
+    public override void EnableRagdoll()
+    {
+        base.EnableRagdoll();
+        animatorManager.animator.enabled = false;
+        characterCollider.enabled = false;
+        characterCollisionBlocker.enabled = false;
+    }
+
     private void HandleHidingTimer()
     {
         //If recovery time is not 0
@@ -154,7 +163,7 @@ public class EnemyAgentManager : CharacterManager
     public bool ShouldTryHealing()
     {
         //Return true if health is below threshold
-        if (enemyStats.GetCurrentHealth() <= (enemyStats.GetMaximumHealth() * enemyStats.healingThreshold) && enemyStats.canHeal)
+        if (enemyStats.currentHealth <= (enemyStats.maxHealth * enemyStats.healingThreshold) && enemyStats.canHeal)
         {
             return true;
         }
@@ -167,7 +176,7 @@ public class EnemyAgentManager : CharacterManager
     public bool ShouldTryHiding()
     {
         //Return true if health is below threshold
-        if (enemyStats.GetCurrentHealth() <= (enemyStats.GetMaximumHealth() * enemyStats.hidingThreshold) && enemyStats.canHide)
+        if (enemyStats.currentHealth <= (enemyStats.maxHealth * enemyStats.hidingThreshold) && enemyStats.canHide)
         {
             return true;
         }

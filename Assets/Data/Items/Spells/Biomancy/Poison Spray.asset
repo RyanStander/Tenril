@@ -16,11 +16,18 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: 385da099954d14cc28853d00b4f705b0, type: 3}
   itemName: Poison Spray
   amountPerStack: 0
+  ItemValue: 0
   spellWindUpFX: {fileID: 0}
   spellCastFX: {fileID: 520670889292294596, guid: f5b03555b69021e4b901f7b88983da83, type: 3}
   spellCastFXOffset: {x: 1, y: 1, z: 0}
   spellAnimation: ProjectileThrow
+  windUPSFX:
+    audioClip: {fileID: 0}
+    volume: 1
+  castSFX:
+    audioClip: {fileID: 8300000, guid: f2117cb3babea9744bad5b91e43140be, type: 3}
+    volume: 1
   spellCost: 5
-  spellType: 0
+  spellType: 1
   spellDescription: Poison do damage
   poisonedStatusEffect: {fileID: 11400000, guid: 5c5d065870f49a142a368880a9b8d995, type: 2}

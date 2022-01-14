@@ -17,6 +17,9 @@ public class DeadState : AbstractStateFSM
             DebugLogString("ENTERED DEAD STATE");
         }
 
+        //Send out event to award player XP
+        EventManager.currentManager.AddEvent(new AwardPlayerXP(enemyManager.enemyStats.xpToAwardOnDeath));
+
         return enteredState;
     }
 
@@ -32,8 +35,11 @@ public class DeadState : AbstractStateFSM
         }
 
         //Check if any of the death animations are playing, otherwise force the dead animation
-        if(!animatorManager.animator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Death") && !animatorManager.animator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Dead"))
+        if(!animatorManager.animator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Death") && !animatorManager.animator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Dead") && !animatorManager.animator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Riposted"))
         {
+            if (animatorManager.animator.GetCurrentAnimatorStateInfo(layerIndex).IsName("Riposted"))
+                return;
+
             //Play the death animation
             enemyManager.animatorManager.animator.Play("Dead");
         }

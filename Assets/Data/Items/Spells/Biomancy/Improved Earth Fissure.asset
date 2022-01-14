@@ -16,11 +16,18 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: 41b28ae84fe0947ae9d0c26096b94a12, type: 3}
   itemName: Mass Fissure
   amountPerStack: 0
+  ItemValue: 0
   spellWindUpFX: {fileID: 0}
   spellCastFX: {fileID: 183370, guid: f0d5fb29203647c45bfdec87d72480dd, type: 3}
   spellCastFXOffset: {x: 1, y: 1, z: 0}
   spellAnimation: GroundSlam
+  windUPSFX:
+    audioClip: {fileID: 8300000, guid: 125e9e3cdcab97747ae2bb027f7fdb07, type: 3}
+    volume: 1
+  castSFX:
+    audioClip: {fileID: 8300000, guid: 55c0c3feea64b584da394e28710333fb, type: 3}
+    volume: 1
   spellCost: 10
-  spellType: 0
+  spellType: 1
   spellDescription: Send out a fissure, anything it hits takes 50 damage.
   damageAmount: 10

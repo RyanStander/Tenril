@@ -1,18 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [CreateAssetMenu(menuName = "Items/Weapon")]
 public class WeaponItem : Item
 {
     [Header("Prefabs")]
-    [Tooltip("The model that is created on the weapon")]
-    public GameObject primaryWeaponModelPrefab;
-    [Tooltip("State wether there is a second weapon")]
-    public bool hasSecondaryWeapon;
-    [Tooltip("The secondary weapon, if there is one")]
-    public GameObject secondaryWeaponModelPrefab;
+    [Tooltip("The right model that is created on the weapon")]
+    public GameObject rightWeaponModelPrefab;
+    [Tooltip("The left model that is created on the weapon")]
+    public GameObject leftWeaponModelPrefab;
 
     public bool displaySecondaryWeaponWhenUnequipped;
     [Tooltip("The model displayed when your weapon is not being weilded")]
@@ -23,6 +19,12 @@ public class WeaponItem : Item
     public GameObject primarySheathPrefab;
     public GameObject secondarySheathPrefab;
 
+    [Header("Animator Replacer")]
+    public AnimatorOverrideController weaponController;
+
+    [Header("Sound Data")]
+    public WeaponSoundEffects weaponSoundEffects;
+
     [Header("Damage")]
     public int baseDamage = 25;
     public float weakAttackDamageMultiplier = 1;
@@ -32,8 +34,7 @@ public class WeaponItem : Item
     [Header("Damage Block")]
     [Range(0,100)]public float physicalDamageBlockPercentage;
 
-    [Header("Idle Animations")]
-    public string idleAnimation;
+    [HideInInspector]public string equipAnimation= "WeaponEquip";
 
     [Header("Attack Animations")]
     public AttackSet attackSet;
@@ -43,13 +44,13 @@ public class WeaponItem : Item
     [Header("Parry Animation")]
     public string parry= "Parry";
 
-    [Header("Stamina Costs")]
+    [Header("Attack Costs")]
     public int baseStaminaCost;
     public float weakAttackCostMultiplier=1;
     public float strongAttackCostMultiplier=2;
 
     [Header("Weapon Details")]
-    [Tooltip("The type of weapon that it is, determines how attacks are resolved")]
+    [Tooltip("The type of weapon being weilded, determines how attacks are resolved")]
     public WeaponType weaponType;
     [Tooltip("The slot where the weapon is placed when it is not being weilded")]
     public WeaponSlot weaponSlotWhenNotWielded;
@@ -57,11 +58,5 @@ public class WeaponItem : Item
     public bool canParry;
     [Tooltip("Used for when no weapon is equipped")]
     public bool isUnarmed = false;
-    public enum WeaponType
-    {
-        meleeWeapon,
-        rangedWeapon,
-        castingWeapon,
-    }
 }
 

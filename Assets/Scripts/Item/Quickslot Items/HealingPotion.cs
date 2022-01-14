@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Potions/Healing Potion")]
+[CreateAssetMenu(menuName = "Items/Potions/Healing Potion")]
 public class HealingPotion : PotionItem
 {
     [Tooltip("The amount of health restored")]

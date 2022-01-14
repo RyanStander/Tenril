@@ -92,7 +92,15 @@ public class CameraLockOn : MonoBehaviour
             //lock on camera should never be on if flag is off, if for some reason it is, swap to exploration camera
             if (lockOnCamera.activeSelf)
             {
-                EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
+                if (playerManager.GetComponent<PlayerAnimatorManager>().animator.GetBool("isAiming"))
+                {
+                    EventManager.currentManager.AddEvent(new SwapToAimCamera());
+                }
+                else
+                {
+                    EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
+                }
+
             }
             currentLockOnTarget = null;
         }
@@ -295,7 +303,7 @@ public class CameraLockOn : MonoBehaviour
         {
             Gizmos.color = Color.red;
             //Use the same vars you use to draw your Overlap Sphere to draw your Wire Sphere.
-            Gizmos.DrawSphere(mainCameraTransform.position, 26);
+            Gizmos.DrawSphere(mainCameraTransform.position, maximumLockOnDistance);
         }
     }
 

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCombatManager : MonoBehaviour
@@ -33,6 +31,15 @@ public class PlayerCombatManager : MonoBehaviour
         if (inputHandler.weakAttackInput)
         {
             HandleWeakAttackAction();
+        }
+
+        //Player lets go of weak attack button
+        if (inputHandler.weakAttackLetGoInput)
+        {
+            if (playerManager.isHoldingArrow)
+            {
+                FireArrow();
+            }
         }
 
         //Player performing strong attack
@@ -131,6 +138,8 @@ public class PlayerCombatManager : MonoBehaviour
 
     private void HandleStrongAttack(WeaponItem weapon)
     {
+        if (weapon.strongAttacks.Count==0)
+            return;
         //if player has any stamina
         if (playerStats.HasStamina())
         {
@@ -151,7 +160,24 @@ public class PlayerCombatManager : MonoBehaviour
     #region Input Actions
     private void HandleWeakAttackAction()
     {
-        PerformWeakMeleeAction();
+        if (playerInventory.equippedWeapon == null)
+            return;
+
+        switch (playerInventory.equippedWeapon.weaponType)
+        {
+            case WeaponType.TwoHandedSword:
+                PerformWeakMeleeAction();
+                break;
+            case WeaponType.Polearm:
+                PerformWeakMeleeAction();
+                break;
+            case WeaponType.Bow:
+                PerformRangedAmmoCheck();
+                break;
+            case WeaponType.FlyingMage:
+                FireMagic();
+                break;
+        }
     }
 
     private void HandleStrongAttackAction()
@@ -185,7 +211,7 @@ public class PlayerCombatManager : MonoBehaviour
         if (playerInventory.equippedWeapon.canParry)
         {
             //perform parry action
-            PerformParryAction();
+            ParryAction();
         }
     }
 
@@ -212,6 +238,227 @@ public class PlayerCombatManager : MonoBehaviour
                 return;
 
             HandleWeakAttack(playerInventory.equippedWeapon);
+        }
+    }
+
+    private void PerformRangedAmmoCheck()
+    {
+        //if player has any stamina
+        if (playerStats.HasStamina())
+        {
+            //put the players stamina regen on cooldown
+            playerStats.PutStaminaRegenOnCooldown();
+
+            if (!playerManager.isHoldingArrow)
+            {
+                //Check if there is ammo
+                if (playerInventory.HasAmmo())
+                {
+                    //Draw arrow
+                    PerformBowDraw();
+                }
+                else
+                {
+                    Debug.Log("No ammo to fire");
+                }
+
+
+                //Fire arrow when released
+                //else indicate no ammo
+            }
+        }
+    }
+
+    private void PerformBowDraw()
+    {
+        //If player does not have an arrow in their inventory, do not proceed
+        if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.equippedAmmo))
+            return;
+
+        playerAnimatorManager.animator.SetBool("isHoldingArrow", true);
+        playerAnimatorManager.PlayTargetAnimation("BowDrawArrow", true);
+
+        Animator bowAnimator = null;
+
+        //Get the bow depending on which hand it is instantiated in
+        if (playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
+        {
+            bowAnimator = weaponSlotManager.rightHandSlot.GetComponentInChildren<Animator>();
+        }
+        else if (playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
+        {
+            bowAnimator = weaponSlotManager.leftHandSlot.GetComponentInChildren<Animator>();
+        }
+        else
+            Debug.LogWarning("No bow prefab was found");
+
+        if (bowAnimator != null)
+        {
+            //Animate Bow
+            //set the bool of is drawn to true
+            bowAnimator.SetBool("isDrawn", true);
+            //play the draw animation
+            bowAnimator.Play("Draw");
+        }
+
+        weaponSlotManager.DisplayObjectInHand(playerInventory.equippedAmmo.loadedItemModel, false, false);
+        
+    }
+
+    private void FireArrow()
+    {
+        if (playerManager.isInteracting)
+            return;
+
+        //If player does not have an arrow in their inventory, do not proceed
+        if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.equippedAmmo))
+            return;
+
+        ProjectileInstantiationLocation arrowInstantiationLocation =null;
+        Animator bowAnimator = null;
+
+        //Get the bow depending on which hand it is instantiated in
+        if (playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
+        {
+            arrowInstantiationLocation = weaponSlotManager.rightHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
+            bowAnimator = weaponSlotManager.rightHandSlot.GetComponentInChildren<Animator>();
+        }
+        else if (playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
+        {
+            arrowInstantiationLocation = weaponSlotManager.leftHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
+            bowAnimator = weaponSlotManager.leftHandSlot.GetComponentInChildren<Animator>();
+        }
+        else
+            Debug.LogWarning("No bow prefab was found");
+
+        //Reset players holding arrow
+        playerAnimatorManager.PlayTargetAnimation("Fire",true);
+        playerAnimatorManager.animator.SetBool("isHoldingArrow", false);
+
+        if (bowAnimator!=null)
+        {
+            //set the bool of is drawn to false
+            bowAnimator.SetBool("isDrawn", false);
+            //play the fire animation
+            bowAnimator.Play("Fire");
+        }
+
+        //Destroy previous loaded arrow
+        weaponSlotManager.HideObjectInHand(false, false);
+
+        //Remove an arrow from inventroy
+        playerInventory.RemoveItemFromInventory(playerInventory.equippedAmmo);
+
+        //Create live arrow at specific location
+        //TO DO: possibly check to link the rotation up to the camera facing direction
+        GameObject liveArrow = Instantiate(playerInventory.equippedAmmo.liveAmmoModel, arrowInstantiationLocation.GetTransform().position, arrowInstantiationLocation.GetTransform().rotation);
+        //Get rigidbody and rangedprojectiledmgcollider for modifying
+        Rigidbody rigidbody = liveArrow.GetComponentInChildren<Rigidbody>();
+        AmmunitionDamageCollider damageCollider = liveArrow.GetComponentInChildren<AmmunitionDamageCollider>();
+
+        if (inputHandler.lockOnFlag) 
+        {
+            //While locked on we are always facing target, can copy our facing direction to our arrows facing direction
+            Quaternion arrowRotation = Quaternion.LookRotation(transform.forward);
+            liveArrow.transform.rotation=arrowRotation;
+        }
+        else
+        {
+            liveArrow.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, playerManager.lockOnTransform.eulerAngles.y, 0);
+        }
+
+        //give ammo rigidbody its values
+        rigidbody.AddForce(liveArrow.transform.forward * playerInventory.equippedAmmo.forwardVelocity);
+        rigidbody.AddForce(liveArrow.transform.up * playerInventory.equippedAmmo.upwardVelocity);
+        rigidbody.useGravity = playerInventory.equippedAmmo.useGravity;
+        rigidbody.mass = playerInventory.equippedAmmo.ammoMass;
+        liveArrow.transform.parent = null;
+
+        //set live arrow damage
+        damageCollider.characterManager = playerManager;
+        damageCollider.ammoItem = playerInventory.equippedAmmo;
+        damageCollider.currentDamage = playerInventory.equippedAmmo.physicalDamage;
+        //animate the bow firing the arrow
+    }
+
+    private void FireMagic()
+    {
+        if (playerManager.isInteracting)
+            return;
+
+        //If player does not have an arrow in their inventory, do not proceed
+        if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.equippedAmmo))
+            return;
+
+        if (playerInventory.equippedWeapon is SpellcasterWeaponItem spellcasterWeapon)
+        {
+            switch (spellcasterWeapon.magicWeaponCostType)
+            {
+                case SpellType.none:
+                    break;
+                case SpellType.biomancy:
+                    if (playerStats.HasEnoughMoonlight(spellcasterWeapon.magicAttackCost))
+                    {
+                        playerStats.ConsumeStoredMoonlight(spellcasterWeapon.magicAttackCost);
+                    }
+                    else
+                        return;
+                    break;
+                case SpellType.pyromancy:
+                    if (playerStats.HasEnoughSunlight(spellcasterWeapon.magicAttackCost))
+                    {
+                        playerStats.ConsumeStoredSunlight(spellcasterWeapon.magicAttackCost);
+                    }
+                    else
+                        return;
+                    break;
+            }
+
+            ProjectileInstantiationLocation spellInstantiationLocation = null;
+
+            //Get the spell weapon depending on which hand it is instantiated in
+            if (playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
+            {
+                spellInstantiationLocation = weaponSlotManager.rightHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
+            }
+            else if (playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
+            {
+                spellInstantiationLocation = weaponSlotManager.leftHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
+            }
+            else
+                Debug.LogWarning("No projectile prefab was found");
+
+            playerAnimatorManager.PlayTargetAnimation("Fire", true);
+            
+            //Create live arrow at specific location
+            //TO DO: possibly check to link the rotation up to the camera facing direction
+            GameObject spellParticle = Instantiate(spellcasterWeapon.attackData.liveProjectileModel, spellInstantiationLocation.GetTransform().position, spellInstantiationLocation.GetTransform().rotation);
+            //Get rigidbody and rangedprojectiledmgcollider for modifying
+            Rigidbody rigidbody = spellParticle.GetComponentInChildren<Rigidbody>();
+            ProjectileDamageCollider damageCollider = spellParticle.GetComponentInChildren<ProjectileDamageCollider>();
+
+            if (inputHandler.lockOnFlag)
+            {
+                //While locked on we are always facing target, can copy our facing direction to our arrows facing direction
+                Quaternion arrowRotation = Quaternion.LookRotation(transform.forward);
+                spellParticle.transform.rotation = arrowRotation;
+            }
+            else
+            {
+                spellParticle.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, playerManager.lockOnTransform.eulerAngles.y, 0);
+            }
+
+            //give ammo rigidbody its values
+            rigidbody.AddForce(spellParticle.transform.forward * spellcasterWeapon.attackData.forwardVelocity);
+            rigidbody.AddForce(spellParticle.transform.up * spellcasterWeapon.attackData.upwardVelocity);
+            rigidbody.useGravity = spellcasterWeapon.attackData.useGravity;
+            rigidbody.mass = spellcasterWeapon.attackData.projectileMass;
+            spellParticle.transform.parent = null;
+
+            //set projectile damage collider
+            damageCollider.characterManager = playerManager;
+            damageCollider.currentDamage = spellcasterWeapon.baseDamage;
+            //animate the bow firing the arrow
         }
     }
 
@@ -261,15 +508,41 @@ public class PlayerCombatManager : MonoBehaviour
 
     #endregion
 
-    #region Defending
+    #region Special Actions
 
-    internal void HandleDefending()
+    /// <summary>
+    /// Manages special abilities such as blocking or aiming
+    /// </summary>
+    internal void HandleWeaponSpecificAbilities()
     {
         HandleParryAction();
-        BlockAction();
+
+        if (playerInventory.equippedWeapon == null)
+            return;
+
+        switch (playerInventory.equippedWeapon.weaponType)
+        {
+            case WeaponType.TwoHandedSword:
+                BlockAction();
+                break;
+            case WeaponType.Polearm:
+                BlockAction();
+                break;
+            case WeaponType.Bow:
+                AimAction();
+                break;
+            case WeaponType.FlyingMage:
+                AimAction();
+                break;
+            default:
+                break;
+        }
+
+        
+
     }
 
-    private void PerformParryAction()
+    private void ParryAction()
     {
         if (inputHandler.parryInput)
         {
@@ -307,5 +580,35 @@ public class PlayerCombatManager : MonoBehaviour
         }
     }
 
+    private void AimAction()
+    {
+        if (inputHandler.blockInput)
+        {
+            //Prevent aiming if is already performing another action
+            if (playerManager.isInteracting)
+                return;
+
+            //Prevent aiming if is already aiming
+            if (playerManager.isAiming)
+                return;
+
+            playerAnimatorManager.animator.SetBool("isAiming", true);
+
+            //disable lock on
+            inputHandler.lockOnFlag = false;
+
+            EventManager.currentManager.AddEvent(new SwapToAimCamera());
+        }
+        else
+        {
+            //Prevent exiting aiming if not in aim mode
+            if (!playerManager.isAiming)
+                return;
+
+            playerAnimatorManager.animator.SetBool("isAiming", false);
+
+            EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
+        }
+    }
     #endregion
 }

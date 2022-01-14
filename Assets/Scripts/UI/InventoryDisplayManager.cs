@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InventoryDisplayManager : MonoBehaviour
 {
-    [SerializeField] private PlayerInventory playerInventory;
+    private PlayerInventory playerInventory;
     [SerializeField] private GameObject inventoryItemDisplayPrefab;
     [SerializeField] private GameObject inventoryContentObject;
     [SerializeField] private TMP_Text goldDisplay;
@@ -13,6 +13,8 @@ public class InventoryDisplayManager : MonoBehaviour
 
     private void OnEnable()
     {
+        playerInventory = FindObjectOfType<PlayerInventory>();
+
         UpdateGoldDisplay();
 
         LoadAllInventoryToDisplay();
