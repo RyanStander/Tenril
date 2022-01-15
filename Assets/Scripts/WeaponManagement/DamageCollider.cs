@@ -16,7 +16,10 @@ public class DamageCollider : MonoBehaviour
         damageCollider = GetComponent<Collider>();
         damageCollider.gameObject.SetActive(true);
         damageCollider.isTrigger = true;
+    }
 
+    private void Start()
+    {
         if (enableDamageColliderOnStart)
             damageCollider.enabled = true;
         else
