@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c52fffa827103043b6d9e1ce5417276, type: 3}
+  m_Name: Shortsword
+  m_EditorClassIdentifier: 
+  UID: c56dfbe17a998e44b8de85df548c4f18
+  itemIcon: {fileID: 21300000, guid: 009d4fc67f3ecc341a5229c548eea9a0, type: 3}
+  itemName: Shortsword
+  amountPerStack: 1
+  ItemValue: 69
+  rightWeaponModelPrefab: {fileID: 1896616875515452981, guid: 577c45eb8e4ec4149a309fc99bf5b5d4, type: 3}
+  leftWeaponModelPrefab: {fileID: 0}
+  displaySecondaryWeaponWhenUnequipped: 0
+  unequippedPrimaryWeaponModelPrefab: {fileID: 0}
+  unequippedSecondaryWeaponModelPrefab: {fileID: 0}
+  primarySheathPrefab: {fileID: 0}
+  secondarySheathPrefab: {fileID: 0}
+  weaponController: {fileID: 22100000, guid: e623b8db2eb647040950aaab0236b6c0, type: 2}
+  weaponSoundEffects: {fileID: 11400000, guid: 76fc25c603be27a43a97a32d6c22cd87, type: 2}
+  baseDamage: 10
+  weakAttackDamageMultiplier: 1
+  strongAttackDamageMultiplier: 2
+  finisherDamageMultiplier: 3
+  physicalDamageBlockPercentage: 50
+  equipAnimation: WeaponEquip
+  attackSet: {fileID: 11400000, guid: ad1b4ea56e5550a42a580c7226c05c33, type: 2}
+  weakAttacks:
+  - WeakCombo1
+  - WeakCombo2
+  - WeakCombo3
+  - WeakCombo4
+  strongAttacks:
+  - StrongCombo1
+  parry: Parry
+  baseStaminaCost: 5
+  weakAttackCostMultiplier: 1
+  strongAttackCostMultiplier: 2
+  weaponType: 2
+  weaponSlotWhenNotWielded: 3
+  canParry: 1
+  isUnarmed: 0
