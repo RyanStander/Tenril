@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponSlotManager : MonoBehaviour
@@ -16,6 +14,7 @@ public class WeaponSlotManager : MonoBehaviour
     public DamageCollider leftHandDamageCollider, rightHandDamageCollider;
 
     private GameObject leftDisplayObject, rightDisplayObject;
+
     private void Awake()
     {
         characterAnimatorManager = GetComponent<AnimatorManager>();
