@@ -214,7 +214,6 @@ public class WeaponSlotManager : MonoBehaviour
 
     public void OpenDamageCollider()
     {
-        Debug.Log("Opening damage collider");
         //check if there is a secondary weapon
         //open the damage colliders
         if (leftHandDamageCollider != null)
