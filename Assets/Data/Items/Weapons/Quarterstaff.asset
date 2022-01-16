@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c52fffa827103043b6d9e1ce5417276, type: 3}
+  m_Name: Quarterstaff
+  m_EditorClassIdentifier: 
+  UID: cce44a59cd992724bb9ee2eee6fd9036
+  itemIcon: {fileID: 21300000, guid: 6992dd002850c2eac6c90e92b69c71c9, type: 3}
+  itemName: Quarterstaff
+  amountPerStack: 1
+  ItemValue: 500
+  rightWeaponModelPrefab: {fileID: 2054924950720003793, guid: eb70877de24a7de4a974ac2307962bff, type: 3}
+  leftWeaponModelPrefab: {fileID: 0}
+  displaySecondaryWeaponWhenUnequipped: 0
+  unequippedPrimaryWeaponModelPrefab: {fileID: 4260048596949537076, guid: ab2591550b2c78b4fae13cb3e7c30a5a, type: 3}
+  unequippedSecondaryWeaponModelPrefab: {fileID: 0}
+  primarySheathPrefab: {fileID: 0}
+  secondarySheathPrefab: {fileID: 0}
+  weaponController: {fileID: 22100000, guid: 0d144ee941147e442b144a428846ff90, type: 2}
+  weaponSoundEffects: {fileID: 11400000, guid: 9d8e067f58407f948af467965a7e8f62, type: 2}
+  baseDamage: 20
+  weakAttackDamageMultiplier: 1
+  strongAttackDamageMultiplier: 2
+  finisherDamageMultiplier: 4
+  physicalDamageBlockPercentage: 70
+  equipAnimation: WeaponEquip
+  attackSet: {fileID: 11400000, guid: f3061d04fbfdb174d823fd029c0c4ac8, type: 2}
+  weakAttacks:
+  - WeakCombo1
+  - WeakCombo2
+  - WeakCombo3
+  - WeakCombo4
+  - WeakCombo5
+  strongAttacks:
+  - StrongCombo1
+  - StrongCombo2
+  parry: Parry
+  baseStaminaCost: 5
+  weakAttackCostMultiplier: 1
+  strongAttackCostMultiplier: 2
+  weaponType: 1
+  weaponSlotWhenNotWielded: 2
+  canParry: 1
+  isUnarmed: 0
