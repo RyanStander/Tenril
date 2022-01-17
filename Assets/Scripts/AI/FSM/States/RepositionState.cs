@@ -68,11 +68,20 @@ public class RepositionState : AbstractStateFSM
     //Helper list for debugging hits with obstacles
     private Dictionary<Vector3, Color> hitPoints = new Dictionary<Vector3, Color>();
 
+    //Avoidance 
+    private ObstacleAvoidanceType defaultAvoidance;
+
     public override void OnEnable()
     {
         base.OnEnable();
         stateType = StateTypeFSM.REPOSITIONING;
     }
+
+    public void Start()
+    {
+        //Set the default avoidance to match the NavAgent avoidance
+        defaultAvoidance = navAgent.obstacleAvoidanceType;
+}
 
     public override bool EnterState()
     {
@@ -83,6 +92,9 @@ public class RepositionState : AbstractStateFSM
         {
             //Debug message
             DebugLogString("ENTERED REPOSITIONING STATE");
+
+            //Disable the obstacle avoidance (improves repositioning movement)
+            navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
         }
 
         return enteredState;
@@ -173,6 +185,9 @@ public class RepositionState : AbstractStateFSM
         //Debug message
         DebugLogString("EXITED REPOSITIONING STATE");
 
+        //Disable the obstacle avoidance (improves repositioning movement)
+        navAgent.obstacleAvoidanceType = defaultAvoidance;
+
         hitPoints.Clear();
 
         //Return true
@@ -245,7 +260,6 @@ public class RepositionState : AbstractStateFSM
             
             //Calculate utility based on what is being found at current distance impactfulness
             utility = objectDistanceImpact * obstacleDistanceSensitivity * temporaryWeight;
-            
         }
 
         //Point to sample
