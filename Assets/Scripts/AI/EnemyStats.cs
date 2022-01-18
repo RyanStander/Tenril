@@ -18,8 +18,14 @@ public class EnemyStats : CharacterStats
     //"Blind" vision range, accounts for the area around the enemy
     public int alertRadius = 10;
 
+    //Same as the alert radius, but an upper bound for when actively in combat
+    public int maximumAlertRadius = 35;
+
     //Range for creature chasing, should ideally be greater than the alert and vision radius
     public float chaseRange = 15;
+
+    //Same as the chase radius, but an upper bound for when actively in combat
+    public float maximumChaseRange = 40;
 
     //The chase speed of the AI
     [Range(0, 2)] public float chaseSpeed = 1;
@@ -60,7 +66,8 @@ public class EnemyStats : CharacterStats
     //Helper bool to track if hiding is possible
     public bool canHide = true;
 
-    private EnemyAnimatorManager enemyAnimatorManager;
+    private EnemyAgentManager enemyManager;
+
     [SerializeField] private SliderBarDisplayUI healthBar;
     
     private void Start()
@@ -68,14 +75,14 @@ public class EnemyStats : CharacterStats
         SetupStats();
 
         //Get the animation manager
-        enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
+        enemyManager = GetComponent<EnemyAgentManager>();
         healthBar.SetMaxValue(maxHealth);
     }
 
     public override void TakeDamage(float damageAmount, bool playAnimation = true, string damageAnimation = "Hit")
     {
         //Return if already dead or invulnerable
-        if (isDead || enemyAnimatorManager.animator.GetBool("isInvulnerable")) return;
+        if (isDead || enemyManager.animatorManager.animator.GetBool("isInvulnerable")) return;
 
         //change current health
         base.TakeDamage(damageAmount);
@@ -84,8 +91,8 @@ public class EnemyStats : CharacterStats
         healthBar.SetCurrentValue(currentHealth);
 
         //Play hit animation if damage is taken
-        if (playAnimation) 
-            enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);
+        if (playAnimation)
+            enemyManager.animatorManager.PlayTargetAnimation(damageAnimation, true);
 
         //If character health reaches or goes past 0, play death animation and handle death
         if (currentHealth <= 0)
@@ -94,12 +101,15 @@ public class EnemyStats : CharacterStats
             currentHealth = 0;
 
             //Play the death animation
-            if (playAnimation) enemyAnimatorManager.animator.Play("Death");
+            if (playAnimation) enemyManager.animatorManager.animator.Play("Death");
 
             //Set to dead in stats & in animator controller
             isDead = true;
-            enemyAnimatorManager.animator.SetBool("isDead", true);
+            enemyManager.animatorManager.animator.SetBool("isDead", true);
         }
+        
+        //Highten their senses
+        enemyManager.attackManager.HightenAlertChaseRadiuses();
     }
 
     public override void RegainHealth(float regainAmount)

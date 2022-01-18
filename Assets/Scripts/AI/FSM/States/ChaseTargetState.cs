@@ -79,6 +79,13 @@ public class ChaseTargetState : AbstractStateFSM
         //Set the destination of the navigation agent to the target
         navAgent.SetDestination(enemyManager.currentTarget.transform.position);
 
+        //Check if healing is possible
+        if (enemyManager.ShouldTryHealing())
+        {
+            //Attempt to heal
+            finiteStateMachine.EnterState(StateTypeFSM.HEALING);
+        }
+
         //If the calculated path is not pending, conduct range checks
         if(!navAgent.pathPending)
         {
@@ -168,7 +175,7 @@ public class ChaseTargetState : AbstractStateFSM
     private bool IsWithinChaseRange()
     {
         //If within attack range based on remaining NavMesh distance, return true
-        return IsWithinGivenRange(enemyManager.enemyStats.chaseRange);
+        return IsWithinGivenRange(enemyManager.attackManager.currentChasingRange);
     }
     #endregion
 }

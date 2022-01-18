@@ -54,7 +54,6 @@ public class ProjectileDamageCollider : DamageCollider
                 if (targetCharacterManager != characterManager)
                     characterStats.TakeDamage(currentDamage, hasInterrupt);
             }
-
         }
     }
 }
