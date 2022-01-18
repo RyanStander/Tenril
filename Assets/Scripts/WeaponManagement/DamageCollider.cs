@@ -113,7 +113,6 @@ public class DamageCollider : MonoBehaviour
                         audioSourceHolder.hitSFX.volume=weaponSoundEffects.weaponHitFlesh.volume;
                     }
                     #endregion
-
                 }
             }
             else
@@ -139,7 +138,6 @@ public class DamageCollider : MonoBehaviour
                     #endregion
                 }
             }
-
         }
     }
 }

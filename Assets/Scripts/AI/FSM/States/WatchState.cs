@@ -132,7 +132,7 @@ public class WatchState : AbstractStateFSM
     private void CheckForTarget()
     {
         //Fetches detectable characters and returns a list of enemies
-        targetsByDistance = enemyManager.visionManager.GetListOfVisibleEnemyTargets(visionManager.pointOfVision, enemyManager.enemyStats.alertRadius, characterLayer, detectionBlockLayer);
+        targetsByDistance = enemyManager.visionManager.GetListOfVisibleEnemyTargets(visionManager.pointOfVision, enemyManager.attackManager.currentAlertnessRange, characterLayer, detectionBlockLayer);
     }
 
     private void CheckForClosestTarget()

@@ -175,7 +175,7 @@ public class ChaseTargetState : AbstractStateFSM
     private bool IsWithinChaseRange()
     {
         //If within attack range based on remaining NavMesh distance, return true
-        return IsWithinGivenRange(enemyManager.enemyStats.chaseRange);
+        return IsWithinGivenRange(enemyManager.attackManager.currentChasingRange);
     }
     #endregion
 }

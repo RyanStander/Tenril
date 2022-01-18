@@ -1174,7 +1174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae1ed7543ae76864fb3f3aeb9baea264, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthLevel: 15
+  healthLevel: 10
   maxHealth: 0
   currentHealth: 0
   isDead: 0
@@ -1200,7 +1200,9 @@ MonoBehaviour:
   xpToAwardOnDeath: 100
   heavyAttackLikeliness: 0.25
   alertRadius: 7
+  maximumAlertRadius: 35
   chaseRange: 14
+  maximumChaseRange: 40
   chaseSpeed: 2
   repositionSpeed: 1
   obstacleAwarenessRange: 15
@@ -1363,6 +1365,9 @@ MonoBehaviour:
   desiredDistance: 0
   distanceBoundaries: {x: 0, y: 0}
   repositioningOffset: 0.1
+  currentAlertnessRange: 0
+  currentChasingRange: 0
+  alertChaseChangeRate: 1
 --- !u!1 &6051805372053708827
 GameObject:
   m_ObjectHideFlags: 0

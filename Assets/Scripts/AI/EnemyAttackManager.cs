@@ -33,11 +33,11 @@ public class EnemyAttackManager : MonoBehaviour
     [Range(0.05f, 0.5f)] public float repositioningOffset = 0.1f;
 
     //The current alertness and chasing range to be followed and its targets
-    [HideInInspector] public float currentAlertnessRange;
-    public float currentChasingRange;
-    private float targetAlertnessRange;
-    private float targetChasingRange;
-    public float alertChaseChangeRate;
+    [HideInInspector] public float currentAlertnessRange, currentChasingRange;
+    private float targetAlertnessRange, targetChasingRange;
+
+    //Rate at which the radius should return to normal
+    [Range(0,5)] public float alertChaseChangeRate = 1;
 
     private void Awake()
     {
@@ -148,14 +148,11 @@ public class EnemyAttackManager : MonoBehaviour
         currentChasingRange = Mathf.Max(currentChasingRange, targetChasingRange);
     }
 
-    public void SetCurrentAlertRadius(float givenRange)
+    public void HightenAlertChaseRadiuses()
     {
-        currentAlertnessRange = givenRange;
-    }
-
-    public void SetCurrentChaseRange(float givenRange)
-    {
-        currentChasingRange = givenRange;
+        //Set radiuses to maximum
+        currentAlertnessRange = enemyManager.enemyStats.maximumAlertRadius;
+        currentChasingRange = enemyManager.enemyStats.maximumChaseRange;
     }
     #endregion
 
