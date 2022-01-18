@@ -32,6 +32,13 @@ public class EnemyAttackManager : MonoBehaviour
     //The offset amount at which the desired distance is considered to have been reached
     [Range(0.05f, 0.5f)] public float repositioningOffset = 0.1f;
 
+    //The current alertness and chasing range to be followed and its targets
+    [HideInInspector] public float currentAlertnessRange;
+    public float currentChasingRange;
+    private float targetAlertnessRange;
+    private float targetChasingRange;
+    public float alertChaseChangeRate;
+
     private void Awake()
     {
         //Getter for relevant reference
@@ -39,6 +46,14 @@ public class EnemyAttackManager : MonoBehaviour
 
         //Nullcheck for missing, throw exception as this does not guarantee it will break the code, but is likely to
         if (enemyManager == null) throw new MissingComponentException("Missing EnemyAgentManager on " + gameObject + "!");
+
+        //Set the starting alertness and chasing ranges
+        currentAlertnessRange = enemyManager.enemyStats.alertRadius;
+        currentChasingRange = enemyManager.enemyStats.chaseRange;
+
+        //Set the target ranges
+        targetAlertnessRange = enemyManager.enemyStats.alertRadius;
+        targetChasingRange = enemyManager.enemyStats.chaseRange;
     }
 
 
@@ -100,6 +115,7 @@ public class EnemyAttackManager : MonoBehaviour
     private void FixedUpdate()
     {
         AttackTimeoutClock();
+        EaseTowardsTargetRadiuses();
     }
 
     private void AttackTimeoutClock()
@@ -119,6 +135,29 @@ public class EnemyAttackManager : MonoBehaviour
             hasTimedOut = true;
         }
     }
+
+    #region Chasing and alertness radius related
+    private void EaseTowardsTargetRadiuses()
+    {
+        //Reduce by time multiplied by rate of change
+        currentAlertnessRange -= alertChaseChangeRate * Time.deltaTime;
+        currentChasingRange -= alertChaseChangeRate * Time.deltaTime;
+
+        //Clamp so it doesnt go beyond its minimum
+        currentAlertnessRange = Mathf.Max(currentAlertnessRange, targetAlertnessRange);
+        currentChasingRange = Mathf.Max(currentChasingRange, targetChasingRange);
+    }
+
+    public void SetCurrentAlertRadius(float givenRange)
+    {
+        currentAlertnessRange = givenRange;
+    }
+
+    public void SetCurrentChaseRange(float givenRange)
+    {
+        currentChasingRange = givenRange;
+    }
+    #endregion
 
     public bool IsWithinDesiredOffset(float currentDistance)
     { 
@@ -216,4 +255,18 @@ public class EnemyAttackManager : MonoBehaviour
         return IsWithinAttackView(givenData.attackAngle);
     }
     #endregion
+
+    private void OnDrawGizmosSelected()
+    {
+        //Return if needed items are not available yet
+        if (enemyManager == null || enemyManager.enemyStats == null || enemyManager.visionManager == null) return;
+
+        //Debug the sphere of view
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(enemyManager.visionManager.pointOfVision.position, currentAlertnessRange);
+
+        //Debug the sphere of chasing
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(enemyManager.visionManager.pointOfVision.position, currentChasingRange);
+    }
 }

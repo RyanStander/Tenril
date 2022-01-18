@@ -18,8 +18,14 @@ public class EnemyStats : CharacterStats
     //"Blind" vision range, accounts for the area around the enemy
     public int alertRadius = 10;
 
+    //Same as the alert radius, but an upper bound for when actively in combat
+    public int maximumAlertRadius = 20;
+
     //Range for creature chasing, should ideally be greater than the alert and vision radius
     public float chaseRange = 15;
+
+    //Same as the chase radius, but an upper bound for when actively in combat
+    public float maximumChaseRange = 30;
 
     //The chase speed of the AI
     [Range(0, 2)] public float chaseSpeed = 1;
