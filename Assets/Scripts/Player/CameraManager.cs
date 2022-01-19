@@ -8,6 +8,14 @@ public class CameraManager : MonoBehaviour
     private CinemachineInputProvider explorationCameraInputProvider;
     private GameObject npcCamera;
 
+    private CinemachineFreeLook explorationCameraFreeLookCam;
+
+    [Header("Camera settings")]
+    [SerializeField] private float ySensitivtyKeyboard=0.0015f;
+    [SerializeField] private float xSensitivtyKeyboard=0.15f;
+    [SerializeField] private float ySensitivtyController=2;
+    [SerializeField] private float xSensitivtyController=300;
+
     private void Awake()
     {
         EventManager.currentManager.Subscribe(EventType.SwapToExplorationCamera, OnSwapToExplorationCamera);
@@ -15,6 +23,7 @@ public class CameraManager : MonoBehaviour
         EventManager.currentManager.Subscribe(EventType.SwapToAimCamera, OnSwapToAimCamera);
         EventManager.currentManager.Subscribe(EventType.SwapToMenuCamera, OnSwapToMenuCamera);
         EventManager.currentManager.Subscribe(EventType.SwapToNPCCamera, OnSwapToNPCCamera);
+        EventManager.currentManager.Subscribe(EventType.PlayerChangedInputDevice, OnPlayerChangedInputDevice);
     }
 
     private void Start()
@@ -29,7 +38,7 @@ public class CameraManager : MonoBehaviour
         //setup the exploration camera values
         if (explorationCamera != null)
         {
-            CinemachineFreeLook explorationCameraFreeLookCam = explorationCamera.GetComponent<CinemachineFreeLook>();
+            explorationCameraFreeLookCam = explorationCamera.GetComponent<CinemachineFreeLook>();
             if (explorationCameraFreeLookCam != null)
             {
                 if (explorationCameraFreeLookCam.Follow == null)
@@ -152,5 +161,51 @@ public class CameraManager : MonoBehaviour
         else
             throw new System.Exception("Error: EventData class with EventType.SwapToMenuCamera was received but is not of class SwapToMenuCamera.");
     }
+
+    private void OnPlayerChangedInputDevice(EventData eventData)
+    {
+        if (eventData is PlayerChangedInputDevice playerChangedInputDevice)
+        {
+            switch (playerChangedInputDevice.inputDevice)
+            {
+                case InputDeviceType.KeyboardMouse:
+                    ChangeToKeyboardSettings();
+                    break;
+                case InputDeviceType.GeneralGamepad:
+                    ChangeToControllerSettings();
+                    break;
+                case InputDeviceType.PlayStation:
+                    ChangeToControllerSettings();
+                    break;
+                case InputDeviceType.Xbox:
+                    ChangeToControllerSettings();
+                    break;
+            }
+        }
+        else
+            throw new System.Exception("Error: EventData class with EventType.PlayerChangedInputDevice was received but is not of class PlayerChangedInputDevice.");
+    }
     #endregion
+
+    private void ChangeToKeyboardSettings()
+    {
+        //Set the camera to input value gain mode
+        explorationCameraFreeLookCam.m_YAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
+        explorationCameraFreeLookCam.m_XAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
+
+        //Set the camera speed/sensitivity
+        explorationCameraFreeLookCam.m_YAxis.m_MaxSpeed = ySensitivtyKeyboard;
+        explorationCameraFreeLookCam.m_XAxis.m_MaxSpeed = xSensitivtyKeyboard;
+    }
+
+    private void ChangeToControllerSettings()
+    {
+        //Set the camera to input value gain mode
+        explorationCameraFreeLookCam.m_YAxis.m_SpeedMode = AxisState.SpeedMode.MaxSpeed;
+        explorationCameraFreeLookCam.m_XAxis.m_SpeedMode = AxisState.SpeedMode.MaxSpeed;
+
+        //Set the camera speed/sensitivity
+        explorationCameraFreeLookCam.m_YAxis.m_MaxSpeed = ySensitivtyController;
+        explorationCameraFreeLookCam.m_XAxis.m_MaxSpeed = xSensitivtyController;
+    }
 }

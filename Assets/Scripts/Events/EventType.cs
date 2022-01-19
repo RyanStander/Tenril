@@ -68,4 +68,7 @@ public enum EventType
     PlayerToggleSpellcastingMode,
     PlayerHasDroppedItem,
     PlayInteractSound,
+
+    //Inputs
+    PlayerChangedInputDevice,
 }
