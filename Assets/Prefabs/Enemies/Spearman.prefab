@@ -226,10 +226,10 @@ MonoBehaviour:
   utilityRayCount: 75
   bestRayImpactRatio: 0.15
   repositioningOffset: 0.1
-  adittionalRayRange: 1
+  adittionalRayRange: 0.5
   filteredObstacles: 38
   obstacleWeight: -1
-  characterWeight: -0.75
+  characterWeight: -0.5
   targetAngleWeight: 0.75
   obstacleDistanceSensitivity: 1
   targetDistanceSensitivity: 1
@@ -1200,7 +1200,9 @@ MonoBehaviour:
   xpToAwardOnDeath: 100
   heavyAttackLikeliness: 0.25
   alertRadius: 7
+  maximumAlertRadius: 35
   chaseRange: 14
+  maximumChaseRange: 40
   chaseSpeed: 2
   repositionSpeed: 1
   obstacleAwarenessRange: 15
@@ -1363,6 +1365,9 @@ MonoBehaviour:
   desiredDistance: 0
   distanceBoundaries: {x: 0, y: 0}
   repositioningOffset: 0.1
+  currentAlertnessRange: 0
+  currentChasingRange: 0
+  alertChaseChangeRate: 1
 --- !u!1 &6051805372053708827
 GameObject:
   m_ObjectHideFlags: 0

@@ -132,7 +132,7 @@ public class WatchState : AbstractStateFSM
     private void CheckForTarget()
     {
         //Fetches detectable characters and returns a list of enemies
-        targetsByDistance = enemyManager.visionManager.GetListOfVisibleEnemyTargets(visionManager.pointOfVision, enemyManager.enemyStats.alertRadius, characterLayer, detectionBlockLayer);
+        targetsByDistance = enemyManager.visionManager.GetListOfVisibleEnemyTargets(visionManager.pointOfVision, enemyManager.attackManager.currentAlertnessRange, characterLayer, detectionBlockLayer);
     }
 
     private void CheckForClosestTarget()
@@ -172,19 +172,5 @@ public class WatchState : AbstractStateFSM
                 wasAlerted = true;
             }
         }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        //Return if needed items are not available yet
-        if (enemyManager == null || enemyManager.enemyStats == null || enemyManager.visionManager == null) return;
-
-        //Debug the sphere of view
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(visionManager.pointOfVision.position, enemyManager.enemyStats.alertRadius);
-
-        //Debug the sphere of chasing
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(visionManager.pointOfVision.position, enemyManager.enemyStats.chaseRange);
     }
 }
