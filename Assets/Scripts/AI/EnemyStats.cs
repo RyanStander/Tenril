@@ -39,9 +39,6 @@ public class EnemyStats : CharacterStats
     //Range for creature knowing where obstacles that can be hidden behind are
     public float obstacleAwarenessRange = 15;
 
-    //The range at which attacking should begin, should be replaced with preffered attacks
-    public float maximumAttackRange = 3.5f;
-
     //The height difference allowed for attacking
     public float maximumAttackHeight = 0.5f;
 

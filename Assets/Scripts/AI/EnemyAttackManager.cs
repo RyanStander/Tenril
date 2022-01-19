@@ -11,7 +11,7 @@ public class EnemyAttackManager : MonoBehaviour
     protected EnemyAgentManager enemyManager;
 
     //Current time to wait before reassesing the available attacks
-    [Range(1, 5)] public float timeoutTime = 3f;
+    [Range(1, 5)] public float timeoutTime = 2f;
     private float timeoutTimer = 0;
     public bool hasTimedOut = true;
 
@@ -26,6 +26,12 @@ public class EnemyAttackManager : MonoBehaviour
 
     //The current desired distance
     public float desiredDistance = 0;
+
+    //The range at which attacking should begin, set based on current weapon
+    public float currentMaximumAttackRange = 0;
+
+    //Additional offset to prevent exiting combat
+    [Range(0,1)] public float attackRangeAdditionalOffset = 0.5f;
 
     //The range of max and minimum ranges for the attack, used for when ideal distance is not reached, but the attack can still be made
     public Vector2 distanceBoundaries = new Vector2();
@@ -55,6 +61,15 @@ public class EnemyAttackManager : MonoBehaviour
         //Set the target ranges
         targetAlertnessRange = enemyManager.enemyStats.alertRadius;
         targetChasingRange = enemyManager.enemyStats.chaseRange;
+
+        //Update the maximum attack range
+        UpdateAttackRange();
+    }
+
+    public void UpdateAttackRange()
+    {
+        //Get the maximum attack range based on the current weapon equipt
+        currentMaximumAttackRange = enemyManager.inventory.equippedWeapon.attackSet.GetMaximumAttackRange();
     }
 
 

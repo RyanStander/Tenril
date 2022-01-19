@@ -10,4 +10,32 @@ public class AttackSet : ScriptableObject
 
     //List of heavy attack data
     public List<AttackData> heavyAttacks = new List<AttackData>();
+
+    //Iterates over the entire list of attacks and gets the maximum distance that the weapon functions at
+    public float GetMaximumAttackRange()
+    {
+        //Temporary variable to track maximum range
+        float maximumAttackRange = 0;
+
+        //Iterate over all attacks and check for their attack ranges
+        foreach(AttackData attack in lightAttacks)
+        {
+            //If greater than current attack range, update
+            if(attack.maximumDistanceNeededToAttack > maximumAttackRange)
+            {
+                maximumAttackRange = attack.maximumDistanceNeededToAttack;
+            }
+        }
+        foreach (AttackData attack in heavyAttacks)
+        {
+            //If greater than current attack range, update
+            if (attack.maximumDistanceNeededToAttack > maximumAttackRange)
+            {
+                maximumAttackRange = attack.maximumDistanceNeededToAttack;
+            }
+        }
+
+        //Return max range
+        return maximumAttackRange;
+    }
 }
