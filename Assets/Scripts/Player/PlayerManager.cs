@@ -153,7 +153,7 @@ public class PlayerManager : CharacterManager
     private void FixedUpdate()
     {
         float delta = Time.deltaTime;
-        inputHandler.TickInput(delta);
+        inputHandler.TickInput();
         
         playerLocomotion.HandleLocomotion(delta);
 
