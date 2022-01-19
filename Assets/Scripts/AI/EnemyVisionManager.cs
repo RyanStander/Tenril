@@ -9,7 +9,8 @@ public class EnemyVisionManager : MonoBehaviour
     //Relevant attached manager
     private EnemyAgentManager enemyManager;
 
-    //Masks for detection
+    //Masks for detection and vision blocking
+    public LayerMask detectionBlockLayer = 1 << 9;
     public LayerMask characterLayer = 1 << 10;
 
     private void Awake()
@@ -21,7 +22,7 @@ public class EnemyVisionManager : MonoBehaviour
         if (enemyManager == null) throw new MissingComponentException("Missing EnemyAgentManager on " + gameObject + "!");
     }
 
-    internal Dictionary<GameObject, float> GetListOfVisibleEnemyTargets(Transform originPoint, float radius, LayerMask characterLayer, LayerMask detectionBlockLayer)
+    internal Dictionary<GameObject, float> GetListOfVisibleExpectedTargets(Transform originPoint, float radius, Faction targetFaction, bool isAlliedSearch)
     {
         //Cast a sphere wrapping the head and check for characters within range
         Collider[] hitColliders = Physics.OverlapSphere(originPoint.position, radius, characterLayer);
@@ -36,22 +37,37 @@ public class EnemyVisionManager : MonoBehaviour
             if (hitCollider.transform.gameObject == gameObject) continue;
 
             //If existing, get the vision point of the object, otherwise default to the hit collider
-            GameObject visionPoint = GetVisionPoint(hitCollider.gameObject);
+            Transform visionPoint = GetVisionPoint(hitCollider.gameObject).transform;
 
             //Temporary float for rough distance between objects
-            float distance = Vector3.Distance(visionPoint.transform.position, originPoint.position);
+            float distance = Vector3.Distance(visionPoint.position, originPoint.position);
 
-            if (IsTargetUnobstructed(visionPoint.transform, originPoint, detectionBlockLayer))
+            if (IsTargetUnobstructed(visionPoint, originPoint, detectionBlockLayer))
             {
                 //Check if character stats are attached, ignore otherwise
                 if (hitCollider.gameObject.TryGetComponent(out CharacterStats stats))
                 {
-                    //Check for enemy faction or no faction as well as for if the target is still alive
-                    //If valid, add to dictionary with unpathed & direct distance
-                    if (!stats.isDead && stats.assignedFaction != enemyManager.enemyStats.assignedFaction && stats.assignedFaction != Faction.NONE)
+                    if(isAlliedSearch)
                     {
-                        enemyManager.stateMachine.DebugLogString("Target character is an enemy: " + hitCollider.gameObject + "| Distance: " + distance);
-                        targetsByDistance.Add(hitCollider.gameObject, distance);
+                        //Check for allied faction or no faction as well as for if the target is still alive
+                        if (!stats.isDead)
+                        {
+                            if (targetFaction == stats.assignedFaction || targetFaction == Faction.NONE)
+                            {
+                                //If valid, add to dictionary
+                                targetsByDistance.Add(hitCollider.gameObject, distance);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //Check for enemy faction or no faction as well as for if the target is still alive
+                        //If valid, add to dictionary with unpathed & direct distance
+                        if (!stats.isDead && stats.assignedFaction != enemyManager.enemyStats.assignedFaction && stats.assignedFaction != Faction.NONE)
+                        {
+                            enemyManager.stateMachine.DebugLogString("Target character is an enemy: " + hitCollider.gameObject + "| Distance: " + distance);
+                            targetsByDistance.Add(hitCollider.gameObject, distance);
+                        }
                     }
                 }
             }
@@ -61,40 +77,41 @@ public class EnemyVisionManager : MonoBehaviour
         return targetsByDistance;
     }
 
-    internal List<GameObject> GetListOfNearbyCharacters(Transform originPoint, float radius, Faction targetFaction)
-    {
-        //Cast a sphere wrapping the head and check for characters within range
-        Collider[] hitColliders = Physics.OverlapSphere(originPoint.position, radius, characterLayer);
+    //internal List<GameObject> GetListOfNearbyCharactersNoVision(Transform originPoint, float radius, Faction targetFaction)
+    //{
+    //    //Cast a sphere wrapping the head and check for characters within range
+    //    Collider[] hitColliders = Physics.OverlapSphere(originPoint.position, radius, characterLayer);
 
-        //Temporary list of targets
-        List<GameObject> targetsToReturn = new List<GameObject>();
+    //    //Temporary list of targets
+    //    List<GameObject> targetsToReturn = new List<GameObject>();
 
-        //Check each character for if it is within valid distance and for its faction
-        foreach (var hitCollider in hitColliders)
-        {
-            //Continue (skip) execution if the found object was self, while avoiding any break to the foreach
-            if (hitCollider.transform.gameObject == gameObject) continue;
+    //    //Check each character for if it is within valid distance and for its faction
+    //    foreach (var hitCollider in hitColliders)
+    //    {
+    //        //Continue (skip) execution if the found object was self, while avoiding any break to the foreach
+    //        if (hitCollider.transform.gameObject == gameObject) continue;
 
-            //Check if character stats are attached, ignore otherwise
-            if (hitCollider.gameObject.TryGetComponent(out CharacterStats stats))
-            {
-                //Check for allied faction or no faction as well as for if the target is still alive
-                if (!stats.isDead)
-                {
-                    if (targetFaction == stats.assignedFaction || targetFaction == Faction.NONE)
-                    {
-                        //If valid, add to list
-                        targetsToReturn.Add(hitCollider.gameObject);
-                    }
-                }
-            }
-        }
+    //        //Check if character stats are attached, ignore otherwise
+    //        if (hitCollider.gameObject.TryGetComponent(out CharacterStats stats))
+    //        {
+    //            //Check for allied faction or no faction as well as for if the target is still alive
+    //            if (!stats.isDead)
+    //            {
+    //                if (targetFaction == stats.assignedFaction || targetFaction == Faction.NONE)
+    //                {
+    //                    //If valid, add to list
+    //                    targetsToReturn.Add(hitCollider.gameObject);
+    //                }
+    //            }
+    //        }
+    //    }
 
-        //Return the list of targets
-        return targetsToReturn;
-    }
+    //    //Return the list of targets
+    //    return targetsToReturn;
+    //}
 
     //Checks for line of sight
+
     internal bool IsTargetUnobstructed(Transform targetPoint, Transform originPoint, LayerMask detectionBlockLayer)
     {
         enemyManager.stateMachine.DebugLogString("Checking for line of sight with character " + targetPoint.name);

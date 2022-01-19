@@ -174,16 +174,36 @@ public class EnemyAttackManager : MonoBehaviour
     public void AlertAlliesOfAttack()
     {
         //Get nearby allies within range
-        List<GameObject> allies = enemyManager.visionManager.GetListOfNearbyCharacters(gameObject.transform, enemyManager.enemyStats.informAlliesRadius, enemyManager.enemyStats.assignedFaction);
+        Dictionary<GameObject, float> allies = enemyManager.visionManager.GetListOfVisibleExpectedTargets(gameObject.transform, enemyManager.enemyStats.informAlliesRadius, enemyManager.enemyStats.assignedFaction, true);
 
         //Iterate over all allies in the list
-        foreach(GameObject ally in allies)
+        foreach(KeyValuePair<GameObject, float> ally in allies)
         {
             //Cast them (If possible) to enemy managers
-            if (ally.TryGetComponent(out EnemyAgentManager manager))
+            if (ally.Key.TryGetComponent(out EnemyAgentManager manager))
             {
                 //Highten their radiuses
                 manager.attackManager.HightenAlertChaseRadiuses();
+            }
+        }
+    }
+
+    public void AlertAlliesOfTarget(GameObject foundTarget)
+    {
+        //Get nearby allies within range
+        Dictionary<GameObject, float> allies = enemyManager.visionManager.GetListOfVisibleExpectedTargets(gameObject.transform, enemyManager.enemyStats.informAlliesRadius, enemyManager.enemyStats.assignedFaction, true);
+
+        //Iterate over all allies in the list
+        foreach (KeyValuePair<GameObject, float> ally in allies)
+        {
+            //Cast them (If possible) to enemy managers
+            if (ally.Key.TryGetComponent(out EnemyAgentManager manager))
+            {
+                //Get the current state and if they are waiting for a target, give them the target
+                if(manager.stateMachine.GetCurrentState() is WatchState watchState)
+                {
+                    watchState.AllyFoundTarget(foundTarget);
+                }
             }
         }
     }
