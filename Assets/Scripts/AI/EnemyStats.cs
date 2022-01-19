@@ -27,6 +27,9 @@ public class EnemyStats : CharacterStats
     //Same as the chase radius, but an upper bound for when actively in combat
     public float maximumChaseRange = 40;
 
+    //Range at which they will inform other units to expand their alert radius
+    public float informAlliesRadius = 10;
+
     //The chase speed of the AI
     [Range(0, 2)] public float chaseSpeed = 1;
 
@@ -110,6 +113,9 @@ public class EnemyStats : CharacterStats
         
         //Highten their senses
         enemyManager.attackManager.HightenAlertChaseRadiuses();
+
+        //Alert nearby enemies of attack and highten their senses
+        enemyManager.attackManager.AlertAlliesOfAttack();
     }
 
     public override void RegainHealth(float regainAmount)

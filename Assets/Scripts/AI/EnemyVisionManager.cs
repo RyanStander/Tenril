@@ -9,6 +9,9 @@ public class EnemyVisionManager : MonoBehaviour
     //Relevant attached manager
     private EnemyAgentManager enemyManager;
 
+    //Masks for detection
+    public LayerMask characterLayer = 1 << 10;
+
     private void Awake()
     {
         //Getter for relevant reference
@@ -56,6 +59,39 @@ public class EnemyVisionManager : MonoBehaviour
 
         //Return the dictionary of targets
         return targetsByDistance;
+    }
+
+    internal List<GameObject> GetListOfNearbyCharacters(Transform originPoint, float radius, Faction targetFaction)
+    {
+        //Cast a sphere wrapping the head and check for characters within range
+        Collider[] hitColliders = Physics.OverlapSphere(originPoint.position, radius, characterLayer);
+
+        //Temporary list of targets
+        List<GameObject> targetsToReturn = new List<GameObject>();
+
+        //Check each character for if it is within valid distance and for its faction
+        foreach (var hitCollider in hitColliders)
+        {
+            //Continue (skip) execution if the found object was self, while avoiding any break to the foreach
+            if (hitCollider.transform.gameObject == gameObject) continue;
+
+            //Check if character stats are attached, ignore otherwise
+            if (hitCollider.gameObject.TryGetComponent(out CharacterStats stats))
+            {
+                //Check for allied faction or no faction as well as for if the target is still alive
+                if (!stats.isDead)
+                {
+                    if (targetFaction == stats.assignedFaction || targetFaction == Faction.NONE)
+                    {
+                        //If valid, add to list
+                        targetsToReturn.Add(hitCollider.gameObject);
+                    }
+                }
+            }
+        }
+
+        //Return the list of targets
+        return targetsToReturn;
     }
 
     //Checks for line of sight

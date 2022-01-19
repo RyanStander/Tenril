@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -154,6 +155,23 @@ public class EnemyAttackManager : MonoBehaviour
         currentAlertnessRange = enemyManager.enemyStats.maximumAlertRadius;
         currentChasingRange = enemyManager.enemyStats.maximumChaseRange;
     }
+
+    public void AlertAlliesOfAttack()
+    {
+        //Get nearby allies within range
+        List<GameObject> allies = enemyManager.visionManager.GetListOfNearbyCharacters(gameObject.transform, enemyManager.enemyStats.informAlliesRadius, enemyManager.enemyStats.assignedFaction);
+
+        //Iterate over all allies in the list
+        foreach(GameObject ally in allies)
+        {
+            //Cast them (If possible) to enemy managers
+            if (ally.TryGetComponent(out EnemyAgentManager manager))
+            {
+                //Highten their radiuses
+                manager.attackManager.HightenAlertChaseRadiuses();
+            }
+        }
+    }
     #endregion
 
     public bool IsWithinDesiredOffset(float currentDistance)
@@ -265,5 +283,9 @@ public class EnemyAttackManager : MonoBehaviour
         //Debug the sphere of chasing
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(enemyManager.visionManager.pointOfVision.position, currentChasingRange);
+
+        //Debug the sphere of alerting allies
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(enemyManager.visionManager.pointOfVision.position, enemyManager.enemyStats.informAlliesRadius);
     }
 }
