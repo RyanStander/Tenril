@@ -1,14 +1,18 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 
 public class InputHandler : MonoBehaviour
 {
+    //The input device that is being used by the player
+    public InputDeviceType activeInputDevice = InputDeviceType.KeyboardMouse;
+
     public float left, forward, moveAmount;
 
     private PlayerController inputActions;
 
     public DeviceDisplayConfigurator deviceDisplayConfigurator;
-
+    
     //Movement inputs
     public Vector2 lookInput;
     private Vector2 movementInput;
@@ -31,6 +35,15 @@ public class InputHandler : MonoBehaviour
 
     //combat flags
     public bool comboFlag,lockOnFlag;
+
+    private void OnEnable()
+    {
+        InputSystem.onActionChange += OnInputDeviceChange;
+    }
+
+    private void OnDisable()
+    {
+    }
 
     private void Awake()
     {
@@ -59,7 +72,7 @@ public class InputHandler : MonoBehaviour
         inputActions.asset.LoadBindingOverridesFromJson(rebinds);
     }
 
-    internal void TickInput(float delta)
+    internal void TickInput()
     {
         //Movement inputs  
         HandleMovementInput();
@@ -232,6 +245,56 @@ public class InputHandler : MonoBehaviour
     public PlayerController GetInputActions()
     {
         return inputActions;
+    }
+
+    #endregion
+
+
+    #region OnEvents
+
+    void OnInputDeviceChange(object obj, InputActionChange change)
+    {
+        if (change == InputActionChange.ActionPerformed)
+        {
+            var inputAction = (InputAction)obj;
+            var lastControl = inputAction.activeControl;
+            var lastDevice = lastControl.device;
+
+            //Some controller joysticks spam these values, this function prevents from reading 0 values
+            if (inputAction.name == "Navigate" || inputAction.name == "Movement" || inputAction.name == "Look")
+                if (inputAction.ReadValue<Vector2>().magnitude < 0.001f)
+                    return;
+
+            InputDeviceType currentInputDevice = GetInputDeviceType(lastDevice.device.layout);
+            
+            //Check if the active device is different from the one that was just inputed
+            if (currentInputDevice!=activeInputDevice)
+            { 
+                //if it is change it to be the same
+                activeInputDevice = currentInputDevice;
+                Debug.Log($"Device changed to: {currentInputDevice}");
+
+            }
+
+        }
+    }
+
+    private InputDeviceType GetInputDeviceType(string deviceLayout)
+    {
+        //If we find more controllers we can expand on this
+
+        //Checks for the layout name of the device and returns an input device
+        switch (deviceLayout)
+        {
+            case "XInputControllerWindows":
+                return InputDeviceType.Xbox;
+            case "DualShock4GamepadHID":
+                return InputDeviceType.PlayStation;
+            case "DualShock3GamepadHID":
+                return InputDeviceType.PlayStation;
+            default:
+                return InputDeviceType.KeyboardMouse;
+        }
     }
 
     #endregion
