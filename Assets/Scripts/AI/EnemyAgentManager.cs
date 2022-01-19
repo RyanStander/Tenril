@@ -8,6 +8,9 @@ using UnityEngine.AI;
 /// </summary>
 public class EnemyAgentManager : CharacterManager
 {
+    //
+    public LootTable testingTable;
+
     //Enemy stats to manage
     internal EnemyStats enemyStats;
 
