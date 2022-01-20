@@ -3,12 +3,15 @@ using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
+    //The input device that is being used by the player
+    public InputDeviceType activeInputDevice = InputDeviceType.KeyboardMouse;
+
     public float left, forward, moveAmount;
 
     private PlayerController inputActions;
 
     public DeviceDisplayConfigurator deviceDisplayConfigurator;
-
+    
     //Movement inputs
     public Vector2 lookInput;
     private Vector2 movementInput;
@@ -19,7 +22,7 @@ public class InputHandler : MonoBehaviour
     public bool interactInput, menuInput, mapInput,inventoryInput, alternateInteraction;
 
     //Combat Inputs
-    public bool weakAttackInput, weakAttackLetGoInput, strongAttackInput,drawSheathInput, blockInput, parryInput, lockOnInput;
+    public bool weakAttackInput, attackLetGoInput, strongAttackInput,drawSheathInput, blockInput, parryInput, lockOnInput;
     public bool quickslotLeftInput, quickslotRightInput, quickslotUseInput;
 
     //Spellcasting Inputs
@@ -31,6 +34,15 @@ public class InputHandler : MonoBehaviour
 
     //combat flags
     public bool comboFlag,lockOnFlag;
+
+    private void OnEnable()
+    {
+        InputSystem.onActionChange += OnInputDeviceChange;
+    }
+
+    private void OnDisable()
+    {
+    }
 
     private void Awake()
     {
@@ -59,7 +71,7 @@ public class InputHandler : MonoBehaviour
         inputActions.asset.LoadBindingOverridesFromJson(rebinds);
     }
 
-    internal void TickInput(float delta)
+    internal void TickInput()
     {
         //Movement inputs  
         HandleMovementInput();
@@ -71,7 +83,6 @@ public class InputHandler : MonoBehaviour
     internal void ResetInputs()
     {
         weakAttackInput = false;
-        weakAttackLetGoInput = false;
         strongAttackInput = false;
         parryInput = false;
         drawSheathInput = false;
@@ -97,6 +108,7 @@ public class InputHandler : MonoBehaviour
         //----------------------------------------------------------
         //                         Locomotion
         //----------------------------------------------------------
+        #region Locomotion
         //Look
         inputActions.CharacterControls.Look.performed += lookInputActions => lookInput = lookInputActions.ReadValue<Vector2>();
         //Movement
@@ -108,10 +120,11 @@ public class InputHandler : MonoBehaviour
         inputActions.CharacterControls.Dodge.performed += i => dodgeInput = true;
         //Jump
         inputActions.CharacterControls.Jump.performed += i => jumpInput = true;
-
+        #endregion
         //----------------------------------------------------------
         //                         Combat
         //----------------------------------------------------------
+        #region Combat
         //Lock On
         inputActions.CharacterControls.LockOn.performed += i => lockOnInput = true;
         inputActions.CharacterControls.LockOnSwapTargetInput.performed += lockOnTargetInputActions => lockOnTargetInput = lockOnTargetInputActions.ReadValue<float>();
@@ -119,8 +132,9 @@ public class InputHandler : MonoBehaviour
         inputActions.CharacterControls.WeaponSwap.performed += i => drawSheathInput = true;
         //Weak attack
         inputActions.CharacterControls.WeakAttack.performed += i => weakAttackInput = true;
-        //Weak attack let go
-        inputActions.CharacterControls.WeakAttack.canceled += i => weakAttackLetGoInput = true;
+        //attack let go
+        inputActions.CharacterControls.WeakAttack.canceled += i => attackLetGoInput = true;
+        inputActions.CharacterControls.StrongAttack.canceled += i => attackLetGoInput = true;
         //Strong Attack
         inputActions.CharacterControls.StrongAttack.performed += i => strongAttackInput = true;
         //Block
@@ -134,7 +148,7 @@ public class InputHandler : MonoBehaviour
         inputActions.CharacterControls.QuickslotRight.performed += i => quickslotRightInput = true;
         //Quickslot use
         inputActions.CharacterControls.QuickslotUse.performed += i => quickslotUseInput = true;
-
+        #endregion
         //----------------------------------------------------------
         //                         Spellcasting
         //----------------------------------------------------------
@@ -159,7 +173,6 @@ public class InputHandler : MonoBehaviour
         //8
         inputActions.CharacterControls.Spell8.performed += i => castSpell[7] = true;
         #endregion
-
         //----------------------------------------------------------
         //                         Other
         //----------------------------------------------------------
@@ -218,6 +231,26 @@ public class InputHandler : MonoBehaviour
                 EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
         }
 
+        switch (activeInputDevice)
+        {
+            case InputDeviceType.KeyboardMouse:
+                HandleKeyboardMouseLockOnInputSwapping();
+                break;
+            case InputDeviceType.GeneralGamepad:
+                HandleControllerLockOnInputSwapping();
+                break;
+            case InputDeviceType.PlayStation:
+                HandleControllerLockOnInputSwapping();
+                break;
+            case InputDeviceType.Xbox:
+                HandleControllerLockOnInputSwapping();
+                break;
+        }
+        
+    }
+
+    private void HandleControllerLockOnInputSwapping()
+    {
         //Move to the next left target
         if (lockOnFlag && lockOnTargetInput < -0.7f)
         {
@@ -229,9 +262,76 @@ public class InputHandler : MonoBehaviour
         }
     }
 
+    private void HandleKeyboardMouseLockOnInputSwapping()
+    {
+        //Move to the next left target
+        if (lockOnFlag && lockOnTargetInput < -5f)
+        {
+            EventManager.currentManager.AddEvent(new SwapToLeftLockOnTarget());
+        }//Move to the next right target
+        else if (lockOnFlag && lockOnTargetInput > 5f)
+        {
+            EventManager.currentManager.AddEvent(new SwapToRightLockOnTarget());
+        }
+    }
+
     public PlayerController GetInputActions()
     {
         return inputActions;
+    }
+
+    #endregion
+
+
+    #region OnEvents
+
+    void OnInputDeviceChange(object obj, InputActionChange change)
+    {
+        if (change == InputActionChange.ActionPerformed)
+        {
+            var inputAction = (InputAction)obj;
+            var lastControl = inputAction.activeControl;
+            var lastDevice = lastControl.device;
+
+            //Some controller joysticks spam these values, this function prevents from reading 0 values
+            if (inputAction.name == "Navigate" || inputAction.name == "Movement" || inputAction.name == "Look")
+                if (inputAction.ReadValue<Vector2>().magnitude < 0.001f)
+                    return;
+
+            InputDeviceType currentInputDevice = GetInputDeviceType(lastDevice.device.layout);
+            
+            //Check if the active device is different from the one that was just inputed
+            if (currentInputDevice!=activeInputDevice)
+            { 
+                //if it is change it to be the same
+                activeInputDevice = currentInputDevice;
+                Debug.Log($"Device changed to: {currentInputDevice}");
+
+            }
+
+        }
+    }
+
+    private InputDeviceType GetInputDeviceType(string deviceLayout)
+    {
+        //If we find more controllers we can expand on this
+
+        //Checks for the layout name of the device and returns an input device
+        switch (deviceLayout)
+        {
+            case "XInputControllerWindows":
+                EventManager.currentManager.AddEvent(new PlayerChangedInputDevice(InputDeviceType.Xbox));
+                return InputDeviceType.Xbox;
+            case "DualShock4GamepadHID":
+                EventManager.currentManager.AddEvent(new PlayerChangedInputDevice(InputDeviceType.PlayStation));
+                return InputDeviceType.PlayStation;
+            case "DualShock3GamepadHID":
+                EventManager.currentManager.AddEvent(new PlayerChangedInputDevice(InputDeviceType.PlayStation));
+                return InputDeviceType.PlayStation;
+            default:
+                EventManager.currentManager.AddEvent(new PlayerChangedInputDevice(InputDeviceType.KeyboardMouse));
+                return InputDeviceType.KeyboardMouse;
+        }
     }
 
     #endregion

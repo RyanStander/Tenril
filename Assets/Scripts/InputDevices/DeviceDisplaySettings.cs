@@ -4,6 +4,10 @@ using UnityEngine;
 /// </summary>
 public class DeviceDisplaySettings : ScriptableObject
 {
+    [Header("Display Name")] public InputDeviceType deviceDisplayName;
+
+    [Header("Display Color")] public Color deviceDisplayColor;
+
     [System.Serializable]
     public class CustomContext
     {

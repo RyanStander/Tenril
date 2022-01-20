@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerLocomotion : MonoBehaviour
 {
@@ -22,7 +23,8 @@ public class PlayerLocomotion : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float rotationSpeed = 10;
-    [SerializeField] private float aimSensitivity = 0.025f;
+    [SerializeField] private float mouseAimSensitivity = 0.01f;
+    [SerializeField] private float controllerAimSensitivity = 0.025f;
     [SerializeField] private float minimumPivot = -35, maximumPivot = 35;
     [SerializeField] private float sprintStaminaCost = 0.1f;
     [SerializeField] private float dodgeStaminaCost = 5f;
@@ -268,12 +270,19 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void AimRotation(float delta)
     {
+        float modifiedAimSensitivity;
+
+        //Mouse sensitivity works on different values compared to
+        if (inputHandler.activeInputDevice == InputDeviceType.KeyboardMouse)
+            modifiedAimSensitivity = mouseAimSensitivity;
+        else
+            modifiedAimSensitivity = controllerAimSensitivity;
+
         //Debug.Log("current look angle: " + lookAngle+ " and current y rot: "+transform.rotation.eulerAngles.y);
         lookAngle = transform.rotation.eulerAngles.y;
 
-
-        lookAngle += inputHandler.lookInput.x * aimSensitivity / delta;
-        pivotAngle -= inputHandler.lookInput.y * aimSensitivity / delta;
+        lookAngle += inputHandler.lookInput.x * modifiedAimSensitivity / delta;
+        pivotAngle -= inputHandler.lookInput.y * modifiedAimSensitivity / delta;
         pivotAngle = Mathf.Clamp(pivotAngle, minimumPivot, maximumPivot);
 
         Vector3 rotation = Vector3.zero;
@@ -287,6 +296,7 @@ public class PlayerLocomotion : MonoBehaviour
         targetRotation = Quaternion.Euler(rotation);
         GameObject cameraFollowPoint = GameObject.FindGameObjectWithTag("CameraFollowTarget");
         cameraFollowPoint.transform.localRotation = targetRotation;
+        cameraFollowPoint.transform.localRotation = Quaternion.Lerp(targetRotation, cameraFollowPoint.transform.localRotation, delta);
     }
 
     private void LockOnRotation()
