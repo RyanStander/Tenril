@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Users;
 
 public class InputHandler : MonoBehaviour
 {
@@ -110,6 +109,7 @@ public class InputHandler : MonoBehaviour
         //----------------------------------------------------------
         //                         Locomotion
         //----------------------------------------------------------
+        #region Locomotion
         //Look
         inputActions.CharacterControls.Look.performed += lookInputActions => lookInput = lookInputActions.ReadValue<Vector2>();
         //Movement
@@ -121,10 +121,11 @@ public class InputHandler : MonoBehaviour
         inputActions.CharacterControls.Dodge.performed += i => dodgeInput = true;
         //Jump
         inputActions.CharacterControls.Jump.performed += i => jumpInput = true;
-
+        #endregion
         //----------------------------------------------------------
         //                         Combat
         //----------------------------------------------------------
+        #region Combat
         //Lock On
         inputActions.CharacterControls.LockOn.performed += i => lockOnInput = true;
         inputActions.CharacterControls.LockOnSwapTargetInput.performed += lockOnTargetInputActions => lockOnTargetInput = lockOnTargetInputActions.ReadValue<float>();
@@ -147,7 +148,7 @@ public class InputHandler : MonoBehaviour
         inputActions.CharacterControls.QuickslotRight.performed += i => quickslotRightInput = true;
         //Quickslot use
         inputActions.CharacterControls.QuickslotUse.performed += i => quickslotUseInput = true;
-
+        #endregion
         //----------------------------------------------------------
         //                         Spellcasting
         //----------------------------------------------------------
@@ -172,7 +173,6 @@ public class InputHandler : MonoBehaviour
         //8
         inputActions.CharacterControls.Spell8.performed += i => castSpell[7] = true;
         #endregion
-
         //----------------------------------------------------------
         //                         Other
         //----------------------------------------------------------

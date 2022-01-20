@@ -5,9 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "InputDevices/ControllerDisplaySettings")]
 public class DeviceDisplaySettingsController : DeviceDisplaySettings
 {
-    [Header("Display Name")] public string deviceDisplayName;
-
-    [Header("Display Color")] public Color deviceDisplayColor;
 
     //Im not sure what this does
     [Header("Icon Settings")] public bool deviceHasCustomContext;

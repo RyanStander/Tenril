@@ -28,11 +28,13 @@ public class PlayerInteraction : MonoBehaviour
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.PlayerKeybindsUpdates,OnPlayerKeybindsUpdates);
+        EventManager.currentManager.Subscribe(EventType.PlayerChangedInputDevice, OnPlayerChangedInputDevice);
     }
 
     private void OnDisable()
     {
         EventManager.currentManager.Unsubscribe(EventType.PlayerKeybindsUpdates, OnPlayerKeybindsUpdates);
+        EventManager.currentManager.Unsubscribe(EventType.PlayerChangedInputDevice, OnPlayerChangedInputDevice);
     }
 
     private void Awake()
@@ -141,62 +143,9 @@ public class PlayerInteraction : MonoBehaviour
 
     private void DisplayKeybindForInteract()
     {
-        string bindingPath = inputHandler.GetInputActions().CharacterControls.Interact.bindings[1].effectivePath;
-        FindKeybindIconForController(bindingPath);
-    }
+        string bindingPath= CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Interact, inputHandler.activeInputDevice);
 
-    private void FindKeybindIconForController(string bindingPath)
-    {
-        if (inputHandler.deviceDisplayConfigurator.deviceSets[1].deviceDisplaySettings is DeviceDisplaySettingsController controllerIcons)
-        {
-            switch (bindingPath)
-            {
-                #region Buttons
-                case "<Gamepad>/buttonNorth":
-                        interactableUI.keybindToPress.sprite = controllerIcons.buttonNorthIcon;
-                    break;
-                case "<Gamepad>/buttonSouth":
-                        interactableUI.keybindToPress.sprite = controllerIcons.buttonSouthIcon;
-                    break;
-                case "<Gamepad>/buttonWest":
-                        interactableUI.keybindToPress.sprite = controllerIcons.buttonWestIcon;
-                    break;
-                case "<Gamepad>/buttonEast":
-                    interactableUI.keybindToPress.sprite = controllerIcons.buttonEastIcon;
-                    break;
-                #endregion
-                #region Shoulder Buttons
-                case "<Gamepad>/leftShoulder":
-                    interactableUI.keybindToPress.sprite = controllerIcons.leftShoulder;
-                    break;
-                case "<Gamepad>/leftTrigger":
-                    interactableUI.keybindToPress.sprite = controllerIcons.leftTrigger;
-                    break;
-                case "<Gamepad>/rightShoulder":
-                    interactableUI.keybindToPress.sprite = controllerIcons.rightShoulder;
-                    break;
-                case "<Gamepad>/rightTrigger":
-                    interactableUI.keybindToPress.sprite = controllerIcons.rightShoulder;
-                    break;
-                #endregion
-                #region d-Pad
-                    //This is where i put my dpad buttons IF I HAD ANY
-                #endregion
-                #region Analog Sticks
-                //This is where i put my analog stick keybinds IF I HAD ANY
-                #endregion
-                #region Option Buttons
-                case "<Gamepad>/select":
-                    interactableUI.keybindToPress.sprite = controllerIcons.select;
-                    break;
-                case "<Gamepad>/start":
-                    interactableUI.keybindToPress.sprite = controllerIcons.start;
-                    break;
-                #endregion
-                default:
-                    break;
-            }
-        }
+        interactableUI.keybindToPress.sprite = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
     }
 
     private IEnumerator AdjustTransInTheEndOfFrame(Transform obj)
@@ -225,6 +174,18 @@ public class PlayerInteraction : MonoBehaviour
         else
         {
             Debug.LogWarning("The event of PlayerKeybindsUpdates was not matching of event type PlayerKeybindsUpdates");
+        }
+    }
+
+    private void OnPlayerChangedInputDevice(EventData eventData)
+    {
+        if (eventData is PlayerChangedInputDevice)
+        {
+            DisplayKeybindForInteract();
+        }
+        else
+        {
+            Debug.LogWarning("The event of PlayerChangedInputDevice was not matching of event type PlayerChangedInputDevice");
         }
     }
 }

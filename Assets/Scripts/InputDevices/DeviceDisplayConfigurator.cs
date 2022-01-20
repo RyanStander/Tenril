@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "InputDevices/DeviceDisplayConfigurator")]
 public class DeviceDisplayConfigurator : ScriptableObject
 {
-    public DeviceSet[] deviceSets;
+    public DeviceSet keyboardAndMouseSettings,playstationSettings,xboxSettings;
 
     [System.Serializable]
     public class DeviceSet
