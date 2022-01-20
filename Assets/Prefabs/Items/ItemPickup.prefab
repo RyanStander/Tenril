@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 4294254944580539597}
   - component: {fileID: 4294254944580539595}
   - component: {fileID: 4294254944580539596}
+  - component: {fileID: 2290547346122939633}
   m_Layer: 11
   m_Name: ItemPickup
   m_TagString: Interactable
@@ -134,10 +135,10 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4294254944580539598}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.6
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4294254944580539596
 MonoBehaviour:
@@ -154,6 +155,23 @@ MonoBehaviour:
   radius: 0.6
   interactableText: Pick Up Item
   item: {fileID: 11400000, guid: 92735e3b99674a741ac327fbf4264d5f, type: 2}
+  amountOfItem: 1
+--- !u!54 &2290547346122939633
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4294254944580539598}
+  serializedVersion: 2
+  m_Mass: 10
+  m_Drag: 0.5
+  m_AngularDrag: 0.5
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &4294254944708817450
 GameObject:
   m_ObjectHideFlags: 0

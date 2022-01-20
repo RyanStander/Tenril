@@ -9,7 +9,17 @@ public class DeadState : AbstractStateFSM
     public GameObject itemPickupPrefab = null;
 
     //Height offset for dropped items
-    public float dropHeightOffset = 0.25f;
+    public float dropHeightOffset = 1f;
+
+    //Helper bool for explosion item drop effect
+    public bool explodeItemsOnDeath = true;
+
+    //The velocity at which the item is launched into the air
+    //[Range(0,5)] 
+    public float upwardVelocity = 5;
+
+    //The velocity at which the item is launched forward
+    public float forwardVelocity = 0.75f;
 
     public override void OnEnable()
     {
@@ -70,7 +80,6 @@ public class DeadState : AbstractStateFSM
         return true;
     }
 
-
     public void DropInventory()
     {
         //If item pickup prefab doesnt exist, throw an error and return
@@ -93,7 +102,18 @@ public class DeadState : AbstractStateFSM
                 pickupSphere.amountOfItem = item.itemStackCount;
 
                 //Instantiate the prefab
-                Instantiate(itemPickupPrefab, dropPosition, Quaternion.identity);
+                GameObject droppedItem = Instantiate(itemPickupPrefab, dropPosition, Quaternion.identity);
+
+                //Apply explosion effect to the rigid body of the dropped item
+                if(droppedItem.TryGetComponent(out Rigidbody droppedRigidbody))
+                {
+                    //Generate a random direction
+                    Vector2 randomDirection = Random.insideUnitCircle.normalized;
+
+                    //Apply given velocities velocity
+                    droppedRigidbody.AddForce(new Vector3(randomDirection.x * forwardVelocity, upwardVelocity, randomDirection.y * forwardVelocity), ForceMode.VelocityChange);
+                }
+                
             }
         }
         //Throw an error
