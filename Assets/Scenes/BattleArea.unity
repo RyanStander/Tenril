@@ -2297,15 +2297,15 @@ PrefabInstance:
     - target: {fileID: 6051805373545155771, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: primaryWeapon
       value: 
-      objectReference: {fileID: 11400000, guid: 92735e3b99674a741ac327fbf4264d5f, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 6051805373545155771, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: equippedWeapon
       value: 
-      objectReference: {fileID: 11400000, guid: 92735e3b99674a741ac327fbf4264d5f, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 6051805373545155771, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: secondaryWeapon
       value: 
-      objectReference: {fileID: 11400000, guid: 92735e3b99674a741ac327fbf4264d5f, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 7863128870804965783, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -13561,6 +13561,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1884466008237544202, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
+      propertyPath: m_FollowOffset.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884466008237544202, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
+      propertyPath: m_FollowOffset.z
+      value: -0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 1884466008482075780, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_Name
       value: CameraManager
@@ -13608,6 +13616,22 @@ PrefabInstance:
     - target: {fileID: 1884466008482075782, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884466009316583461, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
+      propertyPath: m_FollowOffset.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884466009316583461, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
+      propertyPath: m_FollowOffset.z
+      value: -0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884466009520317164, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
+      propertyPath: m_FollowOffset.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884466009520317164, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
+      propertyPath: m_FollowOffset.z
+      value: -0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
