@@ -1,11 +1,71 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Similar to the character inventory, but specialized to function with combatative AI
+/// </summary>
 public class EnemyInventory : CharacterInventory
 {
+    //The inventory a given enemy will spawn with
+    [Header("Inventory Table")]
+    [Tooltip("Used for generating semi-random equipment")]
+    public LootTable inventoryItemTable = null;
+
+    public void Awake()
+    {
+        PopulateInventoryItemTable();
+        SetWeaponFromInventory();
+    }
+
+    public void PopulateInventoryItemTable()
+    {
+        //Load the loot table if given
+        if (inventoryItemTable != null)
+        {
+            //Throw an error if no inventory was supplied
+            if (inventory == null) throw new MissingComponentException("Missing EnemyInventory on " + gameObject + "!");
+            else
+            {
+                //Add a generated list of loot
+                inventory.AddRange(LootTable.GenerateListOfLoot(inventoryItemTable));
+            }
+        }
+    }
+
+    public void SetWeaponFromInventory()
+    {
+        //If no weapon is currently equipted, search the inventory and use that
+        if(equippedWeapon == null)
+        {
+            //Declare temporary list
+            List<WeaponItem> weapons = new List<WeaponItem>();
+
+            //Iterate over all items and add them to the weapons list
+            foreach(ItemInventory item in inventory)
+            {
+                //Check if its a weapon
+                if(item.item is WeaponItem weapon)
+                {
+                    weapons.Add(weapon);
+                }
+            }
+
+            //If a weapon is found, equipt it
+            if(weapons.Count > 0)
+            {
+                equippedWeapon = weapons[Random.Range(0, weapons.Count - 1)];
+            }
+            //Otherwise throw an error
+            else
+            {
+                Debug.Log("A weapon search was conducted, but nothing was found! Did you forget to include one?");
+            }
+        }
+    }
+
     public void LoadEquippedWeapons(WeaponSlotManager weaponSlotManager)
     {
-            weaponSlotManager.LoadWeaponOnSlot(equippedWeapon);
+        weaponSlotManager.LoadWeaponOnSlot(equippedWeapon);
     }
 
     public void RemoveItemFromInventory(Item item)

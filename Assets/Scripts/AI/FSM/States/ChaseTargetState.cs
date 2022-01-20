@@ -169,7 +169,7 @@ public class ChaseTargetState : AbstractStateFSM
     {
         //If within attack range based on remaining NavMesh distance and height, return true
         //The height check should only temporarilly use this enemy stats value as ranged weapons will need to use a different system
-        return IsWithinGivenRangeAndHeight(enemyManager.enemyStats.maximumAttackRange, enemyManager.enemyStats.maximumAttackHeight);
+        return IsWithinGivenRangeAndHeight(enemyManager.attackManager.currentMaximumAttackRange, enemyManager.enemyStats.maximumAttackHeight);
     }
 
     private bool IsWithinChaseRange()

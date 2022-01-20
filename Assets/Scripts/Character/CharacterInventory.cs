@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles the current equipment being used by a character
+/// </summary>
 public class CharacterInventory : MonoBehaviour
 {
     [Header("Equipped Items")]
     [Tooltip("The weapon the player currently has equipped")]
-    public WeaponItem equippedWeapon;
+    public WeaponItem equippedWeapon = null;
 
     [Tooltip("Determines the weapon that the player currently has equiped and used for swapping")]
     public bool isWieldingPrimaryWeapon = true;
