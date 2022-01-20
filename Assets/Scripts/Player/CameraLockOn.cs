@@ -32,10 +32,6 @@ public class CameraLockOn : MonoBehaviour
     //these positions are used to reset the position of cameras so that following works properly
     private float targetPosition, defaultPosition;
 
-    [Tooltip("The radius to check if the camera is collidong with any objects and will move so that the sphere is not in the radius")]
-    [SerializeField] private float cameraCollisionSphereRadius = 0.2f;
-    [Tooltip("The amount of distance the camera will push itself when colliding")]
-    [SerializeField] private float cameraCollisionOffSet = 0.2f;
     [Tooltip("How close the camera is allowed to get to the player")]
     [SerializeField] private float minimumCollisionOffset = 0.2f;
     [Tooltip("The y position of the camera pivot")]
@@ -175,14 +171,7 @@ public class CameraLockOn : MonoBehaviour
         RaycastHit hit;
         Vector3 direction = lockOnCameraTransform.position - lockOnCameraPivotTransform.position;
         direction.Normalize();
-        //raycast a sphere that goes around the camera, if it intercects with any colliders, return true
-        if (Physics.SphereCast(playerTransform.position, cameraCollisionSphereRadius, direction, out hit,
-            Mathf.Abs(targetPosition), cameraCollisionLayers))
-        {
-            //if it intersects, set target position to where it would not collide with the object
-            float distance = Vector3.Distance(lockOnCameraPivotTransform.position, hit.point);
-            targetPosition = -(distance - cameraCollisionOffSet);
-        }
+
         if (Mathf.Abs(targetPosition) < minimumCollisionOffset)
         {
             targetPosition = -minimumCollisionOffset;
@@ -190,7 +179,14 @@ public class CameraLockOn : MonoBehaviour
 
         Vector3 cameraTransformPosition = Vector3.zero;
         cameraTransformPosition.z = Mathf.Lerp(lockOnCameraTransform.localPosition.z, targetPosition, delta / 0.2f);
+
         lockOnCameraTransform.localPosition = cameraTransformPosition;
+
+        //if colliding with any objects in line with the camera and player, move to collision point
+        if (Physics.Linecast(playerManager.finisherAttackRayCastStartPointTransform.position, lockOnCameraTransform.position, out hit, cameraCollisionLayers))
+        {
+            lockOnCameraTransform.position = hit.point;
+        }
     }
 
     public void HandleLockOn()

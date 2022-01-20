@@ -406,6 +406,10 @@ MonoBehaviour:
   menuCamera: {fileID: 2039442606742920530}
   lockOnCamera: {fileID: 1884466008616623124}
   aimCamera: {fileID: 413010821}
+  ySensitivtyKeyboard: 0.0015
+  xSensitivtyKeyboard: 0.15
+  ySensitivtyController: 2
+  xSensitivtyController: 300
 --- !u!114 &1884466008482075897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -430,8 +434,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   followSpeed: 0.1
-  cameraCollisionSphereRadius: 0.05
-  cameraCollisionOffSet: 0.5
+  cameraCollisionSphereRadius: 0.126
+  cameraCollisionOffSet: 1
   minimumCollisionOffset: 0
   lockedPivotPosition: 2.25
   unlockedPivotPosition: 1.65
