@@ -144,12 +144,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ac0b3e4badd77844b6bb189f88b6e32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionBlockLayer:
-    serializedVersion: 2
-    m_Bits: 262656
-  characterLayer:
-    serializedVersion: 2
-    m_Bits: 1024
   isUsingSearchRate: 0
   searchRate: 0.1
 --- !u!114 &1418810352
@@ -188,6 +182,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49421b8d80aec5241939a38520ae24c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemPickupPrefab: {fileID: 4294254944580539598, guid: a15b9e4745aac974ab1358c2e490cf8e, type: 3}
+  dropHeightOffset: 0.25
+  explodeItemsOnDeath: 1
+  upwardVelocity: 6
+  forwardVelocity: 0.75
 --- !u!114 &368452058314960232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1087,15 +1086,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37c6783681e73f14ab7cec6e2b035b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equippedWeapon: {fileID: 11400000, guid: 293718bd1735afa4f9986ddcccb93a41, type: 2}
+  equippedWeapon: {fileID: 0}
   isWieldingPrimaryWeapon: 1
-  primaryWeapon: {fileID: 11400000, guid: 293718bd1735afa4f9986ddcccb93a41, type: 2}
-  secondaryWeapon: {fileID: 11400000, guid: 293718bd1735afa4f9986ddcccb93a41, type: 2}
+  primaryWeapon: {fileID: 0}
+  secondaryWeapon: {fileID: 0}
   equippedAmmo: {fileID: 0}
-  inventory:
-  - item: {fileID: 11400000, guid: eb54d0e204cd2344390f0b71f6c6ea5b, type: 2}
-    itemStackCount: 1
+  inventory: []
   consumableItemInUse: {fileID: 0}
+  inventoryItemTable: {fileID: 11400000, guid: 0114a3dcba2f4a64bbf3cc0c598dde21, type: 2}
 --- !u!114 &6051805373545155770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1203,10 +1201,10 @@ MonoBehaviour:
   maximumAlertRadius: 35
   chaseRange: 14
   maximumChaseRange: 40
+  informAlliesRadius: 10
   chaseSpeed: 2
   repositionSpeed: 1
   obstacleAwarenessRange: 15
-  maximumAttackRange: 3
   maximumAttackHeight: 0.5
   rotationSpeed: 2.5
   attackRotationSpeed: 2.5
@@ -1302,6 +1300,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointOfVision: {fileID: 6051805372053224837}
+  detectionBlockLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  characterLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!114 &633695106185292835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1358,11 +1362,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad541a677618fe442a1cb6fffe4630ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeoutTime: 3
+  timeoutTime: 2
   hasTimedOut: 1
   shouldExecuteAttack: 0
   currentAttack: {fileID: 0}
   desiredDistance: 0
+  currentMaximumAttackRange: 0
+  attackRangeAdditionalOffset: 0.5
   distanceBoundaries: {x: 0, y: 0}
   repositioningOffset: 0.1
   currentAlertnessRange: 0

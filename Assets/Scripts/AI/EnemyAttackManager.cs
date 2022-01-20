@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -10,7 +11,7 @@ public class EnemyAttackManager : MonoBehaviour
     protected EnemyAgentManager enemyManager;
 
     //Current time to wait before reassesing the available attacks
-    [Range(1, 5)] public float timeoutTime = 3f;
+    [Range(1, 5)] public float timeoutTime = 2f;
     private float timeoutTimer = 0;
     public bool hasTimedOut = true;
 
@@ -25,6 +26,12 @@ public class EnemyAttackManager : MonoBehaviour
 
     //The current desired distance
     public float desiredDistance = 0;
+
+    //The range at which attacking should begin, set based on current weapon
+    public float currentMaximumAttackRange = 0;
+
+    //Additional offset to prevent exiting combat
+    [Range(0,1)] public float attackRangeAdditionalOffset = 0.5f;
 
     //The range of max and minimum ranges for the attack, used for when ideal distance is not reached, but the attack can still be made
     public Vector2 distanceBoundaries = new Vector2();
@@ -54,6 +61,18 @@ public class EnemyAttackManager : MonoBehaviour
         //Set the target ranges
         targetAlertnessRange = enemyManager.enemyStats.alertRadius;
         targetChasingRange = enemyManager.enemyStats.chaseRange;
+    }
+
+    private void Start()
+    {
+        //Update the maximum attack range
+        UpdateAttackRange();
+    }
+
+    public void UpdateAttackRange()
+    {
+        //Get the maximum attack range based on the current weapon equipt
+        currentMaximumAttackRange = enemyManager.inventory.equippedWeapon.attackSet.GetMaximumAttackRange();
     }
 
 
@@ -153,6 +172,43 @@ public class EnemyAttackManager : MonoBehaviour
         //Set radiuses to maximum
         currentAlertnessRange = enemyManager.enemyStats.maximumAlertRadius;
         currentChasingRange = enemyManager.enemyStats.maximumChaseRange;
+    }
+
+    public void AlertAlliesOfAttack()
+    {
+        //Get nearby allies within range
+        Dictionary<GameObject, float> allies = enemyManager.visionManager.GetListOfVisibleExpectedTargets(gameObject.transform, enemyManager.enemyStats.informAlliesRadius, enemyManager.enemyStats.assignedFaction, true);
+
+        //Iterate over all allies in the list
+        foreach(KeyValuePair<GameObject, float> ally in allies)
+        {
+            //Cast them (If possible) to enemy managers
+            if (ally.Key.TryGetComponent(out EnemyAgentManager manager))
+            {
+                //Highten their radiuses
+                manager.attackManager.HightenAlertChaseRadiuses();
+            }
+        }
+    }
+
+    public void AlertAlliesOfTarget(GameObject foundTarget)
+    {
+        //Get nearby allies within range
+        Dictionary<GameObject, float> allies = enemyManager.visionManager.GetListOfVisibleExpectedTargets(gameObject.transform, enemyManager.enemyStats.informAlliesRadius, enemyManager.enemyStats.assignedFaction, true);
+
+        //Iterate over all allies in the list
+        foreach (KeyValuePair<GameObject, float> ally in allies)
+        {
+            //Cast them (If possible) to enemy managers
+            if (ally.Key.TryGetComponent(out EnemyAgentManager manager))
+            {
+                //Get the current state and if they are waiting for a target, give them the target
+                if(manager.stateMachine.GetCurrentState() is WatchState watchState)
+                {
+                    watchState.AllyFoundTarget(foundTarget);
+                }
+            }
+        }
     }
     #endregion
 
@@ -265,5 +321,9 @@ public class EnemyAttackManager : MonoBehaviour
         //Debug the sphere of chasing
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(enemyManager.visionManager.pointOfVision.position, currentChasingRange);
+
+        //Debug the sphere of alerting allies
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(enemyManager.visionManager.pointOfVision.position, enemyManager.enemyStats.informAlliesRadius);
     }
 }

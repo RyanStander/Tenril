@@ -8,10 +8,6 @@ public class WatchState : AbstractStateFSM
     //Bool to track if alerted
     private bool wasAlerted = false;
 
-    //Masks for detection and vision blocking
-    public LayerMask detectionBlockLayer = 1 << 9;
-    public LayerMask characterLayer = 1 << 10;
-
     //Bool for if a search rate should be used
     public bool isUsingSearchRate;
 
@@ -71,6 +67,11 @@ public class WatchState : AbstractStateFSM
             //Update the current target in the agent manager
             enemyManager.currentTarget = currentTarget;
 
+            //Alert nearby allies of found target
+            enemyManager.attackManager.AlertAlliesOfTarget(currentTarget);
+
+            //TODO: Fire off initiate event for Ryan
+
             //Change to chase state
             finiteStateMachine.EnterState(StateTypeFSM.CHASETARGET);
         }
@@ -100,6 +101,15 @@ public class WatchState : AbstractStateFSM
 
         //Stop enemy movement in case of animation speed carry over
         movementManager.StopMovement();
+    }
+
+    public void AllyFoundTarget(GameObject target)
+    {
+        //Update the current target in the agent manager
+        enemyManager.currentTarget = target;
+
+        //Change to chase
+        finiteStateMachine.EnterState(StateTypeFSM.CHASETARGET);
     }
 
     public override bool ExitState()
@@ -132,7 +142,7 @@ public class WatchState : AbstractStateFSM
     private void CheckForTarget()
     {
         //Fetches detectable characters and returns a list of enemies
-        targetsByDistance = enemyManager.visionManager.GetListOfVisibleEnemyTargets(visionManager.pointOfVision, enemyManager.attackManager.currentAlertnessRange, characterLayer, detectionBlockLayer);
+        targetsByDistance = enemyManager.visionManager.GetListOfVisibleExpectedTargets(visionManager.pointOfVision, enemyManager.attackManager.currentAlertnessRange, Faction.NONE, false);
     }
 
     private void CheckForClosestTarget()

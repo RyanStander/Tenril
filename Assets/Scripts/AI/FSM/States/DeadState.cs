@@ -1,5 +1,26 @@
+using UnityEngine;
+
+/// <summary>
+/// Handles the dead logic for the AI
+/// </summary>
 public class DeadState : AbstractStateFSM
 {
+    //Prefab used in dropping the enemy inventory
+    public GameObject itemPickupPrefab = null;
+
+    //Height offset for dropped items
+    public float dropHeightOffset = 1f;
+
+    //Helper bool for explosion item drop effect
+    public bool explodeItemsOnDeath = true;
+
+    //The velocity at which the item is launched into the air
+    //[Range(0,5)] 
+    public float upwardVelocity = 5;
+
+    //The velocity at which the item is launched forward
+    public float forwardVelocity = 0.75f;
+
     public override void OnEnable()
     {
         base.OnEnable();
@@ -15,14 +36,16 @@ public class DeadState : AbstractStateFSM
         {
             //Debug message
             DebugLogString("ENTERED DEAD STATE");
-        }
 
-        //Send out event to award player XP
-        EventManager.currentManager.AddEvent(new AwardPlayerXP(enemyManager.enemyStats.xpToAwardOnDeath));
+            //Send out event to award player XP
+            EventManager.currentManager.AddEvent(new AwardPlayerXP(enemyManager.enemyStats.xpToAwardOnDeath));
+
+            //Drop the inventory
+            DropInventory();
+        }
 
         return enteredState;
     }
-
 
     public override void UpdateState()
     {
@@ -55,5 +78,48 @@ public class DeadState : AbstractStateFSM
 
         //Return true
         return true;
+    }
+
+    public void DropInventory()
+    {
+        //If item pickup prefab doesnt exist, throw an error and return
+        if(itemPickupPrefab == null) { throw new MissingReferenceException("Missing itemPickupPrefab in " + gameObject + " death state!");}
+
+        //Check that the item pickup script is attached
+        if (itemPickupPrefab.TryGetComponent(out ItemPickup pickupSphere))
+        {
+            //Declare a temporary position to instantiate on
+            Vector3 dropPosition = gameObject.transform.position;
+
+            //Update the height with an offset
+            dropPosition.y += dropHeightOffset;
+
+            //Iterate over all items in the inventory
+            foreach(ItemInventory item in enemyManager.inventory.inventory)
+            {
+                //Update the component with new information
+                pickupSphere.item = item.item;
+                pickupSphere.amountOfItem = item.itemStackCount;
+
+                //Instantiate the prefab
+                GameObject droppedItem = Instantiate(itemPickupPrefab, dropPosition, Quaternion.identity);
+
+                //Apply explosion effect to the rigid body of the dropped item
+                if(droppedItem.TryGetComponent(out Rigidbody droppedRigidbody))
+                {
+                    //Generate a random direction
+                    Vector2 randomDirection = Random.insideUnitCircle.normalized;
+
+                    //Apply given velocities velocity
+                    droppedRigidbody.AddForce(new Vector3(randomDirection.x * forwardVelocity, upwardVelocity, randomDirection.y * forwardVelocity), ForceMode.VelocityChange);
+                }
+                
+            }
+        }
+        //Throw an error
+        else
+        {
+            throw new MissingComponentException("Missing ItemPickup on itemPickupPrefab in " + gameObject + " death state!");
+        }
     }
 }
