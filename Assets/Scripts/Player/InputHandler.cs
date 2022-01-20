@@ -22,7 +22,7 @@ public class InputHandler : MonoBehaviour
     public bool interactInput, menuInput, mapInput,inventoryInput, alternateInteraction;
 
     //Combat Inputs
-    public bool weakAttackInput, weakAttackLetGoInput, strongAttackInput,drawSheathInput, blockInput, parryInput, lockOnInput;
+    public bool weakAttackInput, attackLetGoInput, strongAttackInput,drawSheathInput, blockInput, parryInput, lockOnInput;
     public bool quickslotLeftInput, quickslotRightInput, quickslotUseInput;
 
     //Spellcasting Inputs
@@ -83,7 +83,6 @@ public class InputHandler : MonoBehaviour
     internal void ResetInputs()
     {
         weakAttackInput = false;
-        weakAttackLetGoInput = false;
         strongAttackInput = false;
         parryInput = false;
         drawSheathInput = false;
@@ -133,8 +132,9 @@ public class InputHandler : MonoBehaviour
         inputActions.CharacterControls.WeaponSwap.performed += i => drawSheathInput = true;
         //Weak attack
         inputActions.CharacterControls.WeakAttack.performed += i => weakAttackInput = true;
-        //Weak attack let go
-        inputActions.CharacterControls.WeakAttack.canceled += i => weakAttackLetGoInput = true;
+        //attack let go
+        inputActions.CharacterControls.WeakAttack.canceled += i => attackLetGoInput = true;
+        inputActions.CharacterControls.StrongAttack.canceled += i => attackLetGoInput = true;
         //Strong Attack
         inputActions.CharacterControls.StrongAttack.performed += i => strongAttackInput = true;
         //Block
