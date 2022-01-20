@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Similar to the character inventory, but specialized to function with combatative AI
+/// </summary>
 public class EnemyInventory : CharacterInventory
 {
     //The inventory a given enemy will spawn with

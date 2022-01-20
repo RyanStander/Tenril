@@ -89,17 +89,6 @@ public class EnemyAgentManager : CharacterManager
         if (statusManager == null) throw new MissingComponentException("Missing StatusEffectManager on " + gameObject + "!");
         if (consumableManager == null) throw new MissingComponentException("Missing EnemyConsumableManager on " + gameObject + "!");
         if (attackManager == null) throw new MissingComponentException("Missing EnemyAttackManager on " + gameObject + "!");
-
-        ////If an inventory item table was supplied, apply this to the inventory of the given creature
-        //if (inventoryItemTable != null)
-        //{
-        //    //Throw an error if no inventory was supplied
-        //    if (inventory == null) throw new MissingComponentException("Missing EnemyInventory on " + gameObject + "!");
-        //    else
-        //    {
-        //        //Load the 
-        //    }
-        //}
     }
 
     private void Start()
