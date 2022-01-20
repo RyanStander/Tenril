@@ -644,7 +644,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""bc1ab957-6231-49da-9050-57c14fb06ced"",
                     ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
+                    ""interactions"": ""Tap"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Weak Attack"",

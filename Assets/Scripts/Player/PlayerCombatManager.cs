@@ -11,7 +11,7 @@ public class PlayerCombatManager : MonoBehaviour
 
     [SerializeField] private LayerMask riposteLayer;
 
-
+    private bool startedLoadingBow;
     public string lastAttack;
     private void Awake()
     {
@@ -34,7 +34,7 @@ public class PlayerCombatManager : MonoBehaviour
         }
 
         //Player lets go of weak attack button
-        if (inputHandler.weakAttackLetGoInput)
+        if (inputHandler.attackLetGoInput)
         {
             if (playerManager.isHoldingArrow)
             {
@@ -50,6 +50,10 @@ public class PlayerCombatManager : MonoBehaviour
 
             HandleStrongAttackAction();
         }
+
+        //If the player is not holding an arrow, set the attack let go input to false, this feature exists purely for releasing arrows
+        if (inputHandler.attackLetGoInput && !startedLoadingBow)
+            inputHandler.attackLetGoInput = false;
     }
 
     private void HandleWeaponCombo(WeaponItem weapon, bool isWeakAttack)
@@ -138,7 +142,7 @@ public class PlayerCombatManager : MonoBehaviour
 
     private void HandleStrongAttack(WeaponItem weapon)
     {
-        if (weapon.strongAttacks.Count==0)
+        if (weapon.strongAttacks.Count == 0)
             return;
         //if player has any stamina
         if (playerStats.HasStamina())
@@ -182,30 +186,29 @@ public class PlayerCombatManager : MonoBehaviour
 
     private void HandleStrongAttackAction()
     {
-        //if player is able to perform a combo, go to following attack
-        if (playerManager.canDoCombo)
-        {
-            inputHandler.comboFlag = true;
-            HandleWeaponCombo(playerInventory.equippedWeapon,false);
-            inputHandler.comboFlag = false;
-        }
-        //otherwise perform first attack
-        else
-        {
-            if (playerAnimatorManager.animator.GetBool("isInteracting"))
-                return;
+        if (playerInventory.equippedWeapon == null)
+            return;
 
-            if (playerManager.canDoCombo)
-                return;
-
-            HandleStrongAttack(playerInventory.equippedWeapon);
+        switch (playerInventory.equippedWeapon.weaponType)
+        {
+            case WeaponType.TwoHandedSword:
+                PerformStrongMeleeAction();
+                break;
+            case WeaponType.Polearm:
+                PerformStrongMeleeAction();
+                break;
+            case WeaponType.Bow:
+                PerformRangedAmmoCheck();
+                break;
+            case WeaponType.FlyingMage:
+                break;
         }
     }
 
     private void HandleParryAction()
     {
         //FOR FUTURE: check for other types, such as a bow aims instead, staff perhaps smth else
-        if (playerInventory.equippedWeapon==null)
+        if (playerInventory.equippedWeapon == null)
             return;
 
         if (playerInventory.equippedWeapon.canParry)
@@ -225,7 +228,7 @@ public class PlayerCombatManager : MonoBehaviour
         if (playerManager.canDoCombo)
         {
             inputHandler.comboFlag = true;
-            HandleWeaponCombo(playerInventory.equippedWeapon,true);
+            HandleWeaponCombo(playerInventory.equippedWeapon, true);
             inputHandler.comboFlag = false;
         }
         //else, perform starting attack if possible
@@ -238,6 +241,28 @@ public class PlayerCombatManager : MonoBehaviour
                 return;
 
             HandleWeakAttack(playerInventory.equippedWeapon);
+        }
+    }
+
+    private void PerformStrongMeleeAction()
+    {
+        //if player is able to perform a combo, go to following attack
+        if (playerManager.canDoCombo)
+        {
+            inputHandler.comboFlag = true;
+            HandleWeaponCombo(playerInventory.equippedWeapon, false);
+            inputHandler.comboFlag = false;
+        }
+        //otherwise perform first attack
+        else
+        {
+            if (playerAnimatorManager.animator.GetBool("isInteracting"))
+                return;
+
+            if (playerManager.canDoCombo)
+                return;
+
+            HandleStrongAttack(playerInventory.equippedWeapon);
         }
     }
 
@@ -275,6 +300,7 @@ public class PlayerCombatManager : MonoBehaviour
         if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.equippedAmmo))
             return;
 
+        startedLoadingBow = true;
         playerAnimatorManager.animator.SetBool("isHoldingArrow", true);
         playerAnimatorManager.PlayTargetAnimation("BowDrawArrow", true);
 
@@ -302,7 +328,7 @@ public class PlayerCombatManager : MonoBehaviour
         }
 
         weaponSlotManager.DisplayObjectInHand(playerInventory.equippedAmmo.loadedItemModel, false, false);
-        
+
     }
 
     private void FireArrow()
@@ -314,7 +340,7 @@ public class PlayerCombatManager : MonoBehaviour
         if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.equippedAmmo))
             return;
 
-        ProjectileInstantiationLocation arrowInstantiationLocation =null;
+        ProjectileInstantiationLocation arrowInstantiationLocation = null;
         Animator bowAnimator = null;
 
         //Get the bow depending on which hand it is instantiated in
@@ -332,10 +358,12 @@ public class PlayerCombatManager : MonoBehaviour
             Debug.LogWarning("No bow prefab was found");
 
         //Reset players holding arrow
-        playerAnimatorManager.PlayTargetAnimation("Fire",true);
+        playerAnimatorManager.PlayTargetAnimation("Fire", true);
         playerAnimatorManager.animator.SetBool("isHoldingArrow", false);
+        inputHandler.attackLetGoInput = false;
+        startedLoadingBow = false;
 
-        if (bowAnimator!=null)
+        if (bowAnimator != null)
         {
             //set the bool of is drawn to false
             bowAnimator.SetBool("isDrawn", false);
@@ -356,11 +384,11 @@ public class PlayerCombatManager : MonoBehaviour
         Rigidbody rigidbody = liveArrow.GetComponentInChildren<Rigidbody>();
         AmmunitionDamageCollider damageCollider = liveArrow.GetComponentInChildren<AmmunitionDamageCollider>();
 
-        if (inputHandler.lockOnFlag) 
+        if (inputHandler.lockOnFlag)
         {
             //While locked on we are always facing target, can copy our facing direction to our arrows facing direction
             Quaternion arrowRotation = Quaternion.LookRotation(transform.forward);
-            liveArrow.transform.rotation=arrowRotation;
+            liveArrow.transform.rotation = arrowRotation;
         }
         else
         {
@@ -429,7 +457,7 @@ public class PlayerCombatManager : MonoBehaviour
                 Debug.LogWarning("No projectile prefab was found");
 
             playerAnimatorManager.PlayTargetAnimation("Fire", true);
-            
+
             //Create live arrow at specific location
             //TO DO: possibly check to link the rotation up to the camera facing direction
             GameObject spellParticle = Instantiate(spellcasterWeapon.attackData.liveProjectileModel, spellInstantiationLocation.GetTransform().position, spellInstantiationLocation.GetTransform().rotation);
@@ -538,7 +566,7 @@ public class PlayerCombatManager : MonoBehaviour
                 break;
         }
 
-        
+
 
     }
 
