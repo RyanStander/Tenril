@@ -144,12 +144,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ac0b3e4badd77844b6bb189f88b6e32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionBlockLayer:
-    serializedVersion: 2
-    m_Bits: 262656
-  characterLayer:
-    serializedVersion: 2
-    m_Bits: 1024
   isUsingSearchRate: 0
   searchRate: 0.1
 --- !u!114 &1418810352
@@ -1087,15 +1081,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37c6783681e73f14ab7cec6e2b035b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equippedWeapon: {fileID: 11400000, guid: 293718bd1735afa4f9986ddcccb93a41, type: 2}
+  equippedWeapon: {fileID: 0}
   isWieldingPrimaryWeapon: 1
-  primaryWeapon: {fileID: 11400000, guid: 293718bd1735afa4f9986ddcccb93a41, type: 2}
-  secondaryWeapon: {fileID: 11400000, guid: 293718bd1735afa4f9986ddcccb93a41, type: 2}
+  primaryWeapon: {fileID: 0}
+  secondaryWeapon: {fileID: 0}
   equippedAmmo: {fileID: 0}
-  inventory:
-  - item: {fileID: 11400000, guid: eb54d0e204cd2344390f0b71f6c6ea5b, type: 2}
-    itemStackCount: 1
+  inventory: []
   consumableItemInUse: {fileID: 0}
+  inventoryItemTable: {fileID: 11400000, guid: 0114a3dcba2f4a64bbf3cc0c598dde21, type: 2}
 --- !u!114 &6051805373545155770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1302,6 +1295,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointOfVision: {fileID: 6051805372053224837}
+  detectionBlockLayer:
+    serializedVersion: 2
+    m_Bits: 512
   characterLayer:
     serializedVersion: 2
     m_Bits: 1024

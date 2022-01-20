@@ -38,9 +38,9 @@ public class ItemInventory
     /// <summary>
     /// The item in the inventory slot
     /// </summary>
-    public Item item;
+    public Item item = null;
     /// <summary>
-    /// How many of the item is in the stack
+    /// How many of the item is in the stack, default to 1
     /// </summary>
-    public int itemStackCount;
+    public int itemStackCount = 1;
 }

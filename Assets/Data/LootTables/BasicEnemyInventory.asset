@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b964d9a89f3dcec4ea6e5b7493840218, type: 3}
+  m_Name: BasicEnemyInventory
+  m_EditorClassIdentifier: 
+  essentialLoot:
+  - seriesName: Weapons
+    weighedSeries:
+    - lootName: Spear
+      definedItem: {fileID: 11400000, guid: 293718bd1735afa4f9986ddcccb93a41, type: 2}
+      itemCountRange: {x: 1, y: 1}
+      spawnWeight: 50
+    - lootName: Longsword
+      definedItem: {fileID: 11400000, guid: 379244ca9efcbe74a84fc791cb8b4127, type: 2}
+      itemCountRange: {x: 1, y: 1}
+      spawnWeight: 50
+    - lootName: Halberd
+      definedItem: {fileID: 11400000, guid: 92735e3b99674a741ac327fbf4264d5f, type: 2}
+      itemCountRange: {x: 1, y: 1}
+      spawnWeight: 50
+  - seriesName: Potions
+    weighedSeries:
+    - lootName: Greater Healing Potion
+      definedItem: {fileID: 11400000, guid: eb54d0e204cd2344390f0b71f6c6ea5b, type: 2}
+      itemCountRange: {x: 1, y: 2}
+      spawnWeight: 25
+    - lootName: Normal Healing Potion
+      definedItem: {fileID: 11400000, guid: 7d60350e21f1e024b9e723e45ca7fc27, type: 2}
+      itemCountRange: {x: 1, y: 5}
+      spawnWeight: 25
+  randomChanceLoot:
+  - lootName: Raw Beef
+    definedItem: {fileID: 11400000, guid: eaf0b5fefa49c73448641d7aa79198e7, type: 2}
+    itemCountRange: {x: 1, y: 25}
+    spawnWeight: 100
+  - lootName: Iron Ore
+    definedItem: {fileID: 11400000, guid: 9ab485a7e247b334aaae43ae84d3bcf2, type: 2}
+    itemCountRange: {x: 1, y: 25}
+    spawnWeight: 50
+  - lootName: Stinky Cheese
+    definedItem: {fileID: 11400000, guid: 95f0ddc9ae319a14291c33489fd8e22b, type: 2}
+    itemCountRange: {x: 1, y: 10}
+    spawnWeight: 25

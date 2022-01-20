@@ -61,7 +61,10 @@ public class EnemyAttackManager : MonoBehaviour
         //Set the target ranges
         targetAlertnessRange = enemyManager.enemyStats.alertRadius;
         targetChasingRange = enemyManager.enemyStats.chaseRange;
+    }
 
+    private void Start()
+    {
         //Update the maximum attack range
         UpdateAttackRange();
     }

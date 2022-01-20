@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 /// <summary>
@@ -9,7 +8,7 @@ using UnityEngine;
     //Basic data
     public string lootName;
     public Item definedItem = null;
-    public Vector2 itemCountRange;
+    public Vector2Int itemCountRange = new Vector2Int(1, 1);
 
     public void OnValidate()
     {
@@ -17,24 +16,25 @@ using UnityEngine;
         if (lootName == "" && definedItem != null)
         {
             lootName = definedItem.itemName;
-            Debug.Log("Trying to set name for " + definedItem.itemName);
+            Debug.Log("Loot table item automatically named to: " + definedItem.itemName);
         }
         #endif
     }
 
+    //Allows for OnValidate to function without being a monobehaviour
     void ISerializationCallbackReceiver.OnBeforeSerialize() => this.OnValidate();
     void ISerializationCallbackReceiver.OnAfterDeserialize() { }
 }
 
-[System.Serializable] public class LootInfoChance : LootInfo
+[System.Serializable] public class LootInfoWeighed : LootInfo
 {
     //Basic data
-    [Range(0, 100)] public float spawnChance;
+    [Range(0, 100)] public float spawnWeight;
 }
 
-[System.Serializable] public class LootInfoChanceSeries
+[System.Serializable] public class LootInfoWeighedSeries
 {
     //Basic data
     public string seriesName;
-    public LootInfoChance[] definedItem;
+    public LootInfoWeighed[] weighedSeries;
 }
