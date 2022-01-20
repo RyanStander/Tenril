@@ -35,3 +35,12 @@ public enum SpellType
     biomancy=1,
     pyromancy=2,
 }
+
+//Perhaps we can implement more but this will do for now
+public enum InputDeviceType
+{
+    KeyboardMouse=0,
+    GeneralGamepad=1,
+    PlayStation=2,
+    Xbox=3,
+}

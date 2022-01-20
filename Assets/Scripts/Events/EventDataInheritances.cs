@@ -505,3 +505,17 @@ public class PlayInteractSound : EventData
     }
 }
 #endregion
+
+#region Inputs
+
+public class PlayerChangedInputDevice : EventData
+{
+    public readonly InputDeviceType inputDevice;
+
+    public PlayerChangedInputDevice(InputDeviceType inputDevice) : base(EventType.PlayerChangedInputDevice)
+    {
+        this.inputDevice = inputDevice;
+    }
+}
+
+#endregion

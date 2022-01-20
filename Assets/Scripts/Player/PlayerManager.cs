@@ -36,8 +36,8 @@ public class PlayerManager : CharacterManager
 
     private float timeTillRestart = 3, restartTimeStamp;
 
-    public bool canDoCombo, isInteracting, isAiming,isHoldingArrow;
-    private bool enteredSpellcastingMode=true;
+    public bool canDoCombo, isInteracting, isAiming, isHoldingArrow;
+    private bool enteredSpellcastingMode = true;
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.EquipWeapon, OnEquipWeapon);
@@ -52,6 +52,7 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Subscribe(EventType.PlayerLevelUp, OnPlayerLevelUp);
         EventManager.currentManager.Subscribe(EventType.AwardPlayerXP, OnAwardPlayerXP);
         EventManager.currentManager.Subscribe(EventType.PlayerKeybindsUpdates, OnPlayerKeybindsUpdates);
+        EventManager.currentManager.Subscribe(EventType.PlayerChangedInputDevice, OnPlayerChangedInputDevice);
     }
 
     private void OnDisable()
@@ -68,6 +69,7 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Unsubscribe(EventType.PlayerLevelUp, OnPlayerLevelUp);
         EventManager.currentManager.Unsubscribe(EventType.AwardPlayerXP, OnAwardPlayerXP);
         EventManager.currentManager.Unsubscribe(EventType.PlayerKeybindsUpdates, OnPlayerKeybindsUpdates);
+        EventManager.currentManager.Unsubscribe(EventType.PlayerChangedInputDevice, OnPlayerChangedInputDevice);
     }
 
     void Awake()
@@ -137,12 +139,12 @@ public class PlayerManager : CharacterManager
                 playerAnimatorManager.animator.Play("Death");
             }
 
-            if (restartTimeStamp==0)
+            if (restartTimeStamp == 0)
             {
                 restartTimeStamp = Time.time + timeTillRestart;
             }
 
-            if (restartTimeStamp<=Time.time)
+            if (restartTimeStamp <= Time.time)
             {
                 EventManager.currentManager.AddEvent(new LoadData());
             }
@@ -153,8 +155,8 @@ public class PlayerManager : CharacterManager
     private void FixedUpdate()
     {
         float delta = Time.deltaTime;
-        inputHandler.TickInput(delta);
-        
+        inputHandler.TickInput();
+
         playerLocomotion.HandleLocomotion(delta);
 
         playerStats.HandleStaminaRegeneration();
@@ -244,9 +246,9 @@ public class PlayerManager : CharacterManager
 
             //remove weapon from inventory and and add weapon that is equipped
             playerInventory.RemoveItemFromInventory(equipWeapon.weaponItem);
-            
+
             //if there was previously no weapon in the slot, do not add it to the inventory
-            if (oldWeapon!=null)
+            if (oldWeapon != null)
                 playerInventory.AddItemToInventory(oldWeapon);
 
             //equip the new weapon
@@ -283,7 +285,7 @@ public class PlayerManager : CharacterManager
     {
         if (eventData is DisplayQuickslotItem displayQuickslotItem)
         {
-            playerInventory.DisplayQuickslotItem(weaponSlotManager,displayQuickslotItem.objectToDisplay);
+            playerInventory.DisplayQuickslotItem(weaponSlotManager, displayQuickslotItem.objectToDisplay);
         }
         else
         {
@@ -423,41 +425,39 @@ public class PlayerManager : CharacterManager
             SpellSlotUIManager spellSlotUIManager = FindObjectOfType<SpellSlotUIManager>();
             if (spellSlotUIManager != null)
             {
-                string bindingPath;
-
+                string bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.SpellcastingMode, inputHandler.activeInputDevice);
                 //Spellcasting Mode icon
                 Sprite spellcastingModeSprite;
-                bindingPath = inputHandler.GetInputActions().CharacterControls.SpellcastingMode.bindings[1].effectivePath;
-                spellcastingModeSprite = FindKeybindIconForController(bindingPath);
+                spellcastingModeSprite = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
 
                 //Spell slots
                 Sprite[] spellSlotKeybindSprites = new Sprite[8];
 
                 #region Spells
                 //Spell 1
-                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell1.bindings[1].effectivePath;
-                spellSlotKeybindSprites[0] = FindKeybindIconForController(bindingPath);
+                bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Spell1, inputHandler.activeInputDevice);
+                spellSlotKeybindSprites[0] = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
                 //Spell 2
-                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell2.bindings[1].effectivePath;
-                spellSlotKeybindSprites[1] = FindKeybindIconForController(bindingPath);
+                bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Spell2, inputHandler.activeInputDevice);
+                spellSlotKeybindSprites[1] = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
                 //Spell 3
-                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell3.bindings[1].effectivePath;
-                spellSlotKeybindSprites[2] = FindKeybindIconForController(bindingPath);
+                bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Spell3, inputHandler.activeInputDevice);
+                spellSlotKeybindSprites[2] = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
                 //Spell 4
-                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell4.bindings[1].effectivePath;
-                spellSlotKeybindSprites[3] = FindKeybindIconForController(bindingPath);
+                bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Spell4, inputHandler.activeInputDevice);
+                spellSlotKeybindSprites[3] = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
                 //Spell 5
-                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell5.bindings[1].effectivePath;
-                spellSlotKeybindSprites[4] = FindKeybindIconForController(bindingPath);
+                bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Spell5, inputHandler.activeInputDevice);
+                spellSlotKeybindSprites[4] = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
                 //Spell 6
-                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell6.bindings[1].effectivePath;
-                spellSlotKeybindSprites[5] = FindKeybindIconForController(bindingPath);
+                bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Spell6, inputHandler.activeInputDevice);
+                spellSlotKeybindSprites[5] = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
                 //Spell 7
-                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell7.bindings[1].effectivePath;
-                spellSlotKeybindSprites[6] = FindKeybindIconForController(bindingPath);
+                bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Spell7, inputHandler.activeInputDevice);
+                spellSlotKeybindSprites[6] = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
                 //Spell 8
-                bindingPath = inputHandler.GetInputActions().CharacterControls.Spell8.bindings[1].effectivePath;
-                spellSlotKeybindSprites[7] = FindKeybindIconForController(bindingPath);
+                bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Spell8, inputHandler.activeInputDevice);
+                spellSlotKeybindSprites[7] = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
                 #endregion
 
                 spellSlotUIManager.UpdateKeybinds(spellcastingModeSprite, spellSlotKeybindSprites);
@@ -468,8 +468,58 @@ public class PlayerManager : CharacterManager
             Debug.LogWarning("The event of PlayerKeybindsUpdates was not matching of event type PlayerKeybindsUpdates");
         }
     }
-    #endregion
 
+    private void OnPlayerChangedInputDevice(EventData eventData)
+    {
+        if (eventData is PlayerChangedInputDevice)
+        {
+            SpellSlotUIManager spellSlotUIManager = FindObjectOfType<SpellSlotUIManager>();
+            if (spellSlotUIManager != null)
+            {
+                string bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.SpellcastingMode, inputHandler.activeInputDevice);
+                //Spellcasting Mode icon
+                Sprite spellcastingModeSprite;
+                spellcastingModeSprite = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
+
+                //Spell slots
+                Sprite[] spellSlotKeybindSprites = new Sprite[8];
+
+                #region Spells
+                //Spell 1
+                bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Spell1, inputHandler.activeInputDevice);
+                spellSlotKeybindSprites[0] = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
+                //Spell 2
+                bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Spell2, inputHandler.activeInputDevice);
+                spellSlotKeybindSprites[1] = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
+                //Spell 3
+                bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Spell3, inputHandler.activeInputDevice);
+                spellSlotKeybindSprites[2] = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
+                //Spell 4
+                bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Spell4, inputHandler.activeInputDevice);
+                spellSlotKeybindSprites[3] = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
+                //Spell 5
+                bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Spell5, inputHandler.activeInputDevice);
+                spellSlotKeybindSprites[4] = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
+                //Spell 6
+                bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Spell6, inputHandler.activeInputDevice);
+                spellSlotKeybindSprites[5] = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
+                //Spell 7
+                bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Spell7, inputHandler.activeInputDevice);
+                spellSlotKeybindSprites[6] = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
+                //Spell 8
+                bindingPath = CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Spell8, inputHandler.activeInputDevice);
+                spellSlotKeybindSprites[7] = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
+                #endregion
+
+                spellSlotUIManager.UpdateKeybinds(spellcastingModeSprite, spellSlotKeybindSprites);
+            }
+            else
+            {
+                Debug.LogWarning("The event of PlayerChangedInputDevice was not matching of event type PlayerChangedInputDevice");
+            }
+        }
+        #endregion
+    }
     #region Getters & Setters
     internal void SetDamageColliderDamage(float damage)
     {
@@ -482,74 +532,4 @@ public class PlayerManager : CharacterManager
     }
 
     #endregion
-
-    private Sprite FindKeybindIconForController(string bindingPath)
-    {
-        if (inputHandler.deviceDisplayConfigurator.deviceSets[1].deviceDisplaySettings is DeviceDisplaySettingsController controllerIcons)
-        {
-            switch (bindingPath)
-            {
-                #region Buttons
-                case "<Gamepad>/buttonNorth":
-                    return controllerIcons.buttonNorthIcon;
-                    
-                case "<Gamepad>/buttonSouth":
-                    return controllerIcons.buttonSouthIcon;
-                    
-                case "<Gamepad>/buttonWest":
-                    return controllerIcons.buttonWestIcon;
-                    
-                case "<Gamepad>/buttonEast":
-                    return controllerIcons.buttonEastIcon;
-                    
-                #endregion
-                #region Shoulder Buttons
-                case "<Gamepad>/leftShoulder":
-                    return controllerIcons.leftShoulder;
-                    
-                case "<Gamepad>/leftTrigger":
-                    return controllerIcons.leftTrigger;
-                    
-                case "<Gamepad>/rightShoulder":
-                    return controllerIcons.rightShoulder;
-                    
-                case "<Gamepad>/rightTrigger":
-                    return controllerIcons.rightShoulder;
-
-                #endregion
-                #region d-Pad
-                case "<Gamepad>/dpad/down":
-                    return controllerIcons.dPadDown;
-
-                case "<Gamepad>/dpad/up":
-                    return controllerIcons.dPadUp;
-
-                case "<Gamepad>/dpad/left":
-                    return controllerIcons.dPadLeft;
-
-                case "<Gamepad>/dpad/right":
-                    return controllerIcons.dPadRight;
-                #endregion
-                #region Analog Sticks
-                //This is where i put my analog stick keybinds IF I HAD ANY
-                #endregion
-                #region Option Buttons
-                case "<Gamepad>/select":
-                    return controllerIcons.select;
-                    
-                case "<Gamepad>/start":
-                    return controllerIcons.start;
-                    
-                #endregion
-                default:
-                    Debug.LogWarning("Couldnt find matching gamepade selection");
-                    return null;
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Couldnt find matching gamepade selection");
-            return null;
-        }
-    }
 }
