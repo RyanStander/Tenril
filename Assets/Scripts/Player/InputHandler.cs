@@ -231,12 +231,45 @@ public class InputHandler : MonoBehaviour
                 EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
         }
 
+        switch (activeInputDevice)
+        {
+            case InputDeviceType.KeyboardMouse:
+                HandleKeyboardMouseLockOnInputSwapping();
+                break;
+            case InputDeviceType.GeneralGamepad:
+                HandleControllerLockOnInputSwapping();
+                break;
+            case InputDeviceType.PlayStation:
+                HandleControllerLockOnInputSwapping();
+                break;
+            case InputDeviceType.Xbox:
+                HandleControllerLockOnInputSwapping();
+                break;
+        }
+        
+    }
+
+    private void HandleControllerLockOnInputSwapping()
+    {
         //Move to the next left target
         if (lockOnFlag && lockOnTargetInput < -0.7f)
         {
             EventManager.currentManager.AddEvent(new SwapToLeftLockOnTarget());
         }//Move to the next right target
         else if (lockOnFlag && lockOnTargetInput > 0.7f)
+        {
+            EventManager.currentManager.AddEvent(new SwapToRightLockOnTarget());
+        }
+    }
+
+    private void HandleKeyboardMouseLockOnInputSwapping()
+    {
+        //Move to the next left target
+        if (lockOnFlag && lockOnTargetInput < -5f)
+        {
+            EventManager.currentManager.AddEvent(new SwapToLeftLockOnTarget());
+        }//Move to the next right target
+        else if (lockOnFlag && lockOnTargetInput > 5f)
         {
             EventManager.currentManager.AddEvent(new SwapToRightLockOnTarget());
         }
