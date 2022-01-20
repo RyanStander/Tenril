@@ -11,12 +11,14 @@ using UnityEngine;
 public class LootTable : ScriptableObject
 {
     //Defines list of essential items that should always include one
-    //public List<LootInfo> essentialLoot;
+    [Header("Items that are essential to being spawned, but picked between")]
+    public LootInfoChanceSeries[] essentialLoot;
 
     //Defines list of consumable and utility related
-    public List<LootInfo> utilityLoot;
+    [Header("Consumable and utility based items to populate the inventory")]
+    public LootInfoChance[] utilityLoot;
 
     //Defines list of miscellaneous items
-    public List<LootInfo> miscellaneousLoot;
-
+    [Header("Random items to populate the inventory")]
+    public LootInfoChance[] miscellaneousLoot;
 }

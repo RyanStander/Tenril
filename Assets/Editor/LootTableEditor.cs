@@ -10,7 +10,7 @@ using UnityEngine.UI;
 /// Editor was designed using the following source for assisntance - https://va.lent.in/unity-make-your-lists-functional-with-reorderablelist/
 /// </summary>
 
-[CustomEditor(typeof(LootTable))]
+//[CustomEditor(typeof(LootTable))]
 public class LootTableEditor : Editor
 {
     private ReorderableList miscellaneous;

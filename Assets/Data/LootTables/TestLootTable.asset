@@ -10,6 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b964d9a89f3dcec4ea6e5b7493840218, type: 3}
-  m_Name: LootTable
+  m_Name: TestLootTable
   m_EditorClassIdentifier: 
-  essentialLoot: []
+  utilityLoot: []
+  miscellaneousLoot:
+  - definedItem: {fileID: 11400000, guid: 92735e3b99674a741ac327fbf4264d5f, type: 2}
+    itemCountRange: {x: 0, y: 0}
+    spawnChance: 77.1
+  - definedItem: {fileID: 0}
+    itemCountRange: {x: 0, y: 0}
+    spawnChance: 0
+  - definedItem: {fileID: 0}
+    itemCountRange: {x: 0, y: 0}
+    spawnChance: 0
