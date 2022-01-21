@@ -73,8 +73,8 @@ public class FX_SpawnDirection : MonoBehaviour
             if (fx.GetComponent<Collider>()!=null)
             {
 				DamageCollider damageCollider = fx.AddComponent<DamageCollider>();
+				damageCollider.enableDamageColliderOnStart = true;
 				damageCollider.currentDamage = damage;
-				damageCollider.EnableDamageCollider();
 				damageCollider.characterManager = characterManager;
 			}
 

@@ -126,6 +126,10 @@ public class UIManager : MonoBehaviour
         inputHandler.lockOnFlag = false;
         //send out event to swap to menu camera
         EventManager.currentManager.AddEvent(new SwapToMenuCamera());
+
+        //Display mouse
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     private void DisableMenuMode()
@@ -146,6 +150,10 @@ public class UIManager : MonoBehaviour
 
         //send out event to swap to exploration camera
         EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
+
+        //Hide mouse
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     #region Button functions
@@ -154,6 +162,8 @@ public class UIManager : MonoBehaviour
     {
         DisableMenuMode();
     }
+
+    #region Setting active buttons
 
     //These buttons handle setting the first selected option for easier controller menu interaction
     public void SetInventoryButton()
@@ -187,6 +197,7 @@ public class UIManager : MonoBehaviour
         //set a new selected object
         EventSystem.current.SetSelectedGameObject(rebindingDisplayFirstButton);
     }
+    #endregion
 
     #endregion
 
@@ -203,6 +214,10 @@ public class UIManager : MonoBehaviour
             SetDialogueFirstButton();
 
             isInDialogueMode = true;
+
+            //Display mouse
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
         else
         {
@@ -224,6 +239,10 @@ public class UIManager : MonoBehaviour
 
             //swap to exploration camera
             EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
+
+            //Display mouse
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
         else
         {

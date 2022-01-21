@@ -305,6 +305,7 @@ public class InputHandler : MonoBehaviour
             { 
                 //if it is change it to be the same
                 activeInputDevice = currentInputDevice;
+                EventManager.currentManager.AddEvent(new PlayerChangedInputDevice(activeInputDevice));
                 Debug.Log($"Device changed to: {currentInputDevice}");
 
             }
@@ -320,16 +321,12 @@ public class InputHandler : MonoBehaviour
         switch (deviceLayout)
         {
             case "XInputControllerWindows":
-                EventManager.currentManager.AddEvent(new PlayerChangedInputDevice(InputDeviceType.Xbox));
                 return InputDeviceType.Xbox;
             case "DualShock4GamepadHID":
-                EventManager.currentManager.AddEvent(new PlayerChangedInputDevice(InputDeviceType.PlayStation));
                 return InputDeviceType.PlayStation;
             case "DualShock3GamepadHID":
-                EventManager.currentManager.AddEvent(new PlayerChangedInputDevice(InputDeviceType.PlayStation));
                 return InputDeviceType.PlayStation;
             default:
-                EventManager.currentManager.AddEvent(new PlayerChangedInputDevice(InputDeviceType.KeyboardMouse));
                 return InputDeviceType.KeyboardMouse;
         }
     }
