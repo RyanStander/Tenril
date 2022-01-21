@@ -97,10 +97,11 @@ public class UIManager : MonoBehaviour
             if (isInDialogueMode)
                 EventManager.currentManager.AddEvent(new CeaseDialogue());
 
-            //swap menu mode
-            isInMenuMode = !isInMenuMode;
-
             if (isInMenuMode)
+            {
+                DisableMenuMode();
+            }
+            else
             {
                 EnableMenuMode();
 
@@ -109,10 +110,6 @@ public class UIManager : MonoBehaviour
 
                 SetInventoryButton();
             }
-            else
-            {
-                DisableMenuMode();
-            }
 
 
         }
@@ -120,16 +117,26 @@ public class UIManager : MonoBehaviour
 
     private void EnableMenuMode()
     {
+        //swap menu mode
+        isInMenuMode = true;
+
         //Disable gameplay inputs and enable menu inputs
         inputHandler.GetInputActions().CharacterControls.Disable();
 
         inputHandler.lockOnFlag = false;
         //send out event to swap to menu camera
         EventManager.currentManager.AddEvent(new SwapToMenuCamera());
+
+        //Display mouse
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     private void DisableMenuMode()
     {
+        //swap menu mode
+        isInMenuMode = false;
+
         //Enable gameplay inputs and disable menu inputs
         inputHandler.GetInputActions().CharacterControls.Enable();
 
@@ -146,6 +153,10 @@ public class UIManager : MonoBehaviour
 
         //send out event to swap to exploration camera
         EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
+
+        //Hide mouse
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     #region Button functions
@@ -154,6 +165,8 @@ public class UIManager : MonoBehaviour
     {
         DisableMenuMode();
     }
+
+    #region Setting active buttons
 
     //These buttons handle setting the first selected option for easier controller menu interaction
     public void SetInventoryButton()
@@ -187,6 +200,7 @@ public class UIManager : MonoBehaviour
         //set a new selected object
         EventSystem.current.SetSelectedGameObject(rebindingDisplayFirstButton);
     }
+    #endregion
 
     #endregion
 
@@ -203,6 +217,10 @@ public class UIManager : MonoBehaviour
             SetDialogueFirstButton();
 
             isInDialogueMode = true;
+
+            //Display mouse
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
         else
         {
@@ -224,6 +242,10 @@ public class UIManager : MonoBehaviour
 
             //swap to exploration camera
             EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
+
+            //Display mouse
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
         else
         {
