@@ -46,24 +46,31 @@ public class LoadPlayerCharacterData : EventData
 
 public class UpdatePlayerStats : EventData
 {
-    public readonly float playerMaxHealth, playerCurrentHealth;
-    public readonly float playerMaxStamina, playerCurrentStamina;
-    public readonly float playerMaxMoonlight, playerCurrentMoonlight;
-    public readonly float playerMaxSunlight, playerCurrentSunlight;
-    public UpdatePlayerStats (float playerMaxHealth, float playerCurrentHealth, float playerMaxStamina, float playerCurrentStamina, float playerMaxMoonlight, 
-        float playerCurrentMoonlight , float playerMaxSunlight, float playerCurrentSunlight): base(EventType.UpdatePlayerStats)
+    public readonly float playerHealthLevel, playerMaxHealth, playerCurrentHealth;
+    public readonly float playerStaminaLevel, playerMaxStamina, playerCurrentStamina;
+    public readonly float playerMoonlightLevel, playerMaxMoonlight, playerCurrentMoonlight;
+    public readonly float playerSunlightLevel, playerMaxSunlight, playerCurrentSunlight;
+    public readonly int skillPoints;
+    public UpdatePlayerStats (float playerHealthLevel,float playerMaxHealth, float playerCurrentHealth, float playerStaminaLevel, float playerMaxStamina, float playerCurrentStamina, float playerMoonlightLevel, float playerMaxMoonlight, 
+        float playerCurrentMoonlight , float playerSunlightLevel, float playerMaxSunlight, float playerCurrentSunlight,int skillPoints): base(EventType.UpdatePlayerStats)
     {
+        this.playerHealthLevel = playerHealthLevel;
         this.playerMaxHealth = playerMaxHealth;
         this.playerCurrentHealth = playerCurrentHealth;
 
+        this.playerStaminaLevel = playerStaminaLevel;
         this.playerMaxStamina = playerMaxStamina;
         this.playerCurrentStamina = playerCurrentStamina;
 
+        this.playerMoonlightLevel = playerMoonlightLevel;
         this.playerMaxMoonlight = playerMaxMoonlight;
         this.playerCurrentMoonlight = playerCurrentMoonlight;
 
+        this.playerSunlightLevel = playerSunlightLevel;
         this.playerMaxSunlight = playerMaxSunlight;
         this.playerCurrentSunlight = playerCurrentSunlight;
+
+        this.skillPoints = skillPoints;
     }
 }
 

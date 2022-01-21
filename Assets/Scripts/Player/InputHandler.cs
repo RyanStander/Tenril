@@ -19,7 +19,7 @@ public class InputHandler : MonoBehaviour
     [HideInInspector] public float lockOnTargetInput;
 
     //Other inputs
-    public bool interactInput, menuInput, mapInput,inventoryInput, alternateInteraction;
+    public bool interactInput, menuInput, mapInput,inventoryInput,characterStatsInput, alternateInteraction;
 
     //Combat Inputs
     public bool weakAttackInput, attackLetGoInput, strongAttackInput,drawSheathInput, blockInput, parryInput, lockOnInput;
@@ -90,6 +90,7 @@ public class InputHandler : MonoBehaviour
         jumpInput = false;
         interactInput = false;
         menuInput = false;
+        characterStatsInput = false;
         inventoryInput = false;
         mapInput = false;
         alternateInteraction = false;
@@ -186,6 +187,8 @@ public class InputHandler : MonoBehaviour
         //UI interactions
         inputActions.CharacterControls.Inventory.performed += i => inventoryInput = true;
         inputActions.UIControls.Inventory.performed += i => inventoryInput = true;
+        inputActions.CharacterControls.OpenStatSheet.performed += i => characterStatsInput = true;
+        inputActions.UIControls.OpenStatSheet.performed += i => characterStatsInput = true;
         inputActions.CharacterControls.Map.performed += i => mapInput = true;
         inputActions.UIControls.Map.performed += i => mapInput = true;
     }

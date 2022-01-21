@@ -11,12 +11,12 @@ public class UIManager : MonoBehaviour
 
     [Header("UI Objects")]
     [SerializeField] private GameObject inGameGUI;
-    [SerializeField] private GameObject mainMenu,inventoryDisplay,rebindingDisplay;
-    [SerializeField] private GameObject dialoguePopUp;
+    [SerializeField] private GameObject mainMenu,inventoryDisplay,rebindingDisplay,playerStatsDisplay;
+    [SerializeField] private GameObject dialoguePopUp,levelUpBanner;
 
     [Header("UI controller selections")]
     [SerializeField] private GameObject mainMenuFirstButton;
-    [SerializeField] private GameObject inventroyFirstButton, rebindingDisplayFirstButton,dialoguePopUpFirstButton;
+    [SerializeField] private GameObject inventroyFirstButton,playerStatsDisplayFirstButton, rebindingDisplayFirstButton,dialoguePopUpFirstButton;
 
     private bool isInMenuMode;
     private bool isInDialogueMode;
@@ -25,12 +25,14 @@ public class UIManager : MonoBehaviour
     {
         EventManager.currentManager.Subscribe(EventType.InitiateDialogue, OnInitiateDialogue);
         EventManager.currentManager.Subscribe(EventType.CeaseDialogue, OnCeaseDialogue);
+        EventManager.currentManager.Subscribe(EventType.PlayerLevelUp, OnPlayerLevelUp);
     }
 
     private void OnDisable()
     {
         EventManager.currentManager.Unsubscribe(EventType.InitiateDialogue, OnInitiateDialogue);
         EventManager.currentManager.Unsubscribe(EventType.CeaseDialogue, OnCeaseDialogue);
+        EventManager.currentManager.Unsubscribe(EventType.PlayerLevelUp, OnPlayerLevelUp);
     }
     void Start()
     {
@@ -52,6 +54,7 @@ public class UIManager : MonoBehaviour
         HandleMenuInput();
 
         HandleInventoryInput();
+        HandleStatsInput();
     }
 
     private void HandleMenuInput()
@@ -91,7 +94,7 @@ public class UIManager : MonoBehaviour
     private void HandleInventoryInput()
     {
         //If inventory button pressed
-        if (inputHandler.inventoryInput)
+        if (inputHandler.inventoryInput && !inputHandler.spellcastingModeInput)
         {
             //Close dialogue if it is open
             if (isInDialogueMode)
@@ -109,6 +112,33 @@ public class UIManager : MonoBehaviour
                 inventoryDisplay.SetActive(true);
 
                 SetInventoryButton();
+            }
+
+
+        }
+    }
+
+    private void HandleStatsInput()
+    {
+        //If inventory button pressed
+        if (inputHandler.characterStatsInput&&!inputHandler.spellcastingModeInput)
+        {
+            //Close dialogue if it is open
+            if (isInDialogueMode)
+                EventManager.currentManager.AddEvent(new CeaseDialogue());
+
+            if (isInMenuMode)
+            {
+                DisableMenuMode();
+            }
+            else
+            {
+                EnableMenuMode();
+
+                //Enable stat display
+                playerStatsDisplay.SetActive(true);
+
+                SetPlayerStatsDisplayButton();
             }
 
 
@@ -146,6 +176,7 @@ public class UIManager : MonoBehaviour
 
         //Disable extra menus
         inventoryDisplay.SetActive(false);
+        playerStatsDisplay.SetActive(false);
         rebindingDisplay.SetActive(false);
 
         //destroy inventory option holders
@@ -175,6 +206,14 @@ public class UIManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         //set a new selected object
         EventSystem.current.SetSelectedGameObject(inventroyFirstButton);
+    }
+
+    public void SetPlayerStatsDisplayButton()
+    {
+        //clear selected object
+        EventSystem.current.SetSelectedGameObject(null);
+        //set a new selected object
+        EventSystem.current.SetSelectedGameObject(playerStatsDisplayFirstButton);
     }
 
     public void SetMenuFirstButton()
@@ -225,6 +264,18 @@ public class UIManager : MonoBehaviour
         else
         {
             throw new System.Exception("Error: EventData class with EventType.InitiateDialogue was received but is not of class InitiateDialogue.");
+        }
+    }
+
+    private void OnPlayerLevelUp(EventData eventData)
+    {
+        if (eventData is PlayerLevelUp)
+        {
+            levelUpBanner.SetActive(true);
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.PlayerLevelUp was received but is not of class PlayerLevelUp.");
         }
     }
 
