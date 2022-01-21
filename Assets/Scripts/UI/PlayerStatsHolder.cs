@@ -28,8 +28,8 @@ public class PlayerStatsHolder : MonoBehaviour
 
             maxHealthText.text= "Health: "+updatePlayerStats.playerMaxHealth;
             maxStaminaText.text = "Stamina: " + updatePlayerStats.playerMaxStamina;
-            moonlightLevelText.text = "Moonlight: " + updatePlayerStats.playerMaxSunlight;
-            sunlightLevelText.text = "Sunlight: " + updatePlayerStats.playerMaxMoonlight;
+            maxMoonlightText.text = "Moonlight: " + updatePlayerStats.playerMaxMoonlight;
+            maxSunlightTest.text = "Sunlight: " + updatePlayerStats.playerMaxSunlight;
 
             healthLevelText.text = updatePlayerStats.playerHealthLevel.ToString();
             staminaLevelText.text = updatePlayerStats.playerStaminaLevel.ToString();
