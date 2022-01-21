@@ -15,11 +15,10 @@ public class DeadState : AbstractStateFSM
     public bool explodeItemsOnDeath = true;
 
     //The velocity at which the item is launched into the air
-    //[Range(0,5)] 
-    public float upwardVelocity = 5;
+    [Range(0,10)] public float upwardVelocity = 5;
 
     //The velocity at which the item is launched forward
-    public float forwardVelocity = 0.75f;
+    [Range(0, 2)] public float forwardVelocity = 0.75f;
 
     public override void OnEnable()
     {
@@ -36,6 +35,9 @@ public class DeadState : AbstractStateFSM
         {
             //Debug message
             DebugLogString("ENTERED DEAD STATE");
+
+            //Play the death animation
+            enemyManager.animatorManager.animator.Play("Death");
 
             //Send out event to award player XP
             EventManager.currentManager.AddEvent(new AwardPlayerXP(enemyManager.enemyStats.xpToAwardOnDeath));
