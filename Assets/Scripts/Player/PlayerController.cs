@@ -289,6 +289,15 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""OpenStatSheet"",
+                    ""type"": ""Button"",
+                    ""id"": ""c3e61aa0-f241-447e-9ab5-5154b53d36af"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""AlternateInteraction"",
                     ""type"": ""Button"",
                     ""id"": ""f0a6f7d3-a14c-4c81-9f86-a830e6844b2f"",
@@ -578,7 +587,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""abfe83f2-e4f1-4d19-b350-945d9e637f9b"",
                     ""path"": ""<Gamepad>/dpad/down"",
-                    ""interactions"": """",
+                    ""interactions"": ""Tap"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Quickslot Use"",
@@ -1046,6 +1055,28 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""action"": ""AlternateInteraction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""42a3da46-1112-48c0-986b-c704f9d8cb7c"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""OpenStatSheet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""76c7ce64-f5f3-4cf8-bffd-d38f3727b065"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenStatSheet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1075,6 +1106,15 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""name"": ""Inventory"",
                     ""type"": ""Button"",
                     ""id"": ""f338e089-d7c8-4282-97c0-36efa3cd3f0a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenStatSheet"",
+                    ""type"": ""Button"",
+                    ""id"": ""55a59879-58f5-41e9-b15d-b61517cc0eb6"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1147,6 +1187,28 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""action"": ""Map"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""86052c1d-f60e-49ca-a353-dad71b3fe405"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""OpenStatSheet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""80de7efc-c3d0-4302-b3e5-f8fd540188c5"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenStatSheet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1207,12 +1269,14 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         m_CharacterControls_Menu = m_CharacterControls.FindAction("Menu", throwIfNotFound: true);
         m_CharacterControls_Map = m_CharacterControls.FindAction("Map", throwIfNotFound: true);
         m_CharacterControls_Inventory = m_CharacterControls.FindAction("Inventory", throwIfNotFound: true);
+        m_CharacterControls_OpenStatSheet = m_CharacterControls.FindAction("OpenStatSheet", throwIfNotFound: true);
         m_CharacterControls_AlternateInteraction = m_CharacterControls.FindAction("AlternateInteraction", throwIfNotFound: true);
         // UIControls
         m_UIControls = asset.FindActionMap("UIControls", throwIfNotFound: true);
         m_UIControls_Menu = m_UIControls.FindAction("Menu", throwIfNotFound: true);
         m_UIControls_Map = m_UIControls.FindAction("Map", throwIfNotFound: true);
         m_UIControls_Inventory = m_UIControls.FindAction("Inventory", throwIfNotFound: true);
+        m_UIControls_OpenStatSheet = m_UIControls.FindAction("OpenStatSheet", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1301,6 +1365,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Menu;
     private readonly InputAction m_CharacterControls_Map;
     private readonly InputAction m_CharacterControls_Inventory;
+    private readonly InputAction m_CharacterControls_OpenStatSheet;
     private readonly InputAction m_CharacterControls_AlternateInteraction;
     public struct CharacterControlsActions
     {
@@ -1335,6 +1400,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         public InputAction @Menu => m_Wrapper.m_CharacterControls_Menu;
         public InputAction @Map => m_Wrapper.m_CharacterControls_Map;
         public InputAction @Inventory => m_Wrapper.m_CharacterControls_Inventory;
+        public InputAction @OpenStatSheet => m_Wrapper.m_CharacterControls_OpenStatSheet;
         public InputAction @AlternateInteraction => m_Wrapper.m_CharacterControls_AlternateInteraction;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
@@ -1432,6 +1498,9 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 @Inventory.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnInventory;
                 @Inventory.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnInventory;
                 @Inventory.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnInventory;
+                @OpenStatSheet.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnOpenStatSheet;
+                @OpenStatSheet.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnOpenStatSheet;
+                @OpenStatSheet.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnOpenStatSheet;
                 @AlternateInteraction.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAlternateInteraction;
                 @AlternateInteraction.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAlternateInteraction;
                 @AlternateInteraction.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAlternateInteraction;
@@ -1526,6 +1595,9 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 @Inventory.started += instance.OnInventory;
                 @Inventory.performed += instance.OnInventory;
                 @Inventory.canceled += instance.OnInventory;
+                @OpenStatSheet.started += instance.OnOpenStatSheet;
+                @OpenStatSheet.performed += instance.OnOpenStatSheet;
+                @OpenStatSheet.canceled += instance.OnOpenStatSheet;
                 @AlternateInteraction.started += instance.OnAlternateInteraction;
                 @AlternateInteraction.performed += instance.OnAlternateInteraction;
                 @AlternateInteraction.canceled += instance.OnAlternateInteraction;
@@ -1540,6 +1612,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
     private readonly InputAction m_UIControls_Menu;
     private readonly InputAction m_UIControls_Map;
     private readonly InputAction m_UIControls_Inventory;
+    private readonly InputAction m_UIControls_OpenStatSheet;
     public struct UIControlsActions
     {
         private @PlayerController m_Wrapper;
@@ -1547,6 +1620,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         public InputAction @Menu => m_Wrapper.m_UIControls_Menu;
         public InputAction @Map => m_Wrapper.m_UIControls_Map;
         public InputAction @Inventory => m_Wrapper.m_UIControls_Inventory;
+        public InputAction @OpenStatSheet => m_Wrapper.m_UIControls_OpenStatSheet;
         public InputActionMap Get() { return m_Wrapper.m_UIControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1565,6 +1639,9 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 @Inventory.started -= m_Wrapper.m_UIControlsActionsCallbackInterface.OnInventory;
                 @Inventory.performed -= m_Wrapper.m_UIControlsActionsCallbackInterface.OnInventory;
                 @Inventory.canceled -= m_Wrapper.m_UIControlsActionsCallbackInterface.OnInventory;
+                @OpenStatSheet.started -= m_Wrapper.m_UIControlsActionsCallbackInterface.OnOpenStatSheet;
+                @OpenStatSheet.performed -= m_Wrapper.m_UIControlsActionsCallbackInterface.OnOpenStatSheet;
+                @OpenStatSheet.canceled -= m_Wrapper.m_UIControlsActionsCallbackInterface.OnOpenStatSheet;
             }
             m_Wrapper.m_UIControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -1578,6 +1655,9 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 @Inventory.started += instance.OnInventory;
                 @Inventory.performed += instance.OnInventory;
                 @Inventory.canceled += instance.OnInventory;
+                @OpenStatSheet.started += instance.OnOpenStatSheet;
+                @OpenStatSheet.performed += instance.OnOpenStatSheet;
+                @OpenStatSheet.canceled += instance.OnOpenStatSheet;
             }
         }
     }
@@ -1631,6 +1711,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         void OnMenu(InputAction.CallbackContext context);
         void OnMap(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
+        void OnOpenStatSheet(InputAction.CallbackContext context);
         void OnAlternateInteraction(InputAction.CallbackContext context);
     }
     public interface IUIControlsActions
@@ -1638,5 +1719,6 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         void OnMenu(InputAction.CallbackContext context);
         void OnMap(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
+        void OnOpenStatSheet(InputAction.CallbackContext context);
     }
 }
