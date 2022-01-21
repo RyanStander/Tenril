@@ -94,6 +94,39 @@ public static class ExtensionMethods
         //Return null if none were found
         return null;
     }
+
+    //Find a child gameobject of a given parent based on a desired tag, goes deeper in the hierarchy than the normal method
+    public static GameObject DeepFindChildWithTag(GameObject searchedParent, string desiredTag)
+    {
+        //Temporary gameobject for tracking progress
+        GameObject desiredObject = null;
+
+        //Iterate over each transform inside the parent until a child of the desired tag is found
+        foreach (Transform child in searchedParent.transform)
+        {
+            //Check if the child tag matches the desired tag
+            if (child.CompareTag(desiredTag))
+            {
+                //Return with the valid child
+                desiredObject = child.gameObject;
+            }
+            else
+            {
+                //Check deeper in the object by searching the childs children
+                desiredObject = DeepFindChildWithTag(child.gameObject, desiredTag);
+            }
+
+            //If a desired object was found
+            if(desiredObject != null)
+            {
+                //Break out of the loop for an early return
+                break;
+            }
+        }
+
+        //Return with the desired object
+        return desiredObject;
+    }
     #endregion
 
     public static float MapToNewRange(float oldMinimum, float oldMaximum, float newMinimum, float newMaximum, float oldValue)
