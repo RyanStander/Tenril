@@ -491,14 +491,14 @@ GameObject:
   - component: {fileID: 496734}
   - component: {fileID: 3362628}
   - component: {fileID: 2346008}
-  - component: {fileID: 6483504}
   - component: {fileID: 5160567687781373533}
+  - component: {fileID: 7262229720699755186}
   m_Layer: 9
   m_Name: Stairs_4X4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &496734
 Transform:
@@ -563,20 +563,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6483504
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 110782}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 26af7fcba6adab348b2395cc1b67d9e6, type: 3}
 --- !u!114 &5160567687781373533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -590,6 +576,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacleType: 4
+--- !u!64 &7262229720699755186
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110782}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 26af7fcba6adab348b2395cc1b67d9e6, type: 3}
 --- !u!1 &113778
 GameObject:
   m_ObjectHideFlags: 0
