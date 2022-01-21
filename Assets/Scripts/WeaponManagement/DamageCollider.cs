@@ -5,7 +5,7 @@ public class DamageCollider : MonoBehaviour
 {
     private Collider damageCollider;
     [HideInInspector]public CharacterManager characterManager = null;
-    [SerializeField] private bool enableDamageColliderOnStart = false;
+    public bool enableDamageColliderOnStart = false;
 
     public float currentDamage = 10;
     [HideInInspector] public WeaponSoundEffects weaponSoundEffects;
