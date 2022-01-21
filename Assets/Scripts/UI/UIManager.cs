@@ -97,10 +97,11 @@ public class UIManager : MonoBehaviour
             if (isInDialogueMode)
                 EventManager.currentManager.AddEvent(new CeaseDialogue());
 
-            //swap menu mode
-            isInMenuMode = !isInMenuMode;
-
             if (isInMenuMode)
+            {
+                DisableMenuMode();
+            }
+            else
             {
                 EnableMenuMode();
 
@@ -109,10 +110,6 @@ public class UIManager : MonoBehaviour
 
                 SetInventoryButton();
             }
-            else
-            {
-                DisableMenuMode();
-            }
 
 
         }
@@ -120,6 +117,9 @@ public class UIManager : MonoBehaviour
 
     private void EnableMenuMode()
     {
+        //swap menu mode
+        isInMenuMode = true;
+
         //Disable gameplay inputs and enable menu inputs
         inputHandler.GetInputActions().CharacterControls.Disable();
 
@@ -134,6 +134,9 @@ public class UIManager : MonoBehaviour
 
     private void DisableMenuMode()
     {
+        //swap menu mode
+        isInMenuMode = false;
+
         //Enable gameplay inputs and disable menu inputs
         inputHandler.GetInputActions().CharacterControls.Enable();
 
