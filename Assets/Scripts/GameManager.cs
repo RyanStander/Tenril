@@ -77,7 +77,10 @@ public class GameManager : MonoBehaviour
             PlayerData playerData = SaveManager.LoadPlayer();
 
             //load scene
-            SceneManager.LoadScene(playerData.currentScene);
+            if (playerData == null)
+                SceneManager.LoadScene(0);
+            else
+                SceneManager.LoadScene(playerData.currentScene);
         }
         else
         {
