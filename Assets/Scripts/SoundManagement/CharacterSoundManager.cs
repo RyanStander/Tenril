@@ -245,6 +245,14 @@ public class CharacterSoundManager : MonoBehaviour
         PlaySoundClip(characterInventory.equippedWeapon.weaponSoundEffects.weaponSwingSFX.audioClip, characterInventory.equippedWeapon.weaponSoundEffects.weaponSwingSFX.volume);
     }
 
+    private void WeaponHitSound()
+    {
+        if (!CheckIfWeaponSFXIsSet())
+            return;
+
+        PlaySoundClip(characterInventory.equippedWeapon.weaponSoundEffects.weaponHitFlesh.audioClip, characterInventory.equippedWeapon.weaponSoundEffects.weaponSwingSFX.volume);
+    }
+
     private void RangedLoadSound()
     {
         if (!CheckIfWeaponSFXIsSet())

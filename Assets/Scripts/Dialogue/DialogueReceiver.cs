@@ -47,6 +47,9 @@ public class DialogueReceiver : MonoBehaviour
                 Destroy(child.gameObject);
             }
 
+            //create a button to exit the menu
+            Instantiate(leaveDialogueButtonPrefab, optionHolder.transform);
+
             if (sendDialogueOptions.options != null)
             {
                 for (int i = 0; i < sendDialogueOptions.options.Count; i++)
@@ -75,8 +78,6 @@ public class DialogueReceiver : MonoBehaviour
                     optionText.text = sendDialogueOptions.options[i];
                 }
             }
-            //create a button to exit the menu
-            Instantiate(leaveDialogueButtonPrefab, optionHolder.transform);
         }
         else
         {

@@ -267,6 +267,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "OpenStatSheet",
+                    "type": "Button",
+                    "id": "c3e61aa0-f241-447e-9ab5-5154b53d36af",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "AlternateInteraction",
                     "type": "Button",
                     "id": "f0a6f7d3-a14c-4c81-9f86-a830e6844b2f",
@@ -556,7 +565,7 @@
                     "name": "",
                     "id": "abfe83f2-e4f1-4d19-b350-945d9e637f9b",
                     "path": "<Gamepad>/dpad/down",
-                    "interactions": "",
+                    "interactions": "Tap",
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Quickslot Use",
@@ -1024,6 +1033,28 @@
                     "action": "AlternateInteraction",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "42a3da46-1112-48c0-986b-c704f9d8cb7c",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "OpenStatSheet",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "76c7ce64-f5f3-4cf8-bffd-d38f3727b065",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenStatSheet",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -1053,6 +1084,15 @@
                     "name": "Inventory",
                     "type": "Button",
                     "id": "f338e089-d7c8-4282-97c0-36efa3cd3f0a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "OpenStatSheet",
+                    "type": "Button",
+                    "id": "55a59879-58f5-41e9-b15d-b61517cc0eb6",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -1123,6 +1163,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Map",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "86052c1d-f60e-49ca-a353-dad71b3fe405",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "OpenStatSheet",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "80de7efc-c3d0-4302-b3e5-f8fd540188c5",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenStatSheet",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

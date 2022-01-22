@@ -33,7 +33,7 @@ public class PlayerStats : CharacterStats
     {
         SetupStats();
 
-        EventManager.currentManager.AddEvent(new UpdatePlayerStats(maxHealth, currentHealth, maxStamina,currentStamina,maxStoredMoonlight,currentStoredMoonlight,maxStoredSunlight,currentStoredSunlight));
+        EventManager.currentManager.AddEvent(new UpdatePlayerStats(healthLevel,maxHealth, currentHealth,staminaLevel, maxStamina,currentStamina,MoonlightLevel, maxStoredMoonlight,currentStoredMoonlight,sunlightLevel,maxStoredSunlight,currentStoredSunlight,skillPoints));
     }
 
     public void SetPlayerStats(PlayerData playerData)
@@ -60,7 +60,7 @@ public class PlayerStats : CharacterStats
 
         assignedFaction = (Faction)playerData.factionID;
 
-        EventManager.currentManager.AddEvent(new UpdatePlayerStats(maxHealth, currentHealth, maxStamina,currentStamina,maxStoredMoonlight,currentStoredMoonlight,maxStoredSunlight,currentStoredSunlight));
+        EventManager.currentManager.AddEvent(new UpdatePlayerStats(healthLevel, maxHealth, currentHealth, staminaLevel, maxStamina, currentStamina, MoonlightLevel, maxStoredMoonlight, currentStoredMoonlight, sunlightLevel, maxStoredSunlight, currentStoredSunlight, skillPoints));
     }
 
     public void OpenBlockingCollider(PlayerInventory playerInventory)
@@ -190,6 +190,7 @@ public class PlayerStats : CharacterStats
     {
         currentLevel += levelsGained;
         skillPoints += levelsGained;
+        EventManager.currentManager.AddEvent(new UpdatePlayerStats(healthLevel, maxHealth, currentHealth, staminaLevel, maxStamina, currentStamina, MoonlightLevel, maxStoredMoonlight, currentStoredMoonlight, sunlightLevel, maxStoredSunlight, currentStoredSunlight, skillPoints));
     }
 
     internal void IncreaseXP(int xpGained)
@@ -297,6 +298,7 @@ public class PlayerStats : CharacterStats
             }
 
             SpendSkillPoint(gainSkill.skillToGain);
+            EventManager.currentManager.AddEvent(new UpdatePlayerStats(healthLevel, maxHealth, currentHealth, staminaLevel, maxStamina, currentStamina, MoonlightLevel, maxStoredMoonlight, currentStoredMoonlight, sunlightLevel, maxStoredSunlight, currentStoredSunlight, skillPoints));
         }
 
     }
