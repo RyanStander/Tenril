@@ -58,7 +58,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1137650770036684613}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -14, z: 0}
+  m_LocalPosition: {x: 0, y: -16, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3558629799568261816}
@@ -102,6 +102,20 @@ Transform:
   m_Father: {fileID: 4143584774967759851}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &4725211219569052490
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751119137764339026}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1 &5277889687666217972
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,7 +125,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4143584774967759851}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TowerSquare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,7 +210,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8282724468702873868}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -10, z: 0}
+  m_LocalPosition: {x: 0, y: -12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 868584721663083039}
@@ -371,6 +385,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8839464792054097424}
     m_Modifications:
+    - target: {fileID: 111324, guid: 3aede2f5f49df8848b2e6bb286adb4cc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 122346, guid: 3aede2f5f49df8848b2e6bb286adb4cc, type: 3}
       propertyPath: m_Name
       value: Floor_2_4X4 (1)
@@ -433,6 +451,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8839464792054097424}
     m_Modifications:
+    - target: {fileID: 111324, guid: 3aede2f5f49df8848b2e6bb286adb4cc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 122346, guid: 3aede2f5f49df8848b2e6bb286adb4cc, type: 3}
       propertyPath: m_Name
       value: Floor_2_4X4
@@ -483,6 +505,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3aede2f5f49df8848b2e6bb286adb4cc, type: 3}
+--- !u!1 &1751119137764339026 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 122346, guid: 3aede2f5f49df8848b2e6bb286adb4cc, type: 3}
+  m_PrefabInstance: {fileID: 1751119137764356280}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1751119137764233960 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 418384, guid: 3aede2f5f49df8848b2e6bb286adb4cc, type: 3}
@@ -805,6 +832,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8839464792054097424}
     m_Modifications:
+    - target: {fileID: 111324, guid: 3aede2f5f49df8848b2e6bb286adb4cc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 122346, guid: 3aede2f5f49df8848b2e6bb286adb4cc, type: 3}
       propertyPath: m_Name
       value: Floor_2_4X4 (3)
@@ -929,6 +960,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8839464792054097424}
     m_Modifications:
+    - target: {fileID: 111324, guid: 3aede2f5f49df8848b2e6bb286adb4cc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 122346, guid: 3aede2f5f49df8848b2e6bb286adb4cc, type: 3}
       propertyPath: m_Name
       value: Floor_2_4X4 (2)
