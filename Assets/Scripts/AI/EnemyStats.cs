@@ -100,9 +100,6 @@ public class EnemyStats : CharacterStats
             //Clamp the health to 0
             currentHealth = 0;
 
-            //Play the death animation
-            if (playAnimation) enemyManager.animatorManager.animator.Play("Death");
-
             //Set to dead in stats & in animator controller
             isDead = true;
             enemyManager.animatorManager.animator.SetBool("isDead", true);

@@ -145,7 +145,7 @@ public class EnemyVisionManager : MonoBehaviour
     private GameObject GetVisionPoint(GameObject searchedObject)
     {
         //If existing, get the vision point of the object, otherwise default to the searched object
-        GameObject visionPoint = ExtensionMethods.FindChildWithTag(searchedObject, "VisionTargetPoint");
+        GameObject visionPoint = ExtensionMethods.DeepFindChildWithTag(searchedObject, "VisionTargetPoint");
 
         //If no vision point was found, default to the target
         if (visionPoint == null)
