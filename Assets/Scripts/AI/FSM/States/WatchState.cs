@@ -37,7 +37,7 @@ public class WatchState : AbstractStateFSM
         if (enteredState)
         {
             //Debug message
-            DebugLogString("ENTERED IDLE STATE");
+            DebugLogString("ENTERED WATCH STATE");
 
             //Set alert
             wasAlerted = false;
@@ -47,6 +47,9 @@ public class WatchState : AbstractStateFSM
 
             //Set current target to null
             currentTarget = null;
+
+            //Reset the NavAgent destination in case of old information
+            enemyManager.navAgent.ResetPath();
         }
 
         return enteredState;
@@ -56,7 +59,7 @@ public class WatchState : AbstractStateFSM
     {
         if (enteredState)
         {
-            DebugLogString("UPDATING IDLE STATE");
+            DebugLogString("UPDATING WATCH STATE");
         }
 
         //If was alerted, enter chase state
@@ -118,7 +121,7 @@ public class WatchState : AbstractStateFSM
         base.ExitState();
 
         //Debug message
-        DebugLogString("EXITED IDLE STATE");
+        DebugLogString("EXITED WATCH STATE");
 
         //Return true
         return true;
