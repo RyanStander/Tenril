@@ -24,7 +24,7 @@ public class PlayerInteraction : MonoBehaviour
     private List<Interactable> interactables=new List<Interactable>();
     private List<GameObject> createdInteractableObjects = new List<GameObject>();
     private int currentlySelectedInteractableIndex = 0;
-
+    private List<Item> selectedItems = new List<Item>();
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.PlayerKeybindsUpdates,OnPlayerKeybindsUpdates);
@@ -105,6 +105,11 @@ public class PlayerInteraction : MonoBehaviour
             {
                 interactableDataHolder.interactableIconImage.sprite = itemPickup.item.itemIcon;
                 interactableDataHolder.interactableNameText.text = itemPickup.item.itemName+" x " + itemPickup.amountOfItem;
+            }
+            else if (interactableObject is HarvestableResource harvestableResource)
+            {
+                interactableDataHolder.interactableIconImage.sprite = harvestableResource.displayIcon;
+                interactableDataHolder.interactableNameText.text = "Harvest "+ harvestableResource.interactableText;
             }
         }
         else
@@ -187,5 +192,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             Debug.LogWarning("The event of PlayerChangedInputDevice was not matching of event type PlayerChangedInputDevice");
         }
+    }
+
+    private void ObtainItemsInList()
+    {
+
     }
 }
