@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HarvestableResource : Interactable
@@ -10,9 +11,9 @@ public class HarvestableResource : Interactable
     public Item item;
     [Tooltip("The amount that will be received")]
     public int amountOfItem = 1;
-    [Tooltip("The time it takes to fully harvest the item")]
-    public float harvestDuration=4f;
     protected PlayerInventory playerInventory;
+    [Tooltip("The amount times the recource can be harvested ")]
+    public int totalHarvests = 3;
 
     public override void Interact(PlayerManager playerManager)
     {
@@ -30,13 +31,23 @@ public class HarvestableResource : Interactable
 
         //Plays the animation of picking up item
         playerAnimatorManager.PlayTargetAnimation(animationToPlay, true);
+    }
 
+    /// <summary>
+    /// Adds the items to the player's inventory on call
+    /// </summary>
+    public virtual void ObtainItemsFromHarvest()
+    {
         //Add Item to inventory
         playerInventory.AddItemToInventory(item, amountOfItem);
 
         EventManager.currentManager.AddEvent(new PlayerObtainedItem(item, amountOfItem));
 
-        //Destroy the interactable after pick up
-        Destroy(gameObject);
+        EventManager.currentManager.AddEvent(new PlayerHarvestingResource(this));
+
+        totalHarvests--;
+
+        if (totalHarvests>0)
+            Destroy(gameObject);
     }
 }

@@ -24,7 +24,10 @@ public class PlayerInteraction : MonoBehaviour
     private List<Interactable> interactables=new List<Interactable>();
     private List<GameObject> createdInteractableObjects = new List<GameObject>();
     private int currentlySelectedInteractableIndex = 0;
-    private List<Item> selectedItems = new List<Item>();
+
+    //Information of interactables:
+    //We want to keep info on an interactable in the event of requiring data from it at a later point
+    private Interactable currentInteractableInUse;
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.PlayerKeybindsUpdates,OnPlayerKeybindsUpdates);
@@ -194,8 +197,19 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    private void ObtainItemsInList()
+    private void HarvestItem()
     {
 
     }
 }
+
+/*
+ * Harvestable Resources:
+ *  -Player interacts with object
+ *      -Usual stuff
+ *  -Starts playing animation for a set amount of time
+ *  -When reaching a point of the animation, reward player the item
+ *      -Use animation event to obtain item from harvestableResource
+ *  -Play a sound at part of the animation
+ *  -When the duration ends, exit the animation
+ */

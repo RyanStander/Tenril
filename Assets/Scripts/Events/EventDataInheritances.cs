@@ -526,3 +526,16 @@ public class PlayerChangedInputDevice : EventData
 }
 
 #endregion
+
+#region Interactables
+
+public class PlayerHarvestingResource : EventData
+{
+    public readonly HarvestableResource harvestableResource;
+    public PlayerHarvestingResource(HarvestableResource harvestableResource) : base(EventType.PlayerHarvestingResource)
+    {
+        this.harvestableResource = harvestableResource;
+    }
+}
+
+#endregion

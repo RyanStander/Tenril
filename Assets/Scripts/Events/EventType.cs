@@ -71,4 +71,7 @@ public enum EventType
 
     //Inputs
     PlayerChangedInputDevice,
+
+    //Interactables
+    PlayerHarvestingResource,
 }
