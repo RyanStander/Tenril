@@ -7,6 +7,7 @@ public class CharacterSoundManager : MonoBehaviour
     private CharacterSpellcastingManager spellcastingManager;
     private Animator animator;
     [SerializeField] private CharacterSoundEffects characterSoundEffectSet;
+    [SerializeField] private ToolsSoundEffects toolsSoundEffectSet;
 
     private float forwardValueLimitLeftFootstepSounds = 0.4f;
     private void Start()
@@ -308,6 +309,18 @@ public class CharacterSoundManager : MonoBehaviour
 
     #endregion
 
+    #region Tools
+
+    private void MineSound()
+    {
+        if (!CheckIfToolsSFXIsSet())
+            return;
+
+        PlayVoiceClip(toolsSoundEffectSet.miningSFX.audioClip, toolsSoundEffectSet.miningSFX.volume);
+    }
+
+    #endregion
+
     #endregion
 
     #region Checkers
@@ -373,6 +386,19 @@ public class CharacterSoundManager : MonoBehaviour
         else if (spellcastingManager.spellBeingCast == null)
         {
             Debug.LogWarning("Could not find equipped weapon");
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private bool CheckIfToolsSFXIsSet()
+    {
+        if (characterSoundEffectSet == null)
+        {
+            Debug.LogWarning("no tools sound effect set for the character, make sure you have set it");
             return false;
         }
         else
