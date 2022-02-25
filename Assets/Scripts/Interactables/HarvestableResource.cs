@@ -31,12 +31,13 @@ public class HarvestableResource : Interactable
 
         //Plays the animation of picking up item
         playerAnimatorManager.PlayTargetAnimation(animationToPlay, true);
+        playerAnimatorManager.animator.SetBool("isHarvestingResource", true);
     }
 
     /// <summary>
-    /// Adds the items to the player's inventory on call
+    /// Adds the items to the player's inventory on call. Returns true when there are still resources to harvest, returns false when there are none left.
     /// </summary>
-    public virtual void ObtainItemsFromHarvest()
+    public virtual bool ObtainItemsFromHarvest()
     {
         //Add Item to inventory
         playerInventory.AddItemToInventory(item, amountOfItem);
@@ -47,7 +48,13 @@ public class HarvestableResource : Interactable
 
         totalHarvests--;
 
-        if (totalHarvests>0)
+        if (totalHarvests < 1)
+        {
             Destroy(gameObject);
+            return false;
+        }
+        else
+            return true;
+
     }
 }

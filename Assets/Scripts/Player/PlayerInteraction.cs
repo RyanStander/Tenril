@@ -27,7 +27,7 @@ public class PlayerInteraction : MonoBehaviour
 
     //Information of interactables:
     //We want to keep info on an interactable in the event of requiring data from it at a later point
-    private Interactable currentInteractableInUse;
+    private HarvestableResource currentInteractableInUse;
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.PlayerKeybindsUpdates,OnPlayerKeybindsUpdates);
@@ -111,8 +111,9 @@ public class PlayerInteraction : MonoBehaviour
             }
             else if (interactableObject is HarvestableResource harvestableResource)
             {
-                interactableDataHolder.interactableIconImage.sprite = harvestableResource.displayIcon;
-                interactableDataHolder.interactableNameText.text = "Harvest "+ harvestableResource.interactableText;
+                //interactableDataHolder.interactableIconImage.sprite = harvestableResource.displayIcon;
+                //interactableDataHolder.interactableNameText.text = "Harvest "+ harvestableResource.interactableText;
+                currentInteractableInUse = harvestableResource;
             }
         }
         else
@@ -197,8 +198,22 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called by animation events
+    /// </summary>
     private void HarvestItem()
     {
+        if (currentInteractableInUse!=null)
+        {
+            //If there are no more resources to harvest
+            if (!currentInteractableInUse.ObtainItemsFromHarvest())
+                GetComponent<PlayerAnimatorManager>().animator.SetBool("isHarvestingResource", false);
+        }
+        else
+        {
+            GetComponent<PlayerAnimatorManager>().animator.SetBool("isHarvestingResource",false);
+            Debug.LogWarning("No harvestable object was found");
+        }
 
     }
 }

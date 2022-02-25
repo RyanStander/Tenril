@@ -36,7 +36,7 @@ public class PlayerManager : CharacterManager
 
     private float timeTillRestart = 3, restartTimeStamp;
 
-    public bool canDoCombo, isInteracting, isAiming, isHoldingArrow;
+    public bool canDoCombo, isInteracting, isAiming, isHoldingArrow, isHarvestingResource;
     private bool enteredSpellcastingMode = true;
     private void OnEnable()
     {
@@ -221,6 +221,7 @@ public class PlayerManager : CharacterManager
         isBlocking = playerAnimatorManager.animator.GetBool("isBlocking");
         isAiming = playerAnimatorManager.animator.GetBool("isAiming");
         isHoldingArrow = playerAnimatorManager.animator.GetBool("isHoldingArrow");
+        isHarvestingResource = playerAnimatorManager.animator.GetBool("isHarvestingResource");
     }
 
     public override void EnableRagdoll()
