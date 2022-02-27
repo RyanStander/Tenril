@@ -6,30 +6,10 @@ using UnityEngine;
 /// </summary>
 public class EnemyInventory : CharacterInventory
 {
-    //The inventory a given enemy will spawn with
-    [Header("Inventory Table")]
-    [Tooltip("Used for generating semi-random equipment")]
-    public LootTable inventoryItemTable = null;
-
     public void Awake()
     {
         PopulateInventoryItemTable();
         SetWeaponFromInventory();
-    }
-
-    public void PopulateInventoryItemTable()
-    {
-        //Load the loot table if given
-        if (inventoryItemTable != null)
-        {
-            //Throw an error if no inventory was supplied
-            if (inventory == null) throw new MissingComponentException("Missing EnemyInventory on " + gameObject + "!");
-            else
-            {
-                //Add a generated list of loot
-                inventory.AddRange(LootTable.GenerateListOfLoot(inventoryItemTable));
-            }
-        }
     }
 
     public void SetWeaponFromInventory()
