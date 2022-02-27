@@ -89,6 +89,11 @@ public class PlayerInteraction : MonoBehaviour
         if (inputHandler.interactInput&&interactables.Count>0)
         {
             interactables[currentlySelectedInteractableIndex].Interact(GetComponent<PlayerManager>());
+
+            if (interactables[currentlySelectedInteractableIndex] is HarvestableResource harvestableResource)
+            {
+                currentInteractableInUse = harvestableResource;
+            }
         }
 
         //Empty list
@@ -112,9 +117,8 @@ public class PlayerInteraction : MonoBehaviour
             }
             else if (interactableObject is HarvestableResource harvestableResource)
             {
-                //interactableDataHolder.interactableIconImage.sprite = harvestableResource.displayIcon;
-                //interactableDataHolder.interactableNameText.text = "Harvest "+ harvestableResource.interactableText;
-                currentInteractableInUse = harvestableResource;
+                interactableDataHolder.interactableIconImage.sprite = harvestableResource.displayIcon;
+                interactableDataHolder.interactableNameText.text = "Harvest "+ harvestableResource.interactableText;
             }
         }
         else

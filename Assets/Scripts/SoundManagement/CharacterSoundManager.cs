@@ -319,6 +319,14 @@ public class CharacterSoundManager : MonoBehaviour
         PlayVoiceClip(toolsSoundEffectSet.miningSFX.audioClip, toolsSoundEffectSet.miningSFX.volume);
     }
 
+    private void ChopSound()
+    {
+        if (!CheckIfToolsSFXIsSet())
+            return;
+
+        PlayVoiceClip(toolsSoundEffectSet.choppingSFX.audioClip, toolsSoundEffectSet.choppingSFX.volume);
+    }
+
     #endregion
 
     #endregion

@@ -7,6 +7,8 @@ public class HarvestableResource : Interactable
     public Sprite displayIcon;
     [Tooltip("The animation state that will be played when interacting")]
     public string animationToPlay= "PickUp";
+    [Tooltip("References the tool needed to harvest")]
+    public ToolType toolRequired;
     [Tooltip("The item that will be obtained when interacting")]
     public Item item;
     [Tooltip("The amount that will be received")]
@@ -30,7 +32,7 @@ public class HarvestableResource : Interactable
         playerAnimatorManager = playerManager.GetComponent<PlayerAnimatorManager>();
 
         //Plays the animation of harvesting the item
-        playerManager.DisplayMiningTool();
+        playerManager.DisplayTool(toolRequired);
         playerAnimatorManager.PlayTargetAnimation(animationToPlay, true);
         playerAnimatorManager.animator.SetBool("isHarvestingResource", true);
     }
@@ -41,7 +43,8 @@ public class HarvestableResource : Interactable
     public virtual bool ObtainItemsFromHarvest()
     {
         //Add Item to inventory
-        playerInventory.AddItemToInventory(item, amountOfItem);
+        if (playerInventory != null)
+            playerInventory.AddItemToInventory(item, amountOfItem);
 
         EventManager.currentManager.AddEvent(new PlayerObtainedItem(item, amountOfItem));
 

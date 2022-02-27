@@ -350,6 +350,7 @@ public class PlayerInventory : CharacterInventory
                 weaponSlotManager.DisplayObjectInHand(equippedPickaxe.toolPrefab,false,true);
                 break;
             case ToolType.Axe:
+                weaponSlotManager.DisplayObjectInHand(equippedAxe.toolPrefab, false, true);
                 break;
         }
     }

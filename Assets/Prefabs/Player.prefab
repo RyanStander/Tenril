@@ -4558,6 +4558,7 @@ MonoBehaviour:
   secondaryWeapon: {fileID: 11400000, guid: d0fa351850862604ea051e1892936ee9, type: 2}
   equippedAmmo: {fileID: 11400000, guid: 5594c94fc385d7447968ff1c35ad051d, type: 2}
   equippedPickaxe: {fileID: 11400000, guid: b2aaf22c960c5c146956a0297c806373, type: 2}
+  equippedAxe: {fileID: 11400000, guid: 5f758944045471d42bb0f63a3f7b6fa0, type: 2}
   inventory:
   - item: {fileID: 11400000, guid: 92735e3b99674a741ac327fbf4264d5f, type: 2}
     itemStackCount: 1
@@ -4696,6 +4697,8 @@ MonoBehaviour:
   backSlot: {fileID: 0}
   leftHandDamageCollider: {fileID: 0}
   rightHandDamageCollider: {fileID: 0}
+  leftDisplayObject: {fileID: 0}
+  rightDisplayObject: {fileID: 0}
 --- !u!114 &1704729951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4771,7 +4774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterSoundEffectSet: {fileID: 11400000, guid: de4a99a97f7e6e246828c8fbc2724073, type: 2}
-  toolsSoundEffectSet: {fileID: 0}
+  toolsSoundEffectSet: {fileID: 11400000, guid: 8426c172ec3d50140a2f6c01f7bfdcd8, type: 2}
 --- !u!1 &7803005539856370231
 GameObject:
   m_ObjectHideFlags: 0

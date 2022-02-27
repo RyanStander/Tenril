@@ -237,9 +237,9 @@ public class PlayerManager : CharacterManager
     /// <summary>
     /// Displays the pickaxe
     /// </summary>
-    internal void DisplayMiningTool()
+    internal void DisplayTool(ToolType toolType)
     {
-        playerInventory.DisplayTool(weaponSlotManager, ToolType.Pickaxe);
+        playerInventory.DisplayTool(weaponSlotManager, toolType);
     }
     #endregion
 
