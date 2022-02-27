@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Holds the information of weapon slots as well as
+/// </summary>
 public class WeaponSlotManager : MonoBehaviour
 {
     [Tooltip("The animator that it swaps to when the character is not wielding weapons")]
@@ -63,15 +66,38 @@ public class WeaponSlotManager : MonoBehaviour
             rightHandSlot.currentWeaponModel.SetActive(true);
     }
 
-    public void DisplayObjectInHand(GameObject objectToDisplay, bool isInLeftHandSlot = true, bool hideWeapon = true)
+    public void DisplayObjectInHand(GameObject objectToDisplay, bool isInLeftHandSlot = true,bool usesBothHands=false, bool hideWeapon = true)
     {
-        if (isInLeftHandSlot)
+        if (usesBothHands)
         {
             if (hideWeapon)
             {
                 if (leftHandSlot.currentWeaponModel != null)
                     leftHandSlot.currentWeaponModel.SetActive(false);
+                if (rightHandSlot.currentWeaponModel != null)
+                    rightHandSlot.currentWeaponModel.SetActive(false);
             }
+        }
+        else if (isInLeftHandSlot)
+        {
+            if (hideWeapon)
+                if (leftHandSlot.currentWeaponModel != null)
+                    leftHandSlot.currentWeaponModel.SetActive(false);
+        }
+        else
+        {
+            if (hideWeapon)
+                if (rightHandSlot.currentWeaponModel != null)
+                    rightHandSlot.currentWeaponModel.SetActive(false);
+        }
+
+        ObjectDisplayBasedOnHand(isInLeftHandSlot, objectToDisplay);
+    }
+
+    private void ObjectDisplayBasedOnHand(bool isInLeftHandSlot, GameObject objectToDisplay)
+    {
+        if (isInLeftHandSlot)
+        {
             if (objectToDisplay != null)
             {
                 if (leftHandSlot.parentOverride != null)
@@ -82,11 +108,6 @@ public class WeaponSlotManager : MonoBehaviour
         }
         else
         {
-            if (hideWeapon)
-            {
-                if (rightHandSlot.currentWeaponModel != null)
-                    rightHandSlot.currentWeaponModel.SetActive(false);
-            }
             if (objectToDisplay != null)
             {
                 if (rightHandSlot.parentOverride != null)
