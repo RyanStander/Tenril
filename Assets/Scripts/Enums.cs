@@ -44,3 +44,11 @@ public enum InputDeviceType
     PlayStation=2,
     Xbox=3,
 }
+
+//When we find more tools, will add here
+public enum ToolType
+{
+    None=0,
+    Pickaxe=1,
+    Axe=2,
+}

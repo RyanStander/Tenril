@@ -19,12 +19,16 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private LayerMask targetLayers;
     [SerializeField] private bool showGizmo;
 
+    private PlayerManager playerManager;
     private InputHandler inputHandler;
 
     private List<Interactable> interactables=new List<Interactable>();
     private List<GameObject> createdInteractableObjects = new List<GameObject>();
     private int currentlySelectedInteractableIndex = 0;
 
+    //Information of interactables:
+    //We want to keep info on an interactable in the event of requiring data from it at a later point
+    private HarvestableResource currentInteractableInUse;
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.PlayerKeybindsUpdates,OnPlayerKeybindsUpdates);
@@ -40,7 +44,7 @@ public class PlayerInteraction : MonoBehaviour
     private void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
-
+        playerManager = GetComponent<PlayerManager>();
 
         interactableUI = FindObjectOfType<InteractableUI>();
     }
@@ -85,6 +89,11 @@ public class PlayerInteraction : MonoBehaviour
         if (inputHandler.interactInput&&interactables.Count>0)
         {
             interactables[currentlySelectedInteractableIndex].Interact(GetComponent<PlayerManager>());
+
+            if (interactables[currentlySelectedInteractableIndex] is HarvestableResource harvestableResource)
+            {
+                currentInteractableInUse = harvestableResource;
+            }
         }
 
         //Empty list
@@ -105,6 +114,11 @@ public class PlayerInteraction : MonoBehaviour
             {
                 interactableDataHolder.interactableIconImage.sprite = itemPickup.item.itemIcon;
                 interactableDataHolder.interactableNameText.text = itemPickup.item.itemName+" x " + itemPickup.amountOfItem;
+            }
+            else if (interactableObject is HarvestableResource harvestableResource)
+            {
+                interactableDataHolder.interactableIconImage.sprite = harvestableResource.displayIcon;
+                interactableDataHolder.interactableNameText.text = "Harvest "+ harvestableResource.interactableText;
             }
         }
         else
@@ -188,4 +202,39 @@ public class PlayerInteraction : MonoBehaviour
             Debug.LogWarning("The event of PlayerChangedInputDevice was not matching of event type PlayerChangedInputDevice");
         }
     }
+
+    /// <summary>
+    /// Called by animation events
+    /// </summary>
+    private void HarvestItem()
+    {
+        if (currentInteractableInUse!=null)
+        {
+            //If there are no more resources to harvest
+            if (!currentInteractableInUse.ObtainItemsFromHarvest())
+            {
+                GetComponent<PlayerAnimatorManager>().animator.SetBool("isHarvestingResource", false);
+                playerManager.HideDisplayObect(true);
+            }
+
+        }
+        else
+        {
+            GetComponent<PlayerAnimatorManager>().animator.SetBool("isHarvestingResource",false);
+            playerManager.HideDisplayObect(true);
+            Debug.LogWarning("No harvestable object was found");
+        }
+
+    }
 }
+
+/*
+ * Harvestable Resources:
+ *  -Player interacts with object
+ *      -Usual stuff
+ *  -Starts playing animation for a set amount of time
+ *  -When reaching a point of the animation, reward player the item
+ *      -Use animation event to obtain item from harvestableResource
+ *  -Play a sound at part of the animation
+ *  -When the duration ends, exit the animation
+ */

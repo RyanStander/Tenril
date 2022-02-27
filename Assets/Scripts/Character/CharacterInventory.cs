@@ -18,6 +18,12 @@ public class CharacterInventory : MonoBehaviour
 
     [Tooltip("The Ammo that the player will try to draw when using a ranged weapon")]
     public AmmunitionItem equippedAmmo;
+    
+    [Header("Tools")]
+    [Tooltip("The pickaxe that the player will try to use when mining")]
+    public ToolItem equippedPickaxe;
+    [Tooltip("The axe that the player will try to use when chopping wood")]
+    public ToolItem equippedAxe;
 
     [Header("Backpack")]
     public List<ItemInventory> inventory = new List<ItemInventory>();

@@ -4468,6 +4468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 670ddf1c1ffe6a548ac21782b8325dd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeInputDevice: 0
   left: 0
   forward: 0
   moveAmount: 0
@@ -4481,9 +4482,10 @@ MonoBehaviour:
   menuInput: 0
   mapInput: 0
   inventoryInput: 0
+  characterStatsInput: 0
   alternateInteraction: 0
   weakAttackInput: 0
-  weakAttackLetGoInput: 0
+  attackLetGoInput: 0
   strongAttackInput: 0
   drawSheathInput: 0
   blockInput: 0
@@ -4510,6 +4512,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lockOnTransform: {fileID: 1594625838}
+  weaponSlotManager: {fileID: 0}
   isParrying: 0
   canBeRiposted: 0
   isBlocking: 0
@@ -4522,6 +4525,7 @@ MonoBehaviour:
   isInteracting: 0
   isAiming: 0
   isHoldingArrow: 0
+  isHarvestingResource: 0
 --- !u!114 &1455011013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4553,22 +4557,8 @@ MonoBehaviour:
   primaryWeapon: {fileID: 11400000, guid: 379244ca9efcbe74a84fc791cb8b4127, type: 2}
   secondaryWeapon: {fileID: 11400000, guid: d0fa351850862604ea051e1892936ee9, type: 2}
   equippedAmmo: {fileID: 11400000, guid: 5594c94fc385d7447968ff1c35ad051d, type: 2}
-  Gold: 250
-  preparedSpells:
-  - {fileID: 11400000, guid: 88f46b8b0cfc72a428db02eddaad133f, type: 2}
-  - {fileID: 11400000, guid: be589a2d0446284408cb4fcb09095ebf, type: 2}
-  - {fileID: 11400000, guid: bc59dc89fa8373c4aa69e674a81c4699, type: 2}
-  - {fileID: 11400000, guid: 4fddbfde41510ef4283567cff6250891, type: 2}
-  - {fileID: 11400000, guid: 0c67f726c5d7153419d1a5e9fa8507b7, type: 2}
-  - {fileID: 11400000, guid: 87b72a186df52284eb683974d184edbd, type: 2}
-  - {fileID: 11400000, guid: f190d71de17585f4abc38b342e6dc76c, type: 2}
-  - {fileID: 0}
-  quickslotItems:
-  - {fileID: 11400000, guid: b4227b60b1507304caa7f04341cb4a7b, type: 2}
-  - {fileID: 11400000, guid: 7d60350e21f1e024b9e723e45ca7fc27, type: 2}
-  - {fileID: 11400000, guid: 083a95e82826f2047b46d3bdd56921bb, type: 2}
-  currentlySelectedQuickSlotItem: {fileID: 0}
-  quickslotItemInUse: {fileID: 0}
+  equippedPickaxe: {fileID: 11400000, guid: b2aaf22c960c5c146956a0297c806373, type: 2}
+  equippedAxe: {fileID: 11400000, guid: 5f758944045471d42bb0f63a3f7b6fa0, type: 2}
   inventory:
   - item: {fileID: 11400000, guid: 92735e3b99674a741ac327fbf4264d5f, type: 2}
     itemStackCount: 1
@@ -4588,6 +4578,22 @@ MonoBehaviour:
     itemStackCount: 1
   - item: {fileID: 11400000, guid: d0fa351850862604ea051e1892936ee9, type: 2}
     itemStackCount: 1
+  consumableItemInUse: {fileID: 0}
+  Gold: 250
+  preparedSpells:
+  - {fileID: 11400000, guid: 88f46b8b0cfc72a428db02eddaad133f, type: 2}
+  - {fileID: 11400000, guid: be589a2d0446284408cb4fcb09095ebf, type: 2}
+  - {fileID: 11400000, guid: bc59dc89fa8373c4aa69e674a81c4699, type: 2}
+  - {fileID: 11400000, guid: 4fddbfde41510ef4283567cff6250891, type: 2}
+  - {fileID: 11400000, guid: 0c67f726c5d7153419d1a5e9fa8507b7, type: 2}
+  - {fileID: 11400000, guid: 87b72a186df52284eb683974d184edbd, type: 2}
+  - {fileID: 11400000, guid: f190d71de17585f4abc38b342e6dc76c, type: 2}
+  - {fileID: 0}
+  quickslotItems:
+  - {fileID: 11400000, guid: b4227b60b1507304caa7f04341cb4a7b, type: 2}
+  - {fileID: 11400000, guid: 7d60350e21f1e024b9e723e45ca7fc27, type: 2}
+  - {fileID: 11400000, guid: 083a95e82826f2047b46d3bdd56921bb, type: 2}
+  currentlySelectedQuickSlotItem: {fileID: 0}
 --- !u!114 &1949516871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4649,7 +4655,8 @@ MonoBehaviour:
   raycastOffset: {x: 0, y: 0, z: 0}
   groundCheckRadius: 0.3
   rotationSpeed: 10
-  aimSensitivity: 0.025
+  mouseAimSensitivity: 0.01
+  controllerAimSensitivity: 0.025
   minimumPivot: -35
   maximumPivot: 35
   sprintStaminaCost: 0.1
@@ -4690,6 +4697,8 @@ MonoBehaviour:
   backSlot: {fileID: 0}
   leftHandDamageCollider: {fileID: 0}
   rightHandDamageCollider: {fileID: 0}
+  leftDisplayObject: {fileID: 0}
+  rightDisplayObject: {fileID: 0}
 --- !u!114 &1704729951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4765,6 +4774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterSoundEffectSet: {fileID: 11400000, guid: de4a99a97f7e6e246828c8fbc2724073, type: 2}
+  toolsSoundEffectSet: {fileID: 11400000, guid: 8426c172ec3d50140a2f6c01f7bfdcd8, type: 2}
 --- !u!1 &7803005539856370231
 GameObject:
   m_ObjectHideFlags: 0

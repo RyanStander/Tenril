@@ -1108,6 +1108,68 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 494142, guid: 454ee021f0827e4499066e1841532a56, type: 3}
   m_PrefabInstance: {fileID: 144310082}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &144918536
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2012625243}
+    m_Modifications:
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 413.904
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 275.25702
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.88640296
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.46188825
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.0028742359
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.030673178
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -54.986
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -2.321
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 5.172
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092892216419483852, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_Name
+      value: Gold Ore (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+--- !u!4 &144918537 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+  m_PrefabInstance: {fileID: 144918536}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &151930194
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1232,6 +1294,31 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 483056, guid: 949c9477ec7966d419b91ff78aadb2f5, type: 3}
   m_PrefabInstance: {fileID: 153430597}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &153757955 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 126222, guid: 483e603cf995c9840bb841c2a2386013, type: 3}
+  m_PrefabInstance: {fileID: 1400979731}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &153757957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153757955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9138e550fd438409ffd98876308989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.6
+  interactableText: Oak Wood
+  displayIcon: {fileID: 21300000, guid: 9a32185a4d4b2d1459c58a811ed95887, type: 3}
+  animationToPlay: Chopping
+  toolRequired: 2
+  item: {fileID: 11400000, guid: 89fe49983da1f494d97a059e7d734561, type: 2}
+  amountOfItem: 1
+  totalHarvests: 5
 --- !u!1001 &182790256
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1491,6 +1578,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
+--- !u!1 &223209216 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 148440, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
+  m_PrefabInstance: {fileID: 1118038676}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &223209217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223209216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9138e550fd438409ffd98876308989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.6
+  interactableText: Oak Wood
+  displayIcon: {fileID: 21300000, guid: 9a32185a4d4b2d1459c58a811ed95887, type: 3}
+  animationToPlay: Chopping
+  toolRequired: 2
+  item: {fileID: 11400000, guid: 89fe49983da1f494d97a059e7d734561, type: 2}
+  amountOfItem: 1
+  totalHarvests: 5
 --- !u!1001 &233070255
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2634,6 +2746,31 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 495198, guid: 29444c582cbccca46a7d5b597c9dd6cc, type: 3}
   m_PrefabInstance: {fileID: 253374561}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &254098138 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 148440, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
+  m_PrefabInstance: {fileID: 1193895787}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &254098139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254098138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9138e550fd438409ffd98876308989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.6
+  interactableText: Oak Wood
+  displayIcon: {fileID: 21300000, guid: 9a32185a4d4b2d1459c58a811ed95887, type: 3}
+  animationToPlay: Chopping
+  toolRequired: 2
+  item: {fileID: 11400000, guid: 89fe49983da1f494d97a059e7d734561, type: 2}
+  amountOfItem: 1
+  totalHarvests: 5
 --- !u!1001 &279633277
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3491,6 +3628,31 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 418328, guid: 213203fb5caf82f4a9e669fe230f7cdc, type: 3}
   m_PrefabInstance: {fileID: 392918501}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &395641562 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 159424, guid: c6e77bda7f33b364da7931f7b435d347, type: 3}
+  m_PrefabInstance: {fileID: 825289041}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &395641563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395641562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9138e550fd438409ffd98876308989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.6
+  interactableText: Oak Wood
+  displayIcon: {fileID: 21300000, guid: 9a32185a4d4b2d1459c58a811ed95887, type: 3}
+  animationToPlay: Chopping
+  toolRequired: 2
+  item: {fileID: 11400000, guid: 89fe49983da1f494d97a059e7d734561, type: 2}
+  amountOfItem: 1
+  totalHarvests: 5
 --- !u!1001 &396536396
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3898,7 +4060,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 159424, guid: c6e77bda7f33b364da7931f7b435d347, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 159424, guid: c6e77bda7f33b364da7931f7b435d347, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
       objectReference: {fileID: 0}
     - target: {fileID: 159424, guid: c6e77bda7f33b364da7931f7b435d347, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -4117,6 +4283,31 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 415754, guid: 0447725a66737af46a23bf1d652b1246, type: 3}
   m_PrefabInstance: {fileID: 455243512}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &475206855 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 148440, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
+  m_PrefabInstance: {fileID: 1914327090}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &475206856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475206855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9138e550fd438409ffd98876308989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.6
+  interactableText: Oak Wood
+  displayIcon: {fileID: 21300000, guid: 9a32185a4d4b2d1459c58a811ed95887, type: 3}
+  animationToPlay: Chopping
+  toolRequired: 2
+  item: {fileID: 11400000, guid: 89fe49983da1f494d97a059e7d734561, type: 2}
+  amountOfItem: 1
+  totalHarvests: 5
 --- !u!4 &482917021 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400196, guid: 40046bae76ac54bffb59f14f47d9ba1b, type: 3}
@@ -5403,7 +5594,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 148440, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 148440, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
       objectReference: {fileID: 0}
     - target: {fileID: 148440, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -6429,6 +6624,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
+--- !u!1 &605191949 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 159424, guid: c6e77bda7f33b364da7931f7b435d347, type: 3}
+  m_PrefabInstance: {fileID: 1247546796}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &605191950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605191949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9138e550fd438409ffd98876308989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.6
+  interactableText: Oak Wood
+  displayIcon: {fileID: 21300000, guid: 9a32185a4d4b2d1459c58a811ed95887, type: 3}
+  animationToPlay: Chopping
+  toolRequired: 2
+  item: {fileID: 11400000, guid: 89fe49983da1f494d97a059e7d734561, type: 2}
+  amountOfItem: 1
+  totalHarvests: 5
 --- !u!1001 &607440903
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8079,7 +8299,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 159424, guid: c6e77bda7f33b364da7931f7b435d347, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 159424, guid: c6e77bda7f33b364da7931f7b435d347, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
       objectReference: {fileID: 0}
     - target: {fileID: 159424, guid: c6e77bda7f33b364da7931f7b435d347, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -9267,6 +9491,31 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 436926, guid: 969677c73aad12c418d07d083ea8b268, type: 3}
   m_PrefabInstance: {fileID: 819349605}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &820017413 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 126222, guid: 483e603cf995c9840bb841c2a2386013, type: 3}
+  m_PrefabInstance: {fileID: 491587833}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &820017415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820017413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9138e550fd438409ffd98876308989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.6
+  interactableText: Oak Wood
+  displayIcon: {fileID: 21300000, guid: 9a32185a4d4b2d1459c58a811ed95887, type: 3}
+  animationToPlay: Chopping
+  toolRequired: 2
+  item: {fileID: 11400000, guid: 89fe49983da1f494d97a059e7d734561, type: 2}
+  amountOfItem: 1
+  totalHarvests: 5
 --- !u!1001 &823706360
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9388,7 +9637,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 159424, guid: c6e77bda7f33b364da7931f7b435d347, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 159424, guid: c6e77bda7f33b364da7931f7b435d347, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
       objectReference: {fileID: 0}
     - target: {fileID: 159424, guid: c6e77bda7f33b364da7931f7b435d347, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -10847,6 +11100,68 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 780611a67e8e941a2b3aa96e5915a793, type: 3}
+--- !u!1001 &984426024
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2012625243}
+    m_Modifications:
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 330.04654
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 14.997256
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 307.0698
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9206328
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.17445323
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.19427691
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.29027212
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -25.722
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 16.537
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 31.199
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092892216419483852, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_Name
+      value: Gold Ore (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+--- !u!4 &984426025 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+  m_PrefabInstance: {fileID: 984426024}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &987507572
 GameObject:
   m_ObjectHideFlags: 0
@@ -13287,6 +13602,7 @@ Transform:
   - {fileID: 1484977001}
   - {fileID: 1521946610}
   - {fileID: 761670327}
+  - {fileID: 2012625243}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13303,7 +13619,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 148440, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 148440, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
       objectReference: {fileID: 0}
     - target: {fileID: 148440, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -13816,7 +14136,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 148440, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 148440, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
       objectReference: {fileID: 0}
     - target: {fileID: 148440, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -13861,6 +14185,31 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 416844, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
   m_PrefabInstance: {fileID: 1193895787}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1198439557 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 126222, guid: 483e603cf995c9840bb841c2a2386013, type: 3}
+  m_PrefabInstance: {fileID: 2134131585}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1198439559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198439557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9138e550fd438409ffd98876308989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.6
+  interactableText: Oak Wood
+  displayIcon: {fileID: 21300000, guid: 9a32185a4d4b2d1459c58a811ed95887, type: 3}
+  animationToPlay: Chopping
+  toolRequired: 2
+  item: {fileID: 11400000, guid: 89fe49983da1f494d97a059e7d734561, type: 2}
+  amountOfItem: 1
+  totalHarvests: 5
 --- !u!1001 &1208964590
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14167,7 +14516,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 159424, guid: c6e77bda7f33b364da7931f7b435d347, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 159424, guid: c6e77bda7f33b364da7931f7b435d347, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
       objectReference: {fileID: 0}
     - target: {fileID: 159424, guid: c6e77bda7f33b364da7931f7b435d347, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -15375,6 +15728,31 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 476522, guid: 1e54abf63a496e74e99907e887cc9b6b, type: 3}
   m_PrefabInstance: {fileID: 1271554768}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1275197964 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 148440, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
+  m_PrefabInstance: {fileID: 589067715}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1275197965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275197964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9138e550fd438409ffd98876308989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.6
+  interactableText: Oak Wood
+  displayIcon: {fileID: 21300000, guid: 9a32185a4d4b2d1459c58a811ed95887, type: 3}
+  animationToPlay: Chopping
+  toolRequired: 2
+  item: {fileID: 11400000, guid: 89fe49983da1f494d97a059e7d734561, type: 2}
+  amountOfItem: 1
+  totalHarvests: 5
 --- !u!1001 &1288739324
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15540,6 +15918,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 499492, guid: 9c3b5c73d52910a4eba8ea701b98f5a0, type: 3}
   m_PrefabInstance: {fileID: 1312870795}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1313726373
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2012625243}
+    m_Modifications:
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 397.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 276.36002
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.92504376
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.19245996
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.14390053
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.29418686
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 26.151
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 9.813
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -32.999
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092892216419483852, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_Name
+      value: Gold Ore (3)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+--- !u!4 &1313726374 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+  m_PrefabInstance: {fileID: 1313726373}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1313932287
 PrefabInstance:
@@ -16800,6 +17240,31 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 423790, guid: b25a0d2dceadda144afb3673cbc15fcd, type: 3}
   m_PrefabInstance: {fileID: 1344485389}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1361810762 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 159424, guid: c6e77bda7f33b364da7931f7b435d347, type: 3}
+  m_PrefabInstance: {fileID: 442378280}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1361810763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361810762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9138e550fd438409ffd98876308989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.6
+  interactableText: Oak Wood
+  displayIcon: {fileID: 21300000, guid: 9a32185a4d4b2d1459c58a811ed95887, type: 3}
+  animationToPlay: Chopping
+  toolRequired: 2
+  item: {fileID: 11400000, guid: 89fe49983da1f494d97a059e7d734561, type: 2}
+  amountOfItem: 1
+  totalHarvests: 5
 --- !u!1001 &1365250684
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19401,6 +19866,68 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba59e6ccf5912df49b14f61467e2a3ae, type: 3}
+--- !u!1001 &1400555790
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2012625243}
+    m_Modifications:
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 334.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 15.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 309.46002
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9630393
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.23516615
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.09095031
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.09476474
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 25.831
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -14.131
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -14.496
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092892216419483852, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_Name
+      value: Gold Ore
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+--- !u!4 &1400555791 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+  m_PrefabInstance: {fileID: 1400555790}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1400979731
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23185,6 +23712,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7896e173d2f78164e8b74198f8dfd688, type: 3}
+--- !u!1 &1618101674 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 159424, guid: c6e77bda7f33b364da7931f7b435d347, type: 3}
+  m_PrefabInstance: {fileID: 785871606}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1618101675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618101674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9138e550fd438409ffd98876308989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.6
+  interactableText: Oak Wood
+  displayIcon: {fileID: 21300000, guid: 9a32185a4d4b2d1459c58a811ed95887, type: 3}
+  animationToPlay: Chopping
+  toolRequired: 2
+  item: {fileID: 11400000, guid: 89fe49983da1f494d97a059e7d734561, type: 2}
+  amountOfItem: 1
+  totalHarvests: 5
 --- !u!1001 &1619960864
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25145,11 +25697,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1884466008237544202, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_FollowOffset.y
-      value: 0.9971371
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1884466008237544202, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_FollowOffset.z
-      value: -2.557209
+      value: -0.75
       objectReference: {fileID: 0}
     - target: {fileID: 1884466008482075780, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_Name
@@ -25209,19 +25761,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1884466009316583461, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_FollowOffset.y
-      value: 0.9971371
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1884466009316583461, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_FollowOffset.z
-      value: -2.557209
+      value: -0.75
       objectReference: {fileID: 0}
     - target: {fileID: 1884466009520317164, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_FollowOffset.y
-      value: 0.9971371
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1884466009520317164, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_FollowOffset.z
-      value: -2.557209
+      value: -0.75
       objectReference: {fileID: 0}
     - target: {fileID: 1884466009649170104, guid: 639d9c97c2fd765409252480cfd3830c, type: 3}
       propertyPath: m_XAxis.m_MaxSpeed
@@ -25745,7 +26297,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 148440, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 148440, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
       objectReference: {fileID: 0}
     - target: {fileID: 148440, guid: 6d316371cd8021c44a6bd04a1fbe30ca, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -26385,6 +26941,68 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 442344, guid: 6d0c5e74f4c367d4583079780fbd5af5, type: 3}
   m_PrefabInstance: {fileID: 1992215482}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1997770743
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2012625243}
+    m_Modifications:
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 396.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 278.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.89393234
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.11138615
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.20951004
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.38024154
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 21.006
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 18.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -42.705
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092892216419483852, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+      propertyPath: m_Name
+      value: Gold Ore (4)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+--- !u!4 &1997770744 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1558949546938533655, guid: 11fa96cb17bca4844bb128ed341e6e7b, type: 3}
+  m_PrefabInstance: {fileID: 1997770743}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2009221903
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26446,6 +27064,41 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 015c5185c1e3f01449afbdcc0016eb3c, type: 3}
+--- !u!1 &2012625242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2012625243}
+  m_Layer: 9
+  m_Name: Resources
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2012625243
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012625242}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1997770744}
+  - {fileID: 1313726374}
+  - {fileID: 144918537}
+  - {fileID: 984426025}
+  - {fileID: 1400555791}
+  m_Father: {fileID: 1116083200}
+  m_RootOrder: 208
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2020242489
 PrefabInstance:
   m_ObjectHideFlags: 0

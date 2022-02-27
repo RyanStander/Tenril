@@ -36,7 +36,7 @@ public class PlayerManager : CharacterManager
 
     private float timeTillRestart = 3, restartTimeStamp;
 
-    public bool canDoCombo, isInteracting, isAiming, isHoldingArrow;
+    public bool canDoCombo, isInteracting, isAiming, isHoldingArrow, isHarvestingResource;
     private bool enteredSpellcastingMode = true;
     private void OnEnable()
     {
@@ -221,6 +221,7 @@ public class PlayerManager : CharacterManager
         isBlocking = playerAnimatorManager.animator.GetBool("isBlocking");
         isAiming = playerAnimatorManager.animator.GetBool("isAiming");
         isHoldingArrow = playerAnimatorManager.animator.GetBool("isHoldingArrow");
+        isHarvestingResource = playerAnimatorManager.animator.GetBool("isHarvestingResource");
     }
 
     public override void EnableRagdoll()
@@ -230,6 +231,21 @@ public class PlayerManager : CharacterManager
         characterCollider.enabled = false;
         characterCollisionBlocker.enabled = false;
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+    }
+
+    #region Tools
+    /// <summary>
+    /// Displays the pickaxe
+    /// </summary>
+    internal void DisplayTool(ToolType toolType)
+    {
+        playerInventory.DisplayTool(weaponSlotManager, toolType);
+    }
+    #endregion
+
+    internal void HideDisplayObect(bool hideLeftHandObject = true)
+    {
+        weaponSlotManager.HideObjectsInHand(hideLeftHandObject);
     }
 
     #region onEvents

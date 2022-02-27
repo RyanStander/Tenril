@@ -336,9 +336,28 @@ public class PlayerInventory : CharacterInventory
         weaponSlotManager.DisplayObjectInHand(displayObject);
     }
 
+    /// <summary>
+    /// displays the tool that will be used
+    /// </summary>
+    internal void DisplayTool(WeaponSlotManager weaponSlotManager, ToolType toolType)
+    {
+        switch (toolType)
+        {
+            case ToolType.None:
+                weaponSlotManager.DisplayObjectInHand(null);
+                break;
+            case ToolType.Pickaxe:
+                weaponSlotManager.DisplayObjectInHand(equippedPickaxe.toolPrefab,false,true);
+                break;
+            case ToolType.Axe:
+                weaponSlotManager.DisplayObjectInHand(equippedAxe.toolPrefab, false, true);
+                break;
+        }
+    }
+
     internal void HideQuickslotItem(WeaponSlotManager weaponSlotManager)
     {
-        weaponSlotManager.HideObjectInHand();
+        weaponSlotManager.HideObjectsInHand();
     }
 
     #endregion
