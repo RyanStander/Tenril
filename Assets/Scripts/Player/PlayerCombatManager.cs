@@ -372,7 +372,7 @@ public class PlayerCombatManager : MonoBehaviour
         }
 
         //Destroy previous loaded arrow
-        weaponSlotManager.HideObjectInHand(false, false);
+        weaponSlotManager.HideObjectsInHand(false);
 
         //Remove an arrow from inventroy
         playerInventory.RemoveItemFromInventory(playerInventory.equippedAmmo);

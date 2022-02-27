@@ -233,6 +233,21 @@ public class PlayerManager : CharacterManager
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
     }
 
+    #region Tools
+    /// <summary>
+    /// Displays the pickaxe
+    /// </summary>
+    internal void DisplayMiningTool()
+    {
+        playerInventory.DisplayTool(weaponSlotManager, ToolType.Pickaxe);
+    }
+    #endregion
+
+    internal void HideDisplayObect(bool hideLeftHandObject = true)
+    {
+        weaponSlotManager.HideObjectsInHand(hideLeftHandObject);
+    }
+
     #region onEvents
     private void OnEquipWeapon(EventData eventData)
     {

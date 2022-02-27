@@ -347,7 +347,7 @@ public class PlayerInventory : CharacterInventory
                 weaponSlotManager.DisplayObjectInHand(null);
                 break;
             case ToolType.Pickaxe:
-                weaponSlotManager.DisplayObjectInHand(equippedPickaxe.toolPrefab);
+                weaponSlotManager.DisplayObjectInHand(equippedPickaxe.toolPrefab,false,true);
                 break;
             case ToolType.Axe:
                 break;
@@ -356,7 +356,7 @@ public class PlayerInventory : CharacterInventory
 
     internal void HideQuickslotItem(WeaponSlotManager weaponSlotManager)
     {
-        weaponSlotManager.HideObjectInHand();
+        weaponSlotManager.HideObjectsInHand();
     }
 
     #endregion

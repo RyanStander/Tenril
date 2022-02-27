@@ -29,7 +29,8 @@ public class HarvestableResource : Interactable
         playerInventory = playerManager.GetComponent<PlayerInventory>();
         playerAnimatorManager = playerManager.GetComponent<PlayerAnimatorManager>();
 
-        //Plays the animation of picking up item
+        //Plays the animation of harvesting the item
+        playerManager.DisplayMiningTool();
         playerAnimatorManager.PlayTargetAnimation(animationToPlay, true);
         playerAnimatorManager.animator.SetBool("isHarvestingResource", true);
     }
@@ -44,17 +45,18 @@ public class HarvestableResource : Interactable
 
         EventManager.currentManager.AddEvent(new PlayerObtainedItem(item, amountOfItem));
 
-        EventManager.currentManager.AddEvent(new PlayerHarvestingResource(this));
-
         totalHarvests--;
 
         if (totalHarvests < 1)
         {
             Destroy(gameObject);
+
             return false;
         }
         else
+        {
             return true;
+        }
 
     }
 }

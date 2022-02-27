@@ -19,6 +19,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private LayerMask targetLayers;
     [SerializeField] private bool showGizmo;
 
+    private PlayerManager playerManager;
     private InputHandler inputHandler;
 
     private List<Interactable> interactables=new List<Interactable>();
@@ -43,7 +44,7 @@ public class PlayerInteraction : MonoBehaviour
     private void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
-
+        playerManager = GetComponent<PlayerManager>();
 
         interactableUI = FindObjectOfType<InteractableUI>();
     }
@@ -207,11 +208,16 @@ public class PlayerInteraction : MonoBehaviour
         {
             //If there are no more resources to harvest
             if (!currentInteractableInUse.ObtainItemsFromHarvest())
+            {
                 GetComponent<PlayerAnimatorManager>().animator.SetBool("isHarvestingResource", false);
+                playerManager.HideDisplayObect(true);
+            }
+
         }
         else
         {
             GetComponent<PlayerAnimatorManager>().animator.SetBool("isHarvestingResource",false);
+            playerManager.HideDisplayObect(true);
             Debug.LogWarning("No harvestable object was found");
         }
 

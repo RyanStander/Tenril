@@ -16,7 +16,7 @@ public class WeaponSlotManager : MonoBehaviour
 
     public DamageCollider leftHandDamageCollider, rightHandDamageCollider;
 
-    private GameObject leftDisplayObject, rightDisplayObject;
+    [SerializeField]private GameObject leftDisplayObject, rightDisplayObject;
 
     private void Awake()
     {
@@ -101,9 +101,15 @@ public class WeaponSlotManager : MonoBehaviour
             if (objectToDisplay != null)
             {
                 if (leftHandSlot.parentOverride != null)
+                {
+                    HideObjectsInHand(false);
                     leftDisplayObject = Instantiate(objectToDisplay, leftHandSlot.parentOverride);
+                }
                 else
+                {
+                    HideObjectsInHand(false);
                     leftDisplayObject = Instantiate(objectToDisplay, leftHandSlot.transform);
+                }
             }
         }
         else
@@ -111,29 +117,32 @@ public class WeaponSlotManager : MonoBehaviour
             if (objectToDisplay != null)
             {
                 if (rightHandSlot.parentOverride != null)
+                {
+                    HideObjectsInHand(false);
                     rightDisplayObject = Instantiate(objectToDisplay, rightHandSlot.parentOverride);
+                }
                 else
+                {
+                    HideObjectsInHand(false);
                     rightDisplayObject = Instantiate(objectToDisplay, rightHandSlot.transform);
+                }
+                   
             }
         }
     }
-    public void HideObjectInHand(bool hideLeftHandObject = true,bool showWeaponIfHidden=true)
+    public void HideObjectsInHand(bool showWeaponIfHidden = true)
     {
-        if (hideLeftHandObject)
+        if (leftDisplayObject != null)
+            Destroy(leftDisplayObject);
+        if (rightDisplayObject != null)
+            Destroy(rightDisplayObject);
+
+        if (showWeaponIfHidden)
         {
-            if (leftDisplayObject != null)
-                Destroy(leftDisplayObject);
-            if(showWeaponIfHidden)
-                if (leftHandSlot.currentWeaponModel != null)
-                    leftHandSlot.currentWeaponModel.SetActive(true);
-        }
-        else
-        {
-            if (rightDisplayObject != null)
-                Destroy(rightDisplayObject);
-            if (showWeaponIfHidden)
-                if (rightHandSlot.currentWeaponModel != null)
-                    rightHandSlot.currentWeaponModel.SetActive(true);
+            if (leftHandSlot.currentWeaponModel != null)
+                leftHandSlot.currentWeaponModel.SetActive(true);
+            if (rightHandSlot.currentWeaponModel != null)
+                rightHandSlot.currentWeaponModel.SetActive(true);
         }
 
     }
