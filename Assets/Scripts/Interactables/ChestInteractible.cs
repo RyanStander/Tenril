@@ -1,4 +1,3 @@
-using UnityEditor.UIElements;
 using UnityEngine;
 
 public class ChestInteractible : Interactable
@@ -19,7 +18,7 @@ public class ChestInteractible : Interactable
     [Range(0, 2)] public float forwardVelocity = 0.75f;
 
     //The current inventory that is attached to the chest
-    private CharacterInventory inventory;
+    private GenericInventory inventory;
 
     //Chest animator
     private Animator chestAnimator = null;
@@ -31,11 +30,11 @@ public class ChestInteractible : Interactable
     void Start()
     {
         //Getters for relevant references
-        inventory = GetComponentInChildren<CharacterInventory>();
+        inventory = GetComponentInChildren<GenericInventory>();
         chestAnimator = GetComponentInChildren<Animator>();
 
         //Nullcheck for missing
-        if (inventory == null) throw new MissingComponentException("Missing CharacterInventory on " + gameObject + "!");
+        if (inventory == null) throw new MissingComponentException("Missing Inventory on " + gameObject + "!");
         if (chestAnimator == null) throw new MissingComponentException("Missing Animator on " + gameObject + "!");
 
         //Load the inventory loot table
@@ -49,6 +48,12 @@ public class ChestInteractible : Interactable
         //Plays the chest animation
         chestAnimator.SetBool("Activate", true);
 
+        //Set the layer to prevent future interaction
+        gameObject.layer = (int) Mathf.Log(disabledLayer.value, 2);
+    }
+
+    public void DropInventoryEvent()
+    {
         //Drops the current inventory of the chest
         DropInventory();
 
@@ -57,9 +62,6 @@ public class ChestInteractible : Interactable
 
         //Disabled this script to prevent future interaction
         this.enabled = false;
-
-        //Set the layer to prevent future interaction
-        gameObject.layer = (int) Mathf.Log(disabledLayer.value, 2);
     }
 
     public void DropInventory()
