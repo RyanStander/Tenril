@@ -40,7 +40,7 @@ public class DeadState : AbstractStateFSM
             enemyManager.animatorManager.animator.Play("Death");
 
             //Send out event to award player XP
-            EventManager.currentManager.AddEvent(new AwardPlayerXP(enemyManager.enemyStats.xpToAwardOnDeath));
+            EventManager.currentManager.AddEvent(new AwardPlayerXp(enemyManager.enemyStats.xpToAwardOnDeath));
 
             //Drop the inventory
             DropInventory();

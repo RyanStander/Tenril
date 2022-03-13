@@ -117,6 +117,19 @@ public class UpdatePlayerSunlight : EventData
 }
 #endregion
 
+#region Player States
+
+public class ChangePlayerState : EventData
+{
+    public readonly PlayerState playerState;
+    public ChangePlayerState(PlayerState playerState) : base(EventType.ChangePlayerState)
+    {
+        this.playerState = playerState;
+    }
+}
+
+#endregion
+
 #region Inventory Events
 //Event that informs subscribers of the quickslot being updated
 public class UpdateQuickslotDisplay : EventData
@@ -410,10 +423,10 @@ public class SwapToMenuCamera : EventData
     }
 }
 
-public class SwapToNPCCamera: EventData
+public class SwapToNpcCamera: EventData
 {
     public readonly GameObject npcCamera;
-    public SwapToNPCCamera(GameObject npcCamera) : base(EventType.SwapToNPCCamera)
+    public SwapToNpcCamera(GameObject npcCamera) : base(EventType.SwapToNPCCamera)
     {
         this.npcCamera = npcCamera;
     }
@@ -445,10 +458,10 @@ public class SendTimeStrength : EventData
     }
 }
 
-public class AwardPlayerXP : EventData
+public class AwardPlayerXp : EventData
 {
     public readonly int xpAmount;
-    public AwardPlayerXP(int xpAmount) : base(EventType.AwardPlayerXP)
+    public AwardPlayerXp(int xpAmount) : base(EventType.AwardPlayerXP)
     {
         this.xpAmount = xpAmount;
     }
@@ -475,7 +488,7 @@ public class PlayerGainSkill : EventData
 }
 
 /// <summary>
-/// used for when the player has obained an item to display in the item log
+/// used for when the player has obtained an item to display in the item log
 /// </summary>
 public class PlayerObtainedItem : EventData
 {
@@ -498,7 +511,7 @@ public class PlayerKeybindsUpdate : EventData
 
 public class PlayerToggleSpellcastingMode : EventData
 {
-    public bool enteredSpellcastingMode;
+    public readonly bool enteredSpellcastingMode;
     public PlayerToggleSpellcastingMode(bool enteredSpellcastingMode) : base(EventType.PlayerToggleSpellcastingMode)
     {
         this.enteredSpellcastingMode = enteredSpellcastingMode;

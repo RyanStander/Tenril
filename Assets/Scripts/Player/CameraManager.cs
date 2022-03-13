@@ -148,7 +148,7 @@ public class CameraManager : MonoBehaviour
 
     private void OnSwapToNPCCamera(EventData eventData)
     {
-        if (eventData is SwapToNPCCamera swapToNPCCamera)
+        if (eventData is SwapToNpcCamera swapToNPCCamera)
         {
             DisableAllCameras();
 
