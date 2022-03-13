@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CameraLockOn : MonoBehaviour
 {
-    private InputHandler inputHandler;
-    private PlayerManager playerManager;
+
+    #region Serialized Fields
 
     [Header("Camera references")]
     [Tooltip("The transform of the main camera in the scene")]
@@ -20,18 +20,13 @@ public class CameraLockOn : MonoBehaviour
     [Tooltip("The transform which the lockOnCamera's pivot will be placed")]
     [SerializeField] private Transform playerTransform;
 
-    private Vector3 cameraFollowVelocity = Vector3.zero;
-
     [Tooltip("Layers that the camera will collide with and be unable to pass through")]
     [SerializeField] private LayerMask cameraCollisionLayers;
     [SerializeField] private LayerMask environmentLayer;
 
     [Tooltip("The speed at which the camera follows the player")]
     [SerializeField] private float followSpeed = 0.1f;
-
-    //these positions are used to reset the position of cameras so that following works properly
-    private float targetPosition, defaultPosition;
-
+    
     [Tooltip("How close the camera is allowed to get to the player")]
     [SerializeField] private float minimumCollisionOffset = 0.2f;
     [Tooltip("The y position of the camera pivot")]
@@ -40,22 +35,39 @@ public class CameraLockOn : MonoBehaviour
     [SerializeField] [Range(0, 180)] private float lockOnMaxAngle=90;
     [Tooltip("How far the camera can scan for targets")]
     [SerializeField] private float maximumLockOnDistance = 30;
+    
+    [Header("DEBUGGING")]
+    [SerializeField] private bool showGizmo = false;
+
+    #endregion
+
+    #region Private Fields
+
+    private InputHandler inputHandler;
+    private PlayerManager playerManager;
+    private PlayerAnimatorManager playerAnimatorManager;
+    
+    private Vector3 cameraFollowVelocity = Vector3.zero;
+    
+    //these positions are used to reset the position of cameras so that following works properly
+    private float targetPosition, defaultPosition;
 
     private List<CharacterManager> availableTargets = new List<CharacterManager>();
     private CharacterManager nearestLockOnTarget, leftLockTarget, rightLockTarget;
     internal CharacterManager currentLockOnTarget;
 
     //lock on cooldown
-    private float lockOnSwapStamp, lockOnSwapCooldown = 1;
-
-    [Header("DEBUGGING")]
-    [SerializeField] private bool showGizmo = false;
-
-
+    private float lockOnSwapStamp;
+    private const float LockOnSwapCooldown = 1;
 
     //consider deletion
     private Transform myTransform;//transform of the game object
+    
+    private static readonly int IsAiming = Animator.StringToHash("isAiming");
+    private bool isInputHandlerNull;
 
+    #endregion
+    
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.SwapToLeftLockOnTarget, OnSwapToLeftLockOnTarget);
@@ -65,30 +77,32 @@ public class CameraLockOn : MonoBehaviour
     private void Start()
     {
         SetupLockOnCamera();
+        playerAnimatorManager = playerManager.GetComponent<PlayerAnimatorManager>();
+        isInputHandlerNull = inputHandler == null;
     }
 
     private void LateUpdate()
     {
-        if (inputHandler == null)
+        if (isInputHandlerNull)
             return;
 
         if (inputHandler.lockOnFlag)
         {
             HandleCameraRotation();
             FollowTarget(Time.deltaTime);
+            
             //if no target could be found, change back to exploration cam
-            if (currentLockOnTarget == null)
-            {
-                EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
-                inputHandler.lockOnFlag = false;
-            }
+            if (currentLockOnTarget != null) 
+                return;
+            EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
+            inputHandler.lockOnFlag = false;
         }
         else
         {
             //lock on camera should never be on if flag is off, if for some reason it is, swap to exploration camera
             if (lockOnCamera.activeSelf)
             {
-                if (playerManager.GetComponent<PlayerAnimatorManager>().animator.GetBool("isAiming"))
+                if (playerAnimatorManager.animator.GetBool(IsAiming))
                 {
                     EventManager.currentManager.AddEvent(new SwapToAimCamera());
                 }
@@ -96,8 +110,8 @@ public class CameraLockOn : MonoBehaviour
                 {
                     EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
                 }
-
             }
+            myTransform.position= playerTransform.position;
             currentLockOnTarget = null;
         }
     }
@@ -111,7 +125,8 @@ public class CameraLockOn : MonoBehaviour
         defaultPosition = lockOnCameraTransform.localPosition.z;
 
         //set the camera's transform
-        mainCameraTransform = Camera.main.transform;
+        if (Camera.main != null) 
+            mainCameraTransform = Camera.main.transform;
 
         //set the player's transform
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
@@ -122,34 +137,36 @@ public class CameraLockOn : MonoBehaviour
 
         playerManager = FindObjectOfType<PlayerManager>();
     }
-    public void FollowTarget(float delta)
+
+    private void FollowTarget(float delta)
     {
         //performs a lerp so that the camera moves smoothly to the target
-        Vector3 targetPosition = Vector3.SmoothDamp
+        var smoothDamp = Vector3.SmoothDamp
             (myTransform.position, playerTransform.position, ref cameraFollowVelocity, delta / followSpeed);
-        myTransform.position = targetPosition;
+        myTransform.position = smoothDamp;
 
         HandleCameraCollisions(delta);
     }
 
-    public void HandleCameraRotation()
+    private void HandleCameraRotation()
     {
         if (currentLockOnTarget != null)
         {
             //forcing camera to rotate towards the direction of the locked on target
-            Vector3 direction = currentLockOnTarget.transform.position - transform.position;
+            var currentLockOnTargetPosition = currentLockOnTarget.transform.position;
+            var direction = currentLockOnTargetPosition - transform.position;
             direction.Normalize();
             direction.y = 0;
 
             //faced towards the target
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            var targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = targetRotation;
 
-            direction = currentLockOnTarget.transform.position - lockOnCameraPivotTransform.position;
+            direction = currentLockOnTargetPosition - lockOnCameraPivotTransform.position;
             direction.Normalize();
 
             targetRotation = Quaternion.LookRotation(direction);
-            Vector3 eulerAngle = targetRotation.eulerAngles;
+            var eulerAngle = targetRotation.eulerAngles;
             eulerAngle.y = 0;
             lockOnCameraPivotTransform.localEulerAngles = eulerAngle;
         }
@@ -168,8 +185,7 @@ public class CameraLockOn : MonoBehaviour
     private void HandleCameraCollisions(float delta)
     {
         targetPosition = defaultPosition;
-        RaycastHit hit;
-        Vector3 direction = lockOnCameraTransform.position - lockOnCameraPivotTransform.position;
+        var direction = lockOnCameraTransform.position - lockOnCameraPivotTransform.position;
         direction.Normalize();
 
         if (Mathf.Abs(targetPosition) < minimumCollisionOffset)
@@ -177,94 +193,93 @@ public class CameraLockOn : MonoBehaviour
             targetPosition = -minimumCollisionOffset;
         }
 
-        Vector3 cameraTransformPosition = Vector3.zero;
+        var cameraTransformPosition = Vector3.zero;
         cameraTransformPosition.z = Mathf.Lerp(lockOnCameraTransform.localPosition.z, targetPosition, delta / 0.2f);
 
         lockOnCameraTransform.localPosition = cameraTransformPosition;
 
+        var playerPoint = playerManager.finisherAttackRayCastStartPointTransform.position;
+        var lockOnCameraPos = myTransform.position;
+        var point = new Vector3(lockOnCameraPos.x,lockOnCameraPos.y,lockOnCameraTransform.position.z);
         //if colliding with any objects in line with the camera and player, move to collision point
-        if (Physics.Linecast(playerManager.finisherAttackRayCastStartPointTransform.position, lockOnCameraTransform.position, out hit, cameraCollisionLayers))
-        {
+        if (Physics.Linecast(playerPoint, lockOnCameraTransform.position, out var hit, cameraCollisionLayers))
             lockOnCameraTransform.position = hit.point;
-        }
     }
 
-    public void HandleLockOn()
+    private void HandleLockOn()
     {
-        float shortestDistance = Mathf.Infinity;
-        float shortestDistanceOfLeftTarget = -Mathf.Infinity;
-        float shortestDistanceOfRightTarget = Mathf.Infinity;
+        var shortestDistance = Mathf.Infinity;
+        var shortestDistanceOfLeftTarget = -Mathf.Infinity;
+        var shortestDistanceOfRightTarget = Mathf.Infinity;
         availableTargets = new List<CharacterManager>();
 
         //get character layer
-        int characterLayer = LayerMask.GetMask("Character");
+        var characterLayer = LayerMask.GetMask("Character");
 
         //Creates a sphere to check fo any collisions
-        Collider[] colliders = Physics.OverlapSphere(mainCameraTransform.position, maximumLockOnDistance, characterLayer);
+        var colliders = Physics.OverlapSphere(mainCameraTransform.position, maximumLockOnDistance, characterLayer);
 
-        for (int i = 0; i < colliders.Length; i++)
+        foreach (var targetCollider in colliders)
         {
-            CharacterManager characterManager = colliders[i].GetComponent<CharacterManager>();
+            // ReSharper disable once Unity.PerformanceCriticalCodeInvocation
+            var characterManager = targetCollider.GetComponent<CharacterManager>();
 
-            if (characterManager != null)
+            if (characterManager == null) 
+                continue;
+            
+            //Makes sure that the target is in the camera view to avoid locking onto targets behind camera
+            var playerPosition = playerTransform.position;
+            var characterTransformPosition = characterManager.transform.position;
+            var lockTargetDirection = characterTransformPosition - playerPosition;
+            var distanceFromTarget = Vector3.Distance(playerPosition, characterTransformPosition);
+            var viewableAngle = Vector3.Angle(lockTargetDirection, mainCameraTransform.forward);
+
+            //Prevents locking onto self, sets within view distance and makes sure its not too far from the player
+            if (characterManager.transform.root == playerTransform.transform.root ||
+                !(viewableAngle > -lockOnMaxAngle) || !(viewableAngle < lockOnMaxAngle) ||
+                !(distanceFromTarget <= maximumLockOnDistance)) continue;
+            if (!Physics.Linecast(playerManager.lockOnTransform.position, characterManager.transform.position, out var hit)) 
+                continue;
+            Debug.DrawLine(playerManager.lockOnTransform.position, characterManager.transform.position);
+            if ((environmentLayer & (1 << hit.transform.gameObject.layer)) != 0)
             {
-                //Makes sure that the target is in the camera view to avoid locking onto targets behind camera
-                Vector3 lockTargetDirection = characterManager.transform.position - playerTransform.position;
-                float distanceFromTarget = Vector3.Distance(playerTransform.position, characterManager.transform.position);
-                float viewableAngle = Vector3.Angle(lockTargetDirection, mainCameraTransform.forward);
-
-                RaycastHit hit;
-                //Prevents locking onto self, sets within view distance and makes sure its not too far from the player
-                if (characterManager.transform.root != playerTransform.transform.root && viewableAngle > -lockOnMaxAngle && viewableAngle < lockOnMaxAngle && distanceFromTarget <= maximumLockOnDistance)
-                {
-                    if (Physics.Linecast(playerManager.lockOnTransform.position, characterManager.transform.position, out hit))
-                    {
-                        Debug.DrawLine(playerManager.lockOnTransform.position, characterManager.transform.position);
-                        if ((environmentLayer & (1 << hit.transform.gameObject.layer)) != 0)
-                        {
-                            //Cannot lock on target, object in the way
-                        }
-                        else
-                        {
-                            availableTargets.Add(characterManager);
-                        } 
-                    }
-                }
+                //Cannot lock on target, object in the way
+            }
+            else
+            {
+                availableTargets.Add(characterManager);
             }
         }
 
         //search through available lock on targets
-        for (int k = 0; k < availableTargets.Count; k++)
+        foreach (var characterManagerTarget in availableTargets)
         {
-            if (availableTargets[k] != null)
+            if (characterManagerTarget == null) 
+                continue;
+            var distanceFromTargets = Vector3.Distance(playerTransform.position, characterManagerTarget.transform.position);
+
+            //check for closest target
+            if (distanceFromTargets < shortestDistance)
             {
-                float distanceFromTargets = Vector3.Distance(playerTransform.position, availableTargets[k].transform.position);
-
-                //check for closest target
-                if (distanceFromTargets < shortestDistance)
-                {
-                    shortestDistance = distanceFromTargets;
-                    nearestLockOnTarget = availableTargets[k];
-                }
+                shortestDistance = distanceFromTargets;
+                nearestLockOnTarget = characterManagerTarget;
+            }
 
 
-                if (inputHandler.lockOnFlag)
-                {
+            if (!inputHandler.lockOnFlag) 
+                continue;
+            var relativeEnemyPosition = inputHandler.transform.InverseTransformPoint(characterManagerTarget.transform.position);
+            var distanceFromTarget = relativeEnemyPosition.x;
 
-                    Vector3 relativeEnemyPosition = inputHandler.transform.InverseTransformPoint(availableTargets[k].transform.position);
-                    var distanceFromTarget = relativeEnemyPosition.x;
-
-                    if (relativeEnemyPosition.x <= 0.00f && distanceFromTarget > shortestDistanceOfLeftTarget && availableTargets[k] != currentLockOnTarget)
-                    {
-                        shortestDistanceOfLeftTarget = distanceFromTarget;
-                        leftLockTarget = availableTargets[k];
-                    }
-                    else if (relativeEnemyPosition.x >= 0.00f && distanceFromTarget < shortestDistanceOfRightTarget && availableTargets[k] != currentLockOnTarget)
-                    {
-                        shortestDistanceOfRightTarget = distanceFromTarget;
-                        rightLockTarget = availableTargets[k];
-                    }
-                }
+            if (relativeEnemyPosition.x <= 0.00f && distanceFromTarget > shortestDistanceOfLeftTarget && characterManagerTarget != currentLockOnTarget)
+            {
+                shortestDistanceOfLeftTarget = distanceFromTarget;
+                leftLockTarget = characterManagerTarget;
+            }
+            else if (relativeEnemyPosition.x >= 0.00f && distanceFromTarget < shortestDistanceOfRightTarget && characterManagerTarget != currentLockOnTarget)
+            {
+                shortestDistanceOfRightTarget = distanceFromTarget;
+                rightLockTarget = characterManagerTarget;
             }
         }
     }
@@ -279,28 +294,24 @@ public class CameraLockOn : MonoBehaviour
 
     public void SetCameraHeight()
     {
-        Vector3 velocity = Vector3.zero;
-        Vector3 newLockedPosition = new Vector3(0, lockedPivotPosition);
-        Vector3 newUnlockedPosition = new Vector3(0, unlockedPivotPosition);
+        var velocity = Vector3.zero;
+        var newLockedPosition = new Vector3(0, lockedPivotPosition);
+        var newUnlockedPosition = new Vector3(0, unlockedPivotPosition);
 
-        if (currentLockOnTarget != null)
-        {
-            lockOnCameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(lockOnCameraTransform.transform.localPosition, newLockedPosition, ref velocity, Time.deltaTime);
-        }
-        else
-        {
-            lockOnCameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(lockOnCameraTransform.transform.localPosition, newUnlockedPosition, ref velocity, Time.deltaTime);
-        }
+        var lockOnCameraLocalPosition = lockOnCameraTransform.transform.localPosition;
+        lockOnCameraPivotTransform.transform.localPosition = currentLockOnTarget != null ? 
+            Vector3.SmoothDamp(lockOnCameraLocalPosition, newLockedPosition, ref velocity, Time.deltaTime) : 
+            Vector3.SmoothDamp(lockOnCameraLocalPosition, newUnlockedPosition, ref velocity, Time.deltaTime);
     }
 
     private void OnDrawGizmos()
     {
-        if (showGizmo)
-        {
-            Gizmos.color = Color.red;
-            //Use the same vars you use to draw your Overlap Sphere to draw your Wire Sphere.
-            Gizmos.DrawSphere(mainCameraTransform.position, maximumLockOnDistance);
-        }
+        if (!showGizmo) 
+            return;
+        
+        Gizmos.color = Color.red;
+        //Use the same vars you use to draw your Overlap Sphere to draw your Wire Sphere.
+        Gizmos.DrawSphere(mainCameraTransform.position, maximumLockOnDistance);
     }
 
     #region On Events
@@ -316,7 +327,7 @@ public class CameraLockOn : MonoBehaviour
                 {
                     if (lockOnSwapStamp <= Time.time)
                     {
-                        lockOnSwapStamp = Time.time + lockOnSwapCooldown;
+                        lockOnSwapStamp = Time.time + LockOnSwapCooldown;
                         currentLockOnTarget = leftLockTarget;
                     }
                 }
@@ -343,7 +354,7 @@ public class CameraLockOn : MonoBehaviour
                 {
                     if (lockOnSwapStamp <= Time.time)
                     {
-                        lockOnSwapStamp = Time.time + lockOnSwapCooldown;
+                        lockOnSwapStamp = Time.time + LockOnSwapCooldown;
                         currentLockOnTarget = rightLockTarget;
                     }
                 }
