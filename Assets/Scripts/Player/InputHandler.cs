@@ -104,6 +104,15 @@ public class InputHandler : MonoBehaviour
             castSpell[i] = false;
         }
     }
+    
+    internal void ResetMovementValues()
+    {
+        forward = 0;
+        left = 0;
+        moveAmount = 0;
+        movementInput=Vector2.zero;
+    }
+    
     private void CheckInputs()
     {
         //----------------------------------------------------------

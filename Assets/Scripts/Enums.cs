@@ -52,3 +52,12 @@ public enum ToolType
     Pickaxe=1,
     Axe=2,
 }
+
+public enum PlayerState
+{
+    Default=0,
+    CombatMode=1,
+    SpellcastingMode=2,
+    MenuMode=3,
+    Dead=10,
+}
