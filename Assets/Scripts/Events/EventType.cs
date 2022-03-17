@@ -19,6 +19,9 @@ public enum EventType
     UpdatePlayerStamina,
     UpdatePlayerMoonlight,
     UpdatePlayerSunlight,
+    
+    //Player State
+    ChangePlayerState,
 
     //Inventory
     UpdateQuickslotDisplay,

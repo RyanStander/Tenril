@@ -40,7 +40,7 @@ public class DeadState : AbstractStateFSM
             enemyManager.animatorManager.animator.Play("Death");
 
             //Send out event to award player XP
-            EventManager.currentManager.AddEvent(new AwardPlayerXP(enemyManager.enemyStats.xpToAwardOnDeath));
+            EventManager.currentManager.AddEvent(new AwardPlayerXp(enemyManager.enemyStats.xpToAwardOnDeath));
 
             //Drop the inventory
             DropInventory();
@@ -107,7 +107,7 @@ public class DeadState : AbstractStateFSM
                 GameObject droppedItem = Instantiate(itemPickupPrefab, dropPosition, Quaternion.identity);
 
                 //Apply explosion effect to the rigid body of the dropped item
-                if(droppedItem.TryGetComponent(out Rigidbody droppedRigidbody))
+                if(droppedItem.TryGetComponent(out Rigidbody droppedRigidbody) && explodeItemsOnDeath)
                 {
                     //Generate a random direction
                     Vector2 randomDirection = Random.insideUnitCircle.normalized;
