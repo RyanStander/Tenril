@@ -75,9 +75,9 @@ public class PlayerInteraction : MonoBehaviour
     {
         createdInteractableObjects = new List<GameObject>();
 
-        ChangeSelectedInteractable();
-
         FindInteractables();
+        
+        ChangeSelectedInteractable();
 
         foreach (var interactable in interactables)
             DisplayInteractableOption(interactable);
@@ -110,11 +110,15 @@ public class PlayerInteraction : MonoBehaviour
     private void ChangeSelectedInteractable()
     {
         if (inputHandler.alternateInteraction)
+        {
             currentlySelectedInteractableIndex++;
-        
+        }
+
         //Reset the selected interactable if the top item is
         if (currentlySelectedInteractableIndex >= interactables.Count)
+        {
             currentlySelectedInteractableIndex = 0;
+        }
     }
     
     private void DisplayInteractableOption(Interactable interactableObject)
