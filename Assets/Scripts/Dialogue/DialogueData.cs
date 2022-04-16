@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "DialogueData")]
@@ -14,4 +12,8 @@ public class DialogueData : ScriptableObject
     public string[] options;
     [Tooltip("The dialogue data to load when the option is selected")]
     public DialogueData[] nextDialogue;
+
+    [Header("Optional")][Tooltip("This is linked to the string keys in order, if the 2nd key has no sound, make sure to make it empty and the 3rd to then have a sound if it should")] public AudioClip[] audioClipsToPlay;
+    [Tooltip("This is linked to the string keys in order, if the 2nd key has no animation, make sure to make it empty and the 3rd to then have an animation if it should")]public Animation[] animationsToPlay;
+
 }
