@@ -1,13 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
-using UnityEngine.UI;
 
 public class OpenDialogue : Interactable
 {
     [SerializeField] private GameObject npcCamera;
+    [Tooltip("This should be synced up with string keys, each new animator is a different character to be animated")]
+    [SerializeField] private Animator[] npcAnimators;
+    [Tooltip("This should be synced up with string keys, each new animator is a different character to be animated")]
+    [SerializeField] private AudioSource[] npcAudioSources;
 
     [Tooltip("Where to load the dialogue from")]
     [SerializeField] private LocalizedStringTable localizedStringTable;
@@ -30,6 +30,6 @@ public class OpenDialogue : Interactable
 
         EventManager.currentManager.AddEvent(new InitiateDialogue());
 
-        EventManager.currentManager.AddEvent(new SendDialogueData(initialDialogueData));
+        EventManager.currentManager.AddEvent(new SendDialogueData(initialDialogueData,npcAnimators,npcAudioSources));
     }
 }

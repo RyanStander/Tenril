@@ -349,9 +349,13 @@ public class ShowNextSentence : EventData
 public class SendDialogueData : EventData
 {
     public readonly DialogueData dialogueData;
-    public SendDialogueData(DialogueData dialogueData) : base(EventType.SendDialogueData)
+    public readonly Animator[] npcAnimators;
+    public readonly AudioSource[] npcAudioSources;
+    public SendDialogueData(DialogueData dialogueData,Animator[] npcAnimators,AudioSource[] npcAudioSources) : base(EventType.SendDialogueData)
     {
         this.dialogueData = dialogueData;
+        this.npcAnimators = npcAnimators;
+        this.npcAudioSources = npcAudioSources;
     }
 }
 

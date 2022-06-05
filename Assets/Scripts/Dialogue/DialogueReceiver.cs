@@ -61,7 +61,9 @@ public class DialogueReceiver : MonoBehaviour
                     DialogueTrigger dialogueTrigger = createdOptionPrefab.GetComponent<DialogueTrigger>();
                     //set the opions values
                     if (dialogueTrigger != null)
+                    {
                         dialogueTrigger.dialogueData = sendDialogueOptions.nextDialogues[i];
+                    }
                     else
                         Debug.Log("DialogueTrigger script was not found on the object, please make sure it is on");
 

@@ -56,6 +56,8 @@ public class DialogueManager : MonoBehaviour
                 string sentence = currentStringTable[stringKey].LocalizedValue;
                 sentences.Enqueue(sentence);
             }
+            
+            
 
             DisplayNextSentence();
         }
@@ -101,7 +103,9 @@ public class DialogueManager : MonoBehaviour
         }
 
         //Get next sentence
-        string sentence = sentences.Dequeue();
+        var sentence = sentences.Dequeue();
+        
+        
 
         EventManager.currentManager.AddEvent(new SendDialogueSentence(currentNPCName,sentence));
     }
