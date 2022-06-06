@@ -25,11 +25,13 @@ public class OpenDialogue : Interactable
     {
         //change camera
         EventManager.currentManager.AddEvent(new SwapToNpcCamera(npcCamera));
+        
+        EventManager.currentManager.AddEvent(new SendDialogueNpcInfo(npcAnimators,npcAudioSources));
 
         EventManager.currentManager.AddEvent(new SendStartingStringTableForDialogue(localizedStringTable));
 
         EventManager.currentManager.AddEvent(new InitiateDialogue());
 
-        EventManager.currentManager.AddEvent(new SendDialogueData(initialDialogueData,npcAnimators,npcAudioSources));
+        EventManager.currentManager.AddEvent(new SendDialogueData(initialDialogueData));
     }
 }
