@@ -65,7 +65,6 @@ public class DialogueManager : MonoBehaviour
         //extra changes to functionality
         PlayAudio();
         PlayAnimation();
-        SwapCameraPosition();
 
         currentDialogueIndex++;
 
@@ -74,15 +73,16 @@ public class DialogueManager : MonoBehaviour
 
     private void PlayAudio()
     {
-        if (currentSetDialogueData.dialogueExtras[currentDialogueIndex].audioClipsToPlay.Length <= 0) return;
-        
+        if (currentSetDialogueData.dialogueExtras.Length <= 0 ||
+            currentSetDialogueData.dialogueExtras[currentDialogueIndex].audioClipsToPlay.Length <= 0) return;
+
         //get the audio clip to play
         var clip = currentSetDialogueData.dialogueExtras[currentDialogueIndex]
             .audioClipsToPlay[currentDialogueIndex];
-        
+
         //make sure it isn't null
         if (clip == null) return;
-        
+
         //add clip and play it
         currentSetNpcAudioSources[currentDialogueIndex].clip = clip;
         currentSetNpcAudioSources[currentDialogueIndex].Play();
@@ -90,22 +90,18 @@ public class DialogueManager : MonoBehaviour
 
     private void PlayAnimation()
     {
-        if (currentSetDialogueData.dialogueExtras[currentDialogueIndex].animationsToPlay.Length <= 0) return;
-        
+        if (currentSetDialogueData.dialogueExtras.Length <= 0 ||
+            currentSetDialogueData.dialogueExtras[currentDialogueIndex].animationsToPlay.Length <= 0) return;
+
         //get the audio clip to play
         var anim = currentSetDialogueData.dialogueExtras[currentDialogueIndex]
             .animationsToPlay[currentDialogueIndex];
-        
+
         //make sure it isn't null
         if (anim == "") return;
-        
-        //play animation
-        currentSetNpcAnimators[currentDialogueIndex].CrossFade(anim,0.2f);
-    }
 
-    private void SwapCameraPosition()
-    {
-        Debug.LogWarning("No camera swapping implemented");
+        //play animation
+        currentSetNpcAnimators[currentDialogueIndex].CrossFade(anim, 0.2f);
     }
 
     private void ShowOptions()
