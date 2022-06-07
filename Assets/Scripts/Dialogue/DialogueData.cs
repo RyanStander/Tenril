@@ -31,7 +31,7 @@ public class DialogueExtras
 
     [Tooltip(
         "This is linked to the string keys in order, if the 2nd key has no animation, make sure to make it empty and the 3rd to then have an animation if it should")]
-    public AnimationClip[] animationsToPlay;
+    public string[] animationsToPlay;
 
     [Tooltip(
         "This is linked to the string keys in order, if the 2nd key has no sound, make sure to make it empty and the 3rd to then have a sound if it should")]

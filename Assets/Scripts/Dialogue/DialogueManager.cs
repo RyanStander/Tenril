@@ -84,14 +84,23 @@ public class DialogueManager : MonoBehaviour
         if (clip == null) return;
         
         //add clip and play it
-        currentSetNpcAudioSources[currentDialogueIndex].clip = currentSetDialogueData
-            .dialogueExtras[currentDialogueIndex].audioClipsToPlay[currentDialogueIndex];
+        currentSetNpcAudioSources[currentDialogueIndex].clip = clip;
         currentSetNpcAudioSources[currentDialogueIndex].Play();
     }
 
     private void PlayAnimation()
     {
-        Debug.LogWarning("No animation implemented");
+        if (currentSetDialogueData.dialogueExtras[currentDialogueIndex].animationsToPlay.Length <= 0) return;
+        
+        //get the audio clip to play
+        var anim = currentSetDialogueData.dialogueExtras[currentDialogueIndex]
+            .animationsToPlay[currentDialogueIndex];
+        
+        //make sure it isn't null
+        if (anim == "") return;
+        
+        //play animation
+        currentSetNpcAnimators[currentDialogueIndex].CrossFade(anim,0.2f);
     }
 
     private void SwapCameraPosition()
