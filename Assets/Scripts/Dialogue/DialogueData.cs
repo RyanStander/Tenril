@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Holds the data of a specific dialogue and the dialogues it goes to next
+/// </summary>
 [CreateAssetMenu(menuName = "DialogueData")]
 public class DialogueData : ScriptableObject
 {
@@ -18,14 +21,18 @@ public class DialogueData : ScriptableObject
     public DialogueExtras[] dialogueExtras;
 }
 
+/// <summary>
+/// optional data that is used with the string keys
+/// </summary>
 [System.Serializable]
 public class DialogueExtras
 {
     public string name;
+
     [Tooltip(
         "This is linked to the string keys in order, if the 2nd key has no animation, make sure to make it empty and the 3rd to then have an animation if it should")]
     public AnimationClip[] animationsToPlay;
-    
+
     [Tooltip(
         "This is linked to the string keys in order, if the 2nd key has no sound, make sure to make it empty and the 3rd to then have a sound if it should")]
     public AudioClip[] audioClipsToPlay;

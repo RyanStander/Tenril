@@ -1,10 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Localization;
 using UnityEngine.Localization.Tables;
 
+/// <summary>
+/// the main point for dialogue, sends out and receives data to different objects in computed form.
+/// </summary>
 public class DialogueManager : MonoBehaviour
 {
     private StringTable currentStringTable;
@@ -16,17 +17,20 @@ public class DialogueManager : MonoBehaviour
     private DialogueData currentSetDialogueData;
     private AudioSource[] currentSetNpcAudioSources;
     private Animator[] currentSetNpcAnimators;
-    
+
     private string currentNPCName;
+
     //the list of options the player can choose at the end of the dialogue
     private List<string> currentOptions;
+
     //the dialogue datas loaded depending on the chosen dialogue
     private List<DialogueData> followingDialogues;
 
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.SendDialogueData, OnSendDialogueDataReceived);
-        EventManager.currentManager.Subscribe(EventType.SendStartingStringTableForDialogue, OnSendStartingStringTableForDialogueReceived);
+        EventManager.currentManager.Subscribe(EventType.SendStartingStringTableForDialogue,
+            OnSendStartingStringTableForDialogueReceived);
         EventManager.currentManager.Subscribe(EventType.ShowNextSentence, OnShowNextSentence);
         EventManager.currentManager.Subscribe(EventType.SendDialogueNpcInfo, OnSendDialogueNpcInfo);
     }
@@ -34,7 +38,8 @@ public class DialogueManager : MonoBehaviour
     private void OnDisable()
     {
         EventManager.currentManager.Unsubscribe(EventType.SendDialogueData, OnSendDialogueDataReceived);
-        EventManager.currentManager.Unsubscribe(EventType.SendStartingStringTableForDialogue, OnSendStartingStringTableForDialogueReceived);
+        EventManager.currentManager.Unsubscribe(EventType.SendStartingStringTableForDialogue,
+            OnSendStartingStringTableForDialogueReceived);
         EventManager.currentManager.Unsubscribe(EventType.ShowNextSentence, OnShowNextSentence);
         EventManager.currentManager.Unsubscribe(EventType.SendDialogueNpcInfo, OnSendDialogueNpcInfo);
     }
@@ -45,10 +50,10 @@ public class DialogueManager : MonoBehaviour
         sentences = new Queue<string>();
     }
 
-    public void DisplayNextSentence()
+    private void DisplayNextSentence()
     {
         //if no more sentences, end dialogue
-        if (sentences.Count==0)
+        if (sentences.Count == 0)
         {
             ShowOptions();
             return;
@@ -57,31 +62,48 @@ public class DialogueManager : MonoBehaviour
         //Get next sentence
         var sentence = sentences.Dequeue();
 
-        if (currentSetDialogueData.dialogueExtras[currentDialogueIndex].audioClipsToPlay.Length > 0)
-        {
-
-            var clip = currentSetDialogueData.dialogueExtras[currentDialogueIndex]
-                .audioClipsToPlay[currentDialogueIndex];
-            if (clip != null)
-            {
-                currentSetNpcAudioSources[currentDialogueIndex].clip = currentSetDialogueData
-                    .dialogueExtras[currentDialogueIndex].audioClipsToPlay[currentDialogueIndex];
-                currentSetNpcAudioSources[currentDialogueIndex].Play();
-            }
-        }
+        //extra changes to functionality
+        PlayAudio();
+        PlayAnimation();
+        SwapCameraPosition();
 
         currentDialogueIndex++;
 
-        EventManager.currentManager.AddEvent(new SendDialogueSentence(currentNPCName,sentence));
+        EventManager.currentManager.AddEvent(new SendDialogueSentence(currentNPCName, sentence));
+    }
+
+    private void PlayAudio()
+    {
+        if (currentSetDialogueData.dialogueExtras[currentDialogueIndex].audioClipsToPlay.Length <= 0) return;
+        
+        //get the audio clip to play
+        var clip = currentSetDialogueData.dialogueExtras[currentDialogueIndex]
+            .audioClipsToPlay[currentDialogueIndex];
+        
+        //make sure it isn't null
+        if (clip == null) return;
+        
+        //add clip and play it
+        currentSetNpcAudioSources[currentDialogueIndex].clip = currentSetDialogueData
+            .dialogueExtras[currentDialogueIndex].audioClipsToPlay[currentDialogueIndex];
+        currentSetNpcAudioSources[currentDialogueIndex].Play();
+    }
+
+    private void PlayAnimation()
+    {
+        Debug.LogWarning("No animation implemented");
+    }
+
+    private void SwapCameraPosition()
+    {
+        Debug.LogWarning("No camera swapping implemented");
     }
 
     private void ShowOptions()
     {
-        Debug.Log("convo end");
-
         EventManager.currentManager.AddEvent(new SendDialogueOptions(currentOptions, followingDialogues));
     }
-    
+
     #region On Events
 
     private void OnSendDialogueNpcInfo(EventData eventData)
@@ -93,15 +115,17 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            throw new System.Exception("Error: EventData class with EventType.SendDialogueData was received but is not of class SendDialogueData.");
+            throw new System.Exception(
+                "Error: EventData class with EventType.SendDialogueData was received but is not of class SendDialogueData.");
         }
     }
+
     private void OnSendDialogueDataReceived(EventData eventData)
     {
         if (eventData is SendDialogueData sendDialogueData)
         {
             currentDialogueIndex = 0;
-            
+
             currentNPCName = sendDialogueData.dialogueData.npcName;
 
             currentOptions = sendDialogueData.dialogueData.options.ToList();
@@ -113,7 +137,7 @@ public class DialogueManager : MonoBehaviour
             sentences.Clear();
 
             //gather all sentences from the received dialogue and place them in the queue
-            foreach(var stringKey in sendDialogueData.dialogueData.stringKeys)
+            foreach (var stringKey in sendDialogueData.dialogueData.stringKeys)
             {
                 var sentence = currentStringTable[stringKey].LocalizedValue;
                 sentences.Enqueue(sentence);
@@ -123,7 +147,8 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            throw new System.Exception("Error: EventData class with EventType.SendDialogueData was received but is not of class SendDialogueData.");
+            throw new System.Exception(
+                "Error: EventData class with EventType.SendDialogueData was received but is not of class SendDialogueData.");
         }
     }
 
@@ -135,19 +160,21 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            throw new System.Exception("Error: EventData class with EventType.SendStartingStringTableForDialogue was received but is not of class SendStartingStringTableForDialogue.");
+            throw new System.Exception(
+                "Error: EventData class with EventType.SendStartingStringTableForDialogue was received but is not of class SendStartingStringTableForDialogue.");
         }
     }
 
     private void OnShowNextSentence(EventData eventData)
     {
-        if (eventData is ShowNextSentence )
+        if (eventData is ShowNextSentence)
         {
             DisplayNextSentence();
         }
         else
         {
-            throw new System.Exception("Error: EventData class with EventType.ShowNextSentence was received but is not of class ShowNextSentence.");
+            throw new System.Exception(
+                "Error: EventData class with EventType.ShowNextSentence was received but is not of class ShowNextSentence.");
         }
     }
 
