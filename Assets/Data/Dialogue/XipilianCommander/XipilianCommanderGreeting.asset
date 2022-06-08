@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67377442f5b105043bea627931e6b941, type: 3}
+  m_Name: XipilianCommanderGreeting
+  m_EditorClassIdentifier: 
+  npcName: Xipilian Commander
+  stringKeys:
+  - XipilianCommanderGreeting
+  options:
+  - Actually, who are you?
+  - The must've been a misunderstanding
+  nextDialogue:
+  - {fileID: 11400000, guid: 3094768db97bdb449a9c34434865dadf, type: 2}
+  - {fileID: 11400000, guid: 3b9b955f218efc24294745df4a17014a, type: 2}
+  dialogueExtras:
+  - name: 
+    animationsToPlay: []
+    audioClipsToPlay:
+    - {fileID: 8300000, guid: 9cf27143dc4e5b841a6f29dde4f45a93, type: 3}

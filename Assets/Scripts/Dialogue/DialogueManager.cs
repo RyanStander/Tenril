@@ -74,34 +74,34 @@ public class DialogueManager : MonoBehaviour
     private void PlayAudio()
     {
         if (currentSetDialogueData.dialogueExtras.Length <= 0 ||
-            currentSetDialogueData.dialogueExtras[currentDialogueIndex].audioClipsToPlay.Length <= 0) return;
+            currentSetDialogueData.dialogueExtras[0].audioClipsToPlay.Length <= 0) return;
 
         //get the audio clip to play
-        var clip = currentSetDialogueData.dialogueExtras[currentDialogueIndex]
+        var clip = currentSetDialogueData.dialogueExtras[0]
             .audioClipsToPlay[currentDialogueIndex];
 
         //make sure it isn't null
         if (clip == null) return;
 
         //add clip and play it
-        currentSetNpcAudioSources[currentDialogueIndex].clip = clip;
-        currentSetNpcAudioSources[currentDialogueIndex].Play();
+        currentSetNpcAudioSources[0].clip = clip;
+        currentSetNpcAudioSources[0].Play();
     }
 
     private void PlayAnimation()
     {
         if (currentSetDialogueData.dialogueExtras.Length <= 0 ||
-            currentSetDialogueData.dialogueExtras[currentDialogueIndex].animationsToPlay.Length <= 0) return;
+            currentSetDialogueData.dialogueExtras[0].animationsToPlay.Length <= 0) return;
 
         //get the audio clip to play
-        var anim = currentSetDialogueData.dialogueExtras[currentDialogueIndex]
+        var anim = currentSetDialogueData.dialogueExtras[0]
             .animationsToPlay[currentDialogueIndex];
 
         //make sure it isn't null
         if (anim == "") return;
 
         //play animation
-        currentSetNpcAnimators[currentDialogueIndex].CrossFade(anim, 0.2f);
+        currentSetNpcAnimators[0].CrossFade(anim, 0.2f);
     }
 
     private void ShowOptions()
