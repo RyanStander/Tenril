@@ -2,5 +2,5 @@ using UnityEngine;
 
 public class CharacterSpellcastingManager : MonoBehaviour
 {
-    [HideInInspector] public SpellItem spellBeingCast;
+     public SpellItem spellBeingCast;
 }

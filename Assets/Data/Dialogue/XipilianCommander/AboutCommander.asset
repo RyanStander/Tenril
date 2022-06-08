@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67377442f5b105043bea627931e6b941, type: 3}
+  m_Name: AboutCommander
+  m_EditorClassIdentifier: 
+  npcName: Xipilian Commander
+  stringKeys:
+  - AboutCommander1
+  - AboutCommander2
+  - AboutCommander3
+  - AboutCommander4
+  options:
+  - Not a chance!
+  nextDialogue:
+  - {fileID: 11400000, guid: a284e615b4f21e346885f4593731486b, type: 2}
+  dialogueExtras:
+  - name: 
+    animationsToPlay:
+    - Gesture1
+    - Gesture2
+    - 
+    - Gesture2
+    audioClipsToPlay:
+    - {fileID: 8300000, guid: 5d153a8004e83bd49b4e05aa1ecd4569, type: 3}
+    - {fileID: 8300000, guid: e4d38f23a55399f418a5b06118092abb, type: 3}
+    - {fileID: 8300000, guid: d8fe9316a732e2a439451a71c9ce85ea, type: 3}
+    - {fileID: 8300000, guid: b0cc09ebda1199a4baca63893f5d8e6e, type: 3}

@@ -51,6 +51,7 @@ public enum EventType
     SendDialogueOptions,
     SendStartingStringTableForDialogue,
     ShowNextSentence,
+    SendDialogueNpcInfo,
 
     //Camera
     SwapToLockOnCamera,

@@ -355,6 +355,17 @@ public class SendDialogueData : EventData
     }
 }
 
+public class SendDialogueNpcInfo : EventData
+{
+    public Animator[] npcAnimators;
+    public AudioSource[] npcAudioSources;
+    public SendDialogueNpcInfo(Animator[] npcAnimators,AudioSource[] npcAudioSources) : base(EventType.SendDialogueNpcInfo)
+    {
+        this.npcAnimators = npcAnimators;
+        this.npcAudioSources = npcAudioSources;
+    }
+}
+
 public class SendStartingStringTableForDialogue : EventData
 {
     public readonly LocalizedStringTable localizedStringTable;
