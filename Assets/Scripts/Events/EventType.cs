@@ -19,6 +19,9 @@ public enum EventType
     UpdatePlayerStamina,
     UpdatePlayerMoonlight,
     UpdatePlayerSunlight,
+    
+    //Player State
+    ChangePlayerState,
 
     //Inventory
     UpdateQuickslotDisplay,
@@ -48,6 +51,7 @@ public enum EventType
     SendDialogueOptions,
     SendStartingStringTableForDialogue,
     ShowNextSentence,
+    SendDialogueNpcInfo,
 
     //Camera
     SwapToLockOnCamera,

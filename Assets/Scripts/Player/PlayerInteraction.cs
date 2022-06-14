@@ -1,33 +1,58 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 /// <summary>
 /// Used to check for interactable objects and allowing player to interact with them
 /// </summary>
 public class PlayerInteraction : MonoBehaviour
 {
-    private InteractableUI interactableUI;
-    public GameObject dialoguePopUp;
+    #region Serialize Fields
+
     [SerializeField] private GameObject interactableDataHolderPrefab;
 
-    [Header("OverlapBox setup")]
-    [SerializeField] private Vector3 overlapBoxOffset;
+    [Header("OverlapBox setup")] [SerializeField] private Vector3 overlapBoxOffset;
+
     [SerializeField] private float overlapBoxDistance = 1f;
-    [SerializeField] private Vector3 boxSize=new Vector3(1,1,1);
+    [SerializeField] private Vector3 boxSize = new Vector3(1, 1, 1);
     [SerializeField] private LayerMask targetLayers;
     [SerializeField] private bool showGizmo;
 
-    private InputHandler inputHandler;
+    [Header("Auto-set")] [SerializeField] private InputHandler inputHandler;
+    [SerializeField] private PlayerManager playerManager;
+    [SerializeField] private InteractableUI interactableUi;
 
-    private List<Interactable> interactables=new List<Interactable>();
+    #endregion
+
+    #region Private Fields
+
+    private List<Interactable> interactables = new List<Interactable>();
     private List<GameObject> createdInteractableObjects = new List<GameObject>();
     private int currentlySelectedInteractableIndex = 0;
 
+    private HarvestableResource currentInteractableInUse;
+    
+    private static readonly int IsHarvestingResource = Animator.StringToHash("isHarvestingResource");
+
+    #endregion
+
+    #region Lifecycle
+
+    private void OnValidate()
+    {
+        if (inputHandler == null)
+            inputHandler = GetComponent<InputHandler>();
+
+        if (playerManager == null)
+            playerManager = GetComponent<PlayerManager>();
+
+        if (interactableUi == null)
+            interactableUi = FindObjectOfType<InteractableUI>();
+    }
+
     private void OnEnable()
     {
-        EventManager.currentManager.Subscribe(EventType.PlayerKeybindsUpdates,OnPlayerKeybindsUpdates);
+        EventManager.currentManager.Subscribe(EventType.PlayerKeybindsUpdates, OnPlayerKeybindsUpdates);
         EventManager.currentManager.Subscribe(EventType.PlayerChangedInputDevice, OnPlayerChangedInputDevice);
     }
 
@@ -37,89 +62,104 @@ public class PlayerInteraction : MonoBehaviour
         EventManager.currentManager.Unsubscribe(EventType.PlayerChangedInputDevice, OnPlayerChangedInputDevice);
     }
 
-    private void Awake()
-    {
-        inputHandler = GetComponent<InputHandler>();
-
-
-        interactableUI = FindObjectOfType<InteractableUI>();
-    }
-
     private void Start()
     {
         EventManager.currentManager.AddEvent(new PlayerKeybindsUpdate());
     }
 
+    #endregion
+
+    #region Internal Functions
+
     internal void CheckForInteractableObject()
     {
         createdInteractableObjects = new List<GameObject>();
 
-        if (inputHandler.alternateInteraction)
-            currentlySelectedInteractableIndex++;
-
         FindInteractables();
+        
+        ChangeSelectedInteractable();
 
-        //Reset the selected interactable if the top item is
-        if (currentlySelectedInteractableIndex >= interactables.Count)
-            currentlySelectedInteractableIndex = 0;
-
-        foreach (Interactable interactable in interactables)
-        {
+        foreach (var interactable in interactables)
             DisplayInteractableOption(interactable);
-        }
 
         if (interactables.Count > 0)
         {
-            //interactableUI.selectedItemOutline.gameObject.SetActive(true);
-            //Vector3 position = createdInteractableObjects[currentlySelectedInteractableIndex].transform.position;
-            //interactableUI.selectedItemOutline.transform.position = position;
-            interactableUI.selectedItemOutline.gameObject.SetActive(true);
-            StartCoroutine(AdjustTransInTheEndOfFrame(interactableUI.selectedItemOutline));
+            interactableUi.selectedItemOutline.gameObject.SetActive(true);
+            StartCoroutine(AdjustTransformInTheEndOfFrame(interactableUi.selectedItemOutline));
         }
         else
-        {
-            interactableUI.selectedItemOutline.gameObject.SetActive(false);
-        }
+            interactableUi.selectedItemOutline.gameObject.SetActive(false);
 
         //Interact with the selected object
-        if (inputHandler.interactInput&&interactables.Count>0)
+        if (inputHandler.interactInput && interactables.Count > 0)
         {
             interactables[currentlySelectedInteractableIndex].Interact(GetComponent<PlayerManager>());
+
+            if (interactables[currentlySelectedInteractableIndex] is HarvestableResource harvestableResource)
+                currentInteractableInUse = harvestableResource;
         }
 
         //Empty list
         interactables = new List<Interactable>();
-    }  
+    }
 
+    #endregion
+
+    #region Private Functions
+
+    private void ChangeSelectedInteractable()
+    {
+        if (inputHandler.alternateInteraction)
+        {
+            currentlySelectedInteractableIndex++;
+        }
+
+        //Reset the selected interactable if the top item is
+        if (currentlySelectedInteractableIndex >= interactables.Count)
+        {
+            currentlySelectedInteractableIndex = 0;
+        }
+    }
+    
     private void DisplayInteractableOption(Interactable interactableObject)
     {
-        GameObject createdGameObject = Instantiate(interactableDataHolderPrefab, interactableUI.interactionPopUpsContent.transform);
-        //Add the created interacatables to a lst for further use
+        var createdGameObject =
+            Instantiate(interactableDataHolderPrefab, interactableUi.interactionPopUpsContent.transform);
+        
+        //Add the created interactables to a lst for further use
         createdInteractableObjects.Add(createdGameObject);
         if (createdGameObject.TryGetComponent(out InteractableDataHolder interactableDataHolder))
         {
             interactableDataHolder.interactableNameText.text = interactableObject.interactableText;
 
-            //if the interactable is an item pickup
-            if (interactableObject is ItemPickup itemPickup)
+            switch (interactableObject)
             {
-                interactableDataHolder.interactableIconImage.sprite = itemPickup.item.itemIcon;
-                interactableDataHolder.interactableNameText.text = itemPickup.item.itemName+" x " + itemPickup.amountOfItem;
+                //if the interactable is an item pickup
+                case ItemPickup itemPickup:
+                    interactableDataHolder.interactableIconImage.sprite = itemPickup.item.itemIcon;
+                    interactableDataHolder.interactableNameText.text =
+                        itemPickup.item.itemName + " x " + itemPickup.amountOfItem;
+                    break;
+                case HarvestableResource harvestableResource:
+                    interactableDataHolder.interactableIconImage.sprite = harvestableResource.displayIcon;
+                    interactableDataHolder.interactableNameText.text = "Harvest " + harvestableResource.interactableText;
+                    break;
             }
+            return;
         }
-        else
-        {
-            Debug.Log("Couldnt find interactableDataHolder on the created prefab for interaction");
-        }
+        Debug.Log("Couldn't find interactableDataHolder on the created prefab for interaction");
     }
 
     private void FindInteractables()
     {
-        Collider[] hitColliders = Physics.OverlapBox(transform.forward * overlapBoxDistance + transform.position + overlapBoxOffset, boxSize, Quaternion.identity, targetLayers);
-        int i = 0;
+        var ownTransform = transform;
+        var hitColliders =
+            Physics.OverlapBox(ownTransform.forward * overlapBoxDistance + ownTransform.position + overlapBoxOffset, boxSize,
+                Quaternion.identity, targetLayers);
+        var i = 0;
 
         //destroy all previously displayed objects
-        foreach (RectTransform child in interactableUI.interactionPopUpsContent.GetComponent<RectTransform>())
+        foreach (RectTransform child in interactableUi.interactionPopUpsContent.GetComponent<RectTransform>())
         {
             Destroy(child.gameObject);
         }
@@ -128,7 +168,7 @@ public class PlayerInteraction : MonoBehaviour
         while (i < hitColliders.Length)
         {
             //check if it has the tag of an interactable
-            if (hitColliders[i].tag == "Interactable")
+            if (hitColliders[i].CompareTag("Interactable"))
             {
                 if (hitColliders[i].TryGetComponent(out Interactable interactable))
                 {
@@ -143,26 +183,59 @@ public class PlayerInteraction : MonoBehaviour
 
     private void DisplayKeybindForInteract()
     {
-        string bindingPath= CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Interact, inputHandler.activeInputDevice);
+        var bindingPath =
+            CharacterUtilityManager.GetBindingPath(inputHandler.GetInputActions().CharacterControls.Interact,
+                inputHandler.activeInputDevice);
 
-        interactableUI.keybindToPress.sprite = CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator, inputHandler.activeInputDevice, bindingPath);
+        interactableUi.keybindToPress.sprite =
+            CharacterUtilityManager.FindKeybindIcon(inputHandler.deviceDisplayConfigurator,
+                inputHandler.activeInputDevice, bindingPath);
     }
 
-    private IEnumerator AdjustTransInTheEndOfFrame(Transform obj)
+    private IEnumerator AdjustTransformInTheEndOfFrame(Transform obj)
     {
         yield return new WaitForEndOfFrame();
-        Vector3 position = createdInteractableObjects[currentlySelectedInteractableIndex].transform.position;
+        var position = createdInteractableObjects[currentlySelectedInteractableIndex].transform.position;
         obj.position = position;
         obj.gameObject.SetActive(true);
     }
+
+    /// <summary>
+    /// Called by animation events
+    /// </summary>
+    private void HarvestItem()
+    {
+        if (currentInteractableInUse != null)
+        {
+            //If there are no more resources to harvest
+            if (currentInteractableInUse.ObtainItemsFromHarvest()) 
+                return;
+            
+            GetComponent<PlayerAnimatorManager>().animator.SetBool(IsHarvestingResource, false);
+            playerManager.HideDisplayObect(true);
+        }
+        else
+        {
+            GetComponent<PlayerAnimatorManager>().animator.SetBool(IsHarvestingResource, false);
+            playerManager.HideDisplayObect(true);
+            Debug.LogWarning("No harvestable object was found");
+        }
+
+    }
+
+    #endregion
+
+    #region On Events
+
     private void OnDrawGizmos()
     {
-        if (showGizmo)
-        {
-            Gizmos.color = Color.red;
-            //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
-            Gizmos.DrawWireCube(transform.forward * overlapBoxDistance + transform.position + overlapBoxOffset, boxSize);
-        }
+        if (!showGizmo) 
+            return;
+        Gizmos.color = Color.red;
+        //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
+        var ownTransform = transform;
+        Gizmos.DrawWireCube(ownTransform.forward * overlapBoxDistance + ownTransform.position + overlapBoxOffset,
+            boxSize);
     }
 
     private void OnPlayerKeybindsUpdates(EventData eventData)
@@ -185,7 +258,21 @@ public class PlayerInteraction : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("The event of PlayerChangedInputDevice was not matching of event type PlayerChangedInputDevice");
+            Debug.LogWarning(
+                "The event of PlayerChangedInputDevice was not matching of event type PlayerChangedInputDevice");
         }
     }
+
+    #endregion
 }
+
+/*
+ * Harvestable Resources:
+ *  -Player interacts with object
+ *      -Usual stuff
+ *  -Starts playing animation for a set amount of time
+ *  -When reaching a point of the animation, reward player the item
+ *      -Use animation event to obtain item from harvestableResource
+ *  -Play a sound at part of the animation
+ *  -When the duration ends, exit the animation
+ */

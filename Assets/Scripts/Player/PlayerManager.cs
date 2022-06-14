@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -21,6 +22,17 @@ using UnityEngine;
 #endregion
 public class PlayerManager : CharacterManager
 {
+
+    #region Serialized Field
+
+    [SerializeField] private CapsuleCollider characterCollider;
+    [SerializeField] private CapsuleCollider characterCollisionBlocker;
+
+
+    #endregion
+    
+    #region Private Fields
+
     private InputHandler inputHandler;
     private PlayerLocomotion playerLocomotion;
     private PlayerAnimatorManager playerAnimatorManager;
@@ -30,14 +42,33 @@ public class PlayerManager : CharacterManager
     private PlayerInventory playerInventory;
     private PlayerStats playerStats;
     private PlayerInteraction playerInteraction;
-
-    [SerializeField] private CapsuleCollider characterCollider;
-    [SerializeField] private CapsuleCollider characterCollisionBlocker;
-
+    
     private float timeTillRestart = 3, restartTimeStamp;
-
-    public bool canDoCombo, isInteracting, isAiming, isHoldingArrow;
     private bool enteredSpellcastingMode = true;
+    private PlayerState playerState = PlayerState.Default;
+    
+    #endregion
+
+    #region Public Fields
+
+    public bool canDoCombo, isInteracting, isAiming, isHoldingArrow, isHarvestingResource;
+
+    #endregion
+
+    #region Animator Ids
+
+    private static readonly int CanRotate = Animator.StringToHash("canRotate");
+    private static readonly int CanDoCombo = Animator.StringToHash("canDoCombo");
+    private static readonly int IsParrying = Animator.StringToHash("isParrying");
+    private static readonly int IsInteracting = Animator.StringToHash("isInteracting");
+    private static readonly int IsBlocking = Animator.StringToHash("isBlocking");
+    private static readonly int IsAiming = Animator.StringToHash("isAiming");
+    private static readonly int IsHoldingArrow = Animator.StringToHash("isHoldingArrow");
+    private static readonly int IsHarvestingResource = Animator.StringToHash("isHarvestingResource");
+
+    #endregion
+
+
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.EquipWeapon, OnEquipWeapon);
@@ -53,6 +84,7 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Subscribe(EventType.AwardPlayerXP, OnAwardPlayerXP);
         EventManager.currentManager.Subscribe(EventType.PlayerKeybindsUpdates, OnPlayerKeybindsUpdates);
         EventManager.currentManager.Subscribe(EventType.PlayerChangedInputDevice, OnPlayerChangedInputDevice);
+        EventManager.currentManager.Subscribe(EventType.ChangePlayerState, OnChangePlayerState);
     }
 
     private void OnDisable()
@@ -70,9 +102,10 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Unsubscribe(EventType.AwardPlayerXP, OnAwardPlayerXP);
         EventManager.currentManager.Unsubscribe(EventType.PlayerKeybindsUpdates, OnPlayerKeybindsUpdates);
         EventManager.currentManager.Unsubscribe(EventType.PlayerChangedInputDevice, OnPlayerChangedInputDevice);
+        EventManager.currentManager.Unsubscribe(EventType.ChangePlayerState, OnChangePlayerState);
     }
 
-    void Awake()
+    private void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
         playerLocomotion = GetComponent<PlayerLocomotion>();
@@ -86,7 +119,6 @@ public class PlayerManager : CharacterManager
         weaponSlotManager = GetComponent<WeaponSlotManager>();
         ragdollManager = GetComponentInChildren<RagdollManager>();
 
-
         EventManager.currentManager.Subscribe(EventType.CeaseDialogue, OnCeaseDialogue);
 
         SetupVariables();
@@ -99,62 +131,14 @@ public class PlayerManager : CharacterManager
 
     private void Update()
     {
-
         GetPlayerAnimatorBools();
 
-        //Make sure player isnt dead
-        if (!playerStats.GetIsDead())
-        {
-            //Player is unable to perform certain actions whilst in spellcasting mode
-            if (inputHandler.spellcastingModeInput)
-            {
-                if (!enteredSpellcastingMode)
-                {
-                    enteredSpellcastingMode = true;
-                    EventManager.currentManager.AddEvent(new PlayerToggleSpellcastingMode(enteredSpellcastingMode));
-                }
-                playerSpellcastingManager.HandleSpellcasting();
-            }
-            else
-            {
-                if (enteredSpellcastingMode)
-                {
-                    enteredSpellcastingMode = false;
-                    EventManager.currentManager.AddEvent(new PlayerToggleSpellcastingMode(enteredSpellcastingMode));
-                }
-                playerLocomotion.HandleDodgeAndJumping();
-                playerCombatManager.HandleAttacks();
-                playerCombatManager.HandleWeaponSpecificAbilities();
-                playerInventory.SwapWeapon(weaponSlotManager);
-                playerQuickslotManager.HandleQuickslotInputs();
-            }
-
-            playerInteraction.CheckForInteractableObject();
-        }
-        else
-        {
-            //force player to play death animation if they somehow avoid it
-            if (!playerAnimatorManager.animator.GetCurrentAnimatorStateInfo(2).IsName("Death"))
-            {
-                playerAnimatorManager.animator.Play("Death");
-            }
-
-            if (restartTimeStamp == 0)
-            {
-                restartTimeStamp = Time.time + timeTillRestart;
-            }
-
-            if (restartTimeStamp <= Time.time)
-            {
-                EventManager.currentManager.AddEvent(new LoadData());
-            }
-
-        }
+        HandleStates();
     }
 
     private void FixedUpdate()
     {
-        float delta = Time.deltaTime;
+        var delta = Time.deltaTime;
         inputHandler.TickInput();
 
         playerLocomotion.HandleLocomotion(delta);
@@ -171,10 +155,10 @@ public class PlayerManager : CharacterManager
 
     private void SetupVariables()
     {
-        //Set Player tag if it hasnt been already
-        if (gameObject.tag == "Untagged")
+        //Set Player tag if it hasn't been already
+        if (gameObject.CompareTag("Untagged"))
             gameObject.tag = "Player";
-        //Set layer if it hasnt been already
+        //Set layer if it hasn't been already
         if (gameObject.layer == 0)
             gameObject.layer = 10;
 
@@ -191,8 +175,9 @@ public class PlayerManager : CharacterManager
         //Set characterCollider 
         characterCollider = gameObject.GetComponent<CapsuleCollider>();
 
-        //Set characterCollisonBlocker
-        Transform collisionBlockerTransform = gameObject.transform.Find("CombatColliders").Find("CharacterCollisionBlocker");
+        //Set characterCollisionBlocker
+        var collisionBlockerTransform = gameObject.transform.Find("CombatColliders").Find("CharacterCollisionBlocker");
+        
         if (collisionBlockerTransform != null)
             characterCollisionBlocker = collisionBlockerTransform.GetComponent<CapsuleCollider>();
 
@@ -202,25 +187,92 @@ public class PlayerManager : CharacterManager
             Debug.LogWarning("Could not find a CharacterCollisionBlocker, make sure you created a child in player and added an empty gameObject, name it CharacterCollisionBlocker and add a capsule collider and a rigidbody.");
 
         //Set finisherAttackRayCastStartPointTransform
+        if (finisherAttackRayCastStartPointTransform != null) 
+            return;
+        
+        finisherAttackRayCastStartPointTransform = gameObject.transform.Find("CombatTransforms").Find("FinisherAttackRaycastStartPoint");
         if (finisherAttackRayCastStartPointTransform == null)
-        {
-            finisherAttackRayCastStartPointTransform = gameObject.transform.Find("CombatTransforms").Find("FinisherAttackRaycastStartPoint");
-            if (finisherAttackRayCastStartPointTransform == null)
-                Debug.LogWarning("Could not find a FinisherAttackRaycastStartPoint gameObject on the player, create an empty gameobject as a child of player, give it that name. Position it to be in front of the players chest");
-        }
+            Debug.LogWarning("Could not find a FinisherAttackRaycastStartPoint gameObject on the player, create an empty gameobject as a child of player, give it that name. Position it to be in front of the players chest");
 
     }
 
+    private void HandleStates()
+    {
+        switch (playerState)
+        {
+            case PlayerState.Default:
+                break;
+            case PlayerState.CombatMode:
+                playerLocomotion.HandleDodgeAndJumping();
+                playerCombatManager.HandleAttacks();
+                playerCombatManager.HandleWeaponSpecificAbilities();
+                playerInventory.SwapWeapon(weaponSlotManager);
+                playerQuickslotManager.HandleQuickslotInputs();
+                break;
+            case PlayerState.SpellcastingMode:
+                playerSpellcastingManager.HandleSpellcasting();
+                break;
+            case PlayerState.MenuMode:
+                inputHandler.ResetMovementValues();
+                break;
+            case PlayerState.Dead:
+                inputHandler.ResetMovementValues();
+                //force player to play death animation if they somehow avoid it
+                if (!playerAnimatorManager.animator.GetCurrentAnimatorStateInfo(2).IsName("Death"))
+                    playerAnimatorManager.animator.Play("Death");
+
+                if (restartTimeStamp == 0)
+                    restartTimeStamp = Time.time + timeTillRestart;
+
+                if (restartTimeStamp <= Time.time)
+                    EventManager.currentManager.AddEvent(new LoadData());
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+        
+        //Make sure player isn't dead
+        if (playerStats.GetIsDead())
+        {
+            playerState = PlayerState.Dead;
+            return;
+        }
+        //Player is unable to perform certain actions whilst in spellcasting mode
+        if (inputHandler.spellcastingModeInput)
+        {
+            if (!enteredSpellcastingMode)
+            {
+                playerState = PlayerState.SpellcastingMode;
+                enteredSpellcastingMode = true;
+                EventManager.currentManager.AddEvent(new PlayerToggleSpellcastingMode(enteredSpellcastingMode));
+            }
+        }
+        else
+        {
+            if (enteredSpellcastingMode)
+            {
+                playerState = PlayerState.CombatMode;
+                enteredSpellcastingMode = false;
+                EventManager.currentManager.AddEvent(new PlayerToggleSpellcastingMode(enteredSpellcastingMode));
+            }
+        }
+
+        playerInteraction.CheckForInteractableObject();
+            
+        return;
+    }
+    
     private void GetPlayerAnimatorBools()
     {
-        playerAnimatorManager.canRotate = playerAnimatorManager.animator.GetBool("canRotate");
+        playerAnimatorManager.canRotate = playerAnimatorManager.animator.GetBool(CanRotate);
 
-        canDoCombo = playerAnimatorManager.animator.GetBool("canDoCombo");
-        isParrying = playerAnimatorManager.animator.GetBool("isParrying");
-        isInteracting = playerAnimatorManager.animator.GetBool("isInteracting");
-        isBlocking = playerAnimatorManager.animator.GetBool("isBlocking");
-        isAiming = playerAnimatorManager.animator.GetBool("isAiming");
-        isHoldingArrow = playerAnimatorManager.animator.GetBool("isHoldingArrow");
+        canDoCombo = playerAnimatorManager.animator.GetBool(CanDoCombo);
+        isParrying = playerAnimatorManager.animator.GetBool(IsParrying);
+        isInteracting = playerAnimatorManager.animator.GetBool(IsInteracting);
+        isBlocking = playerAnimatorManager.animator.GetBool(IsBlocking);
+        isAiming = playerAnimatorManager.animator.GetBool(IsAiming);
+        isHoldingArrow = playerAnimatorManager.animator.GetBool(IsHoldingArrow);
+        isHarvestingResource = playerAnimatorManager.animator.GetBool(IsHarvestingResource);
     }
 
     public override void EnableRagdoll()
@@ -230,6 +282,21 @@ public class PlayerManager : CharacterManager
         characterCollider.enabled = false;
         characterCollisionBlocker.enabled = false;
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+    }
+
+    #region Tools
+    /// <summary>
+    /// Displays the pickaxe
+    /// </summary>
+    internal void DisplayTool(ToolType toolType)
+    {
+        playerInventory.DisplayTool(weaponSlotManager, toolType);
+    }
+    #endregion
+
+    internal void HideDisplayObect(bool hideLeftHandObject = true)
+    {
+        weaponSlotManager.HideObjectsInHand(hideLeftHandObject);
     }
 
     #region onEvents
@@ -304,7 +371,19 @@ public class PlayerManager : CharacterManager
             throw new System.Exception("Error: EventData class with EventType.HideQuickslotItem was received but is not of class HideQuickslotItem.");
         }
     }
-
+    
+    private void OnChangePlayerState(EventData eventData)
+    {
+        if (eventData is ChangePlayerState changePlayerState)
+        {
+            playerState = changePlayerState.playerState;
+        }
+        else
+        {
+            throw new System.Exception("Error: EventData class with EventType.ChangePlayerState was received but is not of class ChangePlayerState.");
+        }
+    }
+        
     private void OnInitiateDialogue(EventData eventData)
     {
         if (eventData is InitiateDialogue)
@@ -393,7 +472,7 @@ public class PlayerManager : CharacterManager
 
     private void OnAwardPlayerXP(EventData eventData)
     {
-        if (eventData is AwardPlayerXP awardPlayerXP)
+        if (eventData is AwardPlayerXp awardPlayerXP)
         {
             //Calculate if the player will recieve any level ups
             LevelSystem.DetermineLevelGain(playerStats.levelData, playerStats.currentXP, playerStats.currentLevel, awardPlayerXP.xpAmount);
@@ -518,8 +597,9 @@ public class PlayerManager : CharacterManager
                 Debug.LogWarning("The event of PlayerChangedInputDevice was not matching of event type PlayerChangedInputDevice");
             }
         }
-        #endregion
     }
+    #endregion
+    
     #region Getters & Setters
     internal void SetDamageColliderDamage(float damage)
     {

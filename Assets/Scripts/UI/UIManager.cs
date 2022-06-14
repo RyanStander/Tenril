@@ -150,6 +150,8 @@ public class UIManager : MonoBehaviour
         //swap menu mode
         isInMenuMode = true;
 
+        EventManager.currentManager.AddEvent(new ChangePlayerState(PlayerState.MenuMode));
+        
         //Disable gameplay inputs and enable menu inputs
         inputHandler.GetInputActions().CharacterControls.Disable();
 
@@ -167,6 +169,8 @@ public class UIManager : MonoBehaviour
         //swap menu mode
         isInMenuMode = false;
 
+        EventManager.currentManager.AddEvent(new ChangePlayerState(PlayerState.CombatMode));
+        
         //Enable gameplay inputs and disable menu inputs
         inputHandler.GetInputActions().CharacterControls.Enable();
 

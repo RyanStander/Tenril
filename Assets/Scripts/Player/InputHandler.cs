@@ -60,14 +60,14 @@ public class InputHandler : MonoBehaviour
 
     private void Start()
     {
-        //Gets the keybinginds saved from player prefs
-        string rebinds = PlayerPrefs.GetString("keybindings", string.Empty);
+        //Gets the keybindings saved from player prefs
+        var rebinds = PlayerPrefs.GetString("keybindings", string.Empty);
 
         //checks if its null
         if (string.IsNullOrEmpty(rebinds))
             return;
 
-        //loads binginds and overrides original ones
+        //loads bindings and overrides original ones
         inputActions.asset.LoadBindingOverridesFromJson(rebinds);
     }
 
@@ -99,11 +99,20 @@ public class InputHandler : MonoBehaviour
         quickslotRightInput = false;
         quickslotUseInput = false;
 
-        for (int i = 0; i < 8; i++)
+        for (var i = 0; i < 8; i++)
         {
             castSpell[i] = false;
         }
     }
+    
+    internal void ResetMovementValues()
+    {
+        forward = 0;
+        left = 0;
+        moveAmount = 0;
+        movementInput=Vector2.zero;
+    }
+    
     private void CheckInputs()
     {
         //----------------------------------------------------------

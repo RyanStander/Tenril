@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Handles the current equipment being used by a character
 /// </summary>
-public class CharacterInventory : MonoBehaviour
+public class CharacterInventory : GenericInventory
 {
     [Header("Equipped Items")]
     [Tooltip("The weapon the player currently has equipped")]
@@ -18,9 +18,12 @@ public class CharacterInventory : MonoBehaviour
 
     [Tooltip("The Ammo that the player will try to draw when using a ranged weapon")]
     public AmmunitionItem equippedAmmo;
-
-    [Header("Backpack")]
-    public List<ItemInventory> inventory = new List<ItemInventory>();
+    
+    [Header("Tools")]
+    [Tooltip("The pickaxe that the player will try to use when mining")]
+    public ToolItem equippedPickaxe;
+    [Tooltip("The axe that the player will try to use when chopping wood")]
+    public ToolItem equippedAxe;
 
     //this is the item referenced when actually using an item (for players this is the quickslot)
     public ConsumableItem consumableItemInUse;

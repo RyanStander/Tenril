@@ -16,7 +16,7 @@ public abstract class ConsumableManager : MonoBehaviour
 
     internal void HideItem(WeaponSlotManager weaponSlotManager)
     {
-        weaponSlotManager.HideObjectInHand();
+        weaponSlotManager.HideObjectsInHand();
     }
 
     //Gets called by animations like "Drink" through animation events

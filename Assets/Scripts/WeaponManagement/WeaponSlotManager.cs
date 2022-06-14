@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Holds the information of weapon slots as well as
+/// </summary>
 public class WeaponSlotManager : MonoBehaviour
 {
     [Tooltip("The animator that it swaps to when the character is not wielding weapons")]
@@ -13,7 +16,7 @@ public class WeaponSlotManager : MonoBehaviour
 
     public DamageCollider leftHandDamageCollider, rightHandDamageCollider;
 
-    private GameObject leftDisplayObject, rightDisplayObject;
+    [SerializeField]private GameObject leftDisplayObject, rightDisplayObject;
 
     private void Awake()
     {
@@ -63,56 +66,83 @@ public class WeaponSlotManager : MonoBehaviour
             rightHandSlot.currentWeaponModel.SetActive(true);
     }
 
-    public void DisplayObjectInHand(GameObject objectToDisplay, bool isInLeftHandSlot = true, bool hideWeapon = true)
+    public void DisplayObjectInHand(GameObject objectToDisplay, bool isInLeftHandSlot = true,bool usesBothHands=false, bool hideWeapon = true)
     {
-        if (isInLeftHandSlot)
+        if (usesBothHands)
         {
             if (hideWeapon)
             {
                 if (leftHandSlot.currentWeaponModel != null)
                     leftHandSlot.currentWeaponModel.SetActive(false);
+                if (rightHandSlot.currentWeaponModel != null)
+                    rightHandSlot.currentWeaponModel.SetActive(false);
             }
-            if (objectToDisplay != null)
-            {
-                if (leftHandSlot.parentOverride != null)
-                    leftDisplayObject = Instantiate(objectToDisplay, leftHandSlot.parentOverride);
-                else
-                    leftDisplayObject = Instantiate(objectToDisplay, leftHandSlot.transform);
-            }
+        }
+        else if (isInLeftHandSlot)
+        {
+            if (hideWeapon)
+                if (leftHandSlot.currentWeaponModel != null)
+                    leftHandSlot.currentWeaponModel.SetActive(false);
         }
         else
         {
             if (hideWeapon)
-            {
                 if (rightHandSlot.currentWeaponModel != null)
                     rightHandSlot.currentWeaponModel.SetActive(false);
-            }
+        }
+
+        ObjectDisplayBasedOnHand(isInLeftHandSlot, objectToDisplay);
+    }
+
+    private void ObjectDisplayBasedOnHand(bool isInLeftHandSlot, GameObject objectToDisplay)
+    {
+        if (isInLeftHandSlot)
+        {
             if (objectToDisplay != null)
             {
-                if (rightHandSlot.parentOverride != null)
-                    rightDisplayObject = Instantiate(objectToDisplay, rightHandSlot.parentOverride);
+                if (leftHandSlot.parentOverride != null)
+                {
+                    HideObjectsInHand(false);
+                    leftDisplayObject = Instantiate(objectToDisplay, leftHandSlot.parentOverride);
+                }
                 else
-                    rightDisplayObject = Instantiate(objectToDisplay, rightHandSlot.transform);
+                {
+                    HideObjectsInHand(false);
+                    leftDisplayObject = Instantiate(objectToDisplay, leftHandSlot.transform);
+                }
             }
-        }
-    }
-    public void HideObjectInHand(bool hideLeftHandObject = true,bool showWeaponIfHidden=true)
-    {
-        if (hideLeftHandObject)
-        {
-            if (leftDisplayObject != null)
-                Destroy(leftDisplayObject);
-            if(showWeaponIfHidden)
-                if (leftHandSlot.currentWeaponModel != null)
-                    leftHandSlot.currentWeaponModel.SetActive(true);
         }
         else
         {
-            if (rightDisplayObject != null)
-                Destroy(rightDisplayObject);
-            if (showWeaponIfHidden)
-                if (rightHandSlot.currentWeaponModel != null)
-                    rightHandSlot.currentWeaponModel.SetActive(true);
+            if (objectToDisplay != null)
+            {
+                if (rightHandSlot.parentOverride != null)
+                {
+                    HideObjectsInHand(false);
+                    rightDisplayObject = Instantiate(objectToDisplay, rightHandSlot.parentOverride);
+                }
+                else
+                {
+                    HideObjectsInHand(false);
+                    rightDisplayObject = Instantiate(objectToDisplay, rightHandSlot.transform);
+                }
+                   
+            }
+        }
+    }
+    public void HideObjectsInHand(bool showWeaponIfHidden = true)
+    {
+        if (leftDisplayObject != null)
+            Destroy(leftDisplayObject);
+        if (rightDisplayObject != null)
+            Destroy(rightDisplayObject);
+
+        if (showWeaponIfHidden)
+        {
+            if (leftHandSlot.currentWeaponModel != null)
+                leftHandSlot.currentWeaponModel.SetActive(true);
+            if (rightHandSlot.currentWeaponModel != null)
+                rightHandSlot.currentWeaponModel.SetActive(true);
         }
 
     }

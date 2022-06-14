@@ -31,13 +31,14 @@ public class PlayerLocomotion : MonoBehaviour
 
     private float lookAngle,pivotAngle;
 
-    void Awake()
+    private void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
         playerManager = GetComponent<PlayerManager>();
         playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
         playerStats = GetComponent<PlayerStats>();
-        cameraObject = Camera.main.transform;
+        if (Camera.main != null)
+            cameraObject = Camera.main.transform;
         statusEffectManager = GetComponent<StatusEffectManager>();
         cameraLockOn = FindObjectOfType<CameraLockOn>();
 
@@ -57,6 +58,7 @@ public class PlayerLocomotion : MonoBehaviour
         HandleDodge();
         HandleJump();
     }
+
     private void HandleMovement()
     {
         //if player is locked on to a target and not sprinting
@@ -120,15 +122,13 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleJump()
     {
-        if (inputHandler.jumpInput)
-        {
-            //Do not perform another jump if already happening
-            if (playerAnimatorManager.animator.GetBool("isInteracting"))
-                return;
+        if (!inputHandler.jumpInput) return;
+        //Do not perform another jump if already happening
+        if (playerAnimatorManager.animator.GetBool("isInteracting"))
+            return;
 
-            //perform jump animation
-            playerAnimatorManager.PlayTargetAnimation("Jump", true);
-        }
+        //perform jump animation
+        playerAnimatorManager.PlayTargetAnimation("Jump", true);
     }
 
     private void HandleFalling()

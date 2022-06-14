@@ -44,3 +44,20 @@ public enum InputDeviceType
     PlayStation=2,
     Xbox=3,
 }
+
+//When we find more tools, will add here
+public enum ToolType
+{
+    None=0,
+    Pickaxe=1,
+    Axe=2,
+}
+
+public enum PlayerState
+{
+    Default=0,
+    CombatMode=1,
+    SpellcastingMode=2,
+    MenuMode=3,
+    Dead=10,
+}

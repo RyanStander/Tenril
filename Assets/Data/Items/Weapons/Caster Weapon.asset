@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Caster Weapon
   m_EditorClassIdentifier: 
   UID: e840522a9441fd5418f5a2a3dddf3d6e
-  itemIcon: {fileID: 21300000, guid: a43c88d28bc34196b9638a7f4cc50bea, type: 3}
+  itemIcon: {fileID: 21300000, guid: 2531e15fe967a354d9d28c9cfc1d71ca, type: 3}
   itemName: The Cube
   amountPerStack: 1
   ItemValue: 200
@@ -25,19 +25,20 @@ MonoBehaviour:
   primarySheathPrefab: {fileID: 0}
   secondarySheathPrefab: {fileID: 0}
   weaponController: {fileID: 22100000, guid: 19d5d7760c2a8484f8dc10a70fbc2b10, type: 2}
+  weaponSoundEffects: {fileID: 0}
   baseDamage: 500
   weakAttackDamageMultiplier: 1
-  strongAttackDamageMultiplier: 2
+  strongAttackDamageMultiplier: 1.5
   finisherDamageMultiplier: 4
   physicalDamageBlockPercentage: 100
-  idleAnimation: FlyingMageEquip
+  equipAnimation: WeaponEquip
   attackSet: {fileID: 0}
   weakAttacks: []
   strongAttacks: []
   parry: Parry
   baseStaminaCost: 0
   weakAttackCostMultiplier: 1
-  strongAttackCostMultiplier: 2
+  strongAttackCostMultiplier: 1.2
   weaponType: 0
   weaponSlotWhenNotWielded: 3
   canParry: 0

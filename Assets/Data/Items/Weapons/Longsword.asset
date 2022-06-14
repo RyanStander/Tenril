@@ -28,11 +28,11 @@ MonoBehaviour:
   weaponSoundEffects: {fileID: 11400000, guid: 76fc25c603be27a43a97a32d6c22cd87, type: 2}
   baseDamage: 25
   weakAttackDamageMultiplier: 1
-  strongAttackDamageMultiplier: 2
+  strongAttackDamageMultiplier: 1.5
   finisherDamageMultiplier: 3
   physicalDamageBlockPercentage: 50
-  attackSet: {fileID: 11400000, guid: ad1b4ea56e5550a42a580c7226c05c33, type: 2}
   equipAnimation: WeaponEquip
+  attackSet: {fileID: 11400000, guid: ad1b4ea56e5550a42a580c7226c05c33, type: 2}
   weakAttacks:
   - WeakCombo1
   - WeakCombo2
@@ -41,9 +41,9 @@ MonoBehaviour:
   strongAttacks:
   - StrongCombo1
   parry: Parry
-  baseStaminaCost: 10
+  baseStaminaCost: 25
   weakAttackCostMultiplier: 1
-  strongAttackCostMultiplier: 2
+  strongAttackCostMultiplier: 1.2
   weaponType: 2
   weaponSlotWhenNotWielded: 3
   canParry: 1

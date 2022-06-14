@@ -19,16 +19,13 @@ ModelImporter:
     optimizeGameObjects: 0
     motionNodeName: 
     rigImportErrors: 
-    rigImportWarnings: "Avatar creation errors found in old project file will be
-      treated as a warnings. Error will be ignored, but current Configuration needs
-      to be fixed:\n\tParent for 'Hips' differs from one found in HumanDescription.
-      'erika_archer' was found instead of 'Root'.\nAvatar Rig Configuration mis-match.
-      Bone length in configuration does not match position in animation file:\n\t'LeftUpLeg'
-      : position error = 69.580048 mm\n\t'LeftLeg' : position error = 553.700500
-      mm\n\t'LeftFoot' : position error = 536.518250 mm\n\t'LeftToeBase' : position
-      error = 199.136826 mm\n\t'RightUpLeg' : position error = 69.579903 mm\n\t'RightLeg'
-      : position error = 553.782776 mm\n\t'RightFoot' : position error = 536.597534
-      mm\n\t'RightToeBase' : position error = 199.137329 mm\n"
+    rigImportWarnings: "Avatar Rig Configuration mis-match. Bone length in configuration
+      does not match position in animation file:\n\t'LeftUpLeg' : position error
+      = 69.580048 mm\n\t'LeftLeg' : position error = 553.700500 mm\n\t'LeftFoot'
+      : position error = 536.518250 mm\n\t'LeftToeBase' : position error = 199.136826
+      mm\n\t'RightUpLeg' : position error = 69.579903 mm\n\t'RightLeg' : position
+      error = 553.782776 mm\n\t'RightFoot' : position error = 536.597534 mm\n\t'RightToeBase'
+      : position error = 199.137329 mm\n"
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -491,6 +488,14 @@ ModelImporter:
         modified: 0
     - boneName: Spine1
       humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Spine2
+      humanName: UpperChest
       limit:
         min: {x: 0, y: 0, z: 0}
         max: {x: 0, y: 0, z: 0}

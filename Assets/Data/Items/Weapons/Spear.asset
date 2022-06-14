@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Spear
   m_EditorClassIdentifier: 
   UID: 7417db089f87b784c8882f10cde1c9eb
-  itemIcon: {fileID: 21300000, guid: c0280fafa88fc374899c40a7f7982b39, type: 3}
+  itemIcon: {fileID: 21300000, guid: fa53621d47450625d6f1ad0f72beb1e6, type: 3}
   itemName: Spear
   amountPerStack: 1
   ItemValue: 0
@@ -28,7 +28,7 @@ MonoBehaviour:
   weaponSoundEffects: {fileID: 11400000, guid: 9d8e067f58407f948af467965a7e8f62, type: 2}
   baseDamage: 30
   weakAttackDamageMultiplier: 1
-  strongAttackDamageMultiplier: 2
+  strongAttackDamageMultiplier: 1.5
   finisherDamageMultiplier: 4
   physicalDamageBlockPercentage: 65
   equipAnimation: WeaponEquip
@@ -43,9 +43,9 @@ MonoBehaviour:
   - StrongCombo1
   - StrongCombo2
   parry: Parry
-  baseStaminaCost: 15
+  baseStaminaCost: 40
   weakAttackCostMultiplier: 1
-  strongAttackCostMultiplier: 2
+  strongAttackCostMultiplier: 1.2
   weaponType: 1
   weaponSlotWhenNotWielded: 2
   canParry: 1

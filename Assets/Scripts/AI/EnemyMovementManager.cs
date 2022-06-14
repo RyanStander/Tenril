@@ -181,7 +181,7 @@ public class EnemyMovementManager : MonoBehaviour
     }
 
     //Method logic for choosing a location correction type
-    internal void CorrectAgentLocation()
+    public void CorrectAgentLocation()
     {
         //Correct the location of the NavmeshAgent with precise or estimated calculations
         //Choice between precise or estimated
