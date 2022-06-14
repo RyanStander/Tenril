@@ -8,21 +8,21 @@ using UnityEngine;
 public class EnemyAttackManager : MonoBehaviour
 {
     //Relevant attached manager
-    protected EnemyAgentManager enemyManager;
+    [SerializeField] private EnemyAgentManager enemyManager;
 
-    //Current time to wait before reassesing the available attacks
+    //Current time to wait before reassessing the available attacks
     [Range(1, 5)] public float timeoutTime = 2f;
-    private float timeoutTimer = 0;
+    private float timeoutTimer;
     public bool hasTimedOut = true;
 
-    //Bool for if attack can now be succesfully executed
-    public bool shouldExecuteAttack = false;
+    //Bool for if attack can now be successfully executed
+    public bool shouldExecuteAttack;
 
     //Current attack trying to be performed
     public AttackData currentAttack;
 
     //The previous weapon attack
-    internal AttackData previousAttack;
+    private AttackData previousAttack;
 
     //The current desired distance
     public float desiredDistance = 0;
@@ -46,14 +46,19 @@ public class EnemyAttackManager : MonoBehaviour
     //Rate at which the radius should return to normal
     [Range(0,5)] public float alertChaseChangeRate = 1;
 
-    private void Awake()
+    private void OnValidate()
     {
+        if (enemyManager != null) return;
+        
         //Getter for relevant reference
         enemyManager = GetComponentInChildren<EnemyAgentManager>();
-
-        //Nullcheck for missing, throw exception as this does not guarantee it will break the code, but is likely to
+            
+        //Null check for missing, throw exception as this does not guarantee it will break the code, but is likely to
         if (enemyManager == null) throw new MissingComponentException("Missing EnemyAgentManager on " + gameObject + "!");
+    }
 
+    private void Awake()
+    {
         //Set the starting alertness and chasing ranges
         currentAlertnessRange = enemyManager.enemyStats.alertRadius;
         currentChasingRange = enemyManager.enemyStats.chaseRange;
@@ -69,7 +74,7 @@ public class EnemyAttackManager : MonoBehaviour
         UpdateAttackRange();
     }
 
-    public void UpdateAttackRange()
+    private void UpdateAttackRange()
     {
         //Get the maximum attack range based on the current weapon equipt
         currentMaximumAttackRange = enemyManager.inventory.equippedWeapon.attackSet.GetMaximumAttackRange();
@@ -122,7 +127,7 @@ public class EnemyAttackManager : MonoBehaviour
         shouldExecuteAttack = true;
     }
 
-    public void ResetCurrentAttack()
+    private void ResetCurrentAttack()
     {
         //Set the current attack to null after saving it as the previous attack
         previousAttack = currentAttack;
@@ -213,29 +218,15 @@ public class EnemyAttackManager : MonoBehaviour
     #endregion
 
     public bool IsWithinDesiredOffset(float currentDistance)
-    { 
+    {
         //Check if within upper and lower bounds of the offset
-        if (currentDistance > desiredDistance - repositioningOffset && currentDistance < desiredDistance + repositioningOffset)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return currentDistance > desiredDistance - repositioningOffset && currentDistance < desiredDistance + repositioningOffset;
     }
 
     public bool IsWithinBoundaries(float currentDistance)
     {
         //Check if within upper and lower bounds of the available range
-        if (currentDistance >= distanceBoundaries.x && currentDistance <= distanceBoundaries.y)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return currentDistance >= distanceBoundaries.x && currentDistance <= distanceBoundaries.y;
     }
 
     #region Valid Attack Checking
@@ -243,44 +234,23 @@ public class EnemyAttackManager : MonoBehaviour
     public bool IsAttackValid(AttackData givenData)
     {
         //If close enough to attack and is within the viewable angle
-        if (IsWithinAttackRangeData(givenData) && IsWithinAttackViewData(givenData))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return IsWithinAttackRangeData(givenData) && IsWithinAttackViewData(givenData);
     }
 
     //Bool to check if the current attack is valid
     public bool IsCurrentAttackValid()
     {
         //If close enough to attack and is within the viewable angle
-        if (IsWithinAttackRangeData(currentAttack) && IsWithinAttackViewData(currentAttack))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return IsWithinAttackRangeData(currentAttack) && IsWithinAttackViewData(currentAttack);
     }
 
     private bool IsWithinAttackRange(float minimumDistance, float maximumDistance)
     {
         //Calculate the direct distance to the target
-        float distance = Vector3.Distance(enemyManager.currentTarget.transform.position, transform.root.position);
+        var distance = Vector3.Distance(enemyManager.currentTarget.transform.position, transform.root.position);
 
         //If within the minimum and maximum range
-        if (distance >= minimumDistance && distance <= maximumDistance)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return distance >= minimumDistance && distance <= maximumDistance;
     }
 
     private bool IsWithinAttackRangeData(AttackData givenData)
@@ -291,17 +261,10 @@ public class EnemyAttackManager : MonoBehaviour
     private bool IsWithinAttackView(float givenAngle)
     {
         //Calculate the current viewable angle
-        float viewableAngle = Vector3.Angle(enemyManager.currentTarget.transform.position - enemyManager.transform.position, enemyManager.transform.forward);
+        var viewableAngle = Vector3.Angle(enemyManager.currentTarget.transform.position - enemyManager.transform.position, enemyManager.transform.forward);
 
         //Check if calculated angle is within the attacks view angle
-        if (viewableAngle <= givenAngle && viewableAngle >= -givenAngle)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return viewableAngle <= givenAngle && viewableAngle >= -givenAngle;
     }
     private bool IsWithinAttackViewData(AttackData givenData)
     {

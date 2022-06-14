@@ -6,8 +6,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Enemy AI/Attack Data")]
 public class AttackData : ScriptableObject
 {
-    //The assosiated attack animation name
+    //The associated attack animation name
     public string attackAnimation;
+    
+    //The spell set during the attack
+    public SpellItem spellCastWithAttack;
 
     //How favorable the attack is, each unit of weight can be thought of as an extra time this attack might be chosen
     [Range(1,10)] public int attackWeight = 1;
