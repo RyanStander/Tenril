@@ -987,6 +987,7 @@ GameObject:
   - component: {fileID: 5142417251480217489}
   - component: {fileID: 2073787731002804586}
   - component: {fileID: 4225666923137926232}
+  - component: {fileID: 640664723122832063}
   m_Layer: 10
   m_Name: Spearman
   m_TagString: Enemy
@@ -1086,14 +1087,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37c6783681e73f14ab7cec6e2b035b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventory: []
+  inventoryItemTable: {fileID: 11400000, guid: 0114a3dcba2f4a64bbf3cc0c598dde21, type: 2}
   equippedWeapon: {fileID: 0}
   isWieldingPrimaryWeapon: 1
   primaryWeapon: {fileID: 0}
   secondaryWeapon: {fileID: 0}
   equippedAmmo: {fileID: 0}
-  inventory: []
+  equippedPickaxe: {fileID: 0}
+  equippedAxe: {fileID: 0}
   consumableItemInUse: {fileID: 0}
-  inventoryItemTable: {fileID: 11400000, guid: 0114a3dcba2f4a64bbf3cc0c598dde21, type: 2}
 --- !u!114 &6051805373545155770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1107,13 +1110,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lockOnTransform: {fileID: 2121156118295265066}
-  weaponSlotManager: {fileID: 0}
+  weaponSlotManager: {fileID: 6051805373545155769}
   isParrying: 0
   canBeRiposted: 0
   isBlocking: 0
   riposteCollider: {fileID: 8980928896605754821}
   pendingFinisherDamage: 0
   finisherAttackRayCastStartPointTransform: {fileID: 1142345804726472260}
+  enemyStats: {fileID: 318429251}
+  navAgent: {fileID: 318429253}
+  rigidBody: {fileID: 6051805373545155768}
+  animatorManager: {fileID: 6011857014310157830}
+  stateMachine: {fileID: -5642952564883507446}
+  inventory: {fileID: 6051805373545155771}
+  movementManager: {fileID: 728663015}
+  visionManager: {fileID: 2768618875340935539}
+  statusManager: {fileID: 728663019}
+  consumableManager: {fileID: 2073787731002804586}
+  attackManager: {fileID: 4225666923137926232}
+  spellcastingManager: {fileID: 640664723122832063}
   characterCollider: {fileID: 6051805373545155775}
   characterCollisionBlocker: {fileID: 3798668902406781062}
   currentTarget: {fileID: 0}
@@ -1137,6 +1152,8 @@ MonoBehaviour:
   backSlot: {fileID: 0}
   leftHandDamageCollider: {fileID: 0}
   rightHandDamageCollider: {fileID: 0}
+  leftDisplayObject: {fileID: 0}
+  rightDisplayObject: {fileID: 0}
 --- !u!114 &-5642952564883507446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1338,6 +1355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterSoundEffectSet: {fileID: 11400000, guid: 1b622b321f90ea74f8dc98acd9af458a, type: 2}
+  toolsSoundEffectSet: {fileID: 0}
 --- !u!114 &2073787731002804586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1362,6 +1380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad541a677618fe442a1cb6fffe4630ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyManager: {fileID: 6051805373545155770}
   timeoutTime: 2
   hasTimedOut: 1
   shouldExecuteAttack: 0
@@ -1374,6 +1393,19 @@ MonoBehaviour:
   currentAlertnessRange: 0
   currentChasingRange: 0
   alertChaseChangeRate: 1
+--- !u!114 &640664723122832063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6051805372053708825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e7f2a16e7a799a498b0682d22ee67aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellBeingCast: {fileID: 0}
 --- !u!1 &6051805372053708827
 GameObject:
   m_ObjectHideFlags: 0

@@ -117,6 +117,9 @@ public class AttackState : AbstractStateFSM
 
             //Stop locomotion velocity incase any is happening
             movementManager.StopMovementImmediate();
+            
+            //Set the spell to cast along if it exists
+            enemyManager.spellcastingManager.spellBeingCast = givenAttack.spellCastWithAttack;
 
             //Play the target animation of the attack
             animatorManager.PlayTargetAnimation(givenAttack.attackAnimation, true);
@@ -138,31 +141,16 @@ public class AttackState : AbstractStateFSM
         AttackData potentialAttack;
 
         //Temporary helper bool
-        bool isHeavyAttack = Random.Range(0f, 1) < enemyManager.enemyStats.heavyAttackLikeliness;
+        var isHeavyAttack = Random.Range(0f, 1) < enemyManager.enemyStats.heavyAttackLikeliness;
 
         //Decide on if attempting a strong or weak attack
         //If less than or equal the heavy likeliness, then get a heavy attack
-        if (isHeavyAttack)
-        {
-            //Try and get a heavy attack
-            potentialAttack = GetHeavyAttack();
-        }
-        else
-        {
-            potentialAttack = GetLightAttack();
-        }
+        potentialAttack = isHeavyAttack ? GetHeavyAttack() : GetLightAttack();
 
-        //If attack is still unsuccesfull, get a random one to reposition to
+        //If attack is still unsuccessful, get a random one to reposition to
         if(potentialAttack == null)
         {
-            if(isHeavyAttack)
-            {
-                potentialAttack = GetRandomHeavyAttack();
-            }
-            else
-            {
-                potentialAttack = GetRandomLightAttack();
-            }
+            potentialAttack = isHeavyAttack ? GetRandomHeavyAttack() : GetRandomLightAttack();
 
             //Track the attack
             enemyManager.attackManager.TrackAttackData(potentialAttack);
@@ -200,10 +188,10 @@ public class AttackState : AbstractStateFSM
     private AttackData GetWeighedAttackFromList(List<AttackData> attackList)
     {
         //List of possible attacks based on range and angle
-        List<AttackData> validAttacks = new List<AttackData>();
+        var validAttacks = new List<AttackData>();
 
         //Iterate over each attack and check if it is possible
-        foreach (AttackData data in attackList)
+        foreach (var data in attackList)
         {
             //If the attack is possible based on angle and distance
             if (enemyManager.attackManager.IsAttackValid(data))
@@ -214,48 +202,34 @@ public class AttackState : AbstractStateFSM
         }
 
         //Get a random attack from this list of valid attacks based on likelihood
-        AttackData randomAttack = GetWeighedRandomAttackFromList(validAttacks);
+        var randomAttack = GetWeighedRandomAttackFromList(validAttacks);
 
         //If the attack is not null
-        if (randomAttack == null)
-        {
-            //Return the gotten random attack
-            return randomAttack;
-        }
-        else
-        {
-            //Return null if no valid attacks are found
-            return null;
-        }
+        return randomAttack == null ? randomAttack : null;
     }
 
     private AttackData GetWeighedRandomAttackFromList(List<AttackData> attackList)
     {
+        //Return null if no valid attacks are found
+        if (attackList.Count <= 0) return null;
+        
         //If the list of valid attacks has at least one attack, get based on weights
-        if (attackList.Count > 0)
-        {
-            //Temporary list to hold each attack weighed
-            List<AttackData> weighedAttacks = new List<AttackData>();
+        //Temporary list to hold each attack weighed
+        var weighedAttacks = new List<AttackData>();
 
-            //Add each attack to the weighed attack
-            foreach (AttackData data in attackList)
+        //Add each attack to the weighed attack
+        foreach (var data in attackList)
+        {
+            //Add the attack a number of times equal to its weight
+            for (var i = 0; i < data.attackWeight; i++)
             {
-                //Add the attack a number of times equal to its weight
-                for (int i = 0; i < data.attackWeight; i++)
-                {
-                    //Add to the list
-                    weighedAttacks.Add(data);
-                }
+                //Add to the list
+                weighedAttacks.Add(data);
             }
+        }
 
-            //Return a random attack from this weighed list
-            return weighedAttacks[Random.Range(0, weighedAttacks.Count)];
-        }
-        else
-        {
-            //Return null if no valid attacks are found
-            return null;
-        }
+        //Return a random attack from this weighed list
+        return weighedAttacks[Random.Range(0, weighedAttacks.Count)];
     }
     #endregion
 }
