@@ -256,57 +256,7 @@ MonoBehaviour:
   - {fileID: 1470254355140725328}
   - {fileID: 5811333728022810033}
   - {fileID: 8208532313097354393}
-  - {fileID: 697430831614937178}
   - {fileID: 3983482683560220479}
---- !u!114 &697430831614937178
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ddcec8a8eb2d684d833ac8f5d26aebd, type: 3}
-  m_Name: HDShadowSettings
-  m_EditorClassIdentifier: 
-  active: 1
-  m_AdvancedMode: 0
-  maxShadowDistance:
-    m_OverrideState: 1
-    m_Value: 500
-    min: 0
-  directionalTransmissionMultiplier:
-    m_OverrideState: 0
-    m_Value: 1
-    min: 0
-    max: 1
-  cascadeShadowSplitCount:
-    m_OverrideState: 0
-    m_Value: 4
-    min: 1
-    max: 4
-  cascadeShadowSplit0:
-    m_OverrideState: 0
-    m_Value: 0.05
-  cascadeShadowSplit1:
-    m_OverrideState: 0
-    m_Value: 0.15
-  cascadeShadowSplit2:
-    m_OverrideState: 0
-    m_Value: 0.3
-  cascadeShadowBorder0:
-    m_OverrideState: 0
-    m_Value: 0
-  cascadeShadowBorder1:
-    m_OverrideState: 0
-    m_Value: 0
-  cascadeShadowBorder2:
-    m_OverrideState: 0
-    m_Value: 0
-  cascadeShadowBorder3:
-    m_OverrideState: 0
-    m_Value: 0
 --- !u!114 &1470254355140725328
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -480,7 +430,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   quality:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
   focusMode:
     m_OverrideState: 1
     m_Value: 2
@@ -506,22 +456,22 @@ MonoBehaviour:
     min: 0
   m_NearSampleCount:
     m_OverrideState: 1
-    m_Value: 8
+    m_Value: 5
     min: 3
     max: 8
   m_NearMaxBlur:
     m_OverrideState: 1
-    m_Value: 7
+    m_Value: 4
     min: 0
     max: 8
   m_FarSampleCount:
     m_OverrideState: 1
-    m_Value: 14
+    m_Value: 7
     min: 3
     max: 16
   m_FarMaxBlur:
     m_OverrideState: 1
-    m_Value: 13
+    m_Value: 8
     min: 0
     max: 16
   m_HighQualityFiltering:
@@ -529,7 +479,7 @@ MonoBehaviour:
     m_Value: 1
   m_Resolution:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
   m_PhysicallyBased:
     m_OverrideState: 1
     m_Value: 0
@@ -789,7 +739,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   quality:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
   threshold:
     m_OverrideState: 0
     m_Value: 0
@@ -825,7 +775,7 @@ MonoBehaviour:
     m_Value: 2
   m_HighQualityPrefiltering:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   m_HighQualityFiltering:
     m_OverrideState: 1
     m_Value: 1
