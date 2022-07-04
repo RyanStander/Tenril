@@ -10,7 +10,10 @@ namespace SoundManagement
 
         public void SetVolume(float value)
         {
-            audioMixer.SetFloat(mixerName.ToString(), Mathf.Log10(value)*20);
+            var volumeLevel = Mathf.Log10(value) * 20;
+
+            audioMixer.SetFloat(mixerName.ToString(), volumeLevel);
+            PlayerPrefs.SetFloat(mixerName.ToString(),volumeLevel);
         }
     }
 }
