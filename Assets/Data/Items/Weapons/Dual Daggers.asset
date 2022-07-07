@@ -25,19 +25,20 @@ MonoBehaviour:
   primarySheathPrefab: {fileID: 4260048596949537076, guid: b0164b51db8a64c4ca2892612fccbb85, type: 3}
   secondarySheathPrefab: {fileID: 0}
   weaponController: {fileID: 22100000, guid: da5b0e32b09e53d4cafc544fcddb8e32, type: 2}
+  weaponSoundEffects: {fileID: 0}
   baseDamage: 25
   weakAttackDamageMultiplier: 1
-  strongAttackDamageMultiplier: 2
+  strongAttackDamageMultiplier: 1.5
   finisherDamageMultiplier: 4
   physicalDamageBlockPercentage: 15
-  idleAnimation: LongswordIdle
+  equipAnimation: WeaponEquip
   attackSet: {fileID: 0}
   weakAttacks: []
   strongAttacks: []
   parry: Parry
   baseStaminaCost: 5
   weakAttackCostMultiplier: 1
-  strongAttackCostMultiplier: 2
+  strongAttackCostMultiplier: 1.2
   weaponType: 4
   weaponSlotWhenNotWielded: 4
   canParry: 1

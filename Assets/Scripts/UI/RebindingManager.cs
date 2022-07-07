@@ -1,17 +1,22 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class RebindingManager : MonoBehaviour
 {
     //Input handler from the player
-    [HideInInspector]public InputHandler inputHandler;
+    public InputHandler inputHandler;
     [Tooltip("The prefab for the key rebind")]
     [SerializeField] private GameObject keyRebindPrefab;
     [SerializeField] private GameObject rebindContentObject;
 
-    private void OnEnable()
+    private void OnValidate()
     {
         inputHandler = FindObjectOfType<InputHandler>();
+    }
+
+    private void OnEnable()
+    {
         CreateKeybindingDisplay();
     }
 

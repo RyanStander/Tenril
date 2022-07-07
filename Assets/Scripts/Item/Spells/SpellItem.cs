@@ -47,8 +47,8 @@ public class SpellItem : Item
         switch (spellType)
         {
             case SpellType.biomancy:
-                //characterStats.ConsumeStoredMoonlight(spellCost);
-                //characterStats.PutMoonlightRegenOnCooldown();
+                characterStats.ConsumeStoredMoonlight(spellCost);
+                characterStats.PutMoonlightRegenOnCooldown();
                 break;
             case SpellType.pyromancy:
                 characterStats.ConsumeStoredSunlight(spellCost);
