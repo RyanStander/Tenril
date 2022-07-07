@@ -66,6 +66,11 @@ public class DialogueManager : MonoBehaviour
         PlayAudio();
         PlayAnimation();
 
+        if (currentSetDialogueData.dialogueExtras.Length>=currentDialogueIndex)
+        {
+            currentNPCName = currentSetDialogueData.dialogueExtras[currentDialogueIndex].name;
+        }
+
         currentDialogueIndex++;
 
         EventManager.currentManager.AddEvent(new SendDialogueSentence(currentNPCName, sentence));
@@ -76,16 +81,23 @@ public class DialogueManager : MonoBehaviour
         if (currentSetDialogueData.dialogueExtras.Length <= 0 ||
             currentSetDialogueData.dialogueExtras[0].audioClipsToPlay.Length <= 0) return;
 
-        //get the audio clip to play
-        var clip = currentSetDialogueData.dialogueExtras[0]
-            .audioClipsToPlay[currentDialogueIndex];
+        if (currentSetNpcAudioSources.Length<=0)return;
 
-        //make sure it isn't null
-        if (clip == null) return;
+        for (var index = 0; index < currentSetNpcAudioSources.Length; index++)
+        {
+            var currentNpcAudioSource = currentSetNpcAudioSources[index];
+            
+            //get the audio clip to play
+            var clip = currentSetDialogueData.dialogueExtras[currentDialogueIndex]
+                .audioClipsToPlay[index];
 
-        //add clip and play it
-        currentSetNpcAudioSources[0].clip = clip;
-        currentSetNpcAudioSources[0].Play();
+            //make sure it isn't null
+            if (clip == null) continue;
+
+            //add clip and play it
+            currentNpcAudioSource.clip = clip;
+            currentNpcAudioSource.Play();
+        }
     }
 
     private void PlayAnimation()
@@ -93,15 +105,24 @@ public class DialogueManager : MonoBehaviour
         if (currentSetDialogueData.dialogueExtras.Length <= 0 ||
             currentSetDialogueData.dialogueExtras[0].animationsToPlay.Length <= 0) return;
 
-        //get the audio clip to play
-        var anim = currentSetDialogueData.dialogueExtras[0]
-            .animationsToPlay[currentDialogueIndex];
+        if (currentSetNpcAnimators.Length<=0)return;
 
-        //make sure it isn't null
-        if (anim == "") return;
+        for (var index = 0; index < currentSetNpcAnimators.Length; index++)
+        {
+            var currentSetNpcAnimator = currentSetNpcAnimators[index];
+            
+            //get the animation clip to play
+            var anim = currentSetDialogueData.dialogueExtras[currentDialogueIndex]
+                .animationsToPlay[index];
 
-        //play animation
-        currentSetNpcAnimators[0].CrossFade(anim, 0.2f);
+            //make sure it isn't null
+            if (anim == "") continue;
+
+            //play animation
+            currentSetNpcAnimator.CrossFade(anim, 0.2f);
+        }
+
+        
     }
 
     private void ShowOptions()
