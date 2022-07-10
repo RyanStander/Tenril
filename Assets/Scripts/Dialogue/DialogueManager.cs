@@ -66,7 +66,7 @@ public class DialogueManager : MonoBehaviour
         PlayAudio();
         PlayAnimation();
 
-        if (currentSetDialogueData.dialogueExtras.Length>=currentDialogueIndex)
+        if (currentSetDialogueData.dialogueExtras!=null && currentSetDialogueData.dialogueExtras.Length>=currentDialogueIndex)
         {
             currentNPCName = currentSetDialogueData.dialogueExtras[currentDialogueIndex].name;
         }
@@ -78,7 +78,7 @@ public class DialogueManager : MonoBehaviour
 
     private void PlayAudio()
     {
-        if (currentSetDialogueData.dialogueExtras.Length <= 0 ||
+        if (currentSetDialogueData.dialogueExtras==null||currentSetDialogueData.dialogueExtras.Length <= 0 ||
             currentSetDialogueData.dialogueExtras[0].audioClipsToPlay.Length <= 0) return;
 
         if (currentSetNpcAudioSources.Length<=0)return;
