@@ -10,21 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67377442f5b105043bea627931e6b941, type: 3}
-  m_Name: CortexIntro
+  m_Name: CortexThreaten
   m_EditorClassIdentifier: 
   npcName: Cortex & Crash
   stringKeys:
-  - CortexAdmits
-  - CrashWoah
-  - CortexFurry
-  - CrashWoahOld
-  - CortexLoved
-  - CrashWoahWoahWoah
-  - CortexHappy
-  options:
-  - What the fuck?
-  nextDialogue:
-  - {fileID: 0}
+  - CortexThreaten
+  - CrashAttack
+  options: []
+  nextDialogue: []
   dialogueExtras:
   - name: Cortex
     animationsToPlay:
@@ -32,46 +25,11 @@ MonoBehaviour:
     - Gesture1
     audioClipsToPlay:
     - {fileID: 0}
-    - {fileID: 8300000, guid: b91f82eafad41d545b4a8b52aabd28e5, type: 3}
-  - name: Crash
+    - {fileID: 8300000, guid: d79407fe4b09f3e4d89c6f5cd171c0c8, type: 3}
+  - name: Demon Crash
     animationsToPlay:
     - Gesture1
     - 
     audioClipsToPlay:
-    - {fileID: 8300000, guid: fa4392d3b9e5ccc4498e4b7894455801, type: 3}
+    - {fileID: 8300000, guid: 062986230864ac949ba194fbb1c38e45, type: 3}
     - {fileID: 0}
-  - name: Cortex
-    animationsToPlay:
-    - 
-    - Gesture1
-    audioClipsToPlay:
-    - {fileID: 0}
-    - {fileID: 8300000, guid: cf385545bc393444b879c82828e874d3, type: 3}
-  - name: Crash
-    animationsToPlay:
-    - Gesture1
-    - 
-    audioClipsToPlay:
-    - {fileID: 8300000, guid: 74398f9bc8f2a224bb2e087494f2ffb7, type: 3}
-    - {fileID: 0}
-  - name: Cortex
-    animationsToPlay:
-    - 
-    - Gesture1
-    audioClipsToPlay:
-    - {fileID: 0}
-    - {fileID: 8300000, guid: 5d4132271ac02344b80882c6dcdc75e0, type: 3}
-  - name: Crash
-    animationsToPlay:
-    - Gesture1
-    - 
-    audioClipsToPlay:
-    - {fileID: 8300000, guid: 6dd93082998b865459663001598b885e, type: 3}
-    - {fileID: 0}
-  - name: Cortex
-    animationsToPlay:
-    - 
-    - Gesture1
-    audioClipsToPlay:
-    - {fileID: 0}
-    - {fileID: 8300000, guid: a863a370d6e851b4ab26011beb4446d0, type: 3}
