@@ -46,6 +46,7 @@ public class PlayerManager : CharacterManager
     private float timeTillRestart = 3, restartTimeStamp;
     private bool enteredSpellcastingMode = true;
     private PlayerState playerState = PlayerState.Default;
+    private bool deathSceneLoading;
     
     #endregion
 
@@ -224,8 +225,12 @@ public class PlayerManager : CharacterManager
                 if (restartTimeStamp == 0)
                     restartTimeStamp = Time.time + timeTillRestart;
 
-                if (restartTimeStamp <= Time.time)
+                if (restartTimeStamp <= Time.time && !deathSceneLoading)
+                {
+                    deathSceneLoading = true;
                     EventManager.currentManager.AddEvent(new LoadData());
+                }
+
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
