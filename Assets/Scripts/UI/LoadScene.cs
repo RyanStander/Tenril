@@ -5,81 +5,87 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 //loads a scene as well as also displays a loading bar
-public class LoadScene : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private GameObject loadingScreen;
-    [SerializeField] private Slider slider;
-    
-    private void OnValidate()
+    public class LoadScene : MonoBehaviour
     {
-        if (loadingScreen==null)
+        [SerializeField] private GameObject loadingScreen;
+        [SerializeField] private Slider slider;
+    
+#if (UNITY_EDITOR) 
+        private void OnValidate()
         {
-            //Get all objects
-            foreach (var go in (GameObject[]) Resources.FindObjectsOfTypeAll(typeof(GameObject)))
+            if (loadingScreen==null)
             {
-                //if it is enabled, skip
-                if (go.hideFlags != HideFlags.None)
-                    continue;
+                //Get all objects
+                foreach (var go in (GameObject[]) Resources.FindObjectsOfTypeAll(typeof(GameObject)))
+                {
+                    //if it is enabled, skip
+                    if (go.hideFlags != HideFlags.None)
+                        continue;
+                    
+                    //YES, THIS GIVES A WARNING, I CANNOT HIDE IT
+                    //if it is a prefab, go to next check
+                    if (PrefabUtility.GetPrefabAssetType(go)!=PrefabAssetType.NotAPrefab||
+                        PrefabUtility.GetPrefabInstanceStatus(go)!=PrefabInstanceStatus.NotAPrefab)
+                        continue;
+              
+                    //if its name is not loading screen, skip
+                    if (go.name != "LoadingScreen")
+                        continue;
                 
-                //if it is a prefab or model prefab, skip
-                if (PrefabUtility.GetPrefabType(go) == PrefabType.Prefab ||
-                    PrefabUtility.GetPrefabType(go) == PrefabType.ModelPrefab)
-                    continue;
- 
-                //if its name is not loading screen, skip
-                if (go.name != "LoadingScreen")
-                    continue;
-                
-                //set the first result to the loading screen and exit
-                loadingScreen = go;
-                break;
+                    //set the first result to the loading screen and exit
+                    loadingScreen = go;
+                    break;
+                }
+            }
+
+            if (loadingScreen!=null && slider == null)
+            {
+                slider = loadingScreen.GetComponentInChildren<Slider>();
             }
         }
-
-        if (loadingScreen!=null && slider == null)
+#endif
+        public void LoadGivenScene(string givenSceneName)
         {
-            slider = loadingScreen.GetComponentInChildren<Slider>();
+            StartCoroutine(LoadAsynchronously(givenSceneName));
         }
-    }
-    public void LoadGivenScene(string givenSceneName)
-    {
-        StartCoroutine(LoadAsynchronously(givenSceneName));
-    }
 
-    public void LoadGivenScene(int index)
-    {
-        StartCoroutine(LoadAsynchronously(index));
-    }
+        public void LoadGivenScene(int index)
+        {
+            StartCoroutine(LoadAsynchronously(index));
+        }
 
-    private IEnumerator LoadAsynchronously(string givenSceneName)
-    {
-        var operation = SceneManager.LoadSceneAsync(givenSceneName);
+        private IEnumerator LoadAsynchronously(string givenSceneName)
+        {
+            var operation = SceneManager.LoadSceneAsync(givenSceneName);
 
-        loadingScreen.SetActive(true);
+            loadingScreen.SetActive(true);
         
-        while (!operation.isDone)
-        {
-            var progress = Mathf.Clamp01(operation.progress / .9f);
+            while (!operation.isDone)
+            {
+                var progress = Mathf.Clamp01(operation.progress / .9f);
 
-            slider.value = progress;
+                slider.value = progress;
             
-            yield return null;
+                yield return null;
+            }
         }
-    }
     
-    private IEnumerator LoadAsynchronously(int givenSceneIndex)
-    {
-        var operation = SceneManager.LoadSceneAsync(givenSceneIndex);
-
-        loadingScreen.SetActive(true);
-        
-        while (!operation.isDone)
+        private IEnumerator LoadAsynchronously(int givenSceneIndex)
         {
-            var progress = Mathf.Clamp01(operation.progress / .9f);
+            var operation = SceneManager.LoadSceneAsync(givenSceneIndex);
 
-            slider.value = progress;
+            loadingScreen.SetActive(true);
+        
+            while (!operation.isDone)
+            {
+                var progress = Mathf.Clamp01(operation.progress / .9f);
+
+                slider.value = progress;
             
-            yield return null;
+                yield return null;
+            }
         }
     }
 }
