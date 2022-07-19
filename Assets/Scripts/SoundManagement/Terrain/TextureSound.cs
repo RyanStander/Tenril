@@ -11,7 +11,7 @@ public class TextureSound : ScriptableObject
     /// <summary>
     /// The texture of the class.
     /// </summary>
-    public Texture albedo;
+    public Texture[] albedos;
 
     /// <summary>
     /// The sound clips assosiated with the class.

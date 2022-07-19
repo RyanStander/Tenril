@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// Manager that handles footsteps belonging to different types of ground textures.
 /// </summary>
-public class FootstepTerrainSoundManager : MonoBehaviour
+public class FootstepTextureSoundManager : MonoBehaviour
 {
     /// <summary>
     /// The layer related to ground detection.
@@ -110,7 +110,7 @@ public class FootstepTerrainSoundManager : MonoBehaviour
 
             foreach (TextureSound textureSound in TextureSounds)
             {
-                if (textureSound.albedo == Terrain.terrainData.terrainLayers[primaryIndex].diffuseTexture)
+                if (textureSound.albedos.Contains(Terrain.terrainData.terrainLayers[primaryIndex].diffuseTexture))
                 {
                     AudioClip clip = textureSound.GetRandomClip();
                     AudioSource.PlayOneShot(clip);
@@ -129,7 +129,7 @@ public class FootstepTerrainSoundManager : MonoBehaviour
                 {
                     foreach (TextureSound textureSound in TextureSounds)
                     {
-                        if (textureSound.albedo == Terrain.terrainData.terrainLayers[i].diffuseTexture)
+                        if (textureSound.albedos.Contains(Terrain.terrainData.terrainLayers[i].diffuseTexture))
                         {
                             AudioClip clip = textureSound.GetRandomClip();
                             AudioSource.PlayOneShot(clip, alphaMap[0, 0, i]);
@@ -153,11 +153,14 @@ public class FootstepTerrainSoundManager : MonoBehaviour
     /// <returns>On the completion of the audio clip.</returns>
     private IEnumerator PlayFootstepSoundFromRenderer(Renderer Renderer)
     {
+        // Locally save the active texture on the renderer.
+        Texture renderTexture = Renderer.material.GetTexture("_MainTex");
+
         // Iterate over all of the texture sounds.
         foreach (TextureSound textureSound in TextureSounds)
         {
             // Check if one of the albedos match the renderers texture.
-            if (textureSound.albedo == Renderer.material.GetTexture("_MainTex"))
+            if (textureSound.albedos.Contains(renderTexture))
             {
                 // Get the audio clip.
                 AudioClip clip = textureSound.GetRandomClip();
