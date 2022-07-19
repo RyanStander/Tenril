@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8793136958636448203}
   - component: {fileID: 8793136958636448201}
   - component: {fileID: 1953702165992948981}
+  - component: {fileID: 4891916894673747857}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -46,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45d1af5662d7f17468b6563d35ee90a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadScene: {fileID: 4891916894673747857}
 --- !u!114 &8793136958636448203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,7 +64,7 @@ MonoBehaviour:
   preset: {fileID: 11400000, guid: 941042f78da32674cb7dd5f2b1e17cb7, type: 2}
   dayNightSpeed: 0.001
   sunAngle: -170
-  timeOfDay: 8
+  timeOfDay: 13.42
   timeCurve:
     serializedVersion: 2
     m_Curve:
@@ -120,3 +122,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28573bbe9f1cb5a46a48f5ef31d5d198, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4891916894673747857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8793136958636448202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbdfaba37a72132418803e6a53aee387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadingScreen: {fileID: 0}
+  slider: {fileID: 0}

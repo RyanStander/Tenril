@@ -1,8 +1,17 @@
+using System;
+using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private LoadScene loadScene;
+
+    private void OnValidate()
+    {
+        loadScene = FindObjectOfType<LoadScene>();
+    }
+
     private void OnEnable()
     {
         EventManager.currentManager.Subscribe(EventType.SaveData, OnSaveData);
@@ -17,9 +26,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-
         //Get the game data
-        PlayerData playerData = SaveManager.LoadPlayer();
+        var playerData = SaveManager.LoadPlayer();
 
         //Check if the scene matches the existing one
         if (SceneManager.GetActiveScene().name ==playerData.currentScene)
@@ -74,13 +82,13 @@ public class GameManager : MonoBehaviour
         if (eventData is LoadData)
         {
             //fetch player data
-            PlayerData playerData = SaveManager.LoadPlayer();
+            var playerData = SaveManager.LoadPlayer();
 
             //load scene
             if (playerData == null)
-                SceneManager.LoadScene(0);
+                loadScene.LoadGivenScene(0);
             else
-                SceneManager.LoadScene(playerData.currentScene);
+                loadScene.LoadGivenScene(playerData.currentScene);
         }
         else
         {
