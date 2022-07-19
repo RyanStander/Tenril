@@ -38,6 +38,16 @@ namespace UI
 
         private void FixedUpdate()
         {
+            HandleLoadingScreenDisplays();
+        }
+
+        private void HandleLoadingScreenDisplays()
+        {
+            if (loadingScreenDisplayDatas.Count<1)
+            {
+                return;
+            }
+            
             //check if it is time to start changing tips
             if (timeStamp - swapTime / 2 < Time.time && !startedSwapping)
             {
@@ -46,19 +56,19 @@ namespace UI
                 StartCoroutine(FadeOutLoadingScreens());
             }
 
-            if (timeStamp < Time.time && !startedSwapping)
+            if (timeStamp < Time.time && startedSwapping)
             {
-                if (loadingScreenDisplayDatas.Count<1)
-                {
-                    return;
-                }
+
+                var index = Random.Range(0, loadingScreenDisplayDatas.Count);
+            
+                currentLoadingScreenDisplayData = loadingScreenDisplayDatas[index];
                 
-                currentLoadingScreenDisplayData =
-                    loadingScreenDisplayDatas[Random.Range(0, loadingScreenDisplayDatas.Count)];
                 loadingScreenImage.sprite = currentLoadingScreenDisplayData.displayImage;
                 loadingScreenInfoText.text = currentLoadingScreenDisplayData.displayText;
                 timeStamp = Time.time + currentLoadingScreenDisplayData.displayTime;
 
+                loadingScreenDisplayDatas.Remove(currentLoadingScreenDisplayData);
+                
                 startedSwapping = false;
                 endingSwapping = true;
 
@@ -70,7 +80,7 @@ namespace UI
         {
             while (startedSwapping)
             {
-                var alphaValue = 225 * ((timeStamp - Time.time) / (swapTime / 2));
+                var alphaValue = 1 * ((timeStamp - Time.time) / (swapTime / 2));
                 //fade away
                 //image fade
                 var imgColor = loadingScreenImage.color;
@@ -90,7 +100,7 @@ namespace UI
             while (endingSwapping)
             {
                 var alphaValue =
-                    225 * (1 - ((timeStamp - Time.time - (currentLoadingScreenDisplayData.displayTime - swapTime / 2)) /
+                    1 * (1 - ((timeStamp - Time.time - (currentLoadingScreenDisplayData.displayTime - swapTime / 2)) /
                                 (swapTime / 2)));
                 //fade in
                 //image fade
