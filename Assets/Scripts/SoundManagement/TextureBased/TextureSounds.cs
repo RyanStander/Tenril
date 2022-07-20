@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 [CreateAssetMenu(menuName = "Sounds/TextureSound")]
 [Serializable]
-public class TextureSound : ScriptableObject
+public class TextureSounds : ScriptableObject
 {
     /// <summary>
     /// The texture of the class.
@@ -25,16 +25,16 @@ public class TextureSound : ScriptableObject
     private AudioClip previouslyPlayedClip;
 
     /// <summary>
-    /// Gets a random audio clip from the texture sound.
-    /// </summary>
-    /// <returns>A random audio clip.</returns>
-    public AudioClip GetRandomClip() => audioClips[UnityEngine.Random.Range(0, audioClips.Length)];
-
-    /// <summary>
     /// The volume level of the audio collection.
     /// </summary>
     [Range(0, 1)]
     public float audioVolume = 1;
+
+    /// <summary>
+    /// Gets a random audio clip from the texture sound.
+    /// </summary>
+    /// <returns>A random audio clip.</returns>
+    public AudioClip GetRandomClip() => audioClips[UnityEngine.Random.Range(0, audioClips.Length)];
 
     /// <summary>
     /// Gets a random audio clip from the texture sound.
