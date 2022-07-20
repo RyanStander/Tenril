@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using WeaponManagement;
 
 /// <summary>
 /// Serves as the uppermost connecting point of all managers and their controlled components
@@ -168,7 +169,7 @@ public class EnemyAgentManager : CharacterManager
         if (weaponSlotManager == null)
             weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         if (movementManager == null)
-            movementManager = GetComponentInChildren<EnemyMovementManager>();
+            movementManager = GetComponent<EnemyMovementManager>();
         if (visionManager == null)
             visionManager = GetComponentInChildren<EnemyVisionManager>();
         if (statusManager == null)

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using WeaponManagement;
 
 /// <summary>
 /// Similar to the character inventory, but specialized to function with combatative AI

@@ -1,30 +1,43 @@
+using System;
+using Player;
 using UnityEngine;
+using WeaponManagement;
 
 public class PlayerCombatManager : MonoBehaviour
 {
-    private PlayerAnimatorManager playerAnimatorManager;
-    private PlayerManager playerManager;
-    private PlayerInventory playerInventory;
-    private InputHandler inputHandler;
-    private PlayerStats playerStats;
-    private WeaponSlotManager weaponSlotManager;
+    [SerializeField] private PlayerAnimatorManager playerAnimatorManager;
+    [SerializeField] private PlayerManager playerManager;
+    [SerializeField] private PlayerInventory playerInventory;
+    [SerializeField] private InputHandler inputHandler;
+    [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private WeaponSlotManager weaponSlotManager;
+    [SerializeField] private PlayerEffectsManager playerEffectsManager;
 
     [SerializeField] private LayerMask riposteLayer;
 
     private bool startedLoadingBow;
     public string lastAttack;
-    private void Awake()
-    {
-        playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
 
-        inputHandler = GetComponent<InputHandler>();
-        playerStats = GetComponent<PlayerStats>();
-        playerManager = GetComponent<PlayerManager>();
-        playerInventory = GetComponent<PlayerInventory>();
-        weaponSlotManager = GetComponent<WeaponSlotManager>();
+    private void OnValidate()
+    {
+        if (playerAnimatorManager == null)
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+        if (inputHandler == null)
+            inputHandler = GetComponent<InputHandler>();
+        if (playerStats == null)
+            playerStats = GetComponent<PlayerStats>();
+        if (playerManager == null)
+            playerManager = GetComponent<PlayerManager>();
+        if (playerInventory == null)
+            playerInventory = GetComponent<PlayerInventory>();
+        if (weaponSlotManager == null)
+            weaponSlotManager = GetComponent<WeaponSlotManager>();
+        if (playerEffectsManager == null)
+            playerEffectsManager = GetComponent<PlayerEffectsManager>();
     }
 
     #region Attacking
+
     internal void HandleAttacks()
     {
         //Player performing weak attack
@@ -63,6 +76,7 @@ public class PlayerCombatManager : MonoBehaviour
             playerAnimatorManager.animator.SetBool("canDoCombo", false);
 
             #region Attacks
+
             //checks whether its a weak or strong attack
             if (isWeakAttack)
             {
@@ -79,7 +93,8 @@ public class PlayerCombatManager : MonoBehaviour
                             //Update the last attack
                             lastAttack = weapon.weakAttacks[i + 1];
                             //Sets the damage colliders the weapons damage
-                            playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.weakAttackDamageMultiplier);
+                            playerManager.SetDamageColliderDamage(
+                                weapon.baseDamage * weapon.weakAttackDamageMultiplier);
                             //Play the following animation
                             playerAnimatorManager.PlayTargetAnimation(lastAttack, true);
                             break;
@@ -89,8 +104,6 @@ public class PlayerCombatManager : MonoBehaviour
             }
             else
             {
-
-
                 for (int i = 0; i < weapon.strongAttacks.Count - 1; i++)
                 {
                     if (lastAttack == weapon.strongAttacks[i])
@@ -103,7 +116,8 @@ public class PlayerCombatManager : MonoBehaviour
                             //Update the last attack
                             lastAttack = weapon.strongAttacks[i + 1];
                             //Sets the damage colliders the weapons damage
-                            playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.strongAttackDamageMultiplier);
+                            playerManager.SetDamageColliderDamage(
+                                weapon.baseDamage * weapon.strongAttackDamageMultiplier);
                             //Play the following animation
                             playerAnimatorManager.PlayTargetAnimation(lastAttack, true);
                             break;
@@ -111,6 +125,7 @@ public class PlayerCombatManager : MonoBehaviour
                     }
                 }
             }
+
             #endregion
         }
     }
@@ -135,7 +150,8 @@ public class PlayerCombatManager : MonoBehaviour
                     lastAttack = weapon.weakAttacks[0];
                 }
                 else
-                    Debug.LogWarning("You are trying to attack with the weapon; " + weapon.name + " that does not have any attacks");
+                    Debug.LogWarning("You are trying to attack with the weapon; " + weapon.name +
+                                     " that does not have any attacks");
             }
         }
     }
@@ -162,6 +178,7 @@ public class PlayerCombatManager : MonoBehaviour
     }
 
     #region Input Actions
+
     private void HandleWeakAttackAction()
     {
         if (playerInventory.equippedWeapon == null)
@@ -170,10 +187,10 @@ public class PlayerCombatManager : MonoBehaviour
         switch (playerInventory.equippedWeapon.weaponType)
         {
             case WeaponType.TwoHandedSword:
-                PerformWeakMeleeAction();
+                PerformMeleeAction(true);
                 break;
             case WeaponType.Polearm:
-                PerformWeakMeleeAction();
+                PerformMeleeAction(true);
                 break;
             case WeaponType.Bow:
                 PerformRangedAmmoCheck();
@@ -192,10 +209,10 @@ public class PlayerCombatManager : MonoBehaviour
         switch (playerInventory.equippedWeapon.weaponType)
         {
             case WeaponType.TwoHandedSword:
-                PerformStrongMeleeAction();
+                PerformMeleeAction(false);
                 break;
             case WeaponType.Polearm:
-                PerformStrongMeleeAction();
+                PerformMeleeAction(false);
                 break;
             case WeaponType.Bow:
                 PerformRangedAmmoCheck();
@@ -222,13 +239,13 @@ public class PlayerCombatManager : MonoBehaviour
 
     #region Combat Actions
 
-    private void PerformWeakMeleeAction()
+    private void PerformMeleeAction(bool isWeakAttack)
     {
-        //If current attack can perform a combo, proceed with combo
+        //if player is able to perform a combo, go to following attack
         if (playerManager.canDoCombo)
         {
             inputHandler.comboFlag = true;
-            HandleWeaponCombo(playerInventory.equippedWeapon, true);
+            HandleWeaponCombo(playerInventory.equippedWeapon, isWeakAttack);
             inputHandler.comboFlag = false;
         }
         //else, perform starting attack if possible
@@ -240,30 +257,14 @@ public class PlayerCombatManager : MonoBehaviour
             if (playerManager.canDoCombo)
                 return;
 
-            HandleWeakAttack(playerInventory.equippedWeapon);
+            if (isWeakAttack)
+                HandleWeakAttack(playerInventory.equippedWeapon);
+            else
+                HandleStrongAttack(playerInventory.equippedWeapon);
         }
-    }
 
-    private void PerformStrongMeleeAction()
-    {
-        //if player is able to perform a combo, go to following attack
-        if (playerManager.canDoCombo)
-        {
-            inputHandler.comboFlag = true;
-            HandleWeaponCombo(playerInventory.equippedWeapon, false);
-            inputHandler.comboFlag = false;
-        }
-        //otherwise perform first attack
-        else
-        {
-            if (playerAnimatorManager.animator.GetBool("isInteracting"))
-                return;
-
-            if (playerManager.canDoCombo)
-                return;
-
-            HandleStrongAttack(playerInventory.equippedWeapon);
-        }
+        //Play Fx
+        playerEffectsManager.PlayerWeaponFx();
     }
 
     private void PerformRangedAmmoCheck()
@@ -328,7 +329,6 @@ public class PlayerCombatManager : MonoBehaviour
         }
 
         weaponSlotManager.DisplayObjectInHand(playerInventory.equippedAmmo.loadedItemModel, false, false);
-
     }
 
     private void FireArrow()
@@ -346,12 +346,14 @@ public class PlayerCombatManager : MonoBehaviour
         //Get the bow depending on which hand it is instantiated in
         if (playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
         {
-            arrowInstantiationLocation = weaponSlotManager.rightHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
+            arrowInstantiationLocation =
+                weaponSlotManager.rightHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
             bowAnimator = weaponSlotManager.rightHandSlot.GetComponentInChildren<Animator>();
         }
         else if (playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
         {
-            arrowInstantiationLocation = weaponSlotManager.leftHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
+            arrowInstantiationLocation =
+                weaponSlotManager.leftHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
             bowAnimator = weaponSlotManager.leftHandSlot.GetComponentInChildren<Animator>();
         }
         else
@@ -379,7 +381,8 @@ public class PlayerCombatManager : MonoBehaviour
 
         //Create live arrow at specific location
         //TO DO: possibly check to link the rotation up to the camera facing direction
-        GameObject liveArrow = Instantiate(playerInventory.equippedAmmo.liveAmmoModel, arrowInstantiationLocation.GetTransform().position, arrowInstantiationLocation.GetTransform().rotation);
+        GameObject liveArrow = Instantiate(playerInventory.equippedAmmo.liveAmmoModel,
+            arrowInstantiationLocation.GetTransform().position, arrowInstantiationLocation.GetTransform().rotation);
         //Get rigidbody and rangedprojectiledmgcollider for modifying
         Rigidbody rigidbody = liveArrow.GetComponentInChildren<Rigidbody>();
         AmmunitionDamageCollider damageCollider = liveArrow.GetComponentInChildren<AmmunitionDamageCollider>();
@@ -392,7 +395,8 @@ public class PlayerCombatManager : MonoBehaviour
         }
         else
         {
-            liveArrow.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, playerManager.lockOnTransform.eulerAngles.y, 0);
+            liveArrow.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x,
+                playerManager.lockOnTransform.eulerAngles.y, 0);
         }
 
         //give ammo rigidbody its values
@@ -431,6 +435,7 @@ public class PlayerCombatManager : MonoBehaviour
                     }
                     else
                         return;
+
                     break;
                 case SpellType.pyromancy:
                     if (playerStats.HasEnoughSunlight(spellcasterWeapon.magicAttackCost))
@@ -439,6 +444,7 @@ public class PlayerCombatManager : MonoBehaviour
                     }
                     else
                         return;
+
                     break;
             }
 
@@ -447,11 +453,13 @@ public class PlayerCombatManager : MonoBehaviour
             //Get the spell weapon depending on which hand it is instantiated in
             if (playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
             {
-                spellInstantiationLocation = weaponSlotManager.rightHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
+                spellInstantiationLocation = weaponSlotManager.rightHandSlot
+                    .GetComponentInChildren<ProjectileInstantiationLocation>();
             }
             else if (playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
             {
-                spellInstantiationLocation = weaponSlotManager.leftHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
+                spellInstantiationLocation = weaponSlotManager.leftHandSlot
+                    .GetComponentInChildren<ProjectileInstantiationLocation>();
             }
             else
                 Debug.LogWarning("No projectile prefab was found");
@@ -460,7 +468,8 @@ public class PlayerCombatManager : MonoBehaviour
 
             //Create live arrow at specific location
             //TO DO: possibly check to link the rotation up to the camera facing direction
-            GameObject spellParticle = Instantiate(spellcasterWeapon.attackData.liveProjectileModel, spellInstantiationLocation.GetTransform().position, spellInstantiationLocation.GetTransform().rotation);
+            GameObject spellParticle = Instantiate(spellcasterWeapon.attackData.liveProjectileModel,
+                spellInstantiationLocation.GetTransform().position, spellInstantiationLocation.GetTransform().rotation);
             //Get rigidbody and rangedprojectiledmgcollider for modifying
             Rigidbody rigidbody = spellParticle.GetComponentInChildren<Rigidbody>();
             ProjectileDamageCollider damageCollider = spellParticle.GetComponentInChildren<ProjectileDamageCollider>();
@@ -473,7 +482,8 @@ public class PlayerCombatManager : MonoBehaviour
             }
             else
             {
-                spellParticle.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, playerManager.lockOnTransform.eulerAngles.y, 0);
+                spellParticle.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x,
+                    playerManager.lockOnTransform.eulerAngles.y, 0);
             }
 
             //give ammo rigidbody its values
@@ -517,10 +527,12 @@ public class PlayerCombatManager : MonoBehaviour
                 rotationDirection.y = 0;
                 rotationDirection.Normalize();
                 Quaternion tr = Quaternion.LookRotation(rotationDirection);
-                Quaternion targetRotation = Quaternion.Slerp(playerManager.transform.rotation, tr, 500 * Time.deltaTime);
+                Quaternion targetRotation =
+                    Quaternion.Slerp(playerManager.transform.rotation, tr, 500 * Time.deltaTime);
                 playerManager.transform.rotation = targetRotation;
 
-                float criticalDamage = playerInventory.equippedWeapon.finisherDamageMultiplier * rightWeaponDamageCollider.currentDamage;
+                float criticalDamage = playerInventory.equippedWeapon.finisherDamageMultiplier *
+                                       rightWeaponDamageCollider.currentDamage;
                 enemyCharacterManager.pendingFinisherDamage = criticalDamage;
                 //play animation
                 playerAnimatorManager.PlayTargetAnimation("Riposte", true);
@@ -565,9 +577,6 @@ public class PlayerCombatManager : MonoBehaviour
             default:
                 break;
         }
-
-
-
     }
 
     private void ParryAction()
@@ -638,5 +647,6 @@ public class PlayerCombatManager : MonoBehaviour
             EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
         }
     }
+
     #endregion
 }

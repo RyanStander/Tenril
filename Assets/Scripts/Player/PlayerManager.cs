@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using WeaponManagement;
 
 /// <summary>
 /// Manages other player scripts, most updates happen here.
