@@ -19,5 +19,17 @@ namespace Character
                 leftWeaponFx.PlayWeaponFX();
             }
         }
+
+        public virtual void StopWeaponFx()
+        {
+            if (rightWeaponFx!=null)
+            {
+                rightWeaponFx.StopWeaponFX();
+            }
+            if (leftWeaponFx!=null)
+            {
+                leftWeaponFx.StopWeaponFX();
+            }
+        }
     }
 }

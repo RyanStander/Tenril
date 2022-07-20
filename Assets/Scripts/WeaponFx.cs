@@ -15,4 +15,9 @@ public class WeaponFx : MonoBehaviour
             normalWeaponTrail.Play();
         }
     }
+    
+    public void StopWeaponFX()
+    {
+        normalWeaponTrail.Stop();
+    }
 }
