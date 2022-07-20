@@ -8,15 +8,15 @@ namespace Character
         public WeaponFx rightWeaponFx;
         public WeaponFx leftWeaponFx;
 
-        public virtual void PlayerWeaponFx()
+        public virtual void PlayWeaponFx()
         {
             if (rightWeaponFx!=null)
             {
-                rightWeaponFx.PlayWeaponFX();
+                rightWeaponFx.PlayWeaponFx();
             }
             if (leftWeaponFx!=null)
             {
-                leftWeaponFx.PlayWeaponFX();
+                leftWeaponFx.PlayWeaponFx();
             }
         }
 
@@ -24,11 +24,11 @@ namespace Character
         {
             if (rightWeaponFx!=null)
             {
-                rightWeaponFx.StopWeaponFX();
+                rightWeaponFx.StopWeaponFx();
             }
             if (leftWeaponFx!=null)
             {
-                leftWeaponFx.StopWeaponFX();
+                leftWeaponFx.StopWeaponFx();
             }
         }
     }

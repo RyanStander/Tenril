@@ -262,9 +262,6 @@ public class PlayerCombatManager : MonoBehaviour
             else
                 HandleStrongAttack(playerInventory.equippedWeapon);
         }
-
-        //Play Fx
-        playerEffectsManager.PlayerWeaponFx();
     }
 
     private void PerformRangedAmmoCheck()
