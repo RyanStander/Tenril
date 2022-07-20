@@ -21,6 +21,12 @@ public class FootstepTextureSoundManager : MonoBehaviour
     private bool blendTerrainSounds;
 
     /// <summary>
+    /// If the manager should debug warnings.
+    /// </summary>
+    [SerializeField]
+    private bool debugWarnings = false;
+
+    /// <summary>
     /// Draw a ray to visualize the affected area.
     /// </summary>
     public void Update()
@@ -135,7 +141,7 @@ public class FootstepTextureSoundManager : MonoBehaviour
         }
 
         // If no clips are found, return null after debugging a warning.
-        Debug.LogWarning(string.Concat("No audio clip could be fetched for terrain: ", terrain.name, "\n", "Requester: ", gameObject.name));
+        LogWarning(string.Concat("No audio clip could be fetched for terrain: ", terrain.name, "\n", "Requester: ", gameObject.name));
         return new List<ClipVolumePair>()
         {
             new ClipVolumePair(null, 0)
@@ -165,7 +171,19 @@ public class FootstepTextureSoundManager : MonoBehaviour
         }
 
         // If no clips are found, return null after debugging a warning.
-        Debug.LogWarning(string.Concat("No audio clip could be fetched for texture on ", renderer.name, "\n", "Requester: ", gameObject.name));
+        LogWarning(string.Concat("No audio clip could be fetched for texture on ", renderer.name, "\n", "Requester: ", gameObject.name));
         return new ClipVolumePair(null, 0);
+    }
+
+    /// <summary>
+    /// Log a given string if enabled.
+    /// </summary>
+    /// <param name="givenString">The string to print.</param>
+    private void LogWarning(string givenString)
+    {
+        if(debugWarnings)
+        {
+            Debug.LogWarning(givenString);
+        }
     }
 }
