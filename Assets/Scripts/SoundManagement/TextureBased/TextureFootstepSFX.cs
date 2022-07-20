@@ -25,4 +25,10 @@ public class TextureFootstepSFX : ScriptableObject
     /// </summary>
     [field: SerializeField]
     public TextureSounds[] SprintingSounds { get; private set; }
+
+    /// <summary>
+    /// The sounds that will be used when no common texture is found.
+    /// </summary>
+    [field: SerializeField]
+    public TextureSounds UndefinedFootstepsSounds { get; private set; }
 }

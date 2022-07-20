@@ -54,4 +54,11 @@ public class TextureSounds : ScriptableObject
         previouslyPlayedClip = filteredClips[UnityEngine.Random.Range(0, filteredClips.Length)];
         return previouslyPlayedClip;
     }
+
+    /// <summary>
+    /// Gets a random audio clip pair from the texture sound.
+    /// This method avoids getting the same clip twice in a row.
+    /// </summary>
+    /// <returns>A near-random audio clip paired with volume.</returns>
+    public ClipVolumePair GetUniqueRandomClipPair() => new ClipVolumePair(GetUniqueRandomClip(), audioVolume);
 }

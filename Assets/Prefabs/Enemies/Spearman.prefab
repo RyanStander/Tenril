@@ -988,6 +988,7 @@ GameObject:
   - component: {fileID: 2073787731002804586}
   - component: {fileID: 4225666923137926232}
   - component: {fileID: 640664723122832063}
+  - component: {fileID: -4998332052891574067}
   m_Layer: 10
   m_Name: Spearman
   m_TagString: Enemy
@@ -1230,7 +1231,7 @@ MonoBehaviour:
   healRange: 5
   hidingThreshold: 0
   hidingCooldownTime: 15
-  canHide: 1
+  canHide: 0
   healthBar: {fileID: 8885345220900682294}
 --- !u!195 &318429253
 NavMeshAgent:
@@ -1406,6 +1407,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellBeingCast: {fileID: 0}
+--- !u!114 &-4998332052891574067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6051805372053708825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20b81dfa9a70a794db13817848c7dbce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floorLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  blendTerrainSounds: 0
 --- !u!1 &6051805372053708827
 GameObject:
   m_ObjectHideFlags: 0

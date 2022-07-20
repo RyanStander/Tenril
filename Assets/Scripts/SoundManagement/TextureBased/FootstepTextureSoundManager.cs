@@ -34,8 +34,8 @@ public class FootstepTextureSoundManager : MonoBehaviour
     /// Check for the type of ground below and return a valid audio clip.
     /// <param name="textureSounds">The collection of texture sounds being checked.</param>
     /// </summary>
-    /// <returns>An audio clip based on the ground texture.</returns>
-    public ClipVolumePair GetFootstepTextureSound(TextureSounds[] textureSounds)
+    /// <returns>A list of audio clip pairs based on the ground texture.</returns>
+    public List<ClipVolumePair> GetFootstepTextureSound(TextureSounds[] textureSounds)
     {
         // Calculate the origin to create a ray from.
         Vector3 origin = transform.position + (Vector3.up / 2);
@@ -50,13 +50,18 @@ public class FootstepTextureSoundManager : MonoBehaviour
             }
             else if (hit.collider.TryGetComponent(out Renderer renderer))
             {
-                return GetFootstepSoundFromRenderer(renderer, textureSounds);
+                return new List<ClipVolumePair>()
+                {
+                    GetFootstepSoundFromRenderer(renderer, textureSounds)
+                };
             }
         }
 
-        // If no clips are found, return null after debugging a warning.
-        Debug.LogWarning("No audio clip could be fetched!");
-        return new ClipVolumePair(null, 0);
+        // If no clips are found, return a pair with a null clip.
+        return new List<ClipVolumePair>()
+        {
+            new ClipVolumePair(null, 0)
+        };
     }
 
     /// <summary>
@@ -65,8 +70,8 @@ public class FootstepTextureSoundManager : MonoBehaviour
     /// <param name="terrain">The terrain being checked.</param>
     /// <param name="hitPoint">The point on the terrain being checked.</param>
     /// <param name="textureSounds">The collection of texture sounds being checked.</param>
-    /// <returns>An audio clip based on the ground texture.</returns>
-    private ClipVolumePair GetFootstepSoundFromTerrain(Terrain terrain, Vector3 hitPoint, TextureSounds[] textureSounds)
+    /// <returns>A list of audio clip pairs based on the ground texture.</returns>
+    private List<ClipVolumePair> GetFootstepSoundFromTerrain(Terrain terrain, Vector3 hitPoint, TextureSounds[] textureSounds)
     {
         // Helper variables for positioning.
         Vector3 terrainPosition = hitPoint - terrain.transform.position;
@@ -96,39 +101,45 @@ public class FootstepTextureSoundManager : MonoBehaviour
                 if (textureSound.albedos.Contains(terrain.terrainData.terrainLayers[primaryIndex].diffuseTexture))
                 {
                     // Get and return a unique audio clip.
-                    return new ClipVolumePair(textureSound.GetUniqueRandomClip(), textureSound.audioVolume);
+                    return new List<ClipVolumePair>()
+                    {
+                        textureSound.GetUniqueRandomClipPair()
+                    };
                 }
             }
         }
         else
         {
-            //List<AudioClip> clips = new List<AudioClip>();
-            //int clipIndex = 0;
-            //for (int i = 0; i < alphaMap.Length; i++)
-            //{
-            //    if (alphaMap[0, 0, i] > 0)
-            //    {
-            //        foreach (TextureSounds textureSound in textureSounds)
-            //        {
-            //            if (textureSound.albedos.Contains(terrain.terrainData.terrainLayers[i].diffuseTexture))
-            //            {
-            //                AudioClip clip = textureSound.GetRandomClip();
-            //                AudioSource.PlayOneShot(clip, alphaMap[0, 0, i]);
-            //                clips.Add(clip);
-            //                clipIndex++;
-            //                break;
-            //            }
-            //        }
-            //    }
-            //}
+            // Local declaration for clip pairs to return blended sounds.
+            List<ClipVolumePair> clipPairs = new List<ClipVolumePair>();
 
-            //float longestClip = clips.Max(clip => clip.length);
-            //yield return new WaitForSeconds(longestClip);
+            // Iterate over the alpha map for the active textures at the coordinate.
+            for (int i = 0; i < alphaMap.Length; i++)
+            {
+                if (alphaMap[0, 0, i] > 0)
+                {
+                    // Check if one of the albedos match the terrains texture.
+                    foreach (TextureSounds textureSound in textureSounds)
+                    {
+                        if (textureSound.albedos.Contains(terrain.terrainData.terrainLayers[i].diffuseTexture))
+                        {
+                            clipPairs.Add(new ClipVolumePair(textureSound.GetUniqueRandomClip(), alphaMap[0, 0, i]));
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Return the list of clip pairs.
+            return clipPairs;
         }
 
         // If no clips are found, return null after debugging a warning.
-        Debug.LogWarning("No audio clip could be fetched for terrain: " + terrain.name);
-        return new ClipVolumePair(null, 0);
+        Debug.LogWarning(string.Concat("No audio clip could be fetched for terrain: ", terrain.name, "\n", "Requester: ", gameObject.name));
+        return new List<ClipVolumePair>()
+        {
+            new ClipVolumePair(null, 0)
+        };
     }
 
     /// <summary>
@@ -136,7 +147,7 @@ public class FootstepTextureSoundManager : MonoBehaviour
     /// </summary>
     /// <param name="textureSounds">The collection of texture sounds being checked.</param>
     /// </summary>
-    /// <returns>An audio clip based on the ground texture.</returns>
+    /// <returns>A list of audio clip pairs based on the ground texture.</returns>
     private ClipVolumePair GetFootstepSoundFromRenderer(Renderer renderer, TextureSounds[] textureSounds)
     {
         // Locally save the active texture on the renderer.
@@ -149,12 +160,12 @@ public class FootstepTextureSoundManager : MonoBehaviour
             if (textureSound.albedos.Contains(renderTexture))
             {
                 // Get and return a unique audio clip.
-                return new ClipVolumePair(textureSound.GetUniqueRandomClip(), textureSound.audioVolume);
+                return textureSound.GetUniqueRandomClipPair();
             }
         }
 
         // If no clips are found, return null after debugging a warning.
-        Debug.LogWarning("No audio clip could be fetched for texture on " + renderer.name);
+        Debug.LogWarning(string.Concat("No audio clip could be fetched for texture on ", renderer.name, "\n", "Requester: ", gameObject.name));
         return new ClipVolumePair(null, 0);
     }
 }
