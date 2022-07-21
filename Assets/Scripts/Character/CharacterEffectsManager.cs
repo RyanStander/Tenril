@@ -5,6 +5,8 @@ namespace Character
 {
     public class CharacterEffectsManager : MonoBehaviour
     {
+        [Header("Damage Fx")] public GameObject bloodSplatterFx;
+        [Header("Weapon Fx")]
         public WeaponFx rightWeaponFx;
         public WeaponFx leftWeaponFx;
 
@@ -30,6 +32,12 @@ namespace Character
             {
                 leftWeaponFx.StopWeaponFx();
             }
+        }
+
+        public virtual void PlayBloodSplatterFx(Vector3 bloodSplatterLocation)
+        {
+            //create blood at hit location
+            var blood = Instantiate(bloodSplatterFx, bloodSplatterLocation, Quaternion.identity);
         }
     }
 }

@@ -988,6 +988,7 @@ GameObject:
   - component: {fileID: 2073787731002804586}
   - component: {fileID: 4225666923137926232}
   - component: {fileID: 640664723122832063}
+  - component: {fileID: -2979205799878896194}
   m_Layer: 10
   m_Name: Spearman
   m_TagString: Enemy
@@ -1129,6 +1130,7 @@ MonoBehaviour:
   consumableManager: {fileID: 2073787731002804586}
   attackManager: {fileID: 4225666923137926232}
   spellcastingManager: {fileID: 640664723122832063}
+  enemyEffectsManager: {fileID: -2979205799878896194}
   characterCollider: {fileID: 6051805373545155775}
   characterCollisionBlocker: {fileID: 3798668902406781062}
   currentTarget: {fileID: 0}
@@ -1145,8 +1147,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultAnimator: {fileID: 0}
-  leftHandSlot: {fileID: 0}
-  rightHandSlot: {fileID: 0}
+  characterStats: {fileID: 318429251}
+  characterInventory: {fileID: 6051805373545155771}
+  characterEffectsManager: {fileID: -2979205799878896194}
+  characterAnimatorManager: {fileID: 6011857014310157830}
+  leftHandSlot: {fileID: 6051805373935889704}
+  rightHandSlot: {fileID: 6051805372031050051}
   rightSideSlot: {fileID: 0}
   leftSideSlot: {fileID: 0}
   backSlot: {fileID: 0}
@@ -1406,6 +1412,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellBeingCast: {fileID: 0}
+--- !u!114 &-2979205799878896194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6051805372053708825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98aee05790fc4cc4297f82e3dd9c2cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodSplatterFx: {fileID: 3701843726779622200, guid: 7ec27b0a4914d8447a62a49eaffd7acf, type: 3}
+  rightWeaponFx: {fileID: 0}
+  leftWeaponFx: {fileID: 0}
 --- !u!1 &6051805372053708827
 GameObject:
   m_ObjectHideFlags: 0
