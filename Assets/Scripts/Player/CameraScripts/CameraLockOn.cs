@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Character;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraLockOn : MonoBehaviour
 {
@@ -29,8 +31,6 @@ public class CameraLockOn : MonoBehaviour
     
     [Tooltip("How close the camera is allowed to get to the player")]
     [SerializeField] private float minimumCollisionOffset = 0.2f;
-    [Tooltip("The y position of the camera pivot")]
-    [SerializeField] private float lockedPivotPosition = 2.25f, unlockedPivotPosition = 1.65f;
     [Tooltip("The range that the raycast extends for finding possible lock on targets, extends both ways")]
     [SerializeField] [Range(0, 180)] private float lockOnMaxAngle=90;
     [Tooltip("How far the camera can scan for targets")]
@@ -81,7 +81,12 @@ public class CameraLockOn : MonoBehaviour
         isInputHandlerNull = inputHandler == null;
     }
 
-    private void LateUpdate()
+    private void Update()
+    {
+        CheckForLockOnInput();
+    }
+
+    private void CheckForLockOnInput()
     {
         if (isInputHandlerNull)
             return;
@@ -112,6 +117,9 @@ public class CameraLockOn : MonoBehaviour
                 }
             }
             myTransform.position= playerTransform.position;
+            if (currentLockOnTarget==null)
+                return;
+            ToggleLockOnDot(false);
             currentLockOnTarget = null;
         }
     }
@@ -174,6 +182,7 @@ public class CameraLockOn : MonoBehaviour
         {
             HandleLockOn();
             currentLockOnTarget = nearestLockOnTarget;
+            ToggleLockOnDot(true);
             //if not targets found, do not lock on
             if (availableTargets.Count == 0)
             {
@@ -206,6 +215,9 @@ public class CameraLockOn : MonoBehaviour
             lockOnCameraTransform.position = hit.point;
     }
 
+    /// <summary>
+    /// looks for the most suitable target
+    /// </summary>
     private void HandleLockOn()
     {
         var shortestDistance = Mathf.Infinity;
@@ -238,9 +250,9 @@ public class CameraLockOn : MonoBehaviour
             if (characterManager.transform.root == playerTransform.transform.root ||
                 !(viewableAngle > -lockOnMaxAngle) || !(viewableAngle < lockOnMaxAngle) ||
                 !(distanceFromTarget <= maximumLockOnDistance)) continue;
-            if (!Physics.Linecast(playerManager.lockOnTransform.position, characterManager.transform.position, out var hit)) 
+            if (!Physics.Linecast(playerManager.characterLockOnPoint.transform.position, characterManager.transform.position, out var hit)) 
                 continue;
-            Debug.DrawLine(playerManager.lockOnTransform.position, characterManager.transform.position);
+            Debug.DrawLine(playerManager.characterLockOnPoint.transform.position, characterManager.transform.position);
             if ((environmentLayer & (1 << hit.transform.gameObject.layer)) != 0)
             {
                 //Cannot lock on target, object in the way
@@ -284,26 +296,10 @@ public class CameraLockOn : MonoBehaviour
         }
     }
 
-    public void ClearLockOnTarget()
+    private void ToggleLockOnDot(bool setActive)
     {
-        //safety precaution, no touchy
-        availableTargets.Clear();
-        nearestLockOnTarget = null;
-        currentLockOnTarget = null;
+        currentLockOnTarget.characterLockOnPoint.lockOnDot.gameObject.SetActive(setActive);
     }
-
-    public void SetCameraHeight()
-    {
-        var velocity = Vector3.zero;
-        var newLockedPosition = new Vector3(0, lockedPivotPosition);
-        var newUnlockedPosition = new Vector3(0, unlockedPivotPosition);
-
-        var lockOnCameraLocalPosition = lockOnCameraTransform.transform.localPosition;
-        lockOnCameraPivotTransform.transform.localPosition = currentLockOnTarget != null ? 
-            Vector3.SmoothDamp(lockOnCameraLocalPosition, newLockedPosition, ref velocity, Time.deltaTime) : 
-            Vector3.SmoothDamp(lockOnCameraLocalPosition, newUnlockedPosition, ref velocity, Time.deltaTime);
-    }
-
     private void OnDrawGizmos()
     {
         if (!showGizmo) 
@@ -328,7 +324,9 @@ public class CameraLockOn : MonoBehaviour
                     if (lockOnSwapStamp <= Time.time)
                     {
                         lockOnSwapStamp = Time.time + LockOnSwapCooldown;
+                        ToggleLockOnDot(false);
                         currentLockOnTarget = leftLockTarget;
+                        ToggleLockOnDot(true);
                     }
                 }
             }
@@ -355,7 +353,9 @@ public class CameraLockOn : MonoBehaviour
                     if (lockOnSwapStamp <= Time.time)
                     {
                         lockOnSwapStamp = Time.time + LockOnSwapCooldown;
+                        ToggleLockOnDot(false);
                         currentLockOnTarget = rightLockTarget;
+                        ToggleLockOnDot(true);
                     }
                 }
             }

@@ -1,4 +1,5 @@
 using AI;
+using Character;
 using UnityEngine;
 using UnityEngine.AI;
 using WeaponManagement;
@@ -189,6 +190,8 @@ public class EnemyAgentManager : CharacterManager
         
         if (ragdollManager == null)
             ragdollManager = GetComponentInChildren<RagdollManager>();
+        if (characterLockOnPoint == null)
+            characterLockOnPoint = GetComponentInChildren<CharacterLockOnPoint>();
 
         //Null check for missing, throw exception as this does not guarantee it will break the code, but is likely to
         if (enemyStats == null) throw new MissingComponentException("Missing EnemyStats on " + gameObject + "!");
@@ -214,5 +217,7 @@ public class EnemyAgentManager : CharacterManager
             throw new MissingComponentException("Missing EnemySpellcastingManager on " + gameObject + "!");
         if (enemyEffectsManager == null)
             throw new MissingComponentException("Missing EnemyEffectsManager on " + gameObject + "!");
+        if (characterLockOnPoint == null)
+            throw new MissingComponentException("Missing CharacterLockOnPoint on " + gameObject + "!");
     }
 }

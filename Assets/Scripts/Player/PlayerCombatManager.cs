@@ -1,4 +1,5 @@
 using System;
+using Character;
 using Player;
 using UnityEngine;
 using WeaponManagement;
@@ -393,7 +394,7 @@ public class PlayerCombatManager : MonoBehaviour
         else
         {
             liveArrow.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x,
-                playerManager.lockOnTransform.eulerAngles.y, 0);
+                playerManager.aimTransform.transform.eulerAngles.y, 0);
         }
 
         //give ammo rigidbody its values
@@ -480,7 +481,7 @@ public class PlayerCombatManager : MonoBehaviour
             else
             {
                 spellParticle.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x,
-                    playerManager.lockOnTransform.eulerAngles.y, 0);
+                    playerManager.characterLockOnPoint.transform.eulerAngles.y, 0);
             }
 
             //give ammo rigidbody its values

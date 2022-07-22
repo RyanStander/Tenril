@@ -1,4 +1,5 @@
 using System;
+using Character;
 using UnityEngine;
 using WeaponManagement;
 
@@ -54,7 +55,8 @@ public class PlayerManager : CharacterManager
     #region Public Fields
 
     public bool canDoCombo, isInteracting, isAiming, isHoldingArrow, isHarvestingResource;
-
+    public Transform aimTransform;
+    
     #endregion
 
     #region Animator Ids
@@ -107,7 +109,7 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Unsubscribe(EventType.ChangePlayerState, OnChangePlayerState);
     }
 
-    private void Awake()
+    private void OnValidate()
     {
         inputHandler = GetComponent<InputHandler>();
         playerLocomotion = GetComponent<PlayerLocomotion>();
@@ -119,8 +121,13 @@ public class PlayerManager : CharacterManager
         playerStats = GetComponent<PlayerStats>();
         playerInteraction = GetComponent<PlayerInteraction>();
         weaponSlotManager = GetComponent<WeaponSlotManager>();
+        
         ragdollManager = GetComponentInChildren<RagdollManager>();
+        characterLockOnPoint = GetComponentInChildren<CharacterLockOnPoint>();
+    }
 
+    private void Awake()
+    {
         EventManager.currentManager.Subscribe(EventType.CeaseDialogue, OnCeaseDialogue);
 
         SetupVariables();
@@ -165,7 +172,7 @@ public class PlayerManager : CharacterManager
             gameObject.layer = 10;
 
         //Get the animator component
-        Animator animator = gameObject.GetComponent<Animator>();
+        var animator = gameObject.GetComponent<Animator>();
         //Apply root motion of animator
         animator.applyRootMotion = true;
         //Set the update mode

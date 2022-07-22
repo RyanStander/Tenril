@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Character;
+using UnityEngine;
 using WeaponManagement;
 
 public class FX_SpawnDirection : MonoBehaviour

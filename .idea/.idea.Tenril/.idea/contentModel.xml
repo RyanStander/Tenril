@@ -72,6 +72,7 @@
             <e p="AnimatorManager.cs" t="Include" />
             <e p="CharacterEffectsManager.cs" t="Include" />
             <e p="CharacterInventory.cs" t="Include" />
+            <e p="CharacterLockOnPoint.cs" t="Include" />
             <e p="CharacterManager.cs" t="Include" />
             <e p="CharacterSpellcastingManager.cs" t="Include" />
             <e p="CharacterStats.cs" t="Include" />
@@ -153,15 +154,17 @@
           <e p="ObstacleData.cs" t="Include" />
           <e p="ObstacleType.cs" t="Include" />
           <e p="Player" t="Include">
-            <e p="CameraLockOn.cs" t="Include" />
-            <e p="CameraManager.cs" t="Include" />
+            <e p="CameraScripts" t="Include">
+              <e p="CameraFovSetter.cs" t="Include" />
+              <e p="CameraLockOn.cs" t="Include" />
+              <e p="CameraManager.cs" t="Include" />
+            </e>
             <e p="CrosshairAimAdjustment.cs" t="Include" />
             <e p="InputHandler.cs" t="Include" />
             <e p="Leveling" t="Include">
               <e p="LevelData.cs" t="Include" />
               <e p="LevelSystem.cs" t="Include" />
             </e>
-            <e p="LockOn.cs" t="Include" />
             <e p="MouseLock.cs" t="Include" />
             <e p="PlayerAnimatorManager.cs" t="Include" />
             <e p="PlayerCombatManager.cs" t="Include" />
@@ -175,7 +178,6 @@
             <e p="PlayerQuickslotManager.cs" t="Include" />
             <e p="PlayerSpellcastingManager.cs" t="Include" />
             <e p="PlayerStats.cs" t="Include" />
-            <e p="TargetLockCamera.cs" t="Include" />
           </e>
           <e p="Saving" t="Include">
             <e p="PlayerData.cs" t="Include" />
