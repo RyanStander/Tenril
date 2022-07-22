@@ -70,7 +70,7 @@ namespace WeaponManagement
                 {
                     LayerMask blockingLayer = 1 << 15;
                     //Check if a the defender blocking is actually in line
-                    if (CharacterUtilityManager.CheckIfHitColliderOnLayer(characterManager.finisherAttackRayCastStartPointTransform.position, targetCharacterManager.lockOnTransform.position, blockingLayer))
+                    if (CharacterUtilityManager.CheckIfHitColliderOnLayer(characterManager.finisherAttackRayCastStartPointTransform.position, targetCharacterManager.characterLockOnPoint.transform.position, blockingLayer))
                     {
                         #region Audio
                         var audioSourceHolder = targetCharacterManager.GetComponentInChildren<AudioSourceHolder>();

@@ -1,3 +1,4 @@
+using Character;
 using UnityEngine;
 
 public class SpellItem : Item
