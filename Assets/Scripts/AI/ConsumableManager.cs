@@ -1,4 +1,5 @@
 using UnityEngine;
+using WeaponManagement;
 
 public abstract class ConsumableManager : MonoBehaviour
 {

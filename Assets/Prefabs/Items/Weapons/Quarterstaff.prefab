@@ -30,7 +30,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1100104068368183155}
   m_Father: {fileID: 5156004475943137778}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -174,3 +175,115 @@ Transform:
   m_Father: {fileID: 1715695495188374635}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 15.456, y: 130.368, z: -98.348}
+--- !u!1 &2690212045775092400
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1100104068368183155}
+  - component: {fileID: 6538173145366680328}
+  m_Layer: 0
+  m_Name: WeaponFx
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1100104068368183155
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690212045775092400}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1401481928725163576}
+  m_Father: {fileID: 637842228231143903}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6538173145366680328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690212045775092400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aea7e3281f54bf24ab32d173c8e81d94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalWeaponTrail: {fileID: 5580425314541765394}
+--- !u!1001 &354370701517203532
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1100104068368183155}
+    m_Modifications:
+    - target: {fileID: 1700647779186493044, guid: df6f56f8612e4384bbb3e8a2ce806889, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700647779186493044, guid: df6f56f8612e4384bbb3e8a2ce806889, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700647779186493044, guid: df6f56f8612e4384bbb3e8a2ce806889, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700647779186493044, guid: df6f56f8612e4384bbb3e8a2ce806889, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700647779186493044, guid: df6f56f8612e4384bbb3e8a2ce806889, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700647779186493044, guid: df6f56f8612e4384bbb3e8a2ce806889, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700647779186493044, guid: df6f56f8612e4384bbb3e8a2ce806889, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700647779186493044, guid: df6f56f8612e4384bbb3e8a2ce806889, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700647779186493044, guid: df6f56f8612e4384bbb3e8a2ce806889, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700647779186493044, guid: df6f56f8612e4384bbb3e8a2ce806889, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700647779186493044, guid: df6f56f8612e4384bbb3e8a2ce806889, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6529357200806822237, guid: df6f56f8612e4384bbb3e8a2ce806889, type: 3}
+      propertyPath: m_Name
+      value: NormalPolearmWeaponTrail
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: df6f56f8612e4384bbb3e8a2ce806889, type: 3}
+--- !u!4 &1401481928725163576 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1700647779186493044, guid: df6f56f8612e4384bbb3e8a2ce806889, type: 3}
+  m_PrefabInstance: {fileID: 354370701517203532}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &5580425314541765394 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5303935272388471646, guid: df6f56f8612e4384bbb3e8a2ce806889, type: 3}
+  m_PrefabInstance: {fileID: 354370701517203532}
+  m_PrefabAsset: {fileID: 0}

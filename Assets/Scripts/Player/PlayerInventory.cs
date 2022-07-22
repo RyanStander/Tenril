@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using WeaponManagement;
 
 public class PlayerInventory : CharacterInventory
 {

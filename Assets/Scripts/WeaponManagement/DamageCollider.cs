@@ -1,52 +1,53 @@
+using Character;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
-public class DamageCollider : MonoBehaviour
+namespace WeaponManagement
 {
-    private Collider damageCollider;
-    [HideInInspector]public CharacterManager characterManager = null;
-    public bool enableDamageColliderOnStart = false;
-
-    public float currentDamage = 10;
-    [HideInInspector] public WeaponSoundEffects weaponSoundEffects;
-
-    protected bool hasInterrupt=true;
-    private void Awake()
+    [RequireComponent(typeof(Collider))]
+    public class DamageCollider : MonoBehaviour
     {
-        damageCollider = GetComponent<Collider>();
-        damageCollider.gameObject.SetActive(true);
-        damageCollider.isTrigger = true;
-    }
+        private Collider damageCollider;
+        [HideInInspector]public CharacterManager characterManager = null;
+        public bool enableDamageColliderOnStart = false;
 
-    private void Start()
-    {
-        if (enableDamageColliderOnStart)
-            damageCollider.enabled = true;
-        else
-            damageCollider.enabled = false;
-    }
+        public float currentDamage = 10;
+        [HideInInspector] public WeaponSoundEffects weaponSoundEffects;
 
-    public void EnableDamageCollider(bool hasInterrupt=true)
-    {
-        this.hasInterrupt = hasInterrupt;
-
-        damageCollider.enabled = true;
-    }
-
-    public void DisableDamageCollider()
-    {
-        damageCollider.enabled = false;
-    }
-
-    protected virtual void OnTriggerEnter(Collider other)
-    {
-        //When the collider enters an character with one of these tags
-        //make them take damage
-        if (other.CompareTag("Damageable") || other.CompareTag("Enemy") || other.CompareTag("Player"))
+        protected bool hasInterrupt=true;
+        private void Awake()
         {
-            CharacterStats characterStats = other.GetComponent<CharacterStats>();
-            CharacterManager targetCharacterManager = other.GetComponent<CharacterManager>();
-            BlockingCollider blockingCollider = other.transform.GetComponentInChildren<BlockingCollider>();
+            damageCollider = GetComponent<Collider>();
+            damageCollider.gameObject.SetActive(true);
+            damageCollider.isTrigger = true;
+        }
+
+        private void Start()
+        {
+            damageCollider.enabled = enableDamageColliderOnStart;
+        }
+
+        public void EnableDamageCollider(bool hasInterrupt=true)
+        {
+            this.hasInterrupt = hasInterrupt;
+
+            damageCollider.enabled = true;
+        }
+
+        public void DisableDamageCollider()
+        {
+            damageCollider.enabled = false;
+        }
+
+        protected virtual void OnTriggerEnter(Collider other)
+        {
+            //When the collider enters an character with one of these tags
+            //make them take damage
+            if (!other.CompareTag("Damageable") && !other.CompareTag("Enemy") && !other.CompareTag("Player")) 
+                return;
+        
+            var characterStats = other.GetComponent<CharacterStats>();
+            var targetCharacterManager = other.GetComponent<CharacterManager>();
+            var blockingCollider = other.transform.GetComponentInChildren<BlockingCollider>();
 
             if (characterStats == null)
                 return;
@@ -64,15 +65,16 @@ public class DamageCollider : MonoBehaviour
 
                     return;
                 }
-                else if (blockingCollider != null && targetCharacterManager.isBlocking)
+                //check if the target is blocking
+                if (blockingCollider != null && targetCharacterManager.isBlocking)
                 {
                     LayerMask blockingLayer = 1 << 15;
                     //Check if a the defender blocking is actually in line
                     if (CharacterUtilityManager.CheckIfHitColliderOnLayer(characterManager.finisherAttackRayCastStartPointTransform.position, targetCharacterManager.lockOnTransform.position, blockingLayer))
                     {
                         #region Audio
-                        AudioSourceHolder audioSourceHolder = targetCharacterManager.GetComponentInChildren<AudioSourceHolder>();
-                        CharacterInventory targetInventory = targetCharacterManager.GetComponent<CharacterInventory>();
+                        var audioSourceHolder = targetCharacterManager.GetComponentInChildren<AudioSourceHolder>();
+                        var targetInventory = targetCharacterManager.GetComponent<CharacterInventory>();
 
                         if (audioSourceHolder!=null)
                         {
@@ -90,7 +92,7 @@ public class DamageCollider : MonoBehaviour
                         }
                         #endregion
 
-                        float damageAfterBlock = CharacterUtilityManager.CalculateBlockingDamage(currentDamage, blockingCollider.blockingPhysicalDamageAbsorption);
+                        var damageAfterBlock = CharacterUtilityManager.CalculateBlockingDamage(currentDamage, blockingCollider.blockingPhysicalDamageAbsorption);
                         characterStats.TakeDamage(damageAfterBlock, true, "BlockGuard");
                         return;
                     }
@@ -101,43 +103,44 @@ public class DamageCollider : MonoBehaviour
             if (characterManager == null)
             {
                 //make sure is not hitting self
-                if (targetCharacterManager != GetComponentInParent<CharacterManager>())
-                {
-                    characterStats.TakeDamage(currentDamage, hasInterrupt);
-
-                    #region Audio
-                    if (weaponSoundEffects!=null)
-                    {
-                        AudioSourceHolder audioSourceHolder = targetCharacterManager.GetComponentInChildren<AudioSourceHolder>();
-                        audioSourceHolder.hitSFX.PlayOneShot(weaponSoundEffects.weaponHitFlesh.audioClip);
-                        audioSourceHolder.hitSFX.volume=weaponSoundEffects.weaponHitFlesh.volume;
-                    }
-                    #endregion
-                }
+                if (targetCharacterManager == GetComponentInParent<CharacterManager>()) 
+                    return;
+                
+                TakeNormalDamage(other,characterStats,targetCharacterManager);
             }
             else
             {
                 //make sure is not hitting self
-                if (targetCharacterManager != characterManager)
-                {
-                    characterStats.TakeDamage(currentDamage, hasInterrupt);
+                if (targetCharacterManager == characterManager) 
+                    return;
 
-                    #region Audio
-                    if (targetCharacterManager != null)
-                    {
-                        if (weaponSoundEffects != null)
-                        {
-                            AudioSourceHolder audioSourceHolder = targetCharacterManager.GetComponentInChildren<AudioSourceHolder>();
-                            if (audioSourceHolder != null)
-                            {
-                                audioSourceHolder.hitSFX.PlayOneShot(weaponSoundEffects.weaponHitFlesh.audioClip);
-                                audioSourceHolder.hitSFX.volume = weaponSoundEffects.weaponHitFlesh.volume;
-                            }
-                        }
-                    }
-                    #endregion
-                }
+                TakeNormalDamage(other,characterStats,targetCharacterManager);
             }
+        }
+
+        //Called when nothing the attack goes through normally
+        protected virtual void TakeNormalDamage(Collider hitCollider,CharacterStats characterStats, CharacterManager targetCharacterManager)
+        {
+            characterStats.TakeDamage(currentDamage, hasInterrupt);
+            
+            if (hitCollider.TryGetComponent(out CharacterEffectsManager characterEffectsManager))
+            {
+                var contactPoint = hitCollider.ClosestPointOnBounds(transform.position);
+                characterEffectsManager.PlayBloodSplatterFx(contactPoint);
+            }
+            
+            #region Audio
+
+            if (targetCharacterManager == null||weaponSoundEffects == null) return;
+            
+            var audioSourceHolder = targetCharacterManager.GetComponentInChildren<AudioSourceHolder>();
+
+            if (audioSourceHolder == null) 
+                return;
+            audioSourceHolder.hitSFX.PlayOneShot(weaponSoundEffects.weaponHitFlesh.audioClip);
+            audioSourceHolder.hitSFX.volume = weaponSoundEffects.weaponHitFlesh.volume;
+
+            #endregion
         }
     }
 }

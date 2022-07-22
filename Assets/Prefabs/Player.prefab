@@ -4334,6 +4334,7 @@ GameObject:
   - component: {fileID: 914342196}
   - component: {fileID: 1527663795}
   - component: {fileID: 342913730}
+  - component: {fileID: 6705784103146524647}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -4674,6 +4675,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60d1c8f30cddd9f4ea0af18b2f3bcf5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerAnimatorManager: {fileID: 1455011013}
+  playerManager: {fileID: 1455011011}
+  playerInventory: {fileID: 1949516873}
+  inputHandler: {fileID: 2925704681754078344}
+  playerStats: {fileID: 1949516871}
+  weaponSlotManager: {fileID: 913450652}
+  playerEffectsManager: {fileID: 6705784103146524647}
   riposteLayer:
     serializedVersion: 2
     m_Bits: 16384
@@ -4691,11 +4699,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultAnimator: {fileID: 22100000, guid: da5b0e32b09e53d4cafc544fcddb8e32, type: 2}
-  leftHandSlot: {fileID: 0}
-  rightHandSlot: {fileID: 0}
-  rightSideSlot: {fileID: 0}
-  leftSideSlot: {fileID: 0}
-  backSlot: {fileID: 0}
+  characterStats: {fileID: 1949516871}
+  characterInventory: {fileID: 1949516873}
+  characterEffectsManager: {fileID: 6705784103146524647}
+  characterAnimatorManager: {fileID: 1455011013}
+  leftHandSlot: {fileID: 7064798778421518200}
+  rightHandSlot: {fileID: 8370129705758291174}
+  rightSideSlot: {fileID: 1281324083546050488}
+  leftSideSlot: {fileID: 5995529720663339775}
+  backSlot: {fileID: 2027664063}
   leftHandDamageCollider: {fileID: 0}
   rightHandDamageCollider: {fileID: 0}
   leftDisplayObject: {fileID: 0}
@@ -4778,6 +4790,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterSoundEffectSet: {fileID: 11400000, guid: de4a99a97f7e6e246828c8fbc2724073, type: 2}
   toolsSoundEffectSet: {fileID: 11400000, guid: 8426c172ec3d50140a2f6c01f7bfdcd8, type: 2}
+--- !u!114 &6705784103146524647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7803000388887419329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 962d23c23a43a3248b2e10e1736fae80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodSplatterFx: {fileID: 3701843726779622200, guid: 7ec27b0a4914d8447a62a49eaffd7acf, type: 3}
+  rightWeaponFx: {fileID: 0}
+  leftWeaponFx: {fileID: 0}
 --- !u!1 &7803005539856370231
 GameObject:
   m_ObjectHideFlags: 0
@@ -8120,11 +8147,6 @@ PrefabInstance:
       objectReference: {fileID: 13400000, guid: e32349e5abecd984cb938447b604e95f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0654f02df05e094fa2e392d9b8e9915, type: 3}
---- !u!4 &1158778856 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4851403875938873993, guid: a0654f02df05e094fa2e392d9b8e9915, type: 3}
-  m_PrefabInstance: {fileID: 4851403876929879393}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1492552727 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4851403875995693430, guid: a0654f02df05e094fa2e392d9b8e9915, type: 3}
@@ -8136,6 +8158,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbde52302d832de4db0b8899ee279144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1158778856 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4851403875938873993, guid: a0654f02df05e094fa2e392d9b8e9915, type: 3}
+  m_PrefabInstance: {fileID: 4851403876929879393}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7997854077303925502
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8193,6 +8220,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dac4532126cb1804cb3793f714fcfbd2, type: 3}
+--- !u!4 &1834273280 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7997854077759840510, guid: dac4532126cb1804cb3793f714fcfbd2, type: 3}
+  m_PrefabInstance: {fileID: 7997854077303925502}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1594625838 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7997854078527874512, guid: dac4532126cb1804cb3793f714fcfbd2, type: 3}
@@ -8201,10 +8233,5 @@ Transform:
 --- !u!4 &1979566824 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7997854078172520470, guid: dac4532126cb1804cb3793f714fcfbd2, type: 3}
-  m_PrefabInstance: {fileID: 7997854077303925502}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1834273280 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7997854077759840510, guid: dac4532126cb1804cb3793f714fcfbd2, type: 3}
   m_PrefabInstance: {fileID: 7997854077303925502}
   m_PrefabAsset: {fileID: 0}

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using WeaponManagement;
 
 [CreateAssetMenu(menuName = "Items/Spells/Delayed Damage Spell")]
 public class DelayedDamageSpell : SpellItem

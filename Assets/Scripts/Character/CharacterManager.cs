@@ -1,4 +1,5 @@
 using UnityEngine;
+using WeaponManagement;
 
 public class CharacterManager : MonoBehaviour
 {

@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 7830460702289245854}
   - component: {fileID: 7830460702289245855}
   - component: {fileID: 642295610}
+  - component: {fileID: -2842753564522537990}
   m_Layer: 10
   m_Name: Commander
   m_TagString: Enemy
@@ -482,8 +483,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultAnimator: {fileID: 0}
-  leftHandSlot: {fileID: 0}
-  rightHandSlot: {fileID: 0}
+  characterStats: {fileID: 7830460702289245851}
+  characterInventory: {fileID: 7830460702289245855}
+  characterEffectsManager: {fileID: -2842753564522537990}
+  characterAnimatorManager: {fileID: 7830460702289245849}
+  leftHandSlot: {fileID: 7830460700881250788}
+  rightHandSlot: {fileID: 7830460700644203193}
   rightSideSlot: {fileID: 0}
   leftSideSlot: {fileID: 0}
   backSlot: {fileID: 0}
@@ -523,6 +528,7 @@ MonoBehaviour:
   consumableManager: {fileID: 7830460702289245795}
   attackManager: {fileID: 7830460702289245794}
   spellcastingManager: {fileID: 642295610}
+  enemyEffectsManager: {fileID: -2842753564522537990}
   characterCollider: {fileID: 7830460702289245840}
   characterCollisionBlocker: {fileID: 7830460701319238586}
   currentTarget: {fileID: 0}
@@ -561,6 +567,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellBeingCast: {fileID: 11400000, guid: bc59dc89fa8373c4aa69e674a81c4699, type: 2}
+--- !u!114 &-2842753564522537990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7829664060842242038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98aee05790fc4cc4297f82e3dd9c2cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodSplatterFx: {fileID: 3701843726779622200, guid: 7ec27b0a4914d8447a62a49eaffd7acf, type: 3}
+  rightWeaponFx: {fileID: 0}
+  leftWeaponFx: {fileID: 0}
 --- !u!1 &7829665071301123566
 GameObject:
   m_ObjectHideFlags: 0

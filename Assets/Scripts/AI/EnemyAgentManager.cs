@@ -1,5 +1,7 @@
+using AI;
 using UnityEngine;
 using UnityEngine.AI;
+using WeaponManagement;
 
 /// <summary>
 /// Serves as the uppermost connecting point of all managers and their controlled components
@@ -43,6 +45,9 @@ public class EnemyAgentManager : CharacterManager
     
     //The spellcasting manager for the NPC
     public EnemySpellcastingManager spellcastingManager;
+    
+    //The effects manager for the NPC
+    public EnemyEffectsManager enemyEffectsManager;
 
     //Helper bool to prevent animations/actions from occuring until an animation is completed
     internal bool isInteracting;
@@ -154,31 +159,34 @@ public class EnemyAgentManager : CharacterManager
     {
         //Getters for relevant references
         if (enemyStats == null)
-            enemyStats = GetComponentInChildren<EnemyStats>();
+            enemyStats = GetComponent<EnemyStats>();
         if (navAgent == null)
-            navAgent = GetComponentInChildren<NavMeshAgent>();
+            navAgent = GetComponent<NavMeshAgent>();
         if (rigidBody == null)
-            rigidBody = GetComponentInChildren<Rigidbody>();
+            rigidBody = GetComponent<Rigidbody>();
         if (animatorManager == null)
-            animatorManager = GetComponentInChildren<EnemyAnimatorManager>();
+            animatorManager = GetComponent<EnemyAnimatorManager>();
         if (stateMachine == null)
-            stateMachine = GetComponentInChildren<EnemyFSM>();
+            stateMachine = GetComponent<EnemyFSM>();
         if (inventory == null)
-            inventory = GetComponentInChildren<EnemyInventory>();
+            inventory = GetComponent<EnemyInventory>();
         if (weaponSlotManager == null)
-            weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
+            weaponSlotManager = GetComponent<WeaponSlotManager>();
         if (movementManager == null)
-            movementManager = GetComponentInChildren<EnemyMovementManager>();
+            movementManager = GetComponent<EnemyMovementManager>();
         if (visionManager == null)
-            visionManager = GetComponentInChildren<EnemyVisionManager>();
+            visionManager = GetComponent<EnemyVisionManager>();
         if (statusManager == null)
-            statusManager = GetComponentInChildren<StatusEffectManager>();
+            statusManager = GetComponent<StatusEffectManager>();
         if (consumableManager == null)
-            consumableManager = GetComponentInChildren<EnemyConsumableManager>();
+            consumableManager = GetComponent<EnemyConsumableManager>();
         if (attackManager == null)
-            attackManager = GetComponentInChildren<EnemyAttackManager>();
+            attackManager = GetComponent<EnemyAttackManager>();
         if (spellcastingManager == null)
-            spellcastingManager = GetComponentInChildren<EnemySpellcastingManager>();
+            spellcastingManager = GetComponent<EnemySpellcastingManager>();
+        if (enemyEffectsManager == null)
+            enemyEffectsManager = GetComponent<EnemyEffectsManager>();
+        
         if (ragdollManager == null)
             ragdollManager = GetComponentInChildren<RagdollManager>();
 
@@ -204,5 +212,7 @@ public class EnemyAgentManager : CharacterManager
             throw new MissingComponentException("Missing EnemyAttackManager on " + gameObject + "!");
         if (spellcastingManager == null)
             throw new MissingComponentException("Missing EnemySpellcastingManager on " + gameObject + "!");
+        if (enemyEffectsManager == null)
+            throw new MissingComponentException("Missing EnemyEffectsManager on " + gameObject + "!");
     }
 }
