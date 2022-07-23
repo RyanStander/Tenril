@@ -8,6 +8,380 @@
       <e p="Assembly-CSharp-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="Crest" t="Include">
+          <e p="Crest" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="BuildCommandBuffer.cs" t="Include" />
+              <e p="Collision" t="Include">
+                <e p="CollProvider.cs" t="Include" />
+                <e p="CollProviderBakedFFT.cs" t="Include" />
+                <e p="CollProviderNull.cs" t="Include" />
+                <e p="FlowProvider.cs" t="Include" />
+                <e p="FlowProviderNull.cs" t="Include" />
+                <e p="QueryBase.cs" t="Include" />
+                <e p="QueryDisplacements.cs" t="Include" />
+                <e p="QueryFlow.cs" t="Include" />
+                <e p="RayTraceHelper.cs" t="Include" />
+                <e p="SamplingHelpers.cs" t="Include" />
+                <e p="VisualiseCollisionArea.cs" t="Include" />
+                <e p="VisualiseRayTrace.cs" t="Include" />
+              </e>
+              <e p="Constants.cs" t="Include" />
+              <e p="Crest.asmdef" t="Include" />
+              <e p="Editor" t="Include">
+                <e p="BuildProcessor.cs" t="Include" />
+                <e p="Crest.Editor.asmdef" t="Include" />
+                <e p="FFTBakedDataPreview.cs" t="Include" />
+                <e p="ObsoleteShaderGUI.cs" t="Include" />
+                <e p="OceanShaderGUI.cs" t="Include" />
+                <e p="ScriptingDefineSymbols.cs" t="Include" />
+              </e>
+              <e p="Helpers" t="Include">
+                <e p="Attributes" t="Include">
+                  <e p="EmbeddedFieldAttribute.cs" t="Include" />
+                  <e p="HelpBoxAttribute.cs" t="Include" />
+                  <e p="LayerAttribute.cs" t="Include" />
+                  <e p="MultiPropertyAttribute.cs" t="Include" />
+                  <e p="RenderPipelineAttribute.cs" t="Include" />
+                </e>
+                <e p="ComputeShaderHelpers.cs" t="Include" />
+                <e p="CrestSortedList.cs" t="Include" />
+                <e p="CustomPassHelpers.cs" t="Include" />
+                <e p="Editor" t="Include">
+                  <e p="EditorHelpers.cs" t="Include" />
+                  <e p="EmbeddedAssetHelpers.cs" t="Include" />
+                  <e p="MultiPropertyDrawer.cs" t="Include" />
+                  <e p="PackageManagerHelpers.cs" t="Include" />
+                  <e p="ScriptableObjectUtility.cs" t="Include" />
+                </e>
+                <e p="FloatingOrigin.cs" t="Include" />
+                <e p="Hashy.cs" t="Include" />
+                <e p="Helpers.cs" t="Include" />
+                <e p="OceanDebugGUI.cs" t="Include" />
+                <e p="PredicatedFieldAttribute.cs" t="Include" />
+                <e p="PropertyWrapper.cs" t="Include" />
+                <e p="RenderAlphaOnSurface.cs" t="Include" />
+                <e p="RenderPipelineHelper.cs" t="Include" />
+                <e p="TextureArrayHelpers.cs" t="Include" />
+                <e p="XRHelpers.cs" t="Include" />
+              </e>
+              <e p="Interaction" t="Include">
+                <e p="BoatProbes.cs" t="Include" />
+                <e p="FloatingObjectBase.cs" t="Include" />
+                <e p="ObjectWaterInteraction.cs" t="Include" />
+                <e p="ObjectWaterInteractionAdaptor.cs" t="Include" />
+                <e p="SimpleFloatingObject.cs" t="Include" />
+                <e p="SphereWaterInteraction.cs" t="Include" />
+              </e>
+              <e p="LodData" t="Include">
+                <e p="LodDataMgr.cs" t="Include" />
+                <e p="LodDataMgrAlbedo.cs" t="Include" />
+                <e p="LodDataMgrAnimWaves.cs" t="Include" />
+                <e p="LodDataMgrClipSurface.cs" t="Include" />
+                <e p="LodDataMgrDynWaves.cs" t="Include" />
+                <e p="LodDataMgrFlow.cs" t="Include" />
+                <e p="LodDataMgrFoam.cs" t="Include" />
+                <e p="LodDataMgrPersistent.cs" t="Include" />
+                <e p="LodDataMgrSeaFloorDepth.cs" t="Include" />
+                <e p="LodTransform.cs" t="Include" />
+                <e p="OceanDepthCache.cs" t="Include" />
+                <e p="RegisterAlbedoInput.cs" t="Include" />
+                <e p="RegisterAnimWavesInput.cs" t="Include" />
+                <e p="RegisterClipSurfaceInput.cs" t="Include" />
+                <e p="RegisterDynWavesInput.cs" t="Include" />
+                <e p="RegisterFlowInput.cs" t="Include" />
+                <e p="RegisterFoamInput.cs" t="Include" />
+                <e p="RegisterHeightInput.cs" t="Include" />
+                <e p="RegisterLodDataInput.cs" t="Include" />
+                <e p="RegisterSeaFloorDepthInput.cs" t="Include" />
+                <e p="Settings" t="Include">
+                  <e p="SimSettingsAlbedo.cs" t="Include" />
+                  <e p="SimSettingsAnimatedWaves.cs" t="Include" />
+                  <e p="SimSettingsBase.cs" t="Include" />
+                  <e p="SimSettingsClipSurface.cs" t="Include" />
+                  <e p="SimSettingsFlow.cs" t="Include" />
+                  <e p="SimSettingsFoam.cs" t="Include" />
+                  <e p="SimSettingsSeaFloorDepth.cs" t="Include" />
+                  <e p="SimSettingsWave.cs" t="Include" />
+                </e>
+                <e p="Shadows" t="Include">
+                  <e p="LodDataMgrShadow.cs" t="Include" />
+                  <e p="RegisterShadowInput.cs" t="Include" />
+                  <e p="SampleShadows.cs" t="Include" />
+                  <e p="SampleShadowsHDRP.cs" t="Include" />
+                  <e p="SampleShadowsURP.cs" t="Include" />
+                  <e p="SimSettingsShadow.cs" t="Include" />
+                </e>
+                <e p="SplinePointData" t="Include">
+                  <e p="SplinePointDataFlow.cs" t="Include" />
+                  <e p="SplinePointDataFoam.cs" t="Include" />
+                  <e p="SplinePointDataNone.cs" t="Include" />
+                  <e p="SplinePointDataWaves.cs" t="Include" />
+                </e>
+              </e>
+              <e p="OceanBuilder.cs" t="Include" />
+              <e p="OceanChunkRenderer.cs" t="Include" />
+              <e p="OceanRenderer.cs" t="Include" />
+              <e p="OceanValidation.cs" t="Include" />
+              <e p="Reflection" t="Include">
+                <e p="OceanPlanarReflection.cs" t="Include" />
+              </e>
+              <e p="Shapes" t="Include">
+                <e p="FFT" t="Include">
+                  <e p="FFTBakedData.cs" t="Include" />
+                  <e p="FFTBaker.cs" t="Include" />
+                  <e p="FFTCompute.cs" t="Include" />
+                  <e p="ShapeFFT.cs" t="Include" />
+                </e>
+                <e p="OceanWaveSpectrum.cs" t="Include" />
+                <e p="ShapeGerstner.cs" t="Include" />
+                <e p="ShapeGerstnerBatched.cs" t="Include" />
+                <e p="ShapeGerstnerSplineHandling.cs" t="Include" />
+              </e>
+              <e p="Spline" t="Include">
+                <e p="Spline.cs" t="Include" />
+                <e p="SplineInterpolation.cs" t="Include" />
+                <e p="SplinePoint.cs" t="Include" />
+                <e p="SplinePointData.cs" t="Include" />
+              </e>
+              <e p="Time" t="Include">
+                <e p="TimeProviderBase.cs" t="Include" />
+                <e p="TimeProviderCustom.cs" t="Include" />
+                <e p="TimeProviderCutscene.cs" t="Include" />
+                <e p="TimeProviderDefault.cs" t="Include" />
+                <e p="TimeProviderNetworked.cs" t="Include" />
+              </e>
+              <e p="Underwater" t="Include">
+                <e p="UnderwaterEffectPassHDRP.cs" t="Include" />
+                <e p="UnderwaterEffectPassURP.cs" t="Include" />
+                <e p="UnderwaterMaskPassHDRP.cs" t="Include" />
+                <e p="UnderwaterMaskPassURP.cs" t="Include" />
+                <e p="UnderwaterPostProcessHDRP.cs" t="Include" />
+                <e p="UnderwaterPostProcessMaskRenderer.cs" t="Include" />
+                <e p="UnderwaterPostProcessUtils.cs" t="Include" />
+                <e p="UnderwaterRenderer.cs" t="Include" />
+                <e p="UnderwaterRenderer.Effect.cs" t="Include" />
+                <e p="UnderwaterRenderer.Mask.cs" t="Include" />
+              </e>
+              <e p="WaterBody.cs" t="Include" />
+            </e>
+            <e p="Shaders" t="Include">
+              <e p="FullScreenTriangle.hlsl" t="Include" />
+              <e p="GPUNoise" t="Include">
+                <e p="GPUNoise.hlsl" t="Include" />
+                <e p="SOURCE.txt" t="Include" />
+              </e>
+              <e p="Helpers" t="Include">
+                <e p="BIRP" t="Include">
+                  <e p="Common.hlsl" t="Include" />
+                  <e p="Core.hlsl" t="Include" />
+                  <e p="InputsDriven.hlsl" t="Include" />
+                  <e p="Lighting.hlsl" t="Include" />
+                  <e p="ScreenSpaceShadows.hlsl" t="Include" />
+                </e>
+                <e p="Resources" t="Include">
+                  <e p="Utility.shader" t="Include" />
+                </e>
+                <e p="WaterVolume.hlsl" t="Include" />
+              </e>
+              <e p="Misc" t="Include">
+                <e p="OceanProxy.shader" t="Include" />
+              </e>
+              <e p="Ocean.shader" t="Include" />
+              <e p="OceanConstants.hlsl" t="Include" />
+              <e p="OceanEmission.hlsl" t="Include" />
+              <e p="OceanGlobals.hlsl" t="Include" />
+              <e p="OceanHelpersDriven.hlsl" t="Include" />
+              <e p="OceanHelpersNew.hlsl" t="Include" />
+              <e p="OceanInputs" t="Include">
+                <e p="AlbedoColor.shader" t="Include" />
+                <e p="AnimWavesAddFromTex.shader" t="Include" />
+                <e p="AnimWavesAddHeightFromGeometry.shader" t="Include" />
+                <e p="AnimWavesGerstnerBatchGeometry.shader" t="Include" />
+                <e p="AnimWavesRemoveGeometry.shader" t="Include" />
+                <e p="AnimWavesSetHeightToGeometry.shader" t="Include" />
+                <e p="AnimWavesWaveParticle.shader" t="Include" />
+                <e p="DynWavesAddBump.shader" t="Include" />
+                <e p="DynWavesObjectInteraction.shader" t="Include" />
+                <e p="FlowAddFlowMap.shader" t="Include" />
+                <e p="FlowFixedDirection.shader" t="Include" />
+                <e p="FoamAddFromTex.shader" t="Include" />
+                <e p="FoamAddFromVertCol.shader" t="Include" />
+                <e p="FoamOverride.shader" t="Include" />
+                <e p="GerstnerShared.hlsl" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="AnimWavesGerstner.shader" t="Include" />
+                  <e p="AnimWavesGerstnerBatch.shader" t="Include" />
+                  <e p="AnimWavesGerstnerGeometry.shader" t="Include" />
+                  <e p="AnimWavesSetBaseWaterHeightUsingGeometry.shader" t="Include" />
+                  <e p="ClipSurfaceConvexHull.shader" t="Include" />
+                  <e p="ClipSurfaceIncludeArea.shader" t="Include" />
+                  <e p="ClipSurfaceRemoveArea.shader" t="Include" />
+                  <e p="ClipSurfaceRemoveAreaTexture.shader" t="Include" />
+                  <e p="ClipSurfaceSignedDistance.shader" t="Include" />
+                  <e p="CopyDepthIntoCache.shader" t="Include" />
+                  <e p="DepthSetBaseWaterHeightUsingGeometry.shader" t="Include" />
+                  <e p="DynWavesDampenCircle.shader" t="Include" />
+                  <e p="DynWavesSphereWaterInteraction.shader" t="Include" />
+                  <e p="FlowSplineGeometry.shader" t="Include" />
+                  <e p="FoamSplineGeometry.shader" t="Include" />
+                  <e p="OceanDepths.shader" t="Include" />
+                  <e p="OceanDepthsCache.shader" t="Include" />
+                  <e p="ShadowOverride.shader" t="Include" />
+                </e>
+                <e p="ScaleByFactor.shader" t="Include" />
+              </e>
+              <e p="OceanInputsDriven.hlsl" t="Include" />
+              <e p="OceanLightingHelpers.hlsl" t="Include" />
+              <e p="OceanShaderData.hlsl" t="Include" />
+              <e p="OceanShaderHelpers.hlsl" t="Include" />
+              <e p="OceanVertHelpers.hlsl" t="Include" />
+              <e p="Resources" t="Include">
+                <e p="ClearToBlack.compute" t="Include" />
+                <e p="Debug" t="Include">
+                  <e p="TextureArray.shader" t="Include" />
+                </e>
+                <e p="FFT" t="Include">
+                  <e p="FFTBake.compute" t="Include" />
+                  <e p="FFTCompute.compute" t="Include" />
+                  <e p="FFTSpectrum.compute" t="Include" />
+                </e>
+                <e p="Gerstner.compute" t="Include" />
+                <e p="OceanUnderwaterMask.shader" t="Include" />
+                <e p="QueryDisplacements.compute" t="Include" />
+                <e p="QueryFlow.compute" t="Include" />
+                <e p="ShapeCombine.compute" t="Include" />
+                <e p="ShapeCombine.shader" t="Include" />
+                <e p="UnderwaterPostProcessHDRP.shader" t="Include" />
+                <e p="UpdateDynWaves.compute" t="Include" />
+                <e p="UpdateFoam.compute" t="Include" />
+                <e p="UpdateShadow.shader" t="Include" />
+                <e p="UpdateShadowHDRP.shader" t="Include" />
+                <e p="UpdateShadows.shader" t="Include" />
+              </e>
+              <e p="ShadergraphFramework" t="Include">
+                <e p="CrestNodeAmbientLight.hlsl" t="Include" />
+                <e p="CrestNodeApplyCaustics.hlsl" t="Include" />
+                <e p="CrestNodeApplyFresnel.hlsl" t="Include" />
+                <e p="CrestNodeComputeSamplingData.hlsl" t="Include" />
+                <e p="CrestNodeDrivenInputs.hlsl" t="Include" />
+                <e p="CrestNodeFoam.hlsl" t="Include" />
+                <e p="CrestNodeFoamBubbles.hlsl" t="Include" />
+                <e p="CrestNodeGeoMorph.hlsl" t="Include" />
+                <e p="CrestNodeHelpers.hlsl" t="Include" />
+                <e p="CrestNodeLightData.hlsl" t="Include" />
+                <e p="CrestNodeLightWaterVolume.hlsl" t="Include" />
+                <e p="CrestNodeNormalMapping.hlsl" t="Include" />
+                <e p="CrestNodeOcclusion.hlsl" t="Include" />
+                <e p="CrestNodeOceanGlobals.hlsl" t="Include" />
+                <e p="CrestNodeSampleClipSurfaceData.hlsl" t="Include" />
+                <e p="CrestNodeSampleOceanData.hlsl" t="Include" />
+                <e p="CrestNodeVolumeEmission.hlsl" t="Include" />
+                <e p="CrestNodeWaterVolume.hlsl" t="Include" />
+                <e p="OceanGraphConstants.hlsl" t="Include" />
+                <e p="OceanNormalMapping.hlsl" t="Include" />
+              </e>
+              <e p="ShaderLibrary" t="Include">
+                <e p="Common.hlsl" t="Include" />
+                <e p="Texture.hlsl" t="Include" />
+                <e p="UpdateShadow.hlsl" t="Include" />
+              </e>
+              <e p="Underwater" t="Include">
+                <e p="CrestNodeApplyUnderwaterEffect.hlsl" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="CrestFillMaskArtefacts.compute" t="Include" />
+                  <e p="UnderwaterEffectHDRP.shader" t="Include" />
+                  <e p="UnderwaterMask.shader" t="Include" />
+                  <e p="UnderwaterMaskHDRP.shader" t="Include" />
+                  <e p="WaterVolumeGeometry.shader" t="Include" />
+                  <e p="WaterVolumeGeometryHDRP.shader" t="Include" />
+                </e>
+                <e p="UnderwaterEffect.hlsl" t="Include" />
+                <e p="UnderwaterEffectHDRP.hlsl" t="Include" />
+                <e p="UnderwaterEffectIncludes.hlsl" t="Include" />
+                <e p="UnderwaterEffectShared.hlsl" t="Include" />
+                <e p="UnderwaterMaskHorizonShared.hlsl" t="Include" />
+                <e p="UnderwaterMaskShared.hlsl" t="Include" />
+              </e>
+            </e>
+            <e p="Textures" t="Include">
+              <e p="Caustics" t="Include">
+                <e p="SOURCE.txt" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="Crest-Examples" t="Include">
+            <e p="BoatDev" t="Include">
+              <e p="Scripts" t="Include">
+                <e p="BoatAlignNormal.cs" t="Include" />
+                <e p="LerpCam.cs" t="Include" />
+                <e p="RippleGenerator.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Crest.Examples.asmdef" t="Include" />
+            <e p="Examples" t="Include">
+              <e p="Audio" t="Include">
+                <e p="License.txt" t="Include" />
+              </e>
+              <e p="Scripts" t="Include">
+                <e p="CustomPassForCamera.cs" t="Include" />
+                <e p="ExamplesController.cs" t="Include" />
+                <e p="MaskFill.cs" t="Include" />
+                <e p="SendUnityEvent.cs" t="Include" />
+              </e>
+              <e p="Shaders" t="Include">
+                <e p="DepthOnly.shader" t="Include" />
+                <e p="MaskDepth.shader" t="Include" />
+                <e p="Masked.hlsl" t="Include" />
+                <e p="Masked.shader" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="MaskFill.shader" t="Include" />
+                </e>
+                <e p="SphereGradientBackground.shader" t="Include" />
+              </e>
+            </e>
+            <e p="LakesAndRivers" t="Include">
+              <e p="ThirdPartyNotices.txt" t="Include" />
+            </e>
+            <e p="Shared" t="Include">
+              <e p="Scripts" t="Include">
+                <e p="CamController.cs" t="Include" />
+                <e p="Collision" t="Include">
+                  <e p="OceanSampleDisplacementDemo.cs" t="Include" />
+                  <e p="OceanSampleHeightDemo.cs" t="Include" />
+                  <e p="OceanSampleHeightEvents.cs" t="Include" />
+                </e>
+                <e p="RandomMotion.cs" t="Include" />
+                <e p="SimpleAutomation.cs" t="Include" />
+                <e p="SimpleMotion.cs" t="Include" />
+                <e p="Sleeper.cs" t="Include" />
+                <e p="TimedDestroy.cs" t="Include" />
+                <e p="UnderwaterEnvironmentalLighting.cs" t="Include" />
+              </e>
+              <e p="Shaders" t="Include">
+                <e p="ExampleUnderwaterTransparentSurfaceShader.shader" t="Include" />
+              </e>
+            </e>
+            <e p="Submarine" t="Include">
+              <e p="Scripts" t="Include">
+                <e p="Submarine.cs" t="Include" />
+                <e p="SubmarineCamera.cs" t="Include" />
+                <e p="SubmarineParticles.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Whirlpool" t="Include">
+              <e p="Scripts" t="Include">
+                <e p="Whirlpool.cs" t="Include" />
+              </e>
+              <e p="Shaders" t="Include">
+                <e p="Resources" t="Include">
+                  <e p="AnimWavesWhirlpool.shader" t="Include" />
+                  <e p="FlowWhirlpool.shader" t="Include" />
+                </e>
+              </e>
+            </e>
+          </e>
+        </e>
         <e p="Data" t="Include">
           <e p="LootTables" t="Include">
             <e p="LootInfo.cs" t="Include" />
@@ -475,6 +849,7 @@
           </e>
           <e p="Sprites" t="Include">
             <e p="EmojiOne Attribution.txt" t="Include" />
+            <e p="EmojiOne.json" t="Include" />
           </e>
         </e>
         <e p="Y Bot - Animation Practice" t="Include">
@@ -566,6 +941,11 @@
               </e>
             </e>
           </e>
+          <e p="Simple Water Shader HDRP" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="DemoButtons.cs" t="Include" />
+            </e>
+          </e>
           <e p="SpearAndHalberdAnimset" t="Include">
             <e p="readme.txt" t="Include" />
           </e>
@@ -576,6 +956,9 @@
           </e>
         </e>
       </e>
+      <e p="Crest.csproj" t="IncludeRecursive" />
+      <e p="Crest.Examples.csproj" t="IncludeRecursive" />
+      <e p="Crest.Helpers.Editor.csproj" t="IncludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
       <e p="Temp\Bin" t="ExcludeRecursive" />
