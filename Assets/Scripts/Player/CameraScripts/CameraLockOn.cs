@@ -64,7 +64,6 @@ public class CameraLockOn : MonoBehaviour
     private Transform myTransform;//transform of the game object
     
     private static readonly int IsAiming = Animator.StringToHash("isAiming");
-    private bool isInputHandlerNull;
 
     #endregion
     
@@ -78,7 +77,6 @@ public class CameraLockOn : MonoBehaviour
     {
         SetupLockOnCamera();
         playerAnimatorManager = playerManager.GetComponent<PlayerAnimatorManager>();
-        isInputHandlerNull = inputHandler == null;
     }
 
     private void Update()
@@ -88,8 +86,8 @@ public class CameraLockOn : MonoBehaviour
 
     private void CheckForLockOnInput()
     {
-        if (isInputHandlerNull)
-            return;
+        if (inputHandler==null)
+        return;
 
         if (inputHandler.lockOnFlag)
         {

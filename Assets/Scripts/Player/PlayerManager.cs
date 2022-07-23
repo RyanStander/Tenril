@@ -29,22 +29,20 @@ public class PlayerManager : CharacterManager
 
     [SerializeField] private CapsuleCollider characterCollider;
     [SerializeField] private CapsuleCollider characterCollisionBlocker;
-
+    [SerializeField]private InputHandler inputHandler;
+    [SerializeField]private PlayerLocomotion playerLocomotion;
+    [SerializeField]private PlayerAnimatorManager playerAnimatorManager;
+    [SerializeField]private PlayerCombatManager playerCombatManager;
+    [SerializeField]private PlayerSpellcastingManager playerSpellcastingManager;
+    [SerializeField]private PlayerQuickslotManager playerQuickslotManager;
+    [SerializeField]private PlayerInventory playerInventory;
+    [SerializeField]private PlayerStats playerStats;
+    [SerializeField]private PlayerInteraction playerInteraction;
 
     #endregion
     
     #region Private Fields
 
-    private InputHandler inputHandler;
-    private PlayerLocomotion playerLocomotion;
-    private PlayerAnimatorManager playerAnimatorManager;
-    private PlayerCombatManager playerCombatManager;
-    private PlayerSpellcastingManager playerSpellcastingManager;
-    private PlayerQuickslotManager playerQuickslotManager;
-    private PlayerInventory playerInventory;
-    private PlayerStats playerStats;
-    private PlayerInteraction playerInteraction;
-    
     private float timeTillRestart = 3, restartTimeStamp;
     private bool enteredSpellcastingMode = true;
     private PlayerState playerState = PlayerState.Default;
@@ -109,6 +107,7 @@ public class PlayerManager : CharacterManager
         EventManager.currentManager.Unsubscribe(EventType.ChangePlayerState, OnChangePlayerState);
     }
 
+#if (UNITY_EDITOR) 
     private void OnValidate()
     {
         inputHandler = GetComponent<InputHandler>();
@@ -124,13 +123,15 @@ public class PlayerManager : CharacterManager
         
         ragdollManager = GetComponentInChildren<RagdollManager>();
         characterLockOnPoint = GetComponentInChildren<CharacterLockOnPoint>();
+        
+        //SetupVariables();
     }
-
+#endif
     private void Awake()
     {
-        EventManager.currentManager.Subscribe(EventType.CeaseDialogue, OnCeaseDialogue);
-
         SetupVariables();
+        
+        EventManager.currentManager.Subscribe(EventType.CeaseDialogue, OnCeaseDialogue);
     }
 
     private void Start()

@@ -24,10 +24,13 @@ public class GameManager : MonoBehaviour
         EventManager.currentManager.Unsubscribe(EventType.LoadData, OnLoadData);
     }
 
-    void Start()
+    private void Start()
     {
         //Get the game data
         var playerData = SaveManager.LoadPlayer();
+
+        if (playerData==null)
+            return;
 
         //Check if the scene matches the existing one
         if (SceneManager.GetActiveScene().name ==playerData.currentScene)
