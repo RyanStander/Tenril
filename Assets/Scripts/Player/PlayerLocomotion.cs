@@ -1,112 +1,97 @@
 using Player.CameraScripts;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class PlayerLocomotion : MonoBehaviour
+namespace Player
 {
-    private PlayerManager playerManager;
-    public PlayerAnimatorManager playerAnimatorManager;
-    private PlayerStats playerStats;
-    private InputHandler inputHandler;
-    private Transform cameraObject;
-    private StatusEffectManager statusEffectManager;
-    private CameraLockOn cameraLockOn;
-
-    [Header("Ground & Air Detection")]
-    [SerializeField] private float fallDuration=0;
-    [SerializeField] private float fallDurationToPerformLand=0.5f;
-    [Tooltip("The number that the environment layer is listed as")]
-    [SerializeField] private int environmentLayerNumber=9;
-    [SerializeField] private LayerMask EnvironmentLayer;
-    [SerializeField] private Vector3 raycastOffset;
-    [SerializeField] private float groundCheckRadius=0.3f;
-    private Vector3 previousVelocity; //Used for when jumping to continue velocity until landing
-
-    [Header("Movement")]
-    [SerializeField] private float rotationSpeed = 10;
-    [SerializeField] private float mouseAimSensitivity = 0.01f;
-    [SerializeField] private float controllerAimSensitivity = 0.025f;
-    [SerializeField] private float minimumPivot = -35, maximumPivot = 35;
-    [SerializeField] private float sprintStaminaCost = 0.1f;
-    [SerializeField] private float dodgeStaminaCost = 5f;
-
-    private float lookAngle,pivotAngle;
-    private Vector3 moveDirection;
-
-    [Header("Jump data")] [SerializeField] private float jumpHeight = 3;
-    [Tooltip("Value must be negative to prevent errors")][Range(-100,-1)][SerializeField] private float gravityIntensity = -15;
-    [SerializeField] private float directionalJumpMultiplier=3;
-    [SerializeField] private float sprintMultiplier;
-    
-
-    private void Awake()
+    public class PlayerLocomotion : MonoBehaviour
     {
-        inputHandler = GetComponent<InputHandler>();
-        playerManager = GetComponent<PlayerManager>();
-        playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
-        playerStats = GetComponent<PlayerStats>();
-        if (Camera.main != null)
-            cameraObject = Camera.main.transform;
-        statusEffectManager = GetComponent<StatusEffectManager>();
-        cameraLockOn = FindObjectOfType<CameraLockOn>();
+        private PlayerManager playerManager;
+        public PlayerAnimatorManager playerAnimatorManager;
+        private PlayerStats playerStats;
+        private InputHandler inputHandler;
+        private Transform cameraObject;
+        private StatusEffectManager statusEffectManager;
+        private CameraLockOn cameraLockOn;
 
-        EnvironmentLayer = 1<<environmentLayerNumber;
-    }
+        [Header("Ground & Air Detection")] [SerializeField]
+        private float fallDuration = 0;
 
-    internal void HandleLocomotion(float delta)
-    {
-        HandleMovement();
-        HandleRotation(delta);
+        [SerializeField] private float fallDurationToPerformLand = 0.5f;
 
-        HandleFalling();
-    }
+        [Tooltip("The number that the environment layer is listed as")] [SerializeField]
+        private int environmentLayerNumber = 9;
 
-    internal void HandleDodgeAndJumping()
-    {
-        HandleDodge();
-        //HandleJump();
-        HandleJumping();
-    }
+        [SerializeField] private LayerMask EnvironmentLayer;
+        [SerializeField] private Vector3 raycastOffset;
+        [SerializeField] private float groundCheckRadius = 0.3f;
+        private Vector3 previousVelocity; //Used for when jumping to continue velocity until landing
 
-    private void HandleMovement()
-    {
-        //if player is locked on to a target and not sprinting
-        if (inputHandler.lockOnFlag && !inputHandler.sprintFlag)
+        [Header("Movement")] [SerializeField] private float rotationSpeed = 10;
+        [SerializeField] private float mouseAimSensitivity = 0.01f;
+        [SerializeField] private float controllerAimSensitivity = 0.025f;
+        [SerializeField] private float minimumPivot = -35, maximumPivot = 35;
+        [SerializeField] private float sprintStaminaCost = 0.1f;
+        [SerializeField] private float dodgeStaminaCost = 5f;
+
+        private float lookAngle, pivotAngle;
+        private Vector3 moveDirection;
+
+        [Header("Jump data")] [SerializeField] private float jumpHeight = 3;
+
+        [Tooltip("Value must be negative to prevent errors")] [Range(-100, -1)] [SerializeField]
+        private float gravityIntensity = -15;
+
+        [SerializeField] private float directionalJumpMultiplier = 3;
+        [SerializeField] private float sprintMultiplier;
+
+
+        private void Awake()
         {
-            MovementType(true);
+            inputHandler = GetComponent<InputHandler>();
+            playerManager = GetComponent<PlayerManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+            playerStats = GetComponent<PlayerStats>();
+            if (Camera.main != null)
+                cameraObject = Camera.main.transform;
+            statusEffectManager = GetComponent<StatusEffectManager>();
+            cameraLockOn = FindObjectOfType<CameraLockOn>();
+
+            EnvironmentLayer = 1 << environmentLayerNumber;
         }
-        else//if player is sprinting or not locked on
+
+        internal void HandleLocomotion(float delta)
         {
-            MovementType(false);
+            HandleMovement();
+            HandleRotation(delta);
+
+            HandleFalling();
         }
-    }
 
-    private void HandleRotation(float delta)
-    {
-
-        if (inputHandler.lockOnFlag)
+        internal void HandleDodgeAndJumping()
         {
-            if (!playerAnimatorManager.canRotate)
+            HandleDodge();
+            //HandleJump();
+            HandleJumping();
+        }
+
+        private void HandleMovement()
+        {
+            //if player is locked on to a target and not sprinting
+            if (inputHandler.lockOnFlag && !inputHandler.sprintFlag)
+            {
+                MovementType(true);
+            }
+            else //if player is sprinting or not locked on
+            {
+                MovementType(false);
+            }
+        }
+
+        private void HandleDodge()
+        {
+            if (!inputHandler.dodgeInput)
                 return;
 
-            LockOnRotation();
-        }else if (playerManager.isAiming)
-        {
-            AimRotation(delta);
-        }
-        else
-        {
-            if (!playerAnimatorManager.canRotate)
-                return;
-
-            ExplorationRotation(delta);
-        }
-    }
-
-    private void HandleDodge()
-    {
-        if (inputHandler.dodgeInput)
-        {
             //Do not perform another dodge if already happening
             if (playerAnimatorManager.animator.GetBool("isInteracting"))
                 return;
@@ -127,240 +112,270 @@ public class PlayerLocomotion : MonoBehaviour
             //set dodge input to false again
         }
 
-    }
-
-    private void HandleJump()
-    {
-        if (!inputHandler.jumpInput) return;
-        //Do not perform another jump if already happening
-        if (playerAnimatorManager.animator.GetBool("isInteracting"))
-            return;
-
-        //perform jump animation
-        playerAnimatorManager.PlayTargetAnimation("Jump", true);
-    }
-
-    private void HandleJumping()
-    {
-        if (!inputHandler.jumpInput) return;
-
-        playerAnimatorManager.animator.applyRootMotion = false;
-        //Do not perform another jump if already happening
-        //if (playerAnimatorManager.animator.GetBool("isInteracting"))
-        //    return;
-        
-        //perform jump animation
-        //playerAnimatorManager.PlayTargetAnimation("Jump", false);
-
-        if (IsGrounded())
+        private void HandleJumping()
         {
-            playerAnimatorManager.animator.SetBool("isJumping",true);
-            playerAnimatorManager.PlayTargetAnimation("Jump", true);
-            
-            var jumpingVelocity = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
-            float forwardValue;
-            float leftValue;
-            
-            if (inputHandler.forward<0)
-                forwardValue = -inputHandler.forward;
-            else
-                forwardValue = inputHandler.forward;
-
-            if (inputHandler.left<0)
-                leftValue = -inputHandler.left;
-            else
-                leftValue = inputHandler.left;
-
-            Vector3 playerVelocity;
-            if (inputHandler.sprintFlag)
-                playerVelocity = transform.forward * (directionalJumpMultiplier * (Mathf.Clamp(forwardValue+leftValue,0,1)*sprintMultiplier));
-            else
-                playerVelocity = transform.forward * (directionalJumpMultiplier * (Mathf.Clamp(forwardValue+leftValue,0,1))); 
-            playerVelocity.y = jumpingVelocity;
-            playerManager.rigidBody.velocity = playerVelocity;
-        }
-
-
-    }
-
-    private void HandleFalling()
-    {
-        if (playerStats.isDead)
-            return;
-
-        if (!IsGrounded())
-        {
-            //keeps velocity while falling
-            playerManager.rigidBody.AddForce(new Vector3(previousVelocity.x * 25, 0, previousVelocity.z * 25));
-
-            //count time of falling
-            fallDuration += Time.deltaTime;
-
-            //if player is currently doing another action, do not play fall animation,
-            //this might need revision
-            if (playerAnimatorManager.animator.GetBool("isInteracting"))
+            if (!inputHandler.jumpInput || !IsGrounded())
                 return;
 
-            //play fall animation
-            playerAnimatorManager.PlayTargetAnimation("Falling", true);
-        }
-        else
-        {
-            //if player is falling for a long time, perform a land animation
-            if (fallDuration>fallDurationToPerformLand)
-            {
-                playerAnimatorManager.animator.applyRootMotion = true;
-                //play land animation
-                playerAnimatorManager.PlayTargetAnimation("Land", true);
-            }
-            else if (fallDuration>0)
-            {
-                playerAnimatorManager.animator.applyRootMotion = true;
-                //return to empty state
-                playerAnimatorManager.PlayTargetAnimation("Empty", true);
+            playerAnimatorManager.animator.applyRootMotion = false;
 
+            var jumpingVelocity = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
+
+            if ((inputHandler.lockOnFlag || playerManager.isAiming) && !inputHandler.sprintFlag)
+                MultiDirectionalJumping(jumpingVelocity);
+            else
+                ForwardDirectionJumping(jumpingVelocity);
+        }
+
+        private void HandleFalling()
+        {
+            if (playerStats.isDead)
+                return;
+
+            if (!IsGrounded())
+            {
+                //keeps velocity while falling
+                playerManager.rigidBody.AddForce(new Vector3(previousVelocity.x * 25, 0, previousVelocity.z * 25));
+
+                //count time of falling
+                fallDuration += Time.deltaTime;
+
+                //if player is currently doing another action, do not play fall animation,
+                //this might need revision
+                if (playerAnimatorManager.animator.GetBool("isInteracting"))
+                    return;
+
+                //play fall animation
+                playerAnimatorManager.PlayTargetAnimation("Falling", true);
+            }
+            else
+            {
+                //if player is falling for a long time, perform a land animation
+                if (fallDuration > fallDurationToPerformLand)
+                {
+                    playerAnimatorManager.animator.applyRootMotion = true;
+                    //play land animation
+                    playerAnimatorManager.PlayTargetAnimation("Land", true);
+                }
+                else if (fallDuration > 0)
+                {
+                    playerAnimatorManager.animator.applyRootMotion = true;
+                    //return to empty state
+                    playerAnimatorManager.PlayTargetAnimation("Empty", true);
+
+                    fallDuration = 0;
+                }
+                else
+                {
+                    previousVelocity = GetComponent<Rigidbody>().velocity;
+                }
+            }
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            //if the player fell for more than 1 second continue
+            if (fallDuration < 1)
+            {
                 fallDuration = 0;
+                return;
             }
-            else
-            {
-                previousVelocity = GetComponent<Rigidbody>().velocity; 
-            }
-        }
-    }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        //if the player fell for more than 1 second continue
-        if (fallDuration < 1)
-        {
             fallDuration = 0;
-            return;
+
+            //calculate fall damage based on the speed of which velocity is
+            float damageMultiplier = 90 / (9.81f * 6.0f);
+
+            ContactPoint contact = collision.contacts[0];
+            Vector3 normal = contact.normal;
+            Vector3 relativeVelocity = collision.relativeVelocity;
+            float damage = Vector3.Dot(normal, relativeVelocity) * damageMultiplier;
+
+            playerStats.TakeDamage(damage, false);
         }
 
-        fallDuration = 0;
-
-        //calculate fall damage based on the speed of which velocity is
-        float damageMultiplier = 90 / (9.81f * 6.0f);
-
-        ContactPoint contact = collision.contacts[0];
-        Vector3 normal = contact.normal;
-        Vector3 relativeVelocity = collision.relativeVelocity;
-        float damage = Vector3.Dot(normal, relativeVelocity) * damageMultiplier;
-
-        playerStats.TakeDamage(damage,false);
-    }
-
-    private bool IsGrounded()
-    {
-        //Check with a sphere if the player is on the ground, based on outcome, will either be set to being grounded or not
-        if (Physics.CheckSphere(transform.position - raycastOffset, groundCheckRadius, EnvironmentLayer))
+        private bool IsGrounded()
         {
-            playerAnimatorManager.animator.SetBool("isGrounded", true);
-            return true;
-        }
-        else
-        {
-            playerAnimatorManager.animator.SetBool("isGrounded", false);
-            return false;
-        }
-    }
-
-    private void MovementType(bool isStrafeMovement)
-    {
-        if (playerManager.isInteracting)
-            return;
-
-        //set the values for input
-        var forwardMovement = inputHandler.forward;
-        var leftMovement = inputHandler.left;
-        var movementAmount = inputHandler.moveAmount;
-
-        //if player is sprinting, double speed
-        if (inputHandler.sprintFlag)
-        {
-            //if player does not have enough stamina, do not sprint
-            if (!playerStats.HasStamina())
-                movementAmount = inputHandler.moveAmount;
-            //otherwise sprint
-            else
+            //Check with a sphere if the player is on the ground, based on outcome, will either be set to being grounded or not
+            if (Physics.CheckSphere(transform.position - raycastOffset, groundCheckRadius, EnvironmentLayer))
             {
-                movementAmount = inputHandler.moveAmount * 2;
-                //Drain players stamina for sprinting
-                playerStats.DrainStaminaWithCooldown(sprintStaminaCost);
-            }
-        }
-
-        //if player is strafing, use both left and forward
-        if (isStrafeMovement || playerManager.isAiming)
-        {
-            //Do not allow movement if the character is rooted
-            if (statusEffectManager.GetIsRooted())
-            {
-                playerAnimatorManager.animator.SetFloat("Forward", 0, 0.1f, Time.deltaTime);
-                playerAnimatorManager.animator.SetFloat("Left", 0, 0.1f, Time.deltaTime);
+                playerAnimatorManager.animator.SetBool("isGrounded", true);
+                return true;
             }
             else
             {
-                playerAnimatorManager.animator.SetFloat("Forward", forwardMovement, 0.1f, Time.deltaTime);
-                playerAnimatorManager.animator.SetFloat("Left", -leftMovement, 0.1f, Time.deltaTime);
+                playerAnimatorManager.animator.SetBool("isGrounded", false);
+                return false;
             }
         }
-        //otherwise use move amount to work with rotations
-        else
-        {    //Do not allow movement if the character is rooted
-            if (statusEffectManager.GetIsRooted())
+
+        private void MovementType(bool isStrafeMovement)
+        {
+            if (playerManager.isInteracting)
+                return;
+
+            //set the values for input
+            var forwardMovement = inputHandler.forward;
+            var leftMovement = inputHandler.left;
+            var movementAmount = inputHandler.moveAmount;
+
+            //if player is sprinting, double speed
+            if (inputHandler.sprintFlag)
             {
-                playerAnimatorManager.animator.SetFloat("Forward", 0, 0.1f, Time.deltaTime);
-                playerAnimatorManager.animator.SetFloat("Left", 0, 0.1f, Time.deltaTime);
+                //if player does not have enough stamina, do not sprint
+                if (!playerStats.HasStamina())
+                    movementAmount = inputHandler.moveAmount;
+                //otherwise sprint
+                else
+                {
+                    movementAmount = inputHandler.moveAmount * 2;
+                    //Drain players stamina for sprinting
+                    playerStats.DrainStaminaWithCooldown(sprintStaminaCost);
+                }
+            }
+
+            //if player is strafing, use both left and forward
+            if (isStrafeMovement || playerManager.isAiming)
+            {
+                //Do not allow movement if the character is rooted
+                if (statusEffectManager.GetIsRooted())
+                {
+                    playerAnimatorManager.animator.SetFloat("Forward", 0, 0.1f, Time.deltaTime);
+                    playerAnimatorManager.animator.SetFloat("Left", 0, 0.1f, Time.deltaTime);
+                }
+                else
+                {
+                    playerAnimatorManager.animator.SetFloat("Forward", forwardMovement, 0.1f, Time.deltaTime);
+                    playerAnimatorManager.animator.SetFloat("Left", -leftMovement, 0.1f, Time.deltaTime);
+                }
+            }
+            //otherwise use move amount to work with rotations
+            else
+            {
+                //Do not allow movement if the character is rooted
+                if (statusEffectManager.GetIsRooted())
+                {
+                    playerAnimatorManager.animator.SetFloat("Forward", 0, 0.1f, Time.deltaTime);
+                    playerAnimatorManager.animator.SetFloat("Left", 0, 0.1f, Time.deltaTime);
+                }
+                else
+                {
+                    playerAnimatorManager.animator.SetFloat("Forward", movementAmount, 0.1f, Time.deltaTime);
+                    //ensure left is 0 to avoid strange movement out of lock on
+                    playerAnimatorManager.animator.SetFloat("Left", 0, 0.1f, Time.deltaTime);
+                }
+            }
+        }
+
+        #region Rotations
+
+        private void HandleRotation(float delta)
+        {
+            if (inputHandler.lockOnFlag)
+            {
+                if (!playerAnimatorManager.canRotate)
+                    return;
+
+                LockOnRotation();
+            }
+            else if (playerManager.isAiming)
+            {
+                AimRotation(delta);
             }
             else
             {
-                playerAnimatorManager.animator.SetFloat("Forward", movementAmount, 0.1f, Time.deltaTime);
-                //ensure left is 0 to avoid strange movement out of lock on
-                playerAnimatorManager.animator.SetFloat("Left", 0, 0.1f, Time.deltaTime);
+                if (!playerAnimatorManager.canRotate)
+                    return;
+
+                ExplorationRotation(delta);
             }
-        }   
-    }
+        }
 
-    private void AimRotation(float delta)
-    {
-        float modifiedAimSensitivity;
-
-        //Mouse sensitivity works on different values compared to
-        if (inputHandler.activeInputDevice == InputDeviceType.KeyboardMouse)
-            modifiedAimSensitivity = mouseAimSensitivity;
-        else
-            modifiedAimSensitivity = controllerAimSensitivity;
-
-        //Debug.Log("current look angle: " + lookAngle+ " and current y rot: "+transform.rotation.eulerAngles.y);
-        lookAngle = transform.rotation.eulerAngles.y;
-
-        lookAngle += inputHandler.lookInput.x * modifiedAimSensitivity / delta;
-        pivotAngle -= inputHandler.lookInput.y * modifiedAimSensitivity / delta;
-        pivotAngle = Mathf.Clamp(pivotAngle, minimumPivot, maximumPivot);
-
-        Vector3 rotation = Vector3.zero;
-        rotation.y = lookAngle;
-        Quaternion targetRotation = Quaternion.Euler(rotation);
-        transform.rotation = targetRotation;
-        //Debug.Log("target rotation " + targetRotation);
-        rotation = Vector3.zero;
-        rotation.x = pivotAngle;
-
-        targetRotation = Quaternion.Euler(rotation);
-        GameObject cameraFollowPoint = GameObject.FindGameObjectWithTag("CameraFollowTarget");
-        cameraFollowPoint.transform.localRotation = targetRotation;
-        cameraFollowPoint.transform.localRotation = Quaternion.Lerp(targetRotation, cameraFollowPoint.transform.localRotation, delta);
-    }
-
-    private void LockOnRotation()
-    {
-        Vector3 targetDirection;
-        //if player is locked on perform the following movements
-        if (inputHandler.sprintFlag || inputHandler.dodgeInput)
+        private void AimRotation(float delta)
         {
+            float modifiedAimSensitivity;
+
+            //Mouse sensitivity works on different values compared to
+            if (inputHandler.activeInputDevice == InputDeviceType.KeyboardMouse)
+                modifiedAimSensitivity = mouseAimSensitivity;
+            else
+                modifiedAimSensitivity = controllerAimSensitivity;
+
+            //Debug.Log("current look angle: " + lookAngle+ " and current y rot: "+transform.rotation.eulerAngles.y);
+            lookAngle = transform.rotation.eulerAngles.y;
+
+            lookAngle += inputHandler.lookInput.x * modifiedAimSensitivity / delta;
+            pivotAngle -= inputHandler.lookInput.y * modifiedAimSensitivity / delta;
+            pivotAngle = Mathf.Clamp(pivotAngle, minimumPivot, maximumPivot);
+
+            Vector3 rotation = Vector3.zero;
+            rotation.y = lookAngle;
+            Quaternion targetRotation = Quaternion.Euler(rotation);
+            transform.rotation = targetRotation;
+            //Debug.Log("target rotation " + targetRotation);
+            rotation = Vector3.zero;
+            rotation.x = pivotAngle;
+
+            targetRotation = Quaternion.Euler(rotation);
+            GameObject cameraFollowPoint = GameObject.FindGameObjectWithTag("CameraFollowTarget");
+            cameraFollowPoint.transform.localRotation = targetRotation;
+            cameraFollowPoint.transform.localRotation =
+                Quaternion.Lerp(targetRotation, cameraFollowPoint.transform.localRotation, delta);
+        }
+
+        private void LockOnRotation()
+        {
+            Vector3 targetDirection;
+            //if player is locked on perform the following movements
+            if (inputHandler.sprintFlag || inputHandler.dodgeInput)
+            {
+                targetDirection = cameraObject.forward * inputHandler.forward;
+                targetDirection += cameraObject.right * inputHandler.left;
+                targetDirection.Normalize();
+                targetDirection.y = 0;
+
+                if (targetDirection == Vector3.zero)
+                {
+                    targetDirection = transform.forward;
+                }
+
+                Quaternion tr = Quaternion.LookRotation(targetDirection);
+                Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+
+                transform.rotation = targetRotation;
+            }
+            else
+            {
+                if (cameraLockOn.currentLockOnTarget != null)
+                {
+                    Vector3 rotationDirection;
+                    rotationDirection = cameraLockOn.currentLockOnTarget.transform.position - transform.position;
+                    rotationDirection.y = 0;
+                    rotationDirection.Normalize();
+                    Quaternion tr = Quaternion.LookRotation(rotationDirection);
+                    Quaternion targetRotation =
+                        Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+                    transform.rotation = targetRotation;
+                }
+
+
+                /*targetDirection = cameraObject.forward;
+
+            targetDirection.y = 0;
+
+            transform.rotation = Quaternion.LookRotation(targetDirection);*/
+            }
+        }
+
+        private void ExplorationRotation(float delta)
+        {
+            Vector3 targetDirection;
+            //If player is in exploration mode, perform following movement
+
+            //Sets direction in relation towards the camera
             targetDirection = cameraObject.forward * inputHandler.forward;
             targetDirection += cameraObject.right * inputHandler.left;
+
             targetDirection.Normalize();
             targetDirection.y = 0;
 
@@ -370,52 +385,66 @@ public class PlayerLocomotion : MonoBehaviour
             }
 
             Quaternion tr = Quaternion.LookRotation(targetDirection);
-            Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+            Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * delta);
 
             transform.rotation = targetRotation;
         }
-        else
+
+        #endregion
+
+        #region Jumping
+
+        private void MultiDirectionalJumping(float jumpingVelocity)
         {
-            if (cameraLockOn.currentLockOnTarget != null)
+            var playerTransform = transform;
+            var forward = playerTransform.forward * inputHandler.forward;
+            var left = playerTransform.right * inputHandler.left;
+
+            var playerVelocity = (forward + left) * directionalJumpMultiplier;
+
+            playerVelocity.y = jumpingVelocity;
+
+
+            playerAnimatorManager.PlayTargetAnimation(inputHandler.forward > 0.5f ? "Jump" : "StandingJump");
+
+            playerManager.rigidBody.velocity = playerVelocity;
+        }
+
+        private void ForwardDirectionJumping(float jumpingVelocity)
+        {
+            float forwardValue;
+            float leftValue;
+
+            if (inputHandler.forward < 0)
+                forwardValue = -inputHandler.forward;
+            else
+                forwardValue = inputHandler.forward;
+
+            if (inputHandler.left < 0)
+                leftValue = -inputHandler.left;
+            else
+                leftValue = inputHandler.left;
+
+            if (forwardValue > 0.5f || leftValue > 0.5f)
             {
-                Vector3 rotationDirection;
-                rotationDirection = cameraLockOn.currentLockOnTarget.transform.position - transform.position;
-                rotationDirection.y = 0;
-                rotationDirection.Normalize();
-                Quaternion tr = Quaternion.LookRotation(rotationDirection);
-                Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
-                transform.rotation = targetRotation;
+                playerAnimatorManager.PlayTargetAnimation("Jump");
+            }
+            else
+            {
+                playerAnimatorManager.PlayTargetAnimation("StandingJump");
             }
 
-
-            /*targetDirection = cameraObject.forward;
-
-            targetDirection.y = 0;
-
-            transform.rotation = Quaternion.LookRotation(targetDirection);*/
-        }
-    }
-
-    private void ExplorationRotation(float delta)
-    {
-        Vector3 targetDirection;
-        //If player is in exploration mode, perform following movement
-
-        //Sets direction in relation towards the camera
-        targetDirection = cameraObject.forward * inputHandler.forward;
-        targetDirection += cameraObject.right * inputHandler.left;
-
-        targetDirection.Normalize();
-        targetDirection.y = 0;
-
-        if (targetDirection == Vector3.zero)
-        {
-            targetDirection = transform.forward;
+            Vector3 playerVelocity;
+            if (inputHandler.sprintFlag)
+                playerVelocity = transform.forward * (directionalJumpMultiplier *
+                                                      (Mathf.Clamp(forwardValue + leftValue, 0, 1) * sprintMultiplier));
+            else
+                playerVelocity = transform.forward *
+                                 (directionalJumpMultiplier * (Mathf.Clamp(forwardValue + leftValue, 0, 1)));
+            playerVelocity.y = jumpingVelocity;
+            playerManager.rigidBody.velocity = playerVelocity;
         }
 
-        Quaternion tr = Quaternion.LookRotation(targetDirection);
-        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * delta);
-
-        transform.rotation = targetRotation;
+        #endregion
     }
 }
