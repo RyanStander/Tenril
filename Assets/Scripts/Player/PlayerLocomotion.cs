@@ -31,6 +31,13 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float dodgeStaminaCost = 5f;
 
     private float lookAngle,pivotAngle;
+    private Vector3 moveDirection;
+
+    [Header("Jump data")] [SerializeField] private float jumpHeight = 3;
+    [Tooltip("Value must be negative to prevent errors")][Range(-100,-1)][SerializeField] private float gravityIntensity = -15;
+    [SerializeField] private float directionalJumpMultiplier=3;
+    [SerializeField] private float sprintMultiplier;
+    
 
     private void Awake()
     {
@@ -57,7 +64,8 @@ public class PlayerLocomotion : MonoBehaviour
     internal void HandleDodgeAndJumping()
     {
         HandleDodge();
-        HandleJump();
+        //HandleJump();
+        HandleJumping();
     }
 
     private void HandleMovement()
@@ -132,6 +140,49 @@ public class PlayerLocomotion : MonoBehaviour
         playerAnimatorManager.PlayTargetAnimation("Jump", true);
     }
 
+    private void HandleJumping()
+    {
+        if (!inputHandler.jumpInput) return;
+
+        playerAnimatorManager.animator.applyRootMotion = false;
+        //Do not perform another jump if already happening
+        //if (playerAnimatorManager.animator.GetBool("isInteracting"))
+        //    return;
+        
+        //perform jump animation
+        //playerAnimatorManager.PlayTargetAnimation("Jump", false);
+
+        if (IsGrounded())
+        {
+            playerAnimatorManager.animator.SetBool("isJumping",true);
+            playerAnimatorManager.PlayTargetAnimation("Jump", true);
+            
+            var jumpingVelocity = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
+            float forwardValue;
+            float leftValue;
+            
+            if (inputHandler.forward<0)
+                forwardValue = -inputHandler.forward;
+            else
+                forwardValue = inputHandler.forward;
+
+            if (inputHandler.left<0)
+                leftValue = -inputHandler.left;
+            else
+                leftValue = inputHandler.left;
+
+            Vector3 playerVelocity;
+            if (inputHandler.sprintFlag)
+                playerVelocity = transform.forward * (directionalJumpMultiplier * (Mathf.Clamp(forwardValue+leftValue,0,1)*sprintMultiplier));
+            else
+                playerVelocity = transform.forward * (directionalJumpMultiplier * (Mathf.Clamp(forwardValue+leftValue,0,1))); 
+            playerVelocity.y = jumpingVelocity;
+            playerManager.rigidBody.velocity = playerVelocity;
+        }
+
+
+    }
+
     private void HandleFalling()
     {
         if (playerStats.isDead)
@@ -140,7 +191,7 @@ public class PlayerLocomotion : MonoBehaviour
         if (!IsGrounded())
         {
             //keeps velocity while falling
-            GetComponent<Rigidbody>().AddForce(new Vector3(previousVelocity.x * 25, 0, previousVelocity.z * 25));
+            playerManager.rigidBody.AddForce(new Vector3(previousVelocity.x * 25, 0, previousVelocity.z * 25));
 
             //count time of falling
             fallDuration += Time.deltaTime;
@@ -158,11 +209,13 @@ public class PlayerLocomotion : MonoBehaviour
             //if player is falling for a long time, perform a land animation
             if (fallDuration>fallDurationToPerformLand)
             {
+                playerAnimatorManager.animator.applyRootMotion = true;
                 //play land animation
                 playerAnimatorManager.PlayTargetAnimation("Land", true);
             }
             else if (fallDuration>0)
             {
+                playerAnimatorManager.animator.applyRootMotion = true;
                 //return to empty state
                 playerAnimatorManager.PlayTargetAnimation("Empty", true);
 
@@ -218,9 +271,9 @@ public class PlayerLocomotion : MonoBehaviour
             return;
 
         //set the values for input
-        float forwardMovement = inputHandler.forward;
-        float leftMovement = inputHandler.left;
-        float movementAmount = inputHandler.moveAmount;
+        var forwardMovement = inputHandler.forward;
+        var leftMovement = inputHandler.left;
+        var movementAmount = inputHandler.moveAmount;
 
         //if player is sprinting, double speed
         if (inputHandler.sprintFlag)

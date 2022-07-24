@@ -17,9 +17,6 @@ public class EnemyAgentManager : CharacterManager
     //Navigation agent attached
     public NavMeshAgent navAgent;
 
-    //Rigidbody that should be affected physics wise
-    public Rigidbody rigidBody;
-
     //The targeted animator manager
     public EnemyAnimatorManager animatorManager;
 

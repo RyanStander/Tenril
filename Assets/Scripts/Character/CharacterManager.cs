@@ -8,6 +8,7 @@ namespace Character
         public CharacterLockOnPoint characterLockOnPoint;
         public WeaponSlotManager weaponSlotManager;
         protected RagdollManager ragdollManager;
+        public Rigidbody rigidBody;
     
         public bool isParrying, canBeRiposted, isBlocking;
 
