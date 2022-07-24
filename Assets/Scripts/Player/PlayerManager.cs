@@ -123,8 +123,6 @@ public class PlayerManager : CharacterManager
         
         ragdollManager = GetComponentInChildren<RagdollManager>();
         characterLockOnPoint = GetComponentInChildren<CharacterLockOnPoint>();
-        
-        //SetupVariables();
     }
 #endif
     private void Awake()
