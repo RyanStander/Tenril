@@ -1,5 +1,6 @@
 using System;
 using Character;
+using Player;
 using UnityEngine;
 using WeaponManagement;
 
@@ -120,11 +121,10 @@ public class PlayerManager : CharacterManager
         playerStats = GetComponent<PlayerStats>();
         playerInteraction = GetComponent<PlayerInteraction>();
         weaponSlotManager = GetComponent<WeaponSlotManager>();
+        rigidBody = GetComponent<Rigidbody>();
         
         ragdollManager = GetComponentInChildren<RagdollManager>();
         characterLockOnPoint = GetComponentInChildren<CharacterLockOnPoint>();
-        
-        //SetupVariables();
     }
 #endif
     private void Awake()
