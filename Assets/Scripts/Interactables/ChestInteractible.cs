@@ -1,3 +1,5 @@
+using Interactables;
+using Player;
 using UnityEngine;
 
 public class ChestInteractible : Interactable

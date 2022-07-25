@@ -1,80 +1,78 @@
 using System;
 using Character;
-using Player;
 using UnityEngine;
-using WeaponManagement;
 
-public class PlayerCombatManager : MonoBehaviour
+namespace Player
 {
-    [SerializeField] private PlayerAnimatorManager playerAnimatorManager;
-    [SerializeField] private PlayerManager playerManager;
-    [SerializeField] private PlayerInventory playerInventory;
-    [SerializeField] private InputHandler inputHandler;
-    [SerializeField] private PlayerStats playerStats;
-    [SerializeField] private WeaponSlotManager weaponSlotManager;
-    [SerializeField] private PlayerEffectsManager playerEffectsManager;
-
-    [SerializeField] private LayerMask riposteLayer;
-
-    private bool startedLoadingBow;
-    public string lastAttack;
-
-    private void OnValidate()
+    public class PlayerCombatManager : MonoBehaviour
     {
-        if (playerAnimatorManager == null)
-            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
-        if (inputHandler == null)
-            inputHandler = GetComponent<InputHandler>();
-        if (playerStats == null)
-            playerStats = GetComponent<PlayerStats>();
-        if (playerManager == null)
-            playerManager = GetComponent<PlayerManager>();
-        if (playerInventory == null)
-            playerInventory = GetComponent<PlayerInventory>();
-        if (weaponSlotManager == null)
-            weaponSlotManager = GetComponent<WeaponSlotManager>();
-        if (playerEffectsManager == null)
-            playerEffectsManager = GetComponent<PlayerEffectsManager>();
-    }
+        public string lastAttack;
+    
+        [SerializeField] private PlayerManager playerManager;
+        [SerializeField] private LayerMask riposteLayer;
 
-    #region Attacking
+        private bool startedLoadingBow;
+        private Camera mainCamera;
 
-    internal void HandleAttacks()
-    {
-        //Player performing weak attack
-        if (inputHandler.weakAttackInput)
+        #region Animator Variables
+
+        private static readonly int CanDoCombo = Animator.StringToHash("canDoCombo");
+        private static readonly int IsHoldingArrow = Animator.StringToHash("isHoldingArrow");
+        private static readonly int IsDrawn = Animator.StringToHash("isDrawn");
+        private static readonly int IsInteracting = Animator.StringToHash("isInteracting");
+        private static readonly int IsBlocking = Animator.StringToHash("isBlocking");
+        private static readonly int IsAiming = Animator.StringToHash("isAiming");
+
+        #endregion
+
+        private void Awake()
         {
-            HandleWeakAttackAction();
+            mainCamera = Camera.main;
         }
 
-        //Player lets go of weak attack button
-        if (inputHandler.attackLetGoInput)
+        private void OnValidate()
         {
-            if (playerManager.isHoldingArrow)
+            if (playerManager == null)
+                playerManager = GetComponent<PlayerManager>();
+        }
+
+        #region Attacking
+
+        internal void HandleAttacks()
+        {
+            //Player performing weak attack
+            if (playerManager.inputHandler.weakAttackInput)
             {
-                FireArrow();
+                HandleWeakAttackAction();
             }
+
+            //Player lets go of weak attack button
+            if (playerManager.inputHandler.attackLetGoInput)
+            {
+                if (playerManager.isHoldingArrow)
+                {
+                    FireArrow();
+                }
+            }
+
+            //Player performing strong attack
+            if (playerManager.inputHandler.strongAttackInput)
+            {
+                //if finisher successful, do not perform attack
+                AttemptFinisher();
+
+                HandleStrongAttackAction();
+            }
+
+            //If the player is not holding an arrow, set the attack let go input to false, this feature exists purely for releasing arrows
+            if (playerManager.inputHandler.attackLetGoInput && !startedLoadingBow)
+                playerManager.inputHandler.attackLetGoInput = false;
         }
 
-        //Player performing strong attack
-        if (inputHandler.strongAttackInput)
+        private void HandleWeaponCombo(WeaponItem weapon, bool isWeakAttack)
         {
-            //if finisher successful, do not perform attack
-            AttemptFinisher();
-
-            HandleStrongAttackAction();
-        }
-
-        //If the player is not holding an arrow, set the attack let go input to false, this feature exists purely for releasing arrows
-        if (inputHandler.attackLetGoInput && !startedLoadingBow)
-            inputHandler.attackLetGoInput = false;
-    }
-
-    private void HandleWeaponCombo(WeaponItem weapon, bool isWeakAttack)
-    {
-        if (inputHandler.comboFlag)
-        {
-            playerAnimatorManager.animator.SetBool("canDoCombo", false);
+            if (!playerManager.inputHandler.comboFlag) return;
+            playerManager.playerAnimatorManager.animator.SetBool(CanDoCombo, false);
 
             #region Attacks
 
@@ -82,406 +80,390 @@ public class PlayerCombatManager : MonoBehaviour
             if (isWeakAttack)
             {
                 //Checks the progress through combos, if not the end play the next one
-                for (int i = 0; i < weapon.weakAttacks.Count; i++)
+                for (var i = 0; i < weapon.weakAttacks.Count; i++)
                 {
-                    if (lastAttack == weapon.weakAttacks[i])
-                    {
-                        //if player has any stamina
-                        if (playerStats.HasStamina())
-                        {
-                            //put the players stamina regen on cooldown
-                            playerStats.PutStaminaRegenOnCooldown();
-                            //Update the last attack
-                            lastAttack = weapon.weakAttacks[i + 1];
-                            //Sets the damage colliders the weapons damage
-                            playerManager.SetDamageColliderDamage(
-                                weapon.baseDamage * weapon.weakAttackDamageMultiplier);
-                            //Play the following animation
-                            playerAnimatorManager.PlayTargetAnimation(lastAttack, true);
-                            break;
-                        }
-                    }
+                    if (lastAttack != weapon.weakAttacks[i]) continue;
+                    //if player has any stamina
+                    if (!playerManager.playerStats.HasStamina()) continue;
+                    //put the players stamina regen on cooldown
+                    playerManager.playerStats.PutStaminaRegenOnCooldown();
+                    //Update the last attack
+                    lastAttack = weapon.weakAttacks[i + 1];
+                    //Sets the damage colliders the weapons damage
+                    playerManager.SetDamageColliderDamage(
+                        weapon.baseDamage * weapon.weakAttackDamageMultiplier);
+                    //Play the following animation
+                    playerManager.playerAnimatorManager.PlayTargetAnimation(lastAttack, true);
+                    break;
                 }
             }
             else
             {
-                for (int i = 0; i < weapon.strongAttacks.Count - 1; i++)
+                for (var i = 0; i < weapon.strongAttacks.Count - 1; i++)
                 {
-                    if (lastAttack == weapon.strongAttacks[i])
-                    {
-                        //if player has any stamina
-                        if (playerStats.HasStamina())
-                        {
-                            //put the players stamina regen on cooldown
-                            playerStats.PutStaminaRegenOnCooldown();
-                            //Update the last attack
-                            lastAttack = weapon.strongAttacks[i + 1];
-                            //Sets the damage colliders the weapons damage
-                            playerManager.SetDamageColliderDamage(
-                                weapon.baseDamage * weapon.strongAttackDamageMultiplier);
-                            //Play the following animation
-                            playerAnimatorManager.PlayTargetAnimation(lastAttack, true);
-                            break;
-                        }
-                    }
+                    if (lastAttack != weapon.strongAttacks[i]) continue;
+                    //if player has any stamina
+                    if (!playerManager.playerStats.HasStamina()) continue;
+                    //put the players stamina regen on cooldown
+                    playerManager.playerStats.PutStaminaRegenOnCooldown();
+                    //Update the last attack
+                    lastAttack = weapon.strongAttacks[i + 1];
+                    //Sets the damage colliders the weapons damage
+                    playerManager.SetDamageColliderDamage(
+                        weapon.baseDamage * weapon.strongAttackDamageMultiplier);
+                    //Play the following animation
+                    playerManager.playerAnimatorManager.PlayTargetAnimation(lastAttack, true);
+                    break;
                 }
             }
 
             #endregion
         }
-    }
 
-    private void HandleWeakAttack(WeaponItem weapon)
-    {
-        //if player has any stamina
-        if (playerStats.HasStamina())
+        private void HandleWeakAttack(WeaponItem weapon)
         {
+            //if player has any stamina
+            if (!playerManager.playerStats.HasStamina()) return;
             //put the players stamina regen on cooldown
-            playerStats.PutStaminaRegenOnCooldown();
-            if (weapon != null)
-            {
-                //only attack if there are available
-                if (weapon.weakAttacks.Count != 0)
-                {
-                    //Sets the damage colliders the weapons damage
-                    playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.weakAttackDamageMultiplier);
-                    //Play animation
-                    playerAnimatorManager.PlayTargetAnimation(weapon.weakAttacks[0], true);
-                    //Update the last attack
-                    lastAttack = weapon.weakAttacks[0];
-                }
-                else
-                    Debug.LogWarning("You are trying to attack with the weapon; " + weapon.name +
-                                     " that does not have any attacks");
-            }
-        }
-    }
-
-    private void HandleStrongAttack(WeaponItem weapon)
-    {
-        if (weapon.strongAttacks.Count == 0)
-            return;
-        //if player has any stamina
-        if (playerStats.HasStamina())
-        {
-            //put the players stamina regen on cooldown
-            playerStats.PutStaminaRegenOnCooldown();
-            if (weapon != null)
+            playerManager.playerStats.PutStaminaRegenOnCooldown();
+            if (weapon == null) return;
+            //only attack if there are available
+            if (weapon.weakAttacks.Count != 0)
             {
                 //Sets the damage colliders the weapons damage
-                playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.strongAttackDamageMultiplier);
+                playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.weakAttackDamageMultiplier);
                 //Play animation
-                playerAnimatorManager.PlayTargetAnimation(weapon.strongAttacks[0], true);
+                playerManager.playerAnimatorManager.PlayTargetAnimation(weapon.weakAttacks[0], true);
                 //Update the last attack
-                lastAttack = weapon.strongAttacks[0];
+                lastAttack = weapon.weakAttacks[0];
+            }
+            else
+                Debug.LogWarning("You are trying to attack with the weapon; " + weapon.name +
+                                 " that does not have any attacks");
+        }
+
+        private void HandleStrongAttack(WeaponItem weapon)
+        {
+            if (weapon.strongAttacks.Count == 0)
+                return;
+            //if player has any stamina
+            if (!playerManager.playerStats.HasStamina()) return;
+            //put the players stamina regen on cooldown
+            playerManager.playerStats.PutStaminaRegenOnCooldown();
+            if (weapon == null) return;
+            //Sets the damage colliders the weapons damage
+            playerManager.SetDamageColliderDamage(weapon.baseDamage * weapon.strongAttackDamageMultiplier);
+            //Play animation
+            playerManager.playerAnimatorManager.PlayTargetAnimation(weapon.strongAttacks[0], true);
+            //Update the last attack
+            lastAttack = weapon.strongAttacks[0];
+        }
+
+        #region Input Actions
+
+        private void HandleWeakAttackAction()
+        {
+            if (playerManager.playerInventory.equippedWeapon == null)
+                return;
+
+            switch (playerManager.playerInventory.equippedWeapon.weaponType)
+            {
+                case WeaponType.TwoHandedSword:
+                    PerformMeleeAction(true);
+                    break;
+                case WeaponType.Polearm:
+                    PerformMeleeAction(true);
+                    break;
+                case WeaponType.Bow:
+                    PerformRangedAmmoCheck();
+                    break;
+                case WeaponType.FlyingMage:
+                    FireMagic();
+                    break;
+                case WeaponType.DualBlades:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
-    }
 
-    #region Input Actions
-
-    private void HandleWeakAttackAction()
-    {
-        if (playerInventory.equippedWeapon == null)
-            return;
-
-        switch (playerInventory.equippedWeapon.weaponType)
+        private void HandleStrongAttackAction()
         {
-            case WeaponType.TwoHandedSword:
-                PerformMeleeAction(true);
-                break;
-            case WeaponType.Polearm:
-                PerformMeleeAction(true);
-                break;
-            case WeaponType.Bow:
-                PerformRangedAmmoCheck();
-                break;
-            case WeaponType.FlyingMage:
-                FireMagic();
-                break;
+            if (playerManager.playerInventory.equippedWeapon == null)
+                return;
+
+            switch (playerManager.playerInventory.equippedWeapon.weaponType)
+            {
+                case WeaponType.TwoHandedSword:
+                    PerformMeleeAction(false);
+                    break;
+                case WeaponType.Polearm:
+                    PerformMeleeAction(false);
+                    break;
+                case WeaponType.Bow:
+                    PerformRangedAmmoCheck();
+                    break;
+                case WeaponType.FlyingMage:
+                    break;
+                case WeaponType.DualBlades:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
-    }
 
-    private void HandleStrongAttackAction()
-    {
-        if (playerInventory.equippedWeapon == null)
-            return;
-
-        switch (playerInventory.equippedWeapon.weaponType)
+        private void HandleParryAction()
         {
-            case WeaponType.TwoHandedSword:
-                PerformMeleeAction(false);
-                break;
-            case WeaponType.Polearm:
-                PerformMeleeAction(false);
-                break;
-            case WeaponType.Bow:
-                PerformRangedAmmoCheck();
-                break;
-            case WeaponType.FlyingMage:
-                break;
+            //FOR FUTURE: check for other types, such as a bow aims instead, staff perhaps smth else
+            if (playerManager.playerInventory.equippedWeapon == null)
+                return;
+
+            if (playerManager.playerInventory.equippedWeapon.canParry)
+            {
+                //perform parry action
+                ParryAction();
+            }
         }
-    }
 
-    private void HandleParryAction()
-    {
-        //FOR FUTURE: check for other types, such as a bow aims instead, staff perhaps smth else
-        if (playerInventory.equippedWeapon == null)
-            return;
+        #endregion
 
-        if (playerInventory.equippedWeapon.canParry)
+        #region Combat Actions
+
+        private void PerformMeleeAction(bool isWeakAttack)
         {
-            //perform parry action
-            ParryAction();
+            //if player is able to perform a combo, go to following attack
+            if (playerManager.canDoCombo)
+            {
+                playerManager.inputHandler.comboFlag = true;
+                HandleWeaponCombo(playerManager.playerInventory.equippedWeapon, isWeakAttack);
+                playerManager.inputHandler.comboFlag = false;
+            }
+            //else, perform starting attack if possible
+            else
+            {
+                if (playerManager.isInteracting)
+                    return;
+
+                if (playerManager.canDoCombo)
+                    return;
+
+                if (isWeakAttack)
+                    HandleWeakAttack(playerManager.playerInventory.equippedWeapon);
+                else
+                    HandleStrongAttack(playerManager.playerInventory.equippedWeapon);
+            }
         }
-    }
 
-    #endregion
-
-    #region Combat Actions
-
-    private void PerformMeleeAction(bool isWeakAttack)
-    {
-        //if player is able to perform a combo, go to following attack
-        if (playerManager.canDoCombo)
+        private void PerformRangedAmmoCheck()
         {
-            inputHandler.comboFlag = true;
-            HandleWeaponCombo(playerInventory.equippedWeapon, isWeakAttack);
-            inputHandler.comboFlag = false;
+            //if player has any stamina
+            if (!playerManager.playerStats.HasStamina()) return;
+            //put the players stamina regen on cooldown
+            playerManager.playerStats.PutStaminaRegenOnCooldown();
+
+            if (playerManager.isHoldingArrow) return;
+            //Check if there is ammo
+            if (playerManager.playerInventory.HasAmmo())
+            {
+                //Draw arrow
+                PerformBowDraw();
+            }
+            else
+            {
+                Debug.Log("No ammo to fire");
+            }
+            
+            //Fire arrow when released
+            //else indicate no ammo
         }
-        //else, perform starting attack if possible
-        else
+
+        private void PerformBowDraw()
+        {
+            //If player does not have an arrow in their inventory, do not proceed
+            if (!playerManager.playerInventory.CheckIfItemCanBeConsumed(playerManager.playerInventory.equippedAmmo))
+                return;
+
+            startedLoadingBow = true;
+            playerManager.playerAnimatorManager.animator.SetBool(IsHoldingArrow, true);
+            playerManager.playerAnimatorManager.PlayTargetAnimation("BowDrawArrow", true);
+
+            Animator bowAnimator = null;
+
+            //Get the bow depending on which hand it is instantiated in
+            if (playerManager.playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
+            {
+                bowAnimator = playerManager.weaponSlotManager.rightHandSlot.GetComponentInChildren<Animator>();
+            }
+            else if (playerManager.playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
+            {
+                bowAnimator = playerManager.weaponSlotManager.leftHandSlot.GetComponentInChildren<Animator>();
+            }
+            else
+                Debug.LogWarning("No bow prefab was found");
+
+            if (bowAnimator != null)
+            {
+                //Animate Bow
+                //set the bool of is drawn to true
+                bowAnimator.SetBool(IsDrawn, true);
+                //play the draw animation
+                bowAnimator.Play("Draw");
+            }
+
+            playerManager.weaponSlotManager.DisplayObjectInHand(playerManager.playerInventory.equippedAmmo.loadedItemModel,
+                false, false);
+        }
+
+        private void FireArrow()
         {
             if (playerManager.isInteracting)
                 return;
 
-            if (playerManager.canDoCombo)
+            //If player does not have an arrow in their inventory, do not proceed
+            if (!playerManager.playerInventory.CheckIfItemCanBeConsumed(playerManager.playerInventory.equippedAmmo))
                 return;
 
-            if (isWeakAttack)
-                HandleWeakAttack(playerInventory.equippedWeapon);
-            else
-                HandleStrongAttack(playerInventory.equippedWeapon);
-        }
-    }
+            ProjectileInstantiationLocation arrowInstantiationLocation = null;
+            Animator bowAnimator = null;
 
-    private void PerformRangedAmmoCheck()
-    {
-        //if player has any stamina
-        if (playerStats.HasStamina())
-        {
-            //put the players stamina regen on cooldown
-            playerStats.PutStaminaRegenOnCooldown();
-
-            if (!playerManager.isHoldingArrow)
+            //Get the bow depending on which hand it is instantiated in
+            if (playerManager.playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
             {
-                //Check if there is ammo
-                if (playerInventory.HasAmmo())
-                {
-                    //Draw arrow
-                    PerformBowDraw();
-                }
-                else
-                {
-                    Debug.Log("No ammo to fire");
-                }
-
-
-                //Fire arrow when released
-                //else indicate no ammo
+                arrowInstantiationLocation =
+                    playerManager.weaponSlotManager.rightHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
+                bowAnimator = playerManager.weaponSlotManager.rightHandSlot.GetComponentInChildren<Animator>();
             }
-        }
-    }
+            else if (playerManager.playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
+            {
+                arrowInstantiationLocation =
+                    playerManager.weaponSlotManager.leftHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
+                bowAnimator = playerManager.weaponSlotManager.leftHandSlot.GetComponentInChildren<Animator>();
+            }
+            else
+                Debug.LogWarning("No bow prefab was found");
 
-    private void PerformBowDraw()
-    {
-        //If player does not have an arrow in their inventory, do not proceed
-        if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.equippedAmmo))
-            return;
+            //Reset players holding arrow
+            playerManager.playerAnimatorManager.PlayTargetAnimation("Fire", true);
+            playerManager.playerAnimatorManager.animator.SetBool(IsHoldingArrow, false);
+            playerManager.inputHandler.attackLetGoInput = false;
+            startedLoadingBow = false;
 
-        startedLoadingBow = true;
-        playerAnimatorManager.animator.SetBool("isHoldingArrow", true);
-        playerAnimatorManager.PlayTargetAnimation("BowDrawArrow", true);
+            if (bowAnimator != null)
+            {
+                //set the bool of is drawn to false
+                bowAnimator.SetBool(IsDrawn, false);
+                //play the fire animation
+                bowAnimator.Play("Fire");
+            }
 
-        Animator bowAnimator = null;
+            //Destroy previous loaded arrow
+            playerManager.weaponSlotManager.HideObjectsInHand(false);
 
-        //Get the bow depending on which hand it is instantiated in
-        if (playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
-        {
-            bowAnimator = weaponSlotManager.rightHandSlot.GetComponentInChildren<Animator>();
-        }
-        else if (playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
-        {
-            bowAnimator = weaponSlotManager.leftHandSlot.GetComponentInChildren<Animator>();
-        }
-        else
-            Debug.LogWarning("No bow prefab was found");
+            //Remove an arrow from inventory
+            playerManager.playerInventory.RemoveItemFromInventory(playerManager.playerInventory.equippedAmmo);
 
-        if (bowAnimator != null)
-        {
-            //Animate Bow
-            //set the bool of is drawn to true
-            bowAnimator.SetBool("isDrawn", true);
-            //play the draw animation
-            bowAnimator.Play("Draw");
-        }
+            //Create live arrow at specific location
+            //TO DO: possibly check to link the rotation up to the camera facing direction
+            if (arrowInstantiationLocation == null) return;
+            var liveArrow = Instantiate(playerManager.playerInventory.equippedAmmo.liveAmmoModel,
+                arrowInstantiationLocation.GetTransform().position, arrowInstantiationLocation.GetTransform().rotation);
+            //Get rigidbody and ranged projectile dmg collider for modifying
+            var rigidbody = liveArrow.GetComponentInChildren<Rigidbody>();
+            var damageCollider = liveArrow.GetComponentInChildren<AmmunitionDamageCollider>();
 
-        weaponSlotManager.DisplayObjectInHand(playerInventory.equippedAmmo.loadedItemModel, false, false);
-    }
+            var arrowRotation = Quaternion.LookRotation(transform.forward);
+            if (playerManager.inputHandler.lockOnFlag)
+            {
+                //While locked on we are always facing target, can copy our facing direction to our arrows facing direction
+                liveArrow.transform.rotation = arrowRotation;
+            }
+            else
+            {
+                if (mainCamera != null)
+                    liveArrow.transform.rotation = Quaternion.Euler(mainCamera.transform.eulerAngles.x,
+                        playerManager.aimTransform.transform.eulerAngles.y, 0);
+            }
 
-    private void FireArrow()
-    {
-        if (playerManager.isInteracting)
-            return;
+            //give ammo rigidbody its values
+            rigidbody.AddForce(liveArrow.transform.forward * playerManager.playerInventory.equippedAmmo.forwardVelocity);
+            rigidbody.AddForce(liveArrow.transform.up * playerManager.playerInventory.equippedAmmo.upwardVelocity);
+            rigidbody.useGravity = playerManager.playerInventory.equippedAmmo.useGravity;
+            rigidbody.mass = playerManager.playerInventory.equippedAmmo.ammoMass;
+            liveArrow.transform.parent = null;
 
-        //If player does not have an arrow in their inventory, do not proceed
-        if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.equippedAmmo))
-            return;
+            //set live arrow damage
+            damageCollider.characterManager = playerManager;
+            damageCollider.ammoItem = playerManager.playerInventory.equippedAmmo;
+            damageCollider.currentDamage = playerManager.playerInventory.equippedAmmo.physicalDamage;
 
-        ProjectileInstantiationLocation arrowInstantiationLocation = null;
-        Animator bowAnimator = null;
-
-        //Get the bow depending on which hand it is instantiated in
-        if (playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
-        {
-            arrowInstantiationLocation =
-                weaponSlotManager.rightHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
-            bowAnimator = weaponSlotManager.rightHandSlot.GetComponentInChildren<Animator>();
-        }
-        else if (playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
-        {
-            arrowInstantiationLocation =
-                weaponSlotManager.leftHandSlot.GetComponentInChildren<ProjectileInstantiationLocation>();
-            bowAnimator = weaponSlotManager.leftHandSlot.GetComponentInChildren<Animator>();
-        }
-        else
-            Debug.LogWarning("No bow prefab was found");
-
-        //Reset players holding arrow
-        playerAnimatorManager.PlayTargetAnimation("Fire", true);
-        playerAnimatorManager.animator.SetBool("isHoldingArrow", false);
-        inputHandler.attackLetGoInput = false;
-        startedLoadingBow = false;
-
-        if (bowAnimator != null)
-        {
-            //set the bool of is drawn to false
-            bowAnimator.SetBool("isDrawn", false);
-            //play the fire animation
-            bowAnimator.Play("Fire");
+            //animate the bow firing the arrow
         }
 
-        //Destroy previous loaded arrow
-        weaponSlotManager.HideObjectsInHand(false);
-
-        //Remove an arrow from inventroy
-        playerInventory.RemoveItemFromInventory(playerInventory.equippedAmmo);
-
-        //Create live arrow at specific location
-        //TO DO: possibly check to link the rotation up to the camera facing direction
-        GameObject liveArrow = Instantiate(playerInventory.equippedAmmo.liveAmmoModel,
-            arrowInstantiationLocation.GetTransform().position, arrowInstantiationLocation.GetTransform().rotation);
-        //Get rigidbody and rangedprojectiledmgcollider for modifying
-        Rigidbody rigidbody = liveArrow.GetComponentInChildren<Rigidbody>();
-        AmmunitionDamageCollider damageCollider = liveArrow.GetComponentInChildren<AmmunitionDamageCollider>();
-
-        if (inputHandler.lockOnFlag)
+        private void FireMagic()
         {
-            //While locked on we are always facing target, can copy our facing direction to our arrows facing direction
-            Quaternion arrowRotation = Quaternion.LookRotation(transform.forward);
-            liveArrow.transform.rotation = arrowRotation;
-        }
-        else
-        {
-            liveArrow.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x,
-                playerManager.aimTransform.transform.eulerAngles.y, 0);
-        }
+            if (playerManager.isInteracting)
+                return;
 
-        //give ammo rigidbody its values
-        rigidbody.AddForce(liveArrow.transform.forward * playerInventory.equippedAmmo.forwardVelocity);
-        rigidbody.AddForce(liveArrow.transform.up * playerInventory.equippedAmmo.upwardVelocity);
-        rigidbody.useGravity = playerInventory.equippedAmmo.useGravity;
-        rigidbody.mass = playerInventory.equippedAmmo.ammoMass;
-        liveArrow.transform.parent = null;
+            //If player does not have an arrow in their inventory, do not proceed
+            if (!playerManager.playerInventory.CheckIfItemCanBeConsumed(playerManager.playerInventory.equippedAmmo))
+                return;
 
-        //set live arrow damage
-        damageCollider.characterManager = playerManager;
-        damageCollider.ammoItem = playerInventory.equippedAmmo;
-        damageCollider.currentDamage = playerInventory.equippedAmmo.physicalDamage;
-        //animate the bow firing the arrow
-    }
-
-    private void FireMagic()
-    {
-        if (playerManager.isInteracting)
-            return;
-
-        //If player does not have an arrow in their inventory, do not proceed
-        if (!playerInventory.CheckIfItemCanBeConsumed(playerInventory.equippedAmmo))
-            return;
-
-        if (playerInventory.equippedWeapon is SpellcasterWeaponItem spellcasterWeapon)
-        {
+            if (!(playerManager.playerInventory.equippedWeapon is SpellcasterWeaponItem spellcasterWeapon)) return;
             switch (spellcasterWeapon.magicWeaponCostType)
             {
                 case SpellType.none:
                     break;
+                case SpellType.biomancy when playerManager.playerStats.HasEnoughMoonlight(spellcasterWeapon.magicAttackCost):
+                    playerManager.playerStats.ConsumeStoredMoonlight(spellcasterWeapon.magicAttackCost);
+                    break;
                 case SpellType.biomancy:
-                    if (playerStats.HasEnoughMoonlight(spellcasterWeapon.magicAttackCost))
-                    {
-                        playerStats.ConsumeStoredMoonlight(spellcasterWeapon.magicAttackCost);
-                    }
-                    else
-                        return;
-
+                    return;
+                case SpellType.pyromancy when playerManager.playerStats.HasEnoughSunlight(spellcasterWeapon.magicAttackCost):
+                    playerManager.playerStats.ConsumeStoredSunlight(spellcasterWeapon.magicAttackCost);
                     break;
                 case SpellType.pyromancy:
-                    if (playerStats.HasEnoughSunlight(spellcasterWeapon.magicAttackCost))
-                    {
-                        playerStats.ConsumeStoredSunlight(spellcasterWeapon.magicAttackCost);
-                    }
-                    else
-                        return;
-
-                    break;
+                    return;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             ProjectileInstantiationLocation spellInstantiationLocation = null;
 
             //Get the spell weapon depending on which hand it is instantiated in
-            if (playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
+            if (playerManager.playerInventory.equippedWeapon.rightWeaponModelPrefab != null)
             {
-                spellInstantiationLocation = weaponSlotManager.rightHandSlot
+                spellInstantiationLocation = playerManager.weaponSlotManager.rightHandSlot
                     .GetComponentInChildren<ProjectileInstantiationLocation>();
             }
-            else if (playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
+            else if (playerManager.playerInventory.equippedWeapon.leftWeaponModelPrefab != null)
             {
-                spellInstantiationLocation = weaponSlotManager.leftHandSlot
+                spellInstantiationLocation = playerManager.weaponSlotManager.leftHandSlot
                     .GetComponentInChildren<ProjectileInstantiationLocation>();
             }
             else
                 Debug.LogWarning("No projectile prefab was found");
 
-            playerAnimatorManager.PlayTargetAnimation("Fire", true);
+            playerManager.playerAnimatorManager.PlayTargetAnimation("Fire", true);
 
             //Create live arrow at specific location
             //TO DO: possibly check to link the rotation up to the camera facing direction
-            GameObject spellParticle = Instantiate(spellcasterWeapon.attackData.liveProjectileModel,
+            var spellParticle = Instantiate(spellcasterWeapon.attackData.liveProjectileModel,
                 spellInstantiationLocation.GetTransform().position, spellInstantiationLocation.GetTransform().rotation);
-            //Get rigidbody and rangedprojectiledmgcollider for modifying
-            Rigidbody rigidbody = spellParticle.GetComponentInChildren<Rigidbody>();
-            ProjectileDamageCollider damageCollider = spellParticle.GetComponentInChildren<ProjectileDamageCollider>();
+            //Get rigidbody and ranged projectile dmg collider for modifying
+            var rigidbody = spellParticle.GetComponentInChildren<Rigidbody>();
+            var damageCollider = spellParticle.GetComponentInChildren<ProjectileDamageCollider>();
 
-            if (inputHandler.lockOnFlag)
+            var arrowRotation = Quaternion.LookRotation(transform.forward);
+            if (playerManager.inputHandler.lockOnFlag)
             {
                 //While locked on we are always facing target, can copy our facing direction to our arrows facing direction
-                Quaternion arrowRotation = Quaternion.LookRotation(transform.forward);
                 spellParticle.transform.rotation = arrowRotation;
             }
             else
             {
-                spellParticle.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x,
-                    playerManager.characterLockOnPoint.transform.eulerAngles.y, 0);
+                if (mainCamera != null)
+                    spellParticle.transform.rotation = Quaternion.Euler(mainCamera.transform.eulerAngles.x,
+                        playerManager.characterLockOnPoint.transform.eulerAngles.y, 0);
             }
 
             //give ammo rigidbody its values
@@ -496,155 +478,149 @@ public class PlayerCombatManager : MonoBehaviour
             damageCollider.currentDamage = spellcasterWeapon.baseDamage;
             //animate the bow firing the arrow
         }
-    }
 
-    private void AttemptFinisher()
-    {
-        if (playerAnimatorManager.animator.GetBool("isInteracting"))
-            return;
-
-        if (playerManager.finisherAttackRayCastStartPointTransform == null)
-            return;
-
-        RaycastHit hit;
-
-        if (Physics.Raycast(playerManager.finisherAttackRayCastStartPointTransform.position,
-            transform.TransformDirection(Vector3.forward), out hit, 0.7f, riposteLayer))
+        private void AttemptFinisher()
         {
-            CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponentInParent<CharacterManager>();
-            DamageCollider rightWeaponDamageCollider = weaponSlotManager.rightHandDamageCollider;
-
-            if (enemyCharacterManager != null && enemyCharacterManager.canBeRiposted)
-            {
-                //Check for team i.d (so cant back stab allies/self)
-                //pull into a transform in front of the enemy so the riposte looks clean
-                enemyCharacterManager.riposteCollider.LerpToPoint(playerManager.transform);
-                //rotate towards that transform
-                Vector3 rotationDirection;
-                rotationDirection = hit.transform.position - playerManager.transform.position;
-                rotationDirection.y = 0;
-                rotationDirection.Normalize();
-                Quaternion tr = Quaternion.LookRotation(rotationDirection);
-                Quaternion targetRotation =
-                    Quaternion.Slerp(playerManager.transform.rotation, tr, 500 * Time.deltaTime);
-                playerManager.transform.rotation = targetRotation;
-
-                float criticalDamage = playerInventory.equippedWeapon.finisherDamageMultiplier *
-                                       rightWeaponDamageCollider.currentDamage;
-                enemyCharacterManager.pendingFinisherDamage = criticalDamage;
-                //play animation
-                playerAnimatorManager.PlayTargetAnimation("Riposte", true);
-                //make enemy play animation
-                enemyCharacterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Riposted", true);
-                //do damage
+            if (playerManager.playerAnimatorManager.animator.GetBool(IsInteracting))
                 return;
+
+            if (playerManager.finisherAttackRayCastStartPointTransform == null)
+                return;
+
+            if (!Physics.Raycast(playerManager.finisherAttackRayCastStartPointTransform.position,
+                transform.TransformDirection(Vector3.forward), out var hit, 0.7f, riposteLayer)) return;
+            var enemyCharacterManager = hit.transform.gameObject.GetComponentInParent<CharacterManager>();
+            var rightWeaponDamageCollider = playerManager.weaponSlotManager.rightHandDamageCollider;
+
+            if (enemyCharacterManager == null || !enemyCharacterManager.canBeRiposted) return;
+            //Check for team i.d (so cant back stab allies/self)
+            //pull into a transform in front of the enemy so the riposte looks clean
+            enemyCharacterManager.riposteCollider.LerpToPoint(playerManager.transform);
+            //rotate towards that transform
+            var rotationDirection = hit.transform.position - playerManager.transform.position;
+            rotationDirection.y = 0;
+            rotationDirection.Normalize();
+            var tr = Quaternion.LookRotation(rotationDirection);
+            var targetRotation =
+                Quaternion.Slerp(playerManager.transform.rotation, tr, 500 * Time.deltaTime);
+            playerManager.transform.rotation = targetRotation;
+
+            var criticalDamage = playerManager.playerInventory.equippedWeapon.finisherDamageMultiplier *
+                                 rightWeaponDamageCollider.currentDamage;
+            enemyCharacterManager.pendingFinisherDamage = criticalDamage;
+            //play animation
+            playerManager.playerAnimatorManager.PlayTargetAnimation("Riposte", true);
+            //make enemy play animation
+            enemyCharacterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Riposted", true);
+            //do damage
+            return;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Special Actions
+
+        /// <summary>
+        /// Manages special abilities such as blocking or aiming
+        /// </summary>
+        internal void HandleWeaponSpecificAbilities()
+        {
+            HandleParryAction();
+
+            if (playerManager.playerInventory.equippedWeapon == null)
+                return;
+
+            switch (playerManager.playerInventory.equippedWeapon.weaponType)
+            {
+                case WeaponType.TwoHandedSword:
+                    BlockAction();
+                    break;
+                case WeaponType.Polearm:
+                    BlockAction();
+                    break;
+                case WeaponType.Bow:
+                    AimAction();
+                    break;
+                case WeaponType.FlyingMage:
+                    AimAction();
+                    break;
+                case WeaponType.DualBlades:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
-    }
 
-    #endregion
-
-    #endregion
-
-    #region Special Actions
-
-    /// <summary>
-    /// Manages special abilities such as blocking or aiming
-    /// </summary>
-    internal void HandleWeaponSpecificAbilities()
-    {
-        HandleParryAction();
-
-        if (playerInventory.equippedWeapon == null)
-            return;
-
-        switch (playerInventory.equippedWeapon.weaponType)
+        private void ParryAction()
         {
-            case WeaponType.TwoHandedSword:
-                BlockAction();
-                break;
-            case WeaponType.Polearm:
-                BlockAction();
-                break;
-            case WeaponType.Bow:
-                AimAction();
-                break;
-            case WeaponType.FlyingMage:
-                AimAction();
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void ParryAction()
-    {
-        if (inputHandler.parryInput)
-        {
+            if (!playerManager.inputHandler.parryInput) return;
             if (playerManager.isInteracting)
                 return;
 
-            playerAnimatorManager.PlayTargetAnimation(playerInventory.equippedWeapon.parry, true);
+            playerManager.playerAnimatorManager.PlayTargetAnimation(playerManager.playerInventory.equippedWeapon.parry,
+                true);
         }
+
+        private void BlockAction()
+        {
+            if (playerManager.inputHandler.blockInput)
+            {
+                //Prevent blocking if is already performing another action
+                if (playerManager.isInteracting)
+                    return;
+
+                //Prevent blocking if is already blocking
+                if (playerManager.isBlocking)
+                    return;
+
+                //Set blocking to true
+                playerManager.playerAnimatorManager.animator.SetBool(IsBlocking, true);
+
+                //Begin blocking
+                playerManager.playerAnimatorManager.animator.Play("BlockStart");
+
+                playerManager.playerStats.OpenBlockingCollider(playerManager.playerInventory);
+            }
+            else
+            {
+                //Set blocking to false
+                playerManager.playerAnimatorManager.animator.SetBool(IsBlocking, false);
+            }
+        }
+
+        private void AimAction()
+        {
+            if (playerManager.inputHandler.blockInput)
+            {
+                //Prevent aiming if is already performing another action
+                if (playerManager.isInteracting)
+                    return;
+
+                //Prevent aiming if is already aiming
+                if (playerManager.isAiming)
+                    return;
+
+                playerManager.playerAnimatorManager.animator.SetBool(IsAiming, true);
+
+                //disable lock on
+                playerManager.inputHandler.lockOnFlag = false;
+
+                EventManager.currentManager.AddEvent(new SwapToAimCamera());
+            }
+            else
+            {
+                //Prevent exiting aiming if not in aim mode
+                if (!playerManager.isAiming)
+                    return;
+
+                playerManager.playerAnimatorManager.animator.SetBool(IsAiming, false);
+
+                EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
+            }
+        }
+
+        #endregion
     }
-
-    private void BlockAction()
-    {
-        if (inputHandler.blockInput)
-        {
-            //Prevent blocking if is already performing another action
-            if (playerManager.isInteracting)
-                return;
-
-            //Prevent blocking if is already blocking
-            if (playerManager.isBlocking)
-                return;
-
-            //Set blocking to true
-            playerAnimatorManager.animator.SetBool("isBlocking", true);
-
-            //Begin blocking
-            playerAnimatorManager.animator.Play("BlockStart");
-
-            playerStats.OpenBlockingCollider(playerInventory);
-        }
-        else
-        {
-            //Set blocking to false
-            playerAnimatorManager.animator.SetBool("isBlocking", false);
-        }
-    }
-
-    private void AimAction()
-    {
-        if (inputHandler.blockInput)
-        {
-            //Prevent aiming if is already performing another action
-            if (playerManager.isInteracting)
-                return;
-
-            //Prevent aiming if is already aiming
-            if (playerManager.isAiming)
-                return;
-
-            playerAnimatorManager.animator.SetBool("isAiming", true);
-
-            //disable lock on
-            inputHandler.lockOnFlag = false;
-
-            EventManager.currentManager.AddEvent(new SwapToAimCamera());
-        }
-        else
-        {
-            //Prevent exiting aiming if not in aim mode
-            if (!playerManager.isAiming)
-                return;
-
-            playerAnimatorManager.animator.SetBool("isAiming", false);
-
-            EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
-        }
-    }
-
-    #endregion
 }

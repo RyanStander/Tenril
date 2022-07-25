@@ -1,41 +1,49 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimatorManager : AnimatorManager
+namespace Player
 {
-    private void Awake()
+    public class PlayerAnimatorManager : AnimatorManager
     {
-        animator = GetComponent<Animator>();
-    }
+        #region Animator Fields
 
-    public void EnableCombo()
-    {
-        animator.SetBool("canDoCombo", true);
-    }
+        private static readonly int CanDoCombo = Animator.StringToHash("canDoCombo");
+        private static readonly int IsInteracting = Animator.StringToHash("isInteracting");
 
-    public void DisableCombo()
-    {
-        animator.SetBool("canDoCombo", false);
-    }
+        #endregion
 
-    public void EnableIsInteracting()
-    {
-        animator.SetBool("isInteracting", true);
-    }
+        private void Awake()
+        {
+            animator = GetComponent<Animator>();
+        }
 
-    public void DisableIsInteracting()
-    {
-        animator.SetBool("isInteracting", false);
-    }
+        public void EnableCombo()
+        {
+            animator.SetBool(CanDoCombo, true);
+        }
 
-    public override void TakeFinisherDamageAnimationEvent()
-    {
-        base.TakeFinisherDamageAnimationEvent();
+        public void DisableCombo()
+        {
+            animator.SetBool(CanDoCombo, false);
+        }
 
-        PlayerManager playerManager = GetComponent<PlayerManager>();
+        public void EnableIsInteracting()
+        {
+            animator.SetBool(IsInteracting, true);
+        }
 
-        GetComponent<PlayerStats>().TakeDamage(playerManager.pendingFinisherDamage, false);
-        playerManager.pendingFinisherDamage = 0;
+        public void DisableIsInteracting()
+        {
+            animator.SetBool(IsInteracting, false);
+        }
+
+        public override void TakeFinisherDamageAnimationEvent()
+        {
+            base.TakeFinisherDamageAnimationEvent();
+
+            var playerManager = GetComponent<PlayerManager>();
+
+            GetComponent<PlayerStats>().TakeDamage(playerManager.pendingFinisherDamage, false);
+            playerManager.pendingFinisherDamage = 0;
+        }
     }
 }

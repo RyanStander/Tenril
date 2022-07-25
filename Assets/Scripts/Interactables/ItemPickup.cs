@@ -1,43 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
+using Player;
 
-public class ItemPickup : Interactable
+namespace Interactables
 {
-    public Item item;
-    public int amountOfItem=1;
-    protected PlayerInventory playerInventory;
-
-    public override void Interact(PlayerManager playerManager)
+    public class ItemPickup : Interactable
     {
-        base.Interact(playerManager);
+        public Item item;
+        public int amountOfItem=1;
 
-        PickUpItem(playerManager);
-    }
+        public override void Interact(PlayerManager playerManager)
+        {
+            base.Interact(playerManager);
 
-    protected virtual void PickUpItem(PlayerManager playerManager)
-    {
-        PlayerAnimatorManager playerAnimatorManager;
-        PlayerInteraction playerInteraction;
+            PickUpItem(playerManager);
+        }
 
-        playerInventory = playerManager.GetComponent<PlayerInventory>();
-        playerAnimatorManager = playerManager.GetComponent<PlayerAnimatorManager>();
-        playerInteraction = playerManager.GetComponent<PlayerInteraction>();
+        protected virtual void PickUpItem(PlayerManager playerManager)
+        {
+            //Plays the animation of picking up item
+            playerManager.playerAnimatorManager.PlayTargetAnimation("PickUp", true);
 
-        //Plays the animation of picking up item
-        playerAnimatorManager.PlayTargetAnimation("PickUp", true);
+            //Add Item to inventory
+            playerManager.playerInventory.AddItemToInventory(item,amountOfItem);
 
-        //Add Item to inventory
-        playerInventory.AddItemToInventory(item,amountOfItem);
+            EventManager.currentManager.AddEvent(new PlayerObtainedItem(item,amountOfItem));
 
-        EventManager.currentManager.AddEvent(new PlayerObtainedItem(item,amountOfItem));
-
-        //Enable the game object
-        //playerInteraction.itemPopUp.SetActive(true);
-
-        //Destroy the interactable after pick up
-        Destroy(gameObject);
+            //Destroy the interactable after pick up
+            Destroy(gameObject);
+        }
     }
 }

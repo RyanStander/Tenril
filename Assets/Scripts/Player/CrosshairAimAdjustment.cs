@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Cinemachine
@@ -18,18 +19,18 @@ namespace Cinemachine
         /// <summary>Objects on these layers will be detected.</summary>
         [Header("Aim Target Detection")]
         [Tooltip("Objects on these layers will be detected")]
-        public LayerMask AimCollisionFilter;
+        public LayerMask aimCollisionFilter;
 
         /// <summary>Objects with this tag will be ignored.  
         /// It is a good idea to set this field to the target's tag.</summary>
         [TagField]
         [Tooltip("Objects with this tag will be ignored.  "
             + "It is a good idea to set this field to the target's tag")]
-        public string IgnoreTag = string.Empty;
+        public string ignoreTag = string.Empty;
 
         /// <summary>How far to project the object detection ray.</summary>
         [Tooltip("How far to project the object detection ray")]
-        public float AimDistance;
+        public float aimDistance;
 
         /// <summary>This 2D object will be positioned in the game view over the raycast hit point, 
         /// if any, or will remain in the center of the screen if no hit point is 
@@ -37,21 +38,20 @@ namespace Cinemachine
         [Tooltip("This 2D object will be positioned in the game view over the raycast hit point, if any, "
             + "or will remain in the center of the screen if no hit point is detected.  "
             + "May be null, in which case no on-screen indicator will appear")]
-        public RectTransform AimTargetReticle;
-
-
+        public RectTransform aimTargetReticle;
+        
         private Vector3 referenceLookAt;
         private void OnValidate()
         {
-            AimDistance = Mathf.Max(1, AimDistance);
+            aimDistance = Mathf.Max(1, aimDistance);
         }
 
         private void Reset()
         {
-            AimCollisionFilter = 1;
-            IgnoreTag = string.Empty;
-            AimDistance = 200.0f;
-            AimTargetReticle = null;
+            aimCollisionFilter = 1;
+            ignoreTag = string.Empty;
+            aimDistance = 200.0f;
+            aimTargetReticle = null;
         }
 
         /// <summary>Notification that this virtual camera is going live.</summary>
@@ -67,30 +67,28 @@ namespace Cinemachine
             return false;
         }
 
-        void DrawReticle(CinemachineBrain brain)
+        private void DrawReticle(CinemachineBrain brain)
         {
             if (!brain.IsLive(VirtualCamera) || brain.OutputCamera == null)
                 CinemachineCore.CameraUpdatedEvent.RemoveListener(DrawReticle);
             else
             {
                 var player = VirtualCamera.Follow;
-                if (AimTargetReticle != null && player != null)
-                {
-                    // Adjust for actual player aim target (may be different due to offset)
-                    var playerPos = player.position;
-                    var aimTarget = referenceLookAt;
-                    var dir = aimTarget - playerPos;
-                    if (RuntimeUtility.RaycastIgnoreTag(new Ray(playerPos, dir),
-                            out RaycastHit hitInfo, dir.magnitude, AimCollisionFilter, IgnoreTag))
-                        aimTarget = hitInfo.point;
-                    AimTargetReticle.position = brain.OutputCamera.WorldToScreenPoint(aimTarget);
-                }
+                if (aimTargetReticle == null || player == null) return;
+                // Adjust for actual player aim target (may be different due to offset)
+                var playerPos = player.position;
+                var aimTarget = referenceLookAt;
+                var dir = aimTarget - playerPos;
+                if (RuntimeUtility.RaycastIgnoreTag(new Ray(playerPos, dir),
+                    out var hitInfo, dir.magnitude, aimCollisionFilter, ignoreTag))
+                    aimTarget = hitInfo.point;
+                aimTargetReticle.position = brain.OutputCamera.WorldToScreenPoint(aimTarget);
             }
         }
 
-        Vector3 GetLookAtPoint(Vector3 camPos)
+        private Vector3 GetLookAtPoint(Vector3 camPos)
         {
-            var aimDistance = AimDistance;
+            var aimDistance = this.aimDistance;
             var player = VirtualCamera.Follow;
 
             // We don't want to hit targets behind the player
@@ -108,8 +106,8 @@ namespace Cinemachine
             }
 
             aimDistance = Mathf.Max(1, aimDistance);
-            bool hasHit = RuntimeUtility.RaycastIgnoreTag(new Ray(camPos, fwd),
-                out RaycastHit hitInfo, aimDistance, AimCollisionFilter, IgnoreTag);
+            var hasHit = RuntimeUtility.RaycastIgnoreTag(new Ray(camPos, fwd),
+                out var hitInfo, aimDistance, aimCollisionFilter, ignoreTag);
             return hasHit ? hitInfo.point : camPos + fwd * aimDistance;
         }
 
@@ -125,19 +123,29 @@ namespace Cinemachine
             CinemachineVirtualCameraBase vcam,
             CinemachineCore.Stage stage, ref CameraState state, float deltaTime)
         {
-            if (stage == CinemachineCore.Stage.Body)
+            switch (stage)
             {
-                // Raycast to establish what we're actually aiming at
-                referenceLookAt = GetLookAtPoint(state.CorrectedPosition);
-            }
-            if (stage == CinemachineCore.Stage.Finalize)
-            {
-                var dir = referenceLookAt - state.FinalPosition;
-                if (dir.sqrMagnitude > 0.01f)
+                case CinemachineCore.Stage.Body:
+                    // Raycast to establish what we're actually aiming at
+                    referenceLookAt = GetLookAtPoint(state.CorrectedPosition);
+                    break;
+                case CinemachineCore.Stage.Finalize:
                 {
-                    state.RawOrientation = Quaternion.LookRotation(dir, state.ReferenceUp);
-                    state.OrientationCorrection = Quaternion.identity;
+                    var dir = referenceLookAt - state.FinalPosition;
+                    if (dir.sqrMagnitude > 0.01f)
+                    {
+                        state.RawOrientation = Quaternion.LookRotation(dir, state.ReferenceUp);
+                        state.OrientationCorrection = Quaternion.identity;
+                    }
+
+                    break;
                 }
+                case CinemachineCore.Stage.Aim:
+                    break;
+                case CinemachineCore.Stage.Noise:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(stage), stage, null);
             }
         }
     }

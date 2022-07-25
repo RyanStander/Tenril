@@ -1,23 +1,26 @@
 using UnityEngine;
 
-public class MouseLock : MonoBehaviour
+namespace Player
 {
-    [SerializeField] private bool mouseLockEnabled=false;
-    // locks the mouse if its enabled
-    private void Start()
+    public class MouseLock : MonoBehaviour
     {
-        MouseLockCheck();
-    }
-
-    private void MouseLockCheck()
-    {
-        if (mouseLockEnabled)
+        [SerializeField] private bool mouseLockEnabled;
+        // locks the mouse if its enabled
+        private void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            return;
+            MouseLockCheck();
         }
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+
+        private void MouseLockCheck()
+        {
+            if (mouseLockEnabled)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                return;
+            }
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 }
