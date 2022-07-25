@@ -74,7 +74,7 @@ public class CameraManager : MonoBehaviour
                 cinemachineVirtualCamera.Follow = GameObject.FindGameObjectWithTag("CameraFollowTarget").transform;
 
             if (aimCamera.TryGetComponent(out CrosshairAimAdjustment crosshair))
-                crosshair.AimTargetReticle = GameObject.FindGameObjectWithTag("Crosshair").GetComponent<RectTransform>();
+                crosshair.aimTargetReticle = GameObject.FindGameObjectWithTag("Crosshair").GetComponent<RectTransform>();
         }
     }
 
