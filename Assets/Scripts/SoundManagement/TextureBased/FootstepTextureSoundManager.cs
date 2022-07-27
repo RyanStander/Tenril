@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -41,7 +40,7 @@ public class FootstepTextureSoundManager : MonoBehaviour
     /// <param name="textureSounds">The collection of texture sounds being checked.</param>
     /// </summary>
     /// <returns>A list of audio clip pairs based on the ground texture.</returns>
-    public List<ClipVolumePair> GetFootstepTextureSound(TextureSounds[] textureSounds)
+    public List<ClipVolumePair> GetGroundTextureSound(TextureSounds[] textureSounds)
     {
         // Calculate the origin to create a ray from.
         Vector3 origin = transform.position + (Vector3.up / 2);

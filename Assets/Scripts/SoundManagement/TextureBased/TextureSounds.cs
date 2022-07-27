@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Data class for sounds assosiated with given textures.
 /// </summary>
-[CreateAssetMenu(menuName = "Sounds/TextureSound")]
+[CreateAssetMenu(menuName = "Sounds/TextureBased/TextureSound")]
 [Serializable]
 public class TextureSounds : ScriptableObject
 {

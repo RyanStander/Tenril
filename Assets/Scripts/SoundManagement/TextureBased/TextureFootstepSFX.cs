@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Holder object for the different texture sound footstep types for characters.
 /// </summary>
-[CreateAssetMenu(menuName = "Sounds/TextureFootstepSFX")]
+[CreateAssetMenu(menuName = "Sounds/TextureBased/TextureFootstepSFX")]
 [Serializable]
 public class TextureFootstepSFX : ScriptableObject
 {

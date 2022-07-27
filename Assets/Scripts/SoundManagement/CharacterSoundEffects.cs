@@ -13,7 +13,8 @@ public class CharacterSoundEffects : ScriptableObject
 
     [Header("SFX")]
     public TextureFootstepSFX footstepSFX;
-    public AudioClipData jumpSFX,landSFX,dodgeSFX,rollSFX;
+    public TextureJumpCycleSFX jumpCycleSFX;
+    public AudioClipData dodgeSFX,rollSFX;
 }
 
 [System.Serializable]

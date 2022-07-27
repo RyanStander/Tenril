@@ -97,17 +97,17 @@ public class CharacterSoundManager : MonoBehaviour
         // If character sprinting forward.
         if (forward==-2f || forward== 2f)
         {
-            PlayFootstepSoundClip(footstepTextureSoundManager.GetFootstepTextureSound(characterSoundEffectSet.footstepSFX.SprintingSounds));
+            PlayPairSoundClips(footstepTextureSoundManager.GetGroundTextureSound(characterSoundEffectSet.footstepSFX.SprintingSounds), characterSoundEffectSet.footstepSFX.UndefinedFootstepsSounds);
         }
         // If character running forward.
         else if ((forward==1f&&actualForward<= 1f) ||(forward==-1f && actualForward >= -1f))
         {
-            PlayFootstepSoundClip(footstepTextureSoundManager.GetFootstepTextureSound(characterSoundEffectSet.footstepSFX.RunningSounds));
+            PlayPairSoundClips(footstepTextureSoundManager.GetGroundTextureSound(characterSoundEffectSet.footstepSFX.RunningSounds), characterSoundEffectSet.footstepSFX.UndefinedFootstepsSounds);
         }
         // If character walking forward.
         else if ((forward == 0.5f &&actualForward<=0.5f) || (forward == -0.5f && actualForward >= -0.5f))
         {
-            PlayFootstepSoundClip(footstepTextureSoundManager.GetFootstepTextureSound(characterSoundEffectSet.footstepSFX.WalkingSounds));
+            PlayPairSoundClips(footstepTextureSoundManager.GetGroundTextureSound(characterSoundEffectSet.footstepSFX.WalkingSounds), characterSoundEffectSet.footstepSFX.UndefinedFootstepsSounds);
         }
     }
 
@@ -129,12 +129,12 @@ public class CharacterSoundManager : MonoBehaviour
         // If character running left.
         if ((left == 1 && actualLeft <= 1)||(left==-1&&actualLeft>=-1))
         {
-            PlayFootstepSoundClip(footstepTextureSoundManager.GetFootstepTextureSound(characterSoundEffectSet.footstepSFX.RunningSounds));
+            PlayPairSoundClips(footstepTextureSoundManager.GetGroundTextureSound(characterSoundEffectSet.footstepSFX.RunningSounds), characterSoundEffectSet.footstepSFX.UndefinedFootstepsSounds);
         }
         // If character walking left.
         else if ((left == 0.5f && actualLeft <= 0.5f)|| (left == -0.5f && actualLeft >= -0.5f))
         {
-            PlayFootstepSoundClip(footstepTextureSoundManager.GetFootstepTextureSound(characterSoundEffectSet.footstepSFX.WalkingSounds));
+            PlayPairSoundClips(footstepTextureSoundManager.GetGroundTextureSound(characterSoundEffectSet.footstepSFX.WalkingSounds), characterSoundEffectSet.footstepSFX.UndefinedFootstepsSounds);
         }
     }
 
@@ -151,17 +151,17 @@ public class CharacterSoundManager : MonoBehaviour
         // If character sprinting forward.
         if (forward == -2 || forward == 2)
         {
-            PlayFootstepSoundClip(footstepTextureSoundManager.GetFootstepTextureSound(characterSoundEffectSet.footstepSFX.SprintingSounds));
+            PlayPairSoundClips(footstepTextureSoundManager.GetGroundTextureSound(characterSoundEffectSet.footstepSFX.SprintingSounds), characterSoundEffectSet.footstepSFX.UndefinedFootstepsSounds);
         }
         // If character running forward.
         else if ((forward == 1 && actualForward <= 1) || (forward == -1 && actualForward >= -1))
         {
-            PlayFootstepSoundClip(footstepTextureSoundManager.GetFootstepTextureSound(characterSoundEffectSet.footstepSFX.RunningSounds));
+            PlayPairSoundClips(footstepTextureSoundManager.GetGroundTextureSound(characterSoundEffectSet.footstepSFX.RunningSounds), characterSoundEffectSet.footstepSFX.UndefinedFootstepsSounds);
         }
         // If character walking forward.
         else if ((forward == 0.5f && actualForward <= 0.5f) || (forward == -0.5f && actualForward >= -0.5f))
         {
-            PlayFootstepSoundClip(footstepTextureSoundManager.GetFootstepTextureSound(characterSoundEffectSet.footstepSFX.WalkingSounds));
+            PlayPairSoundClips(footstepTextureSoundManager.GetGroundTextureSound(characterSoundEffectSet.footstepSFX.WalkingSounds), characterSoundEffectSet.footstepSFX.UndefinedFootstepsSounds);
         }
     }
 
@@ -183,12 +183,12 @@ public class CharacterSoundManager : MonoBehaviour
         // If character running left.
         if ((left == 1 && actualLeft <= 1) || (left == -1 && actualLeft >= -1))
         {
-            PlayFootstepSoundClip(footstepTextureSoundManager.GetFootstepTextureSound(characterSoundEffectSet.footstepSFX.RunningSounds));
+            PlayPairSoundClips(footstepTextureSoundManager.GetGroundTextureSound(characterSoundEffectSet.footstepSFX.RunningSounds), characterSoundEffectSet.footstepSFX.UndefinedFootstepsSounds);
         }
         // If character walking left.
         else if ((left == 0.5f && actualLeft <= 0.5f) || (left == -0.5f && actualLeft >= -0.5f))
         {
-            PlayFootstepSoundClip(footstepTextureSoundManager.GetFootstepTextureSound(characterSoundEffectSet.footstepSFX.WalkingSounds));
+            PlayPairSoundClips(footstepTextureSoundManager.GetGroundTextureSound(characterSoundEffectSet.footstepSFX.WalkingSounds), characterSoundEffectSet.footstepSFX.UndefinedFootstepsSounds);
         }
     }
 
@@ -200,7 +200,7 @@ public class CharacterSoundManager : MonoBehaviour
         if (!HasSetCharacterSoundEffects())
             return;
 
-        PlayFootstepSoundClip(footstepTextureSoundManager.GetFootstepTextureSound(characterSoundEffectSet.footstepSFX.RunningSounds));
+        PlayPairSoundClips(footstepTextureSoundManager.GetGroundTextureSound(characterSoundEffectSet.footstepSFX.RunningSounds), characterSoundEffectSet.footstepSFX.UndefinedFootstepsSounds);
     }
 
     /// <summary>
@@ -211,7 +211,7 @@ public class CharacterSoundManager : MonoBehaviour
         if (!HasSetCharacterSoundEffects())
             return;
 
-        PlayFootstepSoundClip(footstepTextureSoundManager.GetFootstepTextureSound(characterSoundEffectSet.footstepSFX.RunningSounds));
+        PlayPairSoundClips(footstepTextureSoundManager.GetGroundTextureSound(characterSoundEffectSet.footstepSFX.RunningSounds), characterSoundEffectSet.footstepSFX.UndefinedFootstepsSounds);
     }
 
     private void RollSFX()
@@ -222,12 +222,26 @@ public class CharacterSoundManager : MonoBehaviour
         PlaySoundClip(characterSoundEffectSet.dodgeSFX.audioClip, characterSoundEffectSet.dodgeSFX.volume);
     }
 
+    /// <summary>
+    /// Plays a landing sound for the character.
+    /// </summary>
     private void LandSFX()
     {
         if (!HasSetCharacterSoundEffects())
             return;
 
-        PlaySoundClip(characterSoundEffectSet.landSFX.audioClip, characterSoundEffectSet.landSFX.volume);
+        PlayPairSoundClips(footstepTextureSoundManager.GetGroundTextureSound(characterSoundEffectSet.jumpCycleSFX.LandingSounds), characterSoundEffectSet.jumpCycleSFX.UndefinedLandingSounds);
+    }
+
+    /// <summary>
+    /// Plays a jumping sound for the character.
+    /// </summary>
+    private void JumpSFX()
+    {
+        if (!HasSetCharacterSoundEffects())
+            return;
+
+        PlayPairSoundClips(footstepTextureSoundManager.GetGroundTextureSound(characterSoundEffectSet.jumpCycleSFX.JumpingSounds), characterSoundEffectSet.jumpCycleSFX.UndefinedJumpingSounds);
     }
 
     /// <summary>
@@ -255,15 +269,24 @@ public class CharacterSoundManager : MonoBehaviour
     private void PlaySoundClip(ClipVolumePair pair) => PlaySoundClip(pair.audioClip, pair.audioVolume);
 
     /// <summary>
-    /// Plays a given list of footstep sound clip pairs.
+    /// Plays a given list of sound clip pairs.
     /// </summary>
     /// <param name="pairs">List of audioclip and volume pairs to play.</param>
-    private void PlayFootstepSoundClip(List<ClipVolumePair> pairs)
+    /// <param name="defaultSounds">Default audioclips to play when the pairs are invalid.</param>
+    private void PlayPairSoundClips(List<ClipVolumePair> pairs, TextureSounds defaultSounds)
     {
         // Check if no valid clips were found.
         if(pairs.Count == 0 || pairs[0].audioClip == null)
         {
-            PlaySoundClip(characterSoundEffectSet.footstepSFX.UndefinedFootstepsSounds.GetUniqueRandomClipPair());
+            // Ensure that default sounds were given, otherwise throw an error.
+            if (defaultSounds != null)
+            {
+                PlaySoundClip(defaultSounds.GetUniqueRandomClipPair());
+            }
+            else
+            {
+                Debug.LogWarning("Tried to play a default audio clip, but it was null!");
+            }
             return;
         }
 
