@@ -28,6 +28,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.59000003, y: 1.431, z: -2.66}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1893688678}
   m_Father: {fileID: 1884466008482075782}
@@ -63,6 +64,13 @@ MonoBehaviour:
     LensShift: {x: 0, y: 0}
     GateFit: 2
     m_SensorSize: {x: 1.777533, y: 1}
+    Iso: 200
+    ShutterSpeed: 0.005
+    Aperture: 16
+    BladeCount: 5
+    Curvature: {x: 2, y: 11}
+    BarrelClipping: 0.25
+    Anamorphism: 0
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 1
@@ -83,12 +91,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b77a2ca60f1c72488381bb4bf189ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AimCollisionFilter:
+  aimCollisionFilter:
     serializedVersion: 2
-    m_Bits: 663159
-  IgnoreTag: Player
-  AimDistance: 200
-  AimTargetReticle: {fileID: 0}
+    m_Bits: 0
+  ignoreTag: 
+  aimDistance: 1
+  aimTargetReticle: {fileID: 0}
 --- !u!1 &1893688677
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,6 +125,7 @@ Transform:
   m_LocalRotation: {x: -0.078400224, y: 0.70799834, z: -0.08047956, w: 0.6972193}
   m_LocalPosition: {x: -0.1478017, y: -1.4057119, z: 1.7880125}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 413010822}
   m_RootOrder: 0
@@ -184,6 +193,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.51, z: -3.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1884466009609909456}
   m_Father: {fileID: 1884466008616623127}
@@ -219,6 +229,13 @@ MonoBehaviour:
     LensShift: {x: 0, y: 0}
     GateFit: 2
     m_SensorSize: {x: 1, y: 1}
+    Iso: 200
+    ShutterSpeed: 0.005
+    Aperture: 16
+    BladeCount: 5
+    Curvature: {x: 2, y: 11}
+    BarrelClipping: 0.25
+    Anamorphism: 0
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -256,6 +273,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1884466008573971301}
   m_RootOrder: 0
@@ -381,6 +399,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1884466009649170107}
   - {fileID: 1884466008616623127}
@@ -405,6 +424,7 @@ MonoBehaviour:
   menuCamera: {fileID: 2039442606742920530}
   lockOnCamera: {fileID: 1884466008616623124}
   aimCamera: {fileID: 413010821}
+  cameraLockOnComponent: {fileID: 1884466008482075897}
   ySensitivtyKeyboard: 0.0025
   xSensitivtyKeyboard: 0.25
   ySensitivtyController: 2
@@ -434,8 +454,6 @@ MonoBehaviour:
     m_Bits: 512
   followSpeed: 0.1
   minimumCollisionOffset: 0
-  lockedPivotPosition: 2.25
-  unlockedPivotPosition: 1.65
   lockOnMaxAngle: 90
   maximumLockOnDistance: 15
   showGizmo: 0
@@ -466,6 +484,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -2.1684043e-19, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1884466008237544200}
   m_Father: {fileID: 1884466009649170107}
@@ -508,6 +527,13 @@ MonoBehaviour:
     LensShift: {x: 0, y: 0}
     GateFit: 2
     m_SensorSize: {x: 1.7774421, y: 1}
+    Iso: 200
+    ShutterSpeed: 0.005
+    Aperture: 16
+    BladeCount: 5
+    Curvature: {x: 2, y: 11}
+    BarrelClipping: 0.25
+    Anamorphism: 0
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -542,6 +568,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1884466007803259516}
   m_Father: {fileID: 1884466008482075782}
@@ -574,6 +601,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -2.1684043e-19, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1884466009316583459}
   m_Father: {fileID: 1884466009649170107}
@@ -616,6 +644,13 @@ MonoBehaviour:
     LensShift: {x: 0, y: 0}
     GateFit: 2
     m_SensorSize: {x: 1.7774421, y: 1}
+    Iso: 200
+    ShutterSpeed: 0.005
+    Aperture: 16
+    BladeCount: 5
+    Curvature: {x: 2, y: 11}
+    BarrelClipping: 0.25
+    Anamorphism: 0
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -653,6 +688,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1884466008968980787}
   m_RootOrder: 0
@@ -779,6 +815,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1884466009725766546}
   m_RootOrder: 0
@@ -905,6 +942,7 @@ Transform:
   m_LocalRotation: {x: -0.018438037, y: 0.9814326, z: -0.1426231, w: 0.12692036}
   m_LocalPosition: {x: 0.030557156, y: -3.6414397, z: 3.5761583}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1884466007803259516}
   m_RootOrder: 0
@@ -1031,6 +1069,7 @@ Transform:
   m_LocalRotation: {x: 0.002788919, y: -0.0000000011437378, z: 9.961688e-13, w: 0.9999961}
   m_LocalPosition: {x: 0, y: 1.69, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1884466008968980787}
   - {fileID: 1884466008573971301}
@@ -1069,6 +1108,13 @@ MonoBehaviour:
     LensShift: {x: 0, y: 0}
     GateFit: 2
     m_SensorSize: {x: 1.7774421, y: 1}
+    Iso: 200
+    ShutterSpeed: 0.005
+    Aperture: 16
+    BladeCount: 5
+    Curvature: {x: 2, y: 11}
+    BarrelClipping: 0.25
+    Anamorphism: 0
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 1
@@ -1155,6 +1201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerIndex: -1
+  AutoEnableInputs: 1
   XYAxis: {fileID: 930984926474499765, guid: 46a51175f0f1ee842a63be86831af143, type: 3}
   ZAxis: {fileID: 0}
 --- !u!114 &1884466009649170109
@@ -1214,6 +1261,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -2.1684043e-19, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1884466009520317162}
   m_Father: {fileID: 1884466009649170107}
@@ -1256,6 +1304,13 @@ MonoBehaviour:
     LensShift: {x: 0, y: 0}
     GateFit: 2
     m_SensorSize: {x: 1.7774421, y: 1}
+    Iso: 200
+    ShutterSpeed: 0.005
+    Aperture: 16
+    BladeCount: 5
+    Curvature: {x: 2, y: 11}
+    BarrelClipping: 0.25
+    Anamorphism: 0
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -1293,6 +1348,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -806.7779, y: -380.71405, z: 951.4672}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2039442606742920540}
   m_RootOrder: 0
@@ -1417,6 +1473,7 @@ Transform:
   m_LocalRotation: {x: -0.013504288, y: 0.97288454, z: -0.058843255, w: -0.22327307}
   m_LocalPosition: {x: -0.2, y: 1.458, z: 1.932}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2039442605751710115}
   m_Father: {fileID: 1884466008482075782}
@@ -1452,6 +1509,13 @@ MonoBehaviour:
     LensShift: {x: 0, y: 0}
     GateFit: 2
     m_SensorSize: {x: 1, y: 1}
+    Iso: 200
+    ShutterSpeed: 0.005
+    Aperture: 16
+    BladeCount: 5
+    Curvature: {x: 2, y: 11}
+    BarrelClipping: 0.25
+    Anamorphism: 0
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 1

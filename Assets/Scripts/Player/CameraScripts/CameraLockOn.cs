@@ -6,38 +6,43 @@ namespace Player.CameraScripts
 {
     public class CameraLockOn : MonoBehaviour
     {
-
         #region Serialized Fields
 
-        [Header("Camera references")]
-        [Tooltip("The transform of the main camera in the scene")]
-        [SerializeField] private Transform mainCameraTransform;
-        [Tooltip("The lockOnCamera object")]
-        [SerializeField] private GameObject lockOnCamera;
-        [Tooltip("The transform of the lockOnCamera")]
-        [SerializeField] private Transform lockOnCameraTransform;
-        [Tooltip("The transform of the lockOnCamera's pivot")]
-        [SerializeField] private Transform lockOnCameraPivotTransform;
+        [Header("Camera references")] [Tooltip("The transform of the main camera in the scene")] [SerializeField]
+        private Transform mainCameraTransform;
 
-        [Tooltip("The transform which the lockOnCamera's pivot will be placed")]
-        [SerializeField] private Transform playerTransform;
+        [Tooltip("The lockOnCamera object")] [SerializeField]
+        private GameObject lockOnCamera;
 
-        [Tooltip("Layers that the camera will collide with and be unable to pass through")]
-        [SerializeField] private LayerMask cameraCollisionLayers;
+        [Tooltip("The transform of the lockOnCamera")] [SerializeField]
+        private Transform lockOnCameraTransform;
+
+        [Tooltip("The transform of the lockOnCamera's pivot")] [SerializeField]
+        private Transform lockOnCameraPivotTransform;
+
+        [Tooltip("The transform which the lockOnCamera's pivot will be placed")] [SerializeField]
+        private Transform playerTransform;
+
+        [Tooltip("Layers that the camera will collide with and be unable to pass through")] [SerializeField]
+        private LayerMask cameraCollisionLayers;
+
         [SerializeField] private LayerMask environmentLayer;
 
-        [Tooltip("The speed at which the camera follows the player")]
-        [SerializeField] private float followSpeed = 0.1f;
-    
-        [Tooltip("How close the camera is allowed to get to the player")]
-        [SerializeField] private float minimumCollisionOffset = 0.2f;
+        [Tooltip("The speed at which the camera follows the player")] [SerializeField]
+        private float followSpeed = 0.1f;
+
+        [Tooltip("How close the camera is allowed to get to the player")] [SerializeField]
+        private float minimumCollisionOffset = 0.2f;
+
         [Tooltip("The range that the raycast extends for finding possible lock on targets, extends both ways")]
-        [SerializeField] [Range(0, 180)] private float lockOnMaxAngle=90;
-        [Tooltip("How far the camera can scan for targets")]
-        [SerializeField] private float maximumLockOnDistance = 30;
-    
-        [Header("DEBUGGING")]
-        [SerializeField] private bool showGizmo = false;
+        [SerializeField]
+        [Range(0, 180)]
+        private float lockOnMaxAngle = 90;
+
+        [Tooltip("How far the camera can scan for targets")] [SerializeField]
+        private float maximumLockOnDistance = 30;
+
+        [Header("DEBUGGING")] [SerializeField] private bool showGizmo = false;
 
         #endregion
 
@@ -46,9 +51,9 @@ namespace Player.CameraScripts
         private InputHandler inputHandler;
         private PlayerManager playerManager;
         private PlayerAnimatorManager playerAnimatorManager;
-    
+
         private Vector3 cameraFollowVelocity = Vector3.zero;
-    
+
         //these positions are used to reset the position of cameras so that following works properly
         private float targetPosition, defaultPosition;
 
@@ -61,12 +66,12 @@ namespace Player.CameraScripts
         private const float LockOnSwapCooldown = 1;
 
         private static readonly int IsAiming = Animator.StringToHash("isAiming");
-        
+
         //TESTING
         private Vector3 offset;
 
         #endregion
-    
+
         private void OnEnable()
         {
             EventManager.currentManager.Subscribe(EventType.SwapToLeftLockOnTarget, OnSwapToLeftLockOnTarget);
@@ -86,16 +91,16 @@ namespace Player.CameraScripts
 
         private void CheckForLockOnInput()
         {
-            if (inputHandler==null)
+            if (inputHandler == null)
                 return;
 
             if (inputHandler.lockOnFlag)
             {
                 HandleCameraRotation();
                 FollowTarget(Time.deltaTime);
-            
+
                 //if no target could be found, change back to exploration cam
-                if (currentLockOnTarget != null) 
+                if (currentLockOnTarget != null)
                     return;
                 EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
                 inputHandler.lockOnFlag = false;
@@ -114,12 +119,19 @@ namespace Player.CameraScripts
                         EventManager.currentManager.AddEvent(new SwapToExplorationCamera());
                     }
                 }
-                transform.position= playerTransform.position;
-                if (currentLockOnTarget==null)
+
+                transform.position = playerTransform.position;
+                if (currentLockOnTarget == null)
                     return;
                 ToggleLockOnDot(false);
                 currentLockOnTarget = null;
             }
+        }
+
+        public bool HasLockOnTarget()
+        {
+            HandleCameraRotation();
+            return currentLockOnTarget != null;
         }
 
         private void SetupLockOnCamera()
@@ -128,7 +140,7 @@ namespace Player.CameraScripts
             defaultPosition = lockOnCameraTransform.localPosition.z;
 
             //set the camera's transform
-            if (Camera.main != null) 
+            if (Camera.main != null)
                 mainCameraTransform = Camera.main.transform;
 
             //set the player's transform
@@ -136,7 +148,8 @@ namespace Player.CameraScripts
 
             inputHandler = FindObjectOfType<InputHandler>();
             if (inputHandler == null)
-                Debug.LogWarning(gameObject.name + " could not find an input handler, make sure you have one on your player");
+                Debug.LogWarning(gameObject.name +
+                                 " could not find an input handler, make sure you have one on your player");
 
             playerManager = FindObjectOfType<PlayerManager>();
         }
@@ -144,7 +157,8 @@ namespace Player.CameraScripts
         private void FollowTarget(float delta)
         {
             //performs a smooth damp so that the camera moves smoothly to the target
-            var smoothDamp = Vector3.SmoothDamp(transform.position, playerTransform.position, ref cameraFollowVelocity, delta / followSpeed);
+            var smoothDamp = Vector3.SmoothDamp(transform.position, playerTransform.position, ref cameraFollowVelocity,
+                delta / followSpeed);
             transform.position = smoothDamp;
 
             HandleCameraCollisions(delta);
@@ -203,7 +217,7 @@ namespace Player.CameraScripts
 
             var playerPoint = playerManager.finisherAttackRayCastStartPointTransform.position;
             var lockOnCameraPos = transform.position;
-            var point = new Vector3(lockOnCameraPos.x,lockOnCameraPos.y,lockOnCameraTransform.position.z);
+            var point = new Vector3(lockOnCameraPos.x, lockOnCameraPos.y, lockOnCameraTransform.position.z);
             //if colliding with any objects in line with the camera and player, move to collision point
             if (Physics.Linecast(playerPoint, lockOnCameraTransform.position, out var hit, cameraCollisionLayers))
                 lockOnCameraTransform.position = hit.point;
@@ -230,9 +244,9 @@ namespace Player.CameraScripts
                 // ReSharper disable once Unity.PerformanceCriticalCodeInvocation
                 var characterManager = targetCollider.GetComponent<CharacterManager>();
 
-                if (characterManager == null) 
+                if (characterManager == null)
                     continue;
-            
+
                 //Makes sure that the target is in the camera view to avoid locking onto targets behind camera
                 var playerPosition = playerTransform.position;
                 var characterTransformPosition = characterManager.transform.position;
@@ -244,9 +258,11 @@ namespace Player.CameraScripts
                 if (characterManager.transform.root == playerTransform.transform.root ||
                     !(viewableAngle > -lockOnMaxAngle) || !(viewableAngle < lockOnMaxAngle) ||
                     !(distanceFromTarget <= maximumLockOnDistance)) continue;
-                if (!Physics.Linecast(playerManager.characterLockOnPoint.transform.position, characterManager.transform.position, out var hit)) 
+                if (!Physics.Linecast(playerManager.characterLockOnPoint.transform.position,
+                    characterManager.transform.position, out var hit))
                     continue;
-                Debug.DrawLine(playerManager.characterLockOnPoint.transform.position, characterManager.transform.position);
+                Debug.DrawLine(playerManager.characterLockOnPoint.transform.position,
+                    characterManager.transform.position);
                 if ((environmentLayer & (1 << hit.transform.gameObject.layer)) != 0)
                 {
                     //Cannot lock on target, object in the way
@@ -260,9 +276,10 @@ namespace Player.CameraScripts
             //search through available lock on targets
             foreach (var characterManagerTarget in availableTargets)
             {
-                if (characterManagerTarget == null) 
+                if (characterManagerTarget == null)
                     continue;
-                var distanceFromTargets = Vector3.Distance(playerTransform.position, characterManagerTarget.transform.position);
+                var distanceFromTargets =
+                    Vector3.Distance(playerTransform.position, characterManagerTarget.transform.position);
 
                 //check for closest target
                 if (distanceFromTargets < shortestDistance)
@@ -272,17 +289,20 @@ namespace Player.CameraScripts
                 }
 
 
-                if (!inputHandler.lockOnFlag) 
+                if (!inputHandler.lockOnFlag)
                     continue;
-                var relativeEnemyPosition = inputHandler.transform.InverseTransformPoint(characterManagerTarget.transform.position);
+                var relativeEnemyPosition =
+                    inputHandler.transform.InverseTransformPoint(characterManagerTarget.transform.position);
                 var distanceFromTarget = relativeEnemyPosition.x;
 
-                if (relativeEnemyPosition.x <= 0.00f && distanceFromTarget > shortestDistanceOfLeftTarget && characterManagerTarget != currentLockOnTarget)
+                if (relativeEnemyPosition.x <= 0.00f && distanceFromTarget > shortestDistanceOfLeftTarget &&
+                    characterManagerTarget != currentLockOnTarget)
                 {
                     shortestDistanceOfLeftTarget = distanceFromTarget;
                     leftLockTarget = characterManagerTarget;
                 }
-                else if (relativeEnemyPosition.x >= 0.00f && distanceFromTarget < shortestDistanceOfRightTarget && characterManagerTarget != currentLockOnTarget)
+                else if (relativeEnemyPosition.x >= 0.00f && distanceFromTarget < shortestDistanceOfRightTarget &&
+                         characterManagerTarget != currentLockOnTarget)
                 {
                     shortestDistanceOfRightTarget = distanceFromTarget;
                     rightLockTarget = characterManagerTarget;
@@ -292,13 +312,18 @@ namespace Player.CameraScripts
 
         private void ToggleLockOnDot(bool setActive)
         {
-            currentLockOnTarget.characterLockOnPoint.lockOnDot.gameObject.SetActive(setActive);
+            if (currentLockOnTarget != null && currentLockOnTarget.characterLockOnPoint != null &&
+                currentLockOnTarget.characterLockOnPoint.lockOnDot != null &&
+                currentLockOnTarget.characterLockOnPoint.lockOnDot.gameObject != null)
+                currentLockOnTarget.characterLockOnPoint.lockOnDot.gameObject.SetActive(setActive);
+
         }
+
         private void OnDrawGizmos()
         {
-            if (!showGizmo) 
+            if (!showGizmo)
                 return;
-        
+
             Gizmos.color = Color.red;
             //Use the same vars you use to draw your Overlap Sphere to draw your Wire Sphere.
             Gizmos.DrawSphere(mainCameraTransform.position, maximumLockOnDistance);
@@ -331,7 +356,8 @@ namespace Player.CameraScripts
             }
             else
             {
-                throw new System.Exception("Error: EventData class with EventType.SwapToLeftLockOnTarget was received but is not of class SwapToLeftLockOnTarget.");
+                throw new System.Exception(
+                    "Error: EventData class with EventType.SwapToLeftLockOnTarget was received but is not of class SwapToLeftLockOnTarget.");
             }
         }
 
@@ -360,7 +386,8 @@ namespace Player.CameraScripts
             }
             else
             {
-                throw new System.Exception("Error: EventData class with EventType.SwapToRightLockOnTarget was received but is not of class SwapToRightLockOnTarget.");
+                throw new System.Exception(
+                    "Error: EventData class with EventType.SwapToRightLockOnTarget was received but is not of class SwapToRightLockOnTarget.");
             }
         }
 
